@@ -10,20 +10,20 @@
       "discimagestudio.core": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.3.7, )"
+          "DiscImageStudio.Localization": "[1.4.0, )"
         }
       },
       "discimagestudio.imageio": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.3.7, )",
+          "DiscImageStudio.Localization": "[1.4.0, )",
           "StbImageSharp": "[2.30.16, )"
         }
       },
       "discimagestudio.iso": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.3.7, )"
+          "DiscImageStudio.Localization": "[1.4.0, )"
         }
       },
       "discimagestudio.localization": {
@@ -34,19 +34,19 @@
       "discimagestudio.core": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.3.7, )"
+          "DiscImageStudio.Localization": "[1.4.0, )"
         }
       },
       "discimagestudio.imageio": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.3.7, )"
+          "DiscImageStudio.Localization": "[1.4.0, )"
         }
       },
       "discimagestudio.iso": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.3.7, )"
+          "DiscImageStudio.Localization": "[1.4.0, )"
         }
       },
       "discimagestudio.localization": {

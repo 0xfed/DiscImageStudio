@@ -528,7 +528,9 @@ public static class UdfImageWriter
         U16(data, 34, node.IsDirectory ? (ushort)0 : (ushort)1);
         U32(data, 36, uint.MaxValue);
         U32(data, 40, uint.MaxValue);
-        U32(data, 44, node.IsDirectory ? 0x14a5U : 0x1084U); // Read (and directory traverse).
+        // VAT updates replace metadata instead of overwriting sectors. Keep the
+        // file tree writable, including delete/attribute permissions, for each class.
+        U32(data, 44, node.IsDirectory ? 0x7fffU : 0x7bdeU);
         U16(data, 48, checked((ushort)(node.IsDirectory
             ? 1 + node.Children.Count(child => child.IsDirectory) : 1)));
         U64(data, 56, checked((ulong)node.DataLength));

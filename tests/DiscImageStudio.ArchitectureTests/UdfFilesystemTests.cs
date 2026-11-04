@@ -244,6 +244,7 @@ internal static class UdfFilesystemTests
             bool isDirectory = entry[27] == 4;
             Require(isDirectory == expectedDirectory && (isDirectory || entry[27] == 5), "FID and ICB file type agree");
             Require(U16(entry, 20) == 4 && U16(entry, 24) == 1, "ICB uses strategy type 4 with one entry");
+            Require((U32(entry, 44) & 0x0842) == 0x0842, "VAT files and directories grant write permissions");
             int allocationType = U16(entry, 34) & 7;
             Require(allocationType is 0 or 1, "regular UDF allocation descriptor kind");
             ulong informationLength = U64(entry, 56);

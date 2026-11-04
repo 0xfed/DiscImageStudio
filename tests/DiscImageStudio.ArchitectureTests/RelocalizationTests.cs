@@ -168,10 +168,11 @@ internal static class RelocalizationTests
             Directory.CreateDirectory(directory);
             SynchronizationContext? previous = SynchronizationContext.Current;
             SynchronizationContext.SetSynchronizationContext(new DispatcherSynchronizationContext());
-            string originalLanguage = L.CurrentLanguage;
+            string originalLanguage = L.PreferredLanguage;
             ShellViewModel? shell = null;
             try
             {
+                L.Initialize(L.Chinese);
                 string source = Path.Combine(directory, "source.png");
                 WritePng(source, 128, Colors.Black);
                 string files = Path.Combine(directory, "files");
@@ -215,7 +216,7 @@ internal static class RelocalizationTests
                     && ReferenceEquals(preview.ResultImage, image) && preview.HasFileRegionOverlay,
                     "language switch leaves the completed read-back, its token and file legend untouched");
                 Require(preview.ResultPreviewTitle == "Preview - CD"
-                    && preview.StatusText == "Updated · Readback simulation · CD data disc · 256 px · 2 samples per sector",
+                    && preview.StatusText == "Updated live · Readback simulation · CD data disc · 256 px · 2 samples per sector",
                     "language switch re-words the result title and completion line: " + preview.StatusText);
 
                 // The same switch while a fresh ISO read is still running must leave that read

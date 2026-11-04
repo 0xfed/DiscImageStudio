@@ -164,6 +164,29 @@ internal static class UiLocalizationLayoutTests
                                 if (shell.Calibration.Target?.IsCoarsePattern != true)
                                     throw new InvalidOperationException("The coarse pattern option did not create a coarse target.");
                                 Capture(window, name + "-coarse");
+                                shell.Calibration.UseCirclePattern = true;
+                                shell.Calibration.CreateTargetCommand.Execute(null);
+                                shell.Calibration.StepOneExpanded = true;
+                                Pump();
+                                if (shell.Calibration.Target is not { IsRingPattern: true } ringTarget
+                                    || !Descendants(window).OfType<CheckBox>().Any(box => box.IsVisible && box.Name == "CirclePatternCheckBox"))
+                                    throw new InvalidOperationException("The circle pattern option is missing or did not create circles.");
+                                Capture(window, name + "-circles");
+                                shell.Calibration.StepTwoExpanded = true;
+                                Pump();
+                                Capture(window, name + "-diameters");
+                                var actualRings = ringTarget.Parameters with
+                                { InnerRadiusMm = ringTarget.Parameters.InnerRadiusMm + .1, OuterRadiusMm = ringTarget.Parameters.OuterRadiusMm - .08 };
+                                foreach (var measurement in CalibrationRingTests.Measurements(ringTarget, actualRings))
+                                    shell.Calibration.RingDiameters.Single(row => row.Ring.Index == measurement.RingIndex).MeasuredDiameter
+                                        = measurement.DiameterMm.ToString("0.000", CultureInfo.InvariantCulture);
+                                shell.Calibration.SolveRingsCommand.Execute(null);
+                                shell.Calibration.RingMeasurementsConfirmed = true;
+                                if (!shell.Calibration.ApplyRingParametersCommand.CanExecute(null))
+                                    throw new InvalidOperationException("The measured-diameter workflow did not produce an applicable fit.");
+                                Pump();
+                                Capture(window, name + "-ring-fit");
+                                shell.Calibration.UseCirclePattern = false;
                                 shell.Calibration.UseCoarsePattern = false;
                                 shell.Calibration.CreateTargetCommand.Execute(null);
                                 shell.Calibration.ShowTargetPreview = false;
@@ -217,9 +240,9 @@ internal static class UiLocalizationLayoutTests
                     finally { dialog.Close(); }
                 }
             }
-            // Per project/profile: base workspaces, two preview modes and three calibration modes.
+            // Per project/profile: base workspaces, two preview modes and six calibration modes.
             // Per language: three settings categories and two project dialogs.
-            int expectedScenarios = Languages.Length * (3 * Profiles.Length * (Enum.GetValues<Workspace>().Length + 5) + 5);
+            int expectedScenarios = Languages.Length * (3 * Profiles.Length * (Enum.GetValues<Workspace>().Length + 8) + 5);
             if (scenarios.Count != expectedScenarios || scenarios.Any(scenario => scenario.TextBlocks < 5))
                 throw new InvalidOperationException($"The expected {expectedScenarios} UI layout scenarios did not all render meaningful text.");
             if (issues.Count != 0)

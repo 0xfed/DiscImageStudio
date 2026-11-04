@@ -7,7 +7,13 @@ namespace DiscImageStudio.Core.Calibration;
 public sealed record CalibrationSession(
     CalibrationTarget Target, List<CalibrationObservation> Observations,
     CalibrationFitOptions? FitOptions = null, bool CdInterleave = true,
-    CalibrationPhotoSession? Photo = null)
+    CalibrationPhotoSession? Photo = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    List<CalibrationRingMeasurement>? RingMeasurements = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    bool UseRingMeasurements = false,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    double? RingDiameterToleranceMm = null)
 {
     public void Validate()
     {
@@ -17,6 +23,11 @@ public sealed record CalibrationSession(
         CalibrationFitter.ValidateObservations(Target, Observations);
         FitOptions?.Validate(Target);
         Photo?.Validate();
+        if (RingMeasurements is not null) CalibrationRingFitter.ValidateMeasurements(Target, RingMeasurements);
+        if (RingDiameterToleranceMm is { } tolerance && (!double.IsFinite(tolerance) || tolerance is < .001 or > 2))
+            throw new ArgumentException(L.T("Enter a diameter tolerance between 0.001 and 2 mm."));
+        if (UseRingMeasurements && CalibrationRingFitter.GetRings(Target).Count < 3)
+            throw new ArgumentException(L.T("This target has no measurable circle pattern. Open the matching circle or original-cross record."));
     }
 }
 

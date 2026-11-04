@@ -26,6 +26,18 @@ Trace one continuous black/white boundary from inside to outside, with enough in
 
 This improves visibility in tested geometry simulations; it does not correct an arbitrary offset, guarantee a straight line, or establish physical-disc contrast. Tests cover ±0.1 mm inner-radius errors, ±512-sector offsets, and averaging over a 0.1 mm radial observation footprint. Physical burning still needs hardware validation.
 
+### Calibration from measured circle diameters
+
+In Calibration, expand Create calibration disc, select **Use concentric circles for diameter calibration**, then create a target from current parameters. The new target contains 7 concentric lines without a cross. Line width is normally 0.15 mm and shrinks for a very narrow drawing band. Rings occupy 6%, 18%, 34%, 50%, 66%, 82%, 94% of the saved drawable recording progress and do not depend on angular phase.
+
+1. Generate or stream-burn from this page and keep the matching `.calibration.json`. You can also reopen a matching original-cross record and select **Use measured ring diameters** to use its existing complete circles without seeing the cross. Wide-sector targets have no circles.
+2. Number complete circles from the innermost outward; do not count recording-area edges. Measure diameters through the centre, from line centre to line centre on the opposite side. Generated diameters in the table only help identify circles; enter actual measurements in mm, with a decimal point, and leave unmeasured rows blank.
+3. Measure at least 3 circles, including inner and outer circles spanning at least 50% of recording progress. Two known positions determine two endpoints in the ideal model; additional circles check consistency.
+4. Click **Calculate radii from circles**. Review the estimated radii, individual diameter residuals, and RMS/maximum residuals. The default maximum allowed diameter residual is 0.10 mm; this is a fit-consistency threshold, not measurement accuracy.
+5. Check circle numbers and measured diameters, select the confirmation checkbox, then apply calibration parameters and save the project. Editing a diameter or tolerance invalidates the old result and confirmation; reopening a record also requires a fresh calculation.
+
+The calculation holds the saved sector count, linear density and pitch shape fixed, fitting only the inner and outer radii; it does not fit angle or a new pitch shape. Constant pitch approximately satisfies `r(q)^2 = ri^2 + q*(ro^2-ri^2)`; the program refines the result using the exact saved track model. Synthetic checks cover a 2 mm inner-radius error, a 1 mm outer-radius error and diameter readings rounded to 0.01 mm; they cannot guarantee physical-disc accuracy. Instrument error, line width, mistaken circle identities and unknown pitch variation affect results.
+
 ## Step one: photo rectification
 
 1. Import a photograph or scan and select a standard 12 cm disc or an 8 cm mini disc. The image is reduced to a size suitable for interaction and stored in the record.
@@ -58,7 +70,7 @@ Return to step one to inspect the original photograph. Changing boundaries or di
 
 Calibration records save the generation snapshot, reduced original photograph, boundary control points, disc size, and all curve points; they do not depend on the original photo path. Reopening restores rectification from the saved boundaries so you can continue tracing or recompute. Fit candidates must be recalculated.
 
-New records use schema 7 and capture the selected pattern. Schema 6 fine-cross records remain readable and retain their original pattern. Older comb records are not migrated. Use each burned disc with its own saved record.
+New records use schema 8 and retain the pattern, measured circle diameters, measurement method and diameter tolerance. Schema 7 fine-cross/wide-sector records and schema 6 fine-cross records remain readable. Older comb records are not migrated. Use each burned disc with its own original record.
 
 ## Validation scope
 

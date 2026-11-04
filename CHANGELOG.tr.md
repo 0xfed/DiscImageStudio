@@ -4,6 +4,10 @@
 
 ## Henüz yayımlanmayan
 
+## [1.7.0] - 2026-11-04
+
+- Eş merkezli halka çaplarıyla kalibrasyon eklendi: 7 ayrı halka çizgisinden en az üç tanımlı halkanın ölçülen çapları girilerek kayıtlı sektör sayısı, yoğunluk ve iz aralığı şekli altında iç/dış yarıçaplar tahmin edilir. Şema 6/7 özgün artı kayıtlarının tam halkaları, görünür artı veya fotoğraf olmadan kullanılabilir. Halka başına ve genel çap kalıntıları gösterilir; tolerans ve kimlik onayıyla uygulanır, düzenlemede geçersizleşir, ölçüm/yöntem/tolerans şema 8 içinde saklanır. CD/DVD/BD dışa aktarma ve akış ortak deseni kullanır; beş dilde arayüz ve belgeler güncellenmiştir. 2 mm iç yarıçap, 1 mm dış yarıçap hataları, 0.01 mm yuvarlama, değişken DVD iz aralığı ve hatalı girişler yapay olarak doğrulandı; fiziksel görünürlük ve doğruluk donanım doğrulaması gerektirir.
+
 ## [1.6.0] - 2026-11-04
 
 - Soluk veya sık sarımlı artı çizgileri için isteğe bağlı geniş sektörlü kalibrasyon hedefi ekle. Sırayla siyah ve beyaz dört dolu sektör, kılavuz halkalarla karışmayan kesintisiz radyal kenarlar sağlar; özgün ince artı varsayılan olarak kalır. Kaydedilen deseni önizleme, PNG dışa aktarma, CD/DVD/BD üretimi ve akışlı yazmada paylaş; beş dilde geçerli hedefi göster. Deseni schema 7 ile kaydet ve schema 6 ince artı kayıtlarını okumaya devam et. ±0.1 mm iç yarıçap ve ±512 sektör hatalarında dijital kontrastı, kaba kenar uydurmasını, dışa aktarılan pikselleri ve kayıtlı yazım anlık görüntülerini doğrula. Fiziksel disk görünürlüğü henüz doğrulanmadı; yazma gücü, ön alan veya üzerine yazma davranışı değişmedi.

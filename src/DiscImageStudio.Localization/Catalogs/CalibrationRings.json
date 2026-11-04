@@ -1,0 +1,184 @@
+{
+  "Check the ring numbers and positive measured diameters in millimetres.": {
+    "en": "Check the ring numbers and positive measured diameters in millimetres.",
+    "zh-CN": "请检查圆环编号，并输入以毫米为单位的正数实测直径。",
+    "zh-TW": "請檢查圓環編號，並輸入以毫米為單位的正數實測直徑。",
+    "ja": "円の番号を確認し、実測直径をミリメートルの正数で入力してください。",
+    "tr": "Halka numaralarını kontrol edin ve ölçülen çapları milimetre cinsinden pozitif sayılarla girin."
+  },
+  "Enter diameters for at least three rings.": {
+    "en": "Enter diameters for at least three rings.",
+    "zh-CN": "请至少输入三个圆环的直径。",
+    "zh-TW": "請至少輸入三個圓環的直徑。",
+    "ja": "少なくとも 3 本の円の直径を入力してください。",
+    "tr": "En az üç halkanın çapını girin."
+  },
+  "Measure rings spanning at least half of the recording progress, including inner and outer rings.": {
+    "en": "Measure rings spanning at least half of the recording progress, including inner and outer rings.",
+    "zh-CN": "请测量覆盖至少一半记录进度的圆环，包括靠内和靠外的圆环。",
+    "zh-TW": "請測量覆蓋至少一半記錄進度的圓環，包括靠內和靠外的圓環。",
+    "ja": "内側と外側を含め、記録進行の半分以上を覆う円を測定してください。",
+    "tr": "İç ve dış halkalar dahil, kayıt ilerlemesinin en az yarısını kapsayan halkaları ölçün."
+  },
+  "Measured diameters must increase from the innermost ring outward.": {
+    "en": "Measured diameters must increase from the innermost ring outward.",
+    "zh-CN": "实测直径必须从最内侧圆环向外递增。",
+    "zh-TW": "實測直徑必須從最內側圓環向外遞增。",
+    "ja": "実測直径は最も内側の円から外側へ増加する必要があります。",
+    "tr": "Ölçülen çaplar en içteki halkadan dışa doğru artmalıdır."
+  },
+  "These diameters do not define valid inner and outer radii. Check ring identities and measurements.": {
+    "en": "These diameters do not define valid inner and outer radii. Check ring identities and measurements.",
+    "zh-CN": "这些直径无法确定有效的内外半径，请核对圆环编号和测量值。",
+    "zh-TW": "這些直徑無法確定有效的內外半徑，請核對圓環編號和測量值。",
+    "ja": "これらの直径では有効な内外半径を求められません。円の対応と測定値を確認してください。",
+    "tr": "Bu çaplar geçerli iç ve dış yarıçaplar tanımlamıyor. Halka eşleşmelerini ve ölçümleri kontrol edin."
+  },
+  "Enter a diameter tolerance between 0.001 and 2 mm.": {
+    "en": "Enter a diameter tolerance between 0.001 and 2 mm.",
+    "zh-CN": "请输入 0.001 至 2 mm 的直径容差。",
+    "zh-TW": "請輸入 0.001 至 2 mm 的直徑容差。",
+    "ja": "直径の許容差を 0.001 ～ 2 mm で入力してください。",
+    "tr": "0.001 ile 2 mm arasında bir çap toleransı girin."
+  },
+  "This target has no measurable circle pattern. Open the matching circle or original-cross record.": {
+    "en": "This target has no measurable circle pattern. Open the matching circle or original-cross record.",
+    "zh-CN": "此标靶没有可测量的圆环，请打开对应的圆环或原始十字标定记录。",
+    "zh-TW": "此標靶沒有可測量的圓環，請開啟對應的圓環或原始十字校準記錄。",
+    "ja": "このターゲットには測定可能な円がありません。対応する円または元の十字の記録を開いてください。",
+    "tr": "Bu hedefte ölçülebilir halka deseni yok. Eşleşen halka veya özgün artı kaydını açın."
+  },
+  "Circles (measured diameters)": {
+    "en": "Circles (measured diameters)",
+    "zh-CN": "圆环（实测直径）",
+    "zh-TW": "圓環（實測直徑）",
+    "ja": "円（直径の実測）",
+    "tr": "Halkalar (ölçülen çaplar)"
+  },
+  "Measure ring diameters": {
+    "en": "Measure ring diameters",
+    "zh-CN": "测量圆环直径",
+    "zh-TW": "測量圓環直徑",
+    "ja": "円の直径を測定",
+    "tr": "Halka çaplarını ölç"
+  },
+  "Check and apply radii": {
+    "en": "Check and apply radii",
+    "zh-CN": "核对并应用半径",
+    "zh-TW": "核對並套用半徑",
+    "ja": "半径を確認して適用",
+    "tr": "Yarıçapları kontrol et ve uygula"
+  },
+  "Calibration circles": {
+    "en": "Calibration circles",
+    "zh-CN": "标定圆环",
+    "zh-TW": "校準圓環",
+    "ja": "キャリブレーション用の円",
+    "tr": "Kalibrasyon halkaları"
+  },
+  "Diameter residual: {0:0.###} mm": {
+    "en": "Diameter residual: {0:0.###} mm",
+    "zh-CN": "直径残差：{0:0.###} mm",
+    "zh-TW": "直徑殘差：{0:0.###} mm",
+    "ja": "直径の残差: {0:0.###} mm",
+    "tr": "Çap kalıntısı: {0:0.###} mm"
+  },
+  "Estimated inner radius: {0:0.0000} mm; outer radius: {1:0.0000} mm.": {
+    "en": "Estimated inner radius: {0:0.0000} mm; outer radius: {1:0.0000} mm.",
+    "zh-CN": "估计内半径：{0:0.0000} mm；外半径：{1:0.0000} mm。",
+    "zh-TW": "估計內半徑：{0:0.0000} mm；外半徑：{1:0.0000} mm。",
+    "ja": "推定内半径: {0:0.0000} mm、外半径: {1:0.0000} mm。",
+    "tr": "Tahmini iç yarıçap: {0:0.0000} mm; dış yarıçap: {1:0.0000} mm."
+  },
+  "Diameter residuals: RMS {0:0.###} mm; maximum {1:0.###} mm.": {
+    "en": "Diameter residuals: RMS {0:0.###} mm; maximum {1:0.###} mm.",
+    "zh-CN": "直径残差：均方根 {0:0.###} mm；最大 {1:0.###} mm。",
+    "zh-TW": "直徑殘差：均方根 {0:0.###} mm；最大 {1:0.###} mm。",
+    "ja": "直径の残差: RMS {0:0.###} mm、最大 {1:0.###} mm。",
+    "tr": "Çap kalıntıları: RMS {0:0.###} mm; en büyük {1:0.###} mm."
+  },
+  "A diameter residual exceeds the tolerance. Check measurements and ring identities before applying.": {
+    "en": "A diameter residual exceeds the tolerance. Check measurements and ring identities before applying.",
+    "zh-CN": "直径残差超过容差，请先核对测量值和圆环编号再应用。",
+    "zh-TW": "直徑殘差超過容差，請先核對測量值和圓環編號再套用。",
+    "ja": "直径の残差が許容差を超えています。適用前に測定値と円の対応を確認してください。",
+    "tr": "Bir çap kalıntısı toleransı aşıyor. Uygulamadan önce ölçümleri ve halka eşleşmelerini kontrol edin."
+  },
+  "Ring {0} · generated diameter {1:0.###} mm": {
+    "en": "Ring {0} · generated diameter {1:0.###} mm",
+    "zh-CN": "圆环 {0} · 生成直径 {1:0.###} mm",
+    "zh-TW": "圓環 {0} · 產生直徑 {1:0.###} mm",
+    "ja": "円 {0} · 生成時の直径 {1:0.###} mm",
+    "tr": "Halka {0} · oluşturulan çap {1:0.###} mm"
+  },
+  "Xaml.CircleCalibrationPattern": {
+    "en": "Use concentric circles for diameter calibration",
+    "zh-CN": "使用同心圆进行直径标定",
+    "zh-TW": "使用同心圓進行直徑校準",
+    "ja": "直径のキャリブレーションに同心円を使用",
+    "tr": "Çap kalibrasyonu için eş merkezli halkalar kullan"
+  },
+  "Xaml.UseMeasuredRingDiameters": {
+    "en": "Use measured ring diameters",
+    "zh-CN": "使用实测圆环直径",
+    "zh-TW": "使用實測圓環直徑",
+    "ja": "円の実測直径を使用",
+    "tr": "Ölçülen halka çaplarını kullan"
+  },
+  "Xaml.RingMeasurementHelp": {
+    "en": "Number complete circles from inside outward; do not count recording-area edges. Measure through the centre, from line centre to line centre. Enter at least three widely spaced circles; leave others blank. Use a decimal point.",
+    "zh-CN": "完整圆环由内向外编号，不计记录区边缘。穿过圆心测量直径，取两侧线条的中心位置。输入至少三个分布较广的圆环，未测的留空；使用小数点。",
+    "zh-TW": "完整圓環由內向外編號，不計記錄區邊緣。穿過圓心測量直徑，取兩側線條的中心位置。輸入至少三個分布較廣的圓環，未測的留空；使用小數點。",
+    "ja": "完全な円を内側から外側へ数え、記録領域の端は数えません。中心を通り、両側の線の中央間で直径を測定します。広い範囲の 3 本以上を入力し、未測定は空欄にします。小数点はピリオドです。",
+    "tr": "Tam halkaları içten dışa numaralandırın; kayıt alanı kenarlarını saymayın. Çapı merkezden geçerek iki taraftaki çizgi ortaları arasında ölçün. Geniş bir aralıktaki en az üç halkayı girin, diğerlerini boş bırakın. Ondalık nokta kullanın."
+  },
+  "Xaml.MeasuredDiameterMm": {
+    "en": "Measured diameter (mm)",
+    "zh-CN": "实测直径（mm）",
+    "zh-TW": "實測直徑（mm）",
+    "ja": "実測直径（mm）",
+    "tr": "Ölçülen çap (mm)"
+  },
+  "Xaml.DiameterToleranceMm": {
+    "en": "Maximum allowed diameter residual (mm)",
+    "zh-CN": "最大允许直径残差（mm）",
+    "zh-TW": "最大允許直徑殘差（mm）",
+    "ja": "直径の最大許容残差（mm）",
+    "tr": "İzin verilen en büyük çap kalıntısı (mm)"
+  },
+  "Xaml.SolveRadiiFromCircles": {
+    "en": "Calculate radii from circles",
+    "zh-CN": "从圆环计算内外半径",
+    "zh-TW": "從圓環計算內外半徑",
+    "ja": "円から内外半径を計算",
+    "tr": "Halkalardan iç ve dış yarıçapları hesapla"
+  },
+  "Xaml.RingFitAccuracyHelp": {
+    "en": "Uses the saved track model; accuracy depends on your measurements. Pitch shape and angular alignment stay as recorded. Check the diameter residuals before applying.",
+    "zh-CN": "使用记录中保存的轨道模型，准确度取决于测量精度。轨距形状和角度对齐保持原记录值。请先检查直径残差。",
+    "zh-TW": "使用記錄中儲存的軌道模型，準確度取決於測量精度。軌距形狀和角度對齊維持原記錄值。請先檢查直徑殘差。",
+    "ja": "保存済みのトラックモデルを使用し、精度は測定に依存します。ピッチの形状と角度の位置合わせは記録時の値を保ちます。直径の残差を確認してください。",
+    "tr": "Kaydedilen iz modeli kullanılır; doğruluk ölçümlere bağlıdır. İz aralığı şekli ve açısal hizalama kayıttaki gibi kalır. Önce çap kalıntılarını kontrol edin."
+  },
+  "Xaml.ReviewRingMeasurements": {
+    "en": "Review ring measurements",
+    "zh-CN": "检查圆环测量值",
+    "zh-TW": "檢查圓環測量值",
+    "ja": "円の測定値を確認",
+    "tr": "Halka ölçümlerini gözden geçir"
+  },
+  "Xaml.ConfirmRingMeasurements": {
+    "en": "I checked the circle numbers and measured diameters",
+    "zh-CN": "已核对圆环编号和实测直径",
+    "zh-TW": "已核對圓環編號和實測直徑",
+    "ja": "円の番号と実測直径を確認しました",
+    "tr": "Halka numaralarını ve ölçülen çapları kontrol ettim"
+  },
+  "Circle preview · enter measured diameters.": {
+    "en": "Circle preview · enter measured diameters.",
+    "zh-CN": "圆环预览 · 输入实测直径。",
+    "zh-TW": "圓環預覽 · 輸入實測直徑。",
+    "ja": "円のプレビュー · 実測直径を入力してください。",
+    "tr": "Halka önizlemesi · ölçülen çapları girin."
+  }
+}

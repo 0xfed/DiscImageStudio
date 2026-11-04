@@ -76,7 +76,7 @@ internal static class CalibrationCoreTests
         Check(CalibrationSessionJson.Serialize(restored) == json, "stable session serialization");
         Check(!json.Contains("controlPoints", StringComparison.Ordinal) && !json.Contains("radialLine", StringComparison.Ordinal),
             "derived geometry is reconstructed from schema rules");
-        foreach (int version in new[] { 1, 2, 3, 4, 5, 8 })
+        foreach (int version in new[] { 1, 2, 3, 4, 5, 9 })
         {
             JsonNode old = JsonNode.Parse(json)!;
             old["target"]!["schemaVersion"] = version;

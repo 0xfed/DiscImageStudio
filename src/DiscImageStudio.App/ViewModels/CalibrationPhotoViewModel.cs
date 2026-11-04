@@ -84,7 +84,8 @@ public partial class CalibrationViewModel
             _ => !IsBusy && IsTraceStep && _photoTransform is not null);
     }
 
-    private bool CanSolveTrace() => CanUseTarget() && IsTraceStep && _photoTransform is not null && TracePoints.Count >= 6;
+    private bool CanSolveTrace() => CanUseTarget() && !UseRingMeasurements && _target?.IsRingPattern != true
+        && IsTraceStep && _photoTransform is not null && TracePoints.Count >= 6;
 
     // A new (or reset) picture always lands in boundary-editing view: the burn-pattern
     // overlay belongs to inspecting the target, not the photo.
@@ -92,6 +93,7 @@ public partial class CalibrationViewModel
 
     partial void OnIsPhotoStepChanged(bool value)
     {
+        OnPropertyChanged(nameof(ShowPhotoBoundaryTools)); OnPropertyChanged(nameof(ShowPhotoTraceTools));
         RefreshCommands();
         ShowTargetPreview = false;
         OnPropertyChanged(nameof(StepTwoState));
@@ -359,6 +361,7 @@ public partial class CalibrationViewModel
                     ? L.F($"外缘偏差 {restoredFit.OuterRmsPixels:0.0} 像素 · 内缘偏差 {restoredFit.HoleRmsPixels:0.0} 像素")
                     : string.Empty;
             }
+            RestoreRingMeasurements(session);
             _sessionPath = path; OutputPath = string.Empty;
             _statusMessage = L.T("已恢复标定图案、照片和曲线点，可继续编辑或重新反推。");
             RefreshCommands();

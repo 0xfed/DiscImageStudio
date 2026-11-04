@@ -5,11 +5,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <InvariantGlobalization>true</InvariantGlobalization>
+    <InvariantGlobalization>false</InvariantGlobalization>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\DiscImageStudio.ImageIO\DiscImageStudio.ImageIO.csproj" />
     <ProjectReference Include="..\DiscImageStudio.Core\DiscImageStudio.Core.csproj" />
+    <ProjectReference Include="../DiscImageStudio.Localization/DiscImageStudio.Localization.csproj" />
     <ProjectReference Include="..\DiscImageStudio.Iso\DiscImageStudio.Iso.csproj" />
   </ItemGroup>
 </Project>

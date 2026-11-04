@@ -1,0 +1,1318 @@
+{
+  "Grayscale level must be 0..1.": {
+    "zh-CN": "灰度级必须为 0..1。",
+    "zh-TW": "灰階級必須為 0..1。",
+    "en": "Grayscale level must be 0..1.",
+    "ja": "グレースケールのレベルは 0..1 である必要があります。",
+    "tr": "Gri ton düzeyi 0..1 olmalıdır."
+  },
+  "Grayscale level must be 0..2.": {
+    "zh-CN": "灰度级必须为 0..2。",
+    "zh-TW": "灰階級必須為 0..2。",
+    "en": "Grayscale level must be 0..2.",
+    "ja": "グレースケールのレベルは 0..2 である必要があります。",
+    "tr": "Gri ton düzeyi 0..2 olmalıdır."
+  },
+  "Grayscale level must be 0..3.": {
+    "zh-CN": "灰度级必须为 0..3。",
+    "zh-TW": "灰階級必須為 0..3。",
+    "en": "Grayscale level must be 0..3.",
+    "ja": "グレースケールのレベルは 0..3 である必要があります。",
+    "tr": "Gri ton düzeyi 0..3 olmalıdır."
+  },
+  "The pitch coefficients cannot be resolved at this track length.": {
+    "zh-CN": "当前轨道长度下无法求解轨距系数。",
+    "zh-TW": "目前軌道長度下無法求解軌距係數。",
+    "en": "The pitch coefficients cannot be resolved at this track length.",
+    "ja": "このトラック長ではトラックピッチ係数を解決できません。",
+    "tr": "Bu iz uzunluğunda iz aralığı katsayıları çözülemiyor."
+  },
+  "Inner radius must be positive.": {
+    "zh-CN": "内半径必须为正数。",
+    "zh-TW": "內半徑必須為正數。",
+    "en": "Inner radius must be positive.",
+    "ja": "内半径は正の値である必要があります。",
+    "tr": "İç yarıçap pozitif olmalıdır."
+  },
+  "Outer radius must exceed inner radius.": {
+    "zh-CN": "外半径必须大于内半径。",
+    "zh-TW": "外半徑必須大於內半徑。",
+    "en": "Outer radius must exceed inner radius.",
+    "ja": "外半径は内半径より大きい必要があります。",
+    "tr": "Dış yarıçap iç yarıçaptan büyük olmalıdır."
+  },
+  "Track length must exceed the radial distance between the two radii.": {
+    "zh-CN": "轨道长度必须大于两半径之间的径向距离。",
+    "zh-TW": "軌道長度必須大於兩半徑之間的徑向距離。",
+    "en": "Track length must exceed the radial distance between the two radii.",
+    "ja": "トラック長は内外半径間の半径方向の距離より長い必要があります。",
+    "tr": "İz uzunluğu iki yarıçap arasındaki radyal mesafeden büyük olmalıdır."
+  },
+  "DVD pitch coefficients must be finite and 1 + c1*x + c2*x² + c3*x³ must stay positive for 0 <= x <= 1.": {
+    "zh-CN": "DVD 轨距系数必须为有限数值，且 1 + c1*x + c2*x² + c3*x³ 在 0 <= x <= 1 内必须始终为正。",
+    "zh-TW": "DVD 軌距係數必須為有限數值，且 1 + c1*x + c2*x² + c3*x³ 在 0 <= x <= 1 內必須始終為正。",
+    "en": "DVD pitch coefficients must be finite and 1 + c1*x + c2*x² + c3*x³ must stay positive for 0 <= x <= 1.",
+    "ja": "DVD のトラックピッチ係数は有限値で、0 <= x <= 1 において 1 + c1*x + c2*x² + c3*x³ が常に正である必要があります。",
+    "tr": "DVD iz aralığı katsayıları sonlu olmalı ve 1 + c1*x + c2*x² + c3*x³, 0 <= x <= 1 aralığında pozitif kalmalıdır."
+  },
+  "The DVD pitch integral exceeded its numerical resolution budget.": {
+    "zh-CN": "DVD 轨距积分超出数值求解预算。",
+    "zh-TW": "DVD 軌距積分超出數值求解預算。",
+    "en": "The DVD pitch integral exceeded its numerical resolution budget.",
+    "ja": "DVD トラックピッチ積分が数値計算の上限を超えました。",
+    "tr": "DVD iz aralığı integrali sayısal çözüm bütçesini aştı."
+  },
+  "The DVD pitch integral cannot be resolved numerically.": {
+    "zh-CN": "无法对 DVD 轨距积分进行数值求解。",
+    "zh-TW": "無法對 DVD 軌距積分進行數值求解。",
+    "en": "The DVD pitch integral cannot be resolved numerically.",
+    "ja": "DVD トラックピッチ積分を数値的に解決できません。",
+    "tr": "DVD iz aralığı integrali sayısal olarak çözülemiyor."
+  },
+  "The DVD pitch integral did not converge at the requested accuracy.": {
+    "zh-CN": "DVD 轨距积分未能以要求的精度收敛。",
+    "zh-TW": "DVD 軌距積分未能以要求的精度收斂。",
+    "en": "The DVD pitch integral did not converge at the requested accuracy.",
+    "ja": "DVD トラックピッチ積分が指定された精度で収束しませんでした。",
+    "tr": "DVD iz aralığı integrali istenen doğrulukta yakınsamadı."
+  },
+  "The DVD pitch curve is too close to zero to resolve numerically.": {
+    "zh-CN": "DVD 轨距曲线过于接近零，无法数值求解。",
+    "zh-TW": "DVD 軌距曲線過於接近零，無法數值求解。",
+    "en": "The DVD pitch curve is too close to zero to resolve numerically.",
+    "ja": "DVD トラックピッチ曲線がゼロに近すぎるため数値的に解決できません。",
+    "tr": "DVD iz aralığı eğrisi sayısal olarak çözülemeyecek kadar sıfıra yakın."
+  },
+  "The DVD pitch curve cannot be resolved numerically.": {
+    "zh-CN": "无法对 DVD 轨距曲线进行数值求解。",
+    "zh-TW": "無法對 DVD 軌距曲線進行數值求解。",
+    "en": "The DVD pitch curve cannot be resolved numerically.",
+    "ja": "DVD トラックピッチ曲線を数値的に解決できません。",
+    "tr": "DVD iz aralığı eğrisi sayısal olarak çözülemiyor."
+  },
+  "工程路径必须包含目录。": {
+    "zh-CN": "工程路径必须包含目录。",
+    "zh-TW": "專案路徑必須包含目錄。",
+    "en": "The project path must include a directory.",
+    "ja": "プロジェクトのパスにはディレクトリが必要です。",
+    "tr": "Proje yolu bir dizin içermelidir."
+  },
+  "不支持 schemaVersion={0}；当前支持 {1} 与 {2}。": {
+    "zh-CN": "不支持 schemaVersion={0}；当前支持 {1} 与 {2}。",
+    "zh-TW": "不支援 schemaVersion={0}；目前支援 {1} 與 {2}。",
+    "en": "Unsupported schemaVersion={0}; supported versions are {1} and {2}.",
+    "ja": "schemaVersion={0} は未対応です。対応するバージョンは {1} と {2} です。",
+    "tr": "schemaVersion={0} desteklenmiyor; desteklenen sürümler {1} ve {2}."
+  },
+  "schemaVersion 1 只包含 CD/DVD 工程，不能声明蓝光字段。": {
+    "zh-CN": "schemaVersion 1 只包含 CD/DVD 工程，不能声明蓝光字段。",
+    "zh-TW": "schemaVersion 1 僅包含 CD/DVD 專案，不能宣告藍光欄位。",
+    "en": "schemaVersion 1 contains only CD/DVD projects and cannot declare Blu-ray fields.",
+    "ja": "schemaVersion 1 は CD/DVD プロジェクト専用で、Blu-ray フィールドは宣言できません。",
+    "tr": "schemaVersion 1 yalnızca CD/DVD projeleri içerir ve Blu-ray alanları tanımlayamaz."
+  },
+  "bluRay 设置只用于蓝光工程。": {
+    "zh-CN": "bluRay 设置只用于蓝光工程。",
+    "zh-TW": "bluRay 設定僅用於藍光專案。",
+    "en": "bluRay settings are only for Blu-ray projects.",
+    "ja": "bluRay 設定は Blu-ray プロジェクト専用です。",
+    "tr": "bluRay ayarları yalnızca Blu-ray projeleri içindir."
+  },
+  "工程名不能为空。": {
+    "zh-CN": "工程名不能为空。",
+    "zh-TW": "專案名稱不能為空。",
+    "en": "The project name must not be empty.",
+    "ja": "プロジェクト名は空にできません。",
+    "tr": "Proje adı boş olamaz."
+  },
+  "discFamily '{0}' 无效；仅支持 '{1}'、'{2}' 与 '{3}'。": {
+    "zh-CN": "discFamily '{0}' 无效；仅支持 '{1}'、'{2}' 与 '{3}'。",
+    "zh-TW": "discFamily '{0}' 無效；僅支援 '{1}'、'{2}' 與 '{3}'。",
+    "en": "Invalid discFamily '{0}'; only '{1}', '{2}', and '{3}' are supported.",
+    "ja": "discFamily '{0}' は無効です。'{1}'、'{2}'、'{3}' のみ対応しています。",
+    "tr": "discFamily '{0}' geçersiz; yalnızca '{1}', '{2}' ve '{3}' desteklenir."
+  },
+  "geometry 不能为空。": {
+    "zh-CN": "geometry 不能为空。",
+    "zh-TW": "geometry 不能為空。",
+    "en": "geometry must not be empty.",
+    "ja": "geometry は空にできません。",
+    "tr": "geometry boş olamaz."
+  },
+  "outputs 不能为空。": {
+    "zh-CN": "outputs 不能为空。",
+    "zh-TW": "outputs 不能為空。",
+    "en": "outputs must not be empty.",
+    "ja": "outputs は空にできません。",
+    "tr": "outputs boş olamaz."
+  },
+  "无法识别的工程字段 '{0}'。": {
+    "zh-CN": "无法识别的工程字段 '{0}'。",
+    "zh-TW": "無法辨識的專案欄位 '{0}'。",
+    "en": "Unrecognized project field '{0}'.",
+    "ja": "不明なプロジェクトフィールド '{0}'。",
+    "tr": "Tanınmayan proje alanı '{0}'."
+  },
+  "outerRadiusMm 必须大于 innerRadiusMm。": {
+    "zh-CN": "outerRadiusMm 必须大于 innerRadiusMm。",
+    "zh-TW": "outerRadiusMm 必須大於 innerRadiusMm。",
+    "en": "outerRadiusMm must be greater than innerRadiusMm.",
+    "ja": "outerRadiusMm は innerRadiusMm より大きい必要があります。",
+    "tr": "outerRadiusMm, innerRadiusMm değerinden büyük olmalıdır."
+  },
+  "sectors 必须大于 0。": {
+    "zh-CN": "sectors 必须大于 0。",
+    "zh-TW": "sectors 必須大於 0。",
+    "en": "sectors must be greater than 0.",
+    "ja": "sectors は 0 より大きい必要があります。",
+    "tr": "sectors, 0 değerinden büyük olmalıdır."
+  },
+  "DVD 的 sectors 必须是 16 的倍数。": {
+    "zh-CN": "DVD 的 sectors 必须是 16 的倍数。",
+    "zh-TW": "DVD 的 sectors 必須是 16 的倍數。",
+    "en": "DVD sectors must be a multiple of 16.",
+    "ja": "DVD の sectors は 16 の倍数である必要があります。",
+    "tr": "DVD için sectors değeri 16'nın katı olmalıdır."
+  },
+  "蓝光的 sectors 必须是 32 的倍数。": {
+    "zh-CN": "蓝光的 sectors 必须是 32 的倍数。",
+    "zh-TW": "藍光的 sectors 必須是 32 的倍數。",
+    "en": "Blu-ray sectors must be a multiple of 32.",
+    "ja": "Blu-ray の sectors は 32 の倍数である必要があります。",
+    "tr": "Blu-ray için sectors değeri 32'nin katı olmalıdır."
+  },
+  "蓝光 sectors 不能超过单层容量 {0:N0}。": {
+    "zh-CN": "蓝光 sectors 不能超过单层容量 {0:N0}。",
+    "zh-TW": "藍光 sectors 不能超過單層容量 {0:N0}。",
+    "en": "Blu-ray sectors must not exceed the single-layer capacity of {0:N0}.",
+    "ja": "Blu-ray の sectors は単層容量 {0:N0} を超えてはいけません。",
+    "tr": "Blu-ray sectors değeri tek katman kapasitesi {0:N0} değerini aşamaz."
+  },
+  "蓝光使用恒定轨距，pitch 系数必须为 0。": {
+    "zh-CN": "蓝光使用恒定轨距，pitch 系数必须为 0。",
+    "zh-TW": "藍光使用固定軌距，pitch 係數必須為 0。",
+    "en": "Blu-ray uses constant track pitch; pitch coefficients must be 0.",
+    "ja": "Blu-ray は一定のトラックピッチを使うため、pitch 係数は 0 である必要があります。",
+    "tr": "Blu-ray sabit iz aralığı kullanır; pitch katsayıları 0 olmalıdır."
+  },
+  "轨距系数无效：{0}": {
+    "zh-CN": "轨距系数无效：{0}",
+    "zh-TW": "軌距係數無效：{0}",
+    "en": "Invalid track pitch coefficients: {0}",
+    "ja": "トラックピッチ係数が無効です：{0}",
+    "tr": "Geçersiz iz aralığı katsayıları: {0}"
+  },
+  "layers 不能为空。": {
+    "zh-CN": "layers 不能为空。",
+    "zh-TW": "layers 不能為空。",
+    "en": "layers must not be empty.",
+    "ja": "layers は空にできません。",
+    "tr": "layers boş olamaz."
+  },
+  "图层不能是 null。": {
+    "zh-CN": "图层不能是 null。",
+    "zh-TW": "圖層不能是 null。",
+    "en": "A layer must not be null.",
+    "ja": "レイヤーは null にできません。",
+    "tr": "Katman null olamaz."
+  },
+  "图层 id '{0}' 为空或重复。": {
+    "zh-CN": "图层 id '{0}' 为空或重复。",
+    "zh-TW": "圖層 id '{0}' 為空或重複。",
+    "en": "Layer id '{0}' is empty or duplicated.",
+    "ja": "レイヤー id '{0}' が空か重複しています。",
+    "tr": "Katman id '{0}' boş veya yinelenmiş."
+  },
+  "图层 '{0}' 的 name 不能为空。": {
+    "zh-CN": "图层 '{0}' 的 name 不能为空。",
+    "zh-TW": "圖層 '{0}' 的 name 不能為空。",
+    "en": "Layer '{0}' name must not be empty.",
+    "ja": "レイヤー '{0}' の name は空にできません。",
+    "tr": "'{0}' katmanının name alanı boş olamaz."
+  },
+  "图层 '{0}' 的 imagePath 不能为空。": {
+    "zh-CN": "图层 '{0}' 的 imagePath 不能为空。",
+    "zh-TW": "圖層 '{0}' 的 imagePath 不能為空。",
+    "en": "Layer '{0}' imagePath must not be empty.",
+    "ja": "レイヤー '{0}' の imagePath は空にできません。",
+    "tr": "'{0}' katmanının imagePath alanı boş olamaz."
+  },
+  "图层 '{0}' 的 scale 必须是大于 0 的有限数值。": {
+    "zh-CN": "图层 '{0}' 的 scale 必须是大于 0 的有限数值。",
+    "zh-TW": "圖層 '{0}' 的 scale 必須是大於 0 的有限數值。",
+    "en": "Layer '{0}' scale must be a finite number greater than 0.",
+    "ja": "レイヤー '{0}' の scale は 0 より大きい有限値である必要があります。",
+    "tr": "'{0}' katmanının scale değeri 0'dan büyük sonlu bir sayı olmalıdır."
+  },
+  "outputs.outputPath 不能为空。": {
+    "zh-CN": "outputs.outputPath 不能为空。",
+    "zh-TW": "outputs.outputPath 不能為空。",
+    "en": "outputs.outputPath must not be empty.",
+    "ja": "outputs.outputPath は空にできません。",
+    "tr": "outputs.outputPath boş olamaz."
+  },
+  "thumbnailPngBase64 长度超出允许范围。": {
+    "zh-CN": "thumbnailPngBase64 长度超出允许范围。",
+    "zh-TW": "thumbnailPngBase64 長度超出允許範圍。",
+    "en": "thumbnailPngBase64 exceeds the permitted length.",
+    "ja": "thumbnailPngBase64 が許容される長さを超えています。",
+    "tr": "thumbnailPngBase64 izin verilen uzunluğu aşıyor."
+  },
+  "thumbnailPngBase64 不是有效的 Base64。": {
+    "zh-CN": "thumbnailPngBase64 不是有效的 Base64。",
+    "zh-TW": "thumbnailPngBase64 不是有效的 Base64。",
+    "en": "thumbnailPngBase64 is not valid Base64.",
+    "ja": "thumbnailPngBase64 は有効な Base64 ではありません。",
+    "tr": "thumbnailPngBase64 geçerli Base64 değil."
+  },
+  "{0} 不能为空。": {
+    "zh-CN": "{0} 不能为空。",
+    "zh-TW": "{0} 不能為空。",
+    "en": "{0} must not be empty.",
+    "ja": "{0} は空にできません。",
+    "tr": "{0} boş olamaz."
+  },
+  "{0} 格式有误（第 {1} 行，第 {2} 列）：{3}": {
+    "zh-CN": "{0} 格式有误（第 {1} 行，第 {2} 列）：{3}",
+    "zh-TW": "{0} 格式有誤（第 {1} 行，第 {2} 欄）：{3}",
+    "en": "Invalid {0} format (line {1}, column {2}): {3}",
+    "ja": "{0} の形式が無効です（{1} 行、{2} 列）：{3}",
+    "tr": "{0} biçimi geçersiz (satır {1}, sütun {2}): {3}"
+  },
+  "{0} 必须是大于 0 的有限数值。": {
+    "zh-CN": "{0} 必须是大于 0 的有限数值。",
+    "zh-TW": "{0} 必須是大於 0 的有限數值。",
+    "en": "{0} must be a finite number greater than 0.",
+    "ja": "{0} は 0 より大きい有限値である必要があります。",
+    "tr": "{0}, 0'dan büyük sonlu bir sayı olmalıdır."
+  },
+  "{0} 必须是有限数值。": {
+    "zh-CN": "{0} 必须是有限数值。",
+    "zh-TW": "{0} 必須是有限數值。",
+    "en": "{0} must be a finite number.",
+    "ja": "{0} は有限値である必要があります。",
+    "tr": "{0} sonlu bir sayı olmalıdır."
+  },
+  "{0}.ditherStrength must be a finite number between 0 and 1.": {
+    "zh-CN": "{0}.ditherStrength 必须是 0 到 1 之间的有限数值。",
+    "zh-TW": "{0}.ditherStrength 必須是 0 到 1 之間的有限數值。",
+    "en": "{0}.ditherStrength must be a finite number between 0 and 1.",
+    "ja": "{0}.ditherStrength は 0 から 1 の有限値である必要があります。",
+    "tr": "{0}.ditherStrength, 0 ile 1 arasında sonlu bir sayı olmalıdır."
+  },
+  "{0}.levels must be {1} or {2}.": {
+    "zh-CN": "{0}.levels 必须为 {1} 或 {2}。",
+    "zh-TW": "{0}.levels 必須為 {1} 或 {2}。",
+    "en": "{0}.levels must be {1} or {2}.",
+    "ja": "{0}.levels は {1} または {2} である必要があります。",
+    "tr": "{0}.levels, {1} veya {2} olmalıdır."
+  },
+  "{0}.brightness must be between {1} and {2}.": {
+    "zh-CN": "{0}.brightness 必须在 {1} 到 {2} 之间。",
+    "zh-TW": "{0}.brightness 必須在 {1} 到 {2} 之間。",
+    "en": "{0}.brightness must be between {1} and {2}.",
+    "ja": "{0}.brightness は {1} から {2} の範囲である必要があります。",
+    "tr": "{0}.brightness, {1} ile {2} arasında olmalıdır."
+  },
+  "程序缺少内置盘片预设资源。": {
+    "zh-CN": "程序缺少内置盘片预设资源。",
+    "zh-TW": "程式缺少內建光碟預設資源。",
+    "en": "The built-in disc preset resource is missing.",
+    "ja": "内蔵ディスクプリセットのリソースがありません。",
+    "tr": "Yerleşik disk ön ayarı kaynağı eksik."
+  },
+  "预设 JSON 路径必须包含目录。": {
+    "zh-CN": "预设 JSON 路径必须包含目录。",
+    "zh-TW": "預設 JSON 路徑必須包含目錄。",
+    "en": "The preset JSON path must include a directory.",
+    "ja": "プリセット JSON のパスにはディレクトリが必要です。",
+    "tr": "Ön ayar JSON yolu bir dizin içermelidir."
+  },
+  "不支持 schemaVersion={0}；当前支持 {1}、{2} 与 {3}。请把顶层 schemaVersion 改为受支持的值，或删除该文件让程序重新生成分层配置模板。": {
+    "zh-CN": "不支持 schemaVersion={0}；当前支持 {1}、{2} 与 {3}。请把顶层 schemaVersion 改为受支持的值，或删除该文件让程序重新生成分层配置模板。",
+    "zh-TW": "不支援 schemaVersion={0}；目前支援 {1}、{2} 與 {3}。請將頂層 schemaVersion 改為受支援的值，或刪除該檔案讓程式重新產生分層設定範本。",
+    "en": "Unsupported schemaVersion={0}; supported versions are {1}, {2}, and {3}. Change the top-level schemaVersion to a supported value, or delete the file to regenerate the layered configuration template.",
+    "ja": "schemaVersion={0} は未対応です。対応するバージョンは {1}、{2}、{3} です。最上位の schemaVersion を対応する値に変更するか、ファイルを削除して階層設定テンプレートを再生成してください。",
+    "tr": "schemaVersion={0} desteklenmiyor; desteklenen sürümler {1}, {2} ve {3}. Üst düzey schemaVersion değerini desteklenen bir değere değiştirin veya katmanlı yapılandırma şablonunu yeniden oluşturmak için dosyayı silin."
+  },
+  "schemaVersion 4 必须包含 bluRayPresets 列表。": {
+    "zh-CN": "schemaVersion 4 必须包含 bluRayPresets 列表。",
+    "zh-TW": "schemaVersion 4 必須包含 bluRayPresets 清單。",
+    "en": "schemaVersion 4 must include a bluRayPresets list.",
+    "ja": "schemaVersion 4 には bluRayPresets リストが必要です。",
+    "tr": "schemaVersion 4, bluRayPresets listesi içermelidir."
+  },
+  "cdPresets 不能为空。": {
+    "zh-CN": "cdPresets 不能为空。",
+    "zh-TW": "cdPresets 不能為空。",
+    "en": "cdPresets must not be empty.",
+    "ja": "cdPresets は空にできません。",
+    "tr": "cdPresets boş olamaz."
+  },
+  "dvdPresets 不能为空。": {
+    "zh-CN": "dvdPresets 不能为空。",
+    "zh-TW": "dvdPresets 不能為空。",
+    "en": "dvdPresets must not be empty.",
+    "ja": "dvdPresets は空にできません。",
+    "tr": "dvdPresets boş olamaz."
+  },
+  "CD 预设不能是 null。": {
+    "zh-CN": "CD 预设不能是 null。",
+    "zh-TW": "CD 預設不能是 null。",
+    "en": "A CD preset must not be null.",
+    "ja": "CD プリセットは null にできません。",
+    "tr": "CD ön ayarı null olamaz."
+  },
+  "DVD 预设不能是 null。": {
+    "zh-CN": "DVD 预设不能是 null。",
+    "zh-TW": "DVD 預設不能是 null。",
+    "en": "A DVD preset must not be null.",
+    "ja": "DVD プリセットは null にできません。",
+    "tr": "DVD ön ayarı null olamaz."
+  },
+  "预设 '{0}' 的轨距系数无效：{1}": {
+    "zh-CN": "预设 '{0}' 的轨距系数无效：{1}",
+    "zh-TW": "預設 '{0}' 的軌距係數無效：{1}",
+    "en": "Invalid track pitch coefficients for preset '{0}': {1}",
+    "ja": "プリセット '{0}' のトラックピッチ係数が無効です：{1}",
+    "tr": "'{0}' ön ayarının iz aralığı katsayıları geçersiz: {1}"
+  },
+  "蓝光预设不能是 null。": {
+    "zh-CN": "蓝光预设不能是 null。",
+    "zh-TW": "藍光預設不能是 null。",
+    "en": "A Blu-ray preset must not be null.",
+    "ja": "Blu-ray プリセットは null にできません。",
+    "tr": "Blu-ray ön ayarı null olamaz."
+  },
+  "{0} 预设 id '{1}' 重复。": {
+    "zh-CN": "{0} 预设 id '{1}' 重复。",
+    "zh-TW": "{0} 預設 id '{1}' 重複。",
+    "en": "Duplicate {0} preset id '{1}'.",
+    "ja": "{0} プリセット id '{1}' が重複しています。",
+    "tr": "Yinelenen {0} ön ayar id '{1}'."
+  },
+  "{0} 预设 id '__manual__' 由界面的未保存状态保留，请换一个 id。": {
+    "zh-CN": "{0} 预设 id '__manual__' 由界面的未保存状态保留，请换一个 id。",
+    "zh-TW": "{0} 預設 id '__manual__' 由介面的未儲存狀態保留，請換一個 id。",
+    "en": "The {0} preset id '__manual__' is reserved for unsaved UI state; choose a different id.",
+    "ja": "{0} プリセット id '__manual__' は未保存の UI 状態用に予約されています。別の id を選んでください。",
+    "tr": "{0} ön ayarı için '__manual__' id değeri arayüzün kaydedilmemiş durumuna ayrılmıştır; başka bir id seçin."
+  },
+  "标定图案 PNG 与固定参考文件不一致。": {
+    "zh-CN": "标定图案 PNG 与固定参考文件不一致。",
+    "zh-TW": "標定圖案 PNG 與固定參考檔案不一致。",
+    "en": "The calibration pattern PNG does not match the fixed reference file.",
+    "ja": "キャリブレーションパターンの PNG が固定参照ファイルと一致しません。",
+    "tr": "Kalibrasyon deseni PNG'si sabit başvuru dosyasıyla eşleşmiyor."
+  },
+  "标定图案像素与固定参考文件不一致。": {
+    "zh-CN": "标定图案像素与固定参考文件不一致。",
+    "zh-TW": "標定圖案像素與固定參考檔案不一致。",
+    "en": "The calibration pattern pixels do not match the fixed reference file.",
+    "ja": "キャリブレーションパターンの画素が固定参照ファイルと一致しません。",
+    "tr": "Kalibrasyon deseninin pikselleri sabit başvuru dosyasıyla eşleşmiyor."
+  },
+  "缺少内置标定参考图案资源。": {
+    "zh-CN": "缺少内置标定参考图案资源。",
+    "zh-TW": "缺少內建標定參考圖案資源。",
+    "en": "The built-in calibration reference pattern resource is missing.",
+    "ja": "内蔵キャリブレーション参照パターンのリソースがありません。",
+    "tr": "Yerleşik kalibrasyon başvuru deseni kaynağı eksik."
+  },
+  "标定照片为空或过大，请重新导入照片。": {
+    "zh-CN": "标定照片为空或过大，请重新导入照片。",
+    "zh-TW": "標定照片為空或過大，請重新匯入照片。",
+    "en": "The calibration photo is empty or too large; import the photo again.",
+    "ja": "キャリブレーション写真が空か大きすぎます。写真を再度取り込んでください。",
+    "tr": "Kalibrasyon fotoğrafı boş veya çok büyük; fotoğrafı yeniden içe aktarın."
+  },
+  "请选择 12 cm 或 8 cm 光盘。": {
+    "zh-CN": "请选择 12 cm 或 8 cm 光盘。",
+    "zh-TW": "請選擇 12 cm 或 8 cm 光碟。",
+    "en": "Select a 12 cm or 8 cm disc.",
+    "ja": "12 cm または 8 cm のディスクを選択してください。",
+    "tr": "12 cm veya 8 cm disk seçin."
+  },
+  "十字线记录无效。": {
+    "zh-CN": "十字线记录无效。",
+    "zh-TW": "十字線記錄無效。",
+    "en": "The cross-line record is invalid.",
+    "ja": "十字線の記録が無効です。",
+    "tr": "Çapraz çizgi kaydı geçersiz."
+  },
+  "尚未确认照片矫正，不能保存描线点。": {
+    "zh-CN": "尚未确认照片矫正，不能保存描线点。",
+    "zh-TW": "尚未確認照片校正，不能儲存描線點。",
+    "en": "Photo rectification has not been confirmed; trace points cannot be saved.",
+    "ja": "写真補正が確定されていないため、トレース点を保存できません。",
+    "tr": "Fotoğraf düzeltmesi henüz onaylanmadı; izleme noktaları kaydedilemez."
+  },
+  "照片轮廓控制点无效。": {
+    "zh-CN": "照片轮廓控制点无效。",
+    "zh-TW": "照片輪廓控制點無效。",
+    "en": "The photo outline control points are invalid.",
+    "ja": "写真の輪郭制御点が無効です。",
+    "tr": "Fotoğrafın dış hat kontrol noktaları geçersiz."
+  },
+  "标定会话文件过大。": {
+    "zh-CN": "标定会话文件过大。",
+    "zh-TW": "標定工作階段檔案過大。",
+    "en": "The calibration session file is too large.",
+    "ja": "キャリブレーションセッションファイルが大きすぎます。",
+    "tr": "Kalibrasyon oturumu dosyası çok büyük."
+  },
+  "标定会话为空。": {
+    "zh-CN": "标定会话为空。",
+    "zh-TW": "標定工作階段為空。",
+    "en": "The calibration session is empty.",
+    "ja": "キャリブレーションセッションが空です。",
+    "tr": "Kalibrasyon oturumu boş."
+  },
+  "预测曲线需要有限、递增且大于零的观测半径区间。": {
+    "zh-CN": "预测曲线需要有限、递增且大于零的观测半径区间。",
+    "zh-TW": "預測曲線需要有限、遞增且大於零的觀測半徑區間。",
+    "en": "Curve prediction requires a finite, increasing interval of positive observed radii.",
+    "ja": "曲線予測には、有限かつ増加する正の観測半径区間が必要です。",
+    "tr": "Eğri tahmini, sonlu ve artan pozitif gözlem yarıçapları aralığı gerektirir."
+  },
+  "曲线旋转或臂编号无效。": {
+    "zh-CN": "曲线旋转或臂编号无效。",
+    "zh-TW": "曲線旋轉或臂編號無效。",
+    "en": "The curve rotation or arm index is invalid.",
+    "ja": "曲線の回転またはアーム番号が無効です。",
+    "tr": "Eğri dönüşü veya kol indeksi geçersiz."
+  },
+  "该观测半径在当前参数下没有有效的正半径曲线延拓，请检查照片尺度、盘心或参数范围。": {
+    "zh-CN": "该观测半径在当前参数下没有有效的正半径曲线延拓，请检查照片尺度、盘心或参数范围。",
+    "zh-TW": "該觀測半徑在目前參數下沒有有效的正半徑曲線延拓，請檢查照片尺度、碟心或參數範圍。",
+    "en": "This observed radius has no valid positive-radius curve extension with the current parameters; check the photo scale, disc centre, or parameter range.",
+    "ja": "この観測半径では現在のパラメーターによる有効な正半径の曲線延長がありません。写真の縮尺、ディスク中心、パラメーター範囲を確認してください。",
+    "tr": "Bu gözlem yarıçapında geçerli parametrelerle pozitif yarıçaplı geçerli bir eğri uzantısı yok; fotoğraf ölçeğini, disk merkezini veya parametre aralığını kontrol edin."
+  },
+  "标定参数无效：请检查盘片类型、内外半径、扇区数和线速度／位长。": {
+    "zh-CN": "标定参数无效：请检查盘片类型、内外半径、扇区数和线速度／位长。",
+    "zh-TW": "標定參數無效：請檢查光碟類型、內外半徑、磁區數與線速度／位元長度。",
+    "en": "Invalid calibration parameters: check the disc type, inner/outer radii, sector count, and linear velocity/bit length.",
+    "ja": "キャリブレーションパラメーターが無効です。ディスク種別、内外半径、セクター数、線速度／ビット長を確認してください。",
+    "tr": "Kalibrasyon parametreleri geçersiz: disk türünü, iç/dış yarıçapları, sektör sayısını ve doğrusal hız/bit uzunluğunu kontrol edin."
+  },
+  "三次轨距参数仅适用于 DVD。": {
+    "zh-CN": "三次轨距参数仅适用于 DVD。",
+    "zh-TW": "三次軌距參數僅適用於 DVD。",
+    "en": "Cubic track pitch parameters apply only to DVD.",
+    "ja": "3 次トラックピッチパラメーターは DVD 専用です。",
+    "tr": "Kübik iz aralığı parametreleri yalnızca DVD için geçerlidir."
+  },
+  "标定图案的可绘制扇区范围无效。": {
+    "zh-CN": "标定图案的可绘制扇区范围无效。",
+    "zh-TW": "標定圖案的可繪製磁區範圍無效。",
+    "en": "The drawable sector range of the calibration pattern is invalid.",
+    "ja": "キャリブレーションパターンの描画可能なセクター範囲が無効です。",
+    "tr": "Kalibrasyon deseninin çizilebilir sektör aralığı geçersiz."
+  },
+  "蓝光标定需要完整的 32 扇区簇、74.5 nm 位长和不超过 60 mm 的外半径。": {
+    "zh-CN": "蓝光标定需要完整的 32 扇区簇、74.5 nm 位长和不超过 60 mm 的外半径。",
+    "zh-TW": "藍光標定需要完整的 32 磁區叢集、74.5 nm 位元長度及不超過 60 mm 的外半徑。",
+    "en": "Blu-ray calibration requires complete 32-sector clusters, a 74.5 nm bit length, and an outer radius no greater than 60 mm.",
+    "ja": "Blu-ray キャリブレーションには、完全な 32 セクタークラスター、74.5 nm のビット長、60 mm 以下の外半径が必要です。",
+    "tr": "Blu-ray kalibrasyonu tam 32 sektörlük kümeler, 74.5 nm bit uzunluğu ve 60 mm'yi aşmayan dış yarıçap gerektirir."
+  },
+  "标定记录中的兼容图案选项无效，请重新创建标定图案。": {
+    "zh-CN": "标定记录中的兼容图案选项无效，请重新创建标定图案。",
+    "zh-TW": "標定記錄中的相容圖案選項無效，請重新建立標定圖案。",
+    "en": "The compatibility pattern options in the calibration record are invalid; recreate the calibration pattern.",
+    "ja": "キャリブレーション記録の互換パターンオプションが無効です。キャリブレーションパターンを作り直してください。",
+    "tr": "Kalibrasyon kaydındaki uyumluluk deseni seçenekleri geçersiz; kalibrasyon desenini yeniden oluşturun."
+  },
+  "控制块或控制点编号无效。": {
+    "zh-CN": "控制块或控制点编号无效。",
+    "zh-TW": "控制區塊或控制點編號無效。",
+    "en": "The control block or control point index is invalid.",
+    "ja": "制御ブロックまたは制御点の番号が無効です。",
+    "tr": "Kontrol bloğu veya kontrol noktası indeksi geçersiz."
+  },
+  "控制块编号无效。": {
+    "zh-CN": "控制块编号无效。",
+    "zh-TW": "控制區塊編號無效。",
+    "en": "The control block index is invalid.",
+    "ja": "制御ブロック番号が無効です。",
+    "tr": "Kontrol bloğu indeksi geçersiz."
+  },
+  "不支持的标定会话版本 {0}。": {
+    "zh-CN": "不支持的标定会话版本 {0}。",
+    "zh-TW": "不支援的標定工作階段版本 {0}。",
+    "en": "Unsupported calibration session version {0}.",
+    "ja": "キャリブレーションセッションのバージョン {0} は未対応です。",
+    "tr": "Kalibrasyon oturumu sürümü {0} desteklenmiyor."
+  },
+  "标定图案 ID 无效。": {
+    "zh-CN": "标定图案 ID 无效。",
+    "zh-TW": "標定圖案 ID 無效。",
+    "en": "The calibration pattern ID is invalid.",
+    "ja": "キャリブレーションパターン ID が無効です。",
+    "tr": "Kalibrasyon deseni ID'si geçersiz."
+  },
+  "标定图案控制块数量无效。": {
+    "zh-CN": "标定图案控制块数量无效。",
+    "zh-TW": "標定圖案控制區塊數量無效。",
+    "en": "The calibration pattern control block count is invalid.",
+    "ja": "キャリブレーションパターンの制御ブロック数が無効です。",
+    "tr": "Kalibrasyon desenindeki kontrol bloğu sayısı geçersiz."
+  },
+  "标定图案含重复控制块 ID。": {
+    "zh-CN": "标定图案含重复控制块 ID。",
+    "zh-TW": "標定圖案含重複控制區塊 ID。",
+    "en": "The calibration pattern contains duplicate control block IDs.",
+    "ja": "キャリブレーションパターンに重複した制御ブロック ID があります。",
+    "tr": "Kalibrasyon deseni yinelenen kontrol bloğu ID'leri içeriyor."
+  },
+  "标定图案与生成参数或图案规则不一致。": {
+    "zh-CN": "标定图案与生成参数或图案规则不一致。",
+    "zh-TW": "標定圖案與產生參數或圖案規則不一致。",
+    "en": "The calibration pattern does not match the generation parameters or pattern rules.",
+    "ja": "キャリブレーションパターンが生成パラメーターまたはパターン規則と一致しません。",
+    "tr": "Kalibrasyon deseni oluşturma parametreleriyle veya desen kurallarıyla eşleşmiyor."
+  },
+  "控制块或角点编号无效。": {
+    "zh-CN": "控制块或角点编号无效。",
+    "zh-TW": "控制區塊或角點編號無效。",
+    "en": "The control block or corner index is invalid.",
+    "ja": "制御ブロックまたは頂点の番号が無効です。",
+    "tr": "Kontrol bloğu veya köşe indeksi geçersiz."
+  },
+  "标定组编号无效。": {
+    "zh-CN": "标定组编号无效。",
+    "zh-TW": "標定組編號無效。",
+    "en": "The calibration group index is invalid.",
+    "ja": "キャリブレーショングループ番号が無効です。",
+    "tr": "Kalibrasyon grubu indeksi geçersiz."
+  },
+  "旋转必须是有限数值。": {
+    "zh-CN": "旋转必须是有限数值。",
+    "zh-TW": "旋轉必須是有限數值。",
+    "en": "Rotation must be a finite number.",
+    "ja": "回転は有限値である必要があります。",
+    "tr": "Dönüş sonlu bir sayı olmalıdır."
+  },
+  "角点坐标必须是有限数值。": {
+    "zh-CN": "角点坐标必须是有限数值。",
+    "zh-TW": "角點座標必須是有限數值。",
+    "en": "Corner coordinates must be finite numbers.",
+    "ja": "頂点座標は有限値である必要があります。",
+    "tr": "Köşe koordinatları sonlu sayılar olmalıdır."
+  },
+  "源控制点不在生成时的绘图环带内。": {
+    "zh-CN": "源控制点不在生成时的绘图环带内。",
+    "zh-TW": "來源控制點不在產生時的繪圖環帶內。",
+    "en": "The source control point is outside the drawing annulus used during generation.",
+    "ja": "元の制御点が生成時の描画環状領域の外にあります。",
+    "tr": "Kaynak kontrol noktası oluşturma sırasında kullanılan çizim halkasının dışında."
+  },
+  "轮廓在当前轨距参数下没有有效映射。": {
+    "zh-CN": "轮廓在当前轨距参数下没有有效映射。",
+    "zh-TW": "輪廓在目前軌距參數下沒有有效映射。",
+    "en": "The outline has no valid mapping with the current track pitch parameters.",
+    "ja": "現在のトラックピッチパラメーターでは輪郭を有効にマッピングできません。",
+    "tr": "Dış hat, geçerli iz aralığı parametreleriyle eşlenemiyor."
+  },
+  "标定固定盘片类型、扇区数和线速度／位长；DVD 可拟合内外半径、三次轨距与整体旋转。": {
+    "zh-CN": "标定固定盘片类型、扇区数和线速度／位长；DVD 可拟合内外半径、三次轨距与整体旋转。",
+    "zh-TW": "標定固定光碟類型、磁區數及線速度／位元長度；DVD 可擬合內外半徑、三次軌距與整體旋轉。",
+    "en": "Calibration fixes the disc type, sector count, and linear velocity/bit length; DVD can fit inner/outer radii, cubic track pitch, and overall rotation.",
+    "ja": "キャリブレーションではディスク種別、セクター数、線速度／ビット長を固定します。DVD では内外半径、3 次トラックピッチ、全体の回転をフィットできます。",
+    "tr": "Kalibrasyonda disk türü, sektör sayısı ve doğrusal hız/bit uzunluğu sabittir; DVD için iç/dış yarıçaplar, kübik iz aralığı ve genel dönüş uydurulabilir."
+  },
+  "搜索半径范围应在 0–5 mm 内，控制点容差应在 0–10 mm 内，轨距系数搜索范围应在 0–10 内。": {
+    "zh-CN": "搜索半径范围应在 0–5 mm 内，控制点容差应在 0–10 mm 内，轨距系数搜索范围应在 0–10 内。",
+    "zh-TW": "搜尋半徑範圍應在 0–5 mm 內，控制點容差應在 0–10 mm 內，軌距係數搜尋範圍應在 0–10 內。",
+    "en": "The radius search range must be within 0–5 mm, control point tolerance within 0–10 mm, and pitch coefficient search range within 0–10.",
+    "ja": "半径の探索範囲は 0–5 mm、制御点の許容誤差は 0–10 mm、ピッチ係数の探索範囲は 0–10 にしてください。",
+    "tr": "Yarıçap arama aralığı 0–5 mm, kontrol noktası toleransı 0–10 mm ve iz aralığı katsayısı arama aralığı 0–10 içinde olmalıdır."
+  },
+  "控制点数量超出限制。": {
+    "zh-CN": "控制点数量超出限制。",
+    "zh-TW": "控制點數量超出限制。",
+    "en": "The number of control points exceeds the limit.",
+    "ja": "制御点数が上限を超えています。",
+    "tr": "Kontrol noktası sayısı sınırı aşıyor."
+  },
+  "控制点坐标或权重无效。": {
+    "zh-CN": "控制点坐标或权重无效。",
+    "zh-TW": "控制點座標或權重無效。",
+    "en": "Control point coordinates or weights are invalid.",
+    "ja": "制御点の座標または重みが無効です。",
+    "tr": "Kontrol noktası koordinatları veya ağırlıkları geçersiz."
+  },
+  "同一角点或共享角点不能重复录入。": {
+    "zh-CN": "同一角点或共享角点不能重复录入。",
+    "zh-TW": "同一角點或共用角點不能重複輸入。",
+    "en": "The same corner or shared corner cannot be entered twice.",
+    "ja": "同じ頂点または共有頂点を重複入力できません。",
+    "tr": "Aynı köşe veya ortak köşe iki kez girilemez."
+  },
+  "该进度没有有效的正半径轨迹。": {
+    "zh-CN": "该进度没有有效的正半径轨迹。",
+    "zh-TW": "該進度沒有有效的正半徑軌跡。",
+    "en": "There is no valid positive-radius trajectory at this progress value.",
+    "ja": "この進行値に有効な正半径の軌跡がありません。",
+    "tr": "Bu ilerleme değerinde pozitif yarıçaplı geçerli bir yörünge yok."
+  },
+  "十字线最多包含四条臂。": {
+    "zh-CN": "十字线最多包含四条臂。",
+    "zh-TW": "十字線最多包含四條臂。",
+    "en": "A cross-line can contain at most four arms.",
+    "ja": "十字線のアームは最大 4 本です。",
+    "tr": "Çapraz çizgi en fazla dört kol içerebilir."
+  },
+  "曲线编号无效或重复。": {
+    "zh-CN": "曲线编号无效或重复。",
+    "zh-TW": "曲線編號無效或重複。",
+    "en": "The curve index is invalid or duplicated.",
+    "ja": "曲線番号が無効か重複しています。",
+    "tr": "Eğri indeksi geçersiz veya yinelenmiş."
+  },
+  "曲线点数量超出限制。": {
+    "zh-CN": "曲线点数量超出限制。",
+    "zh-TW": "曲線點數量超出限制。",
+    "en": "The number of curve points exceeds the limit.",
+    "ja": "曲線の点数が上限を超えています。",
+    "tr": "Eğri noktası sayısı sınırı aşıyor."
+  },
+  "曲线点坐标无效，请使用矫正后以盘心为原点的坐标。": {
+    "zh-CN": "曲线点坐标无效，请使用矫正后以盘心为原点的坐标。",
+    "zh-TW": "曲線點座標無效，請使用校正後以碟心為原點的座標。",
+    "en": "Curve point coordinates are invalid; use rectified coordinates with the disc centre as the origin.",
+    "ja": "曲線の点座標が無効です。写真補正後のディスク中心を原点とする座標を使ってください。",
+    "tr": "Eğri noktası koordinatları geçersiz; başlangıç noktası disk merkezi olan düzeltilmiş koordinatları kullanın."
+  },
+  "照片变换必须包含 9 个有限数值。": {
+    "zh-CN": "照片变换必须包含 9 个有限数值。",
+    "zh-TW": "照片變換必須包含 9 個有限數值。",
+    "en": "The photo transform must contain 9 finite numbers.",
+    "ja": "写真変換には 9 個の有限値が必要です。",
+    "tr": "Fotoğraf dönüşümü 9 sonlu sayı içermelidir."
+  },
+  "照片变换不可逆。": {
+    "zh-CN": "照片变换不可逆。",
+    "zh-TW": "照片變換不可逆。",
+    "en": "The photo transform is not invertible.",
+    "ja": "写真変換は逆変換できません。",
+    "tr": "Fotoğraf dönüşümü tersine çevrilemez."
+  },
+  "照片坐标必须为有限数值。": {
+    "zh-CN": "照片坐标必须为有限数值。",
+    "zh-TW": "照片座標必須為有限數值。",
+    "en": "Photo coordinates must be finite numbers.",
+    "ja": "写真座標は有限値である必要があります。",
+    "tr": "Fotoğraf koordinatları sonlu sayılar olmalıdır."
+  },
+  "该位置接近照片投影地平线，无法矫正。": {
+    "zh-CN": "该位置接近照片投影地平线，无法矫正。",
+    "zh-TW": "該位置接近照片投影地平線，無法校正。",
+    "en": "This position is near the photo projection horizon and cannot be rectified.",
+    "ja": "この位置は写真の投影地平線に近く、補正できません。",
+    "tr": "Bu konum fotoğrafın izdüşüm ufkuna yakın olduğundan düzeltilemiyor."
+  },
+  "照片变换产生了无效坐标。": {
+    "zh-CN": "照片变换产生了无效坐标。",
+    "zh-TW": "照片變換產生了無效座標。",
+    "en": "The photo transform produced invalid coordinates.",
+    "ja": "写真変換によって無効な座標が生成されました。",
+    "tr": "Fotoğraf dönüşümü geçersiz koordinatlar üretti."
+  },
+  "照片变换退化，无法恢复盘面坐标。": {
+    "zh-CN": "照片变换退化，无法恢复盘面坐标。",
+    "zh-TW": "照片變換退化，無法還原碟面座標。",
+    "en": "The photo transform is degenerate; disc coordinates cannot be recovered.",
+    "ja": "写真変換が退化しているため、ディスク面の座標を復元できません。",
+    "tr": "Fotoğraf dönüşümü dejenere; disk yüzeyi koordinatları geri elde edilemiyor."
+  },
+  "CD sector count must be positive.": {
+    "zh-CN": "CD 扇区数必须为正数。",
+    "zh-TW": "CD 磁區數必須為正數。",
+    "en": "CD sector count must be positive.",
+    "ja": "CD セクター数は正の値である必要があります。",
+    "tr": "CD sektör sayısı pozitif olmalıdır."
+  },
+  "CD outer radius must be greater than its positive inner radius.": {
+    "zh-CN": "CD 外半径必须大于其正值内半径。",
+    "zh-TW": "CD 外半徑必須大於其正值內半徑。",
+    "en": "CD outer radius must be greater than its positive inner radius.",
+    "ja": "CD の内半径は正で、外半径は内半径より大きい必要があります。",
+    "tr": "CD iç yarıçapı pozitif, dış yarıçapı iç yarıçaptan büyük olmalıdır."
+  },
+  "CD linear velocity must be positive.": {
+    "zh-CN": "CD 线速度必须为正数。",
+    "zh-TW": "CD 線速度必須為正數。",
+    "en": "CD linear velocity must be positive.",
+    "ja": "CD 線速度は正の値である必要があります。",
+    "tr": "CD doğrusal hızı pozitif olmalıdır."
+  },
+  "Image outer radius must be positive.": {
+    "zh-CN": "图像外半径必须为正数。",
+    "zh-TW": "影像外半徑必須為正數。",
+    "en": "Image outer radius must be positive.",
+    "ja": "画像外半径は正の値である必要があります。",
+    "tr": "Görsel dış yarıçapı pozitif olmalıdır."
+  },
+  "CD audio must contain complete 16-bit samples.": {
+    "zh-CN": "CD 音频必须包含完整的 16 位采样。",
+    "zh-TW": "CD 音訊必須包含完整的 16 位元取樣。",
+    "en": "CD audio must contain complete 16-bit samples.",
+    "ja": "CD 音声には完全な 16 ビットサンプルが必要です。",
+    "tr": "CD sesi tam 16 bitlik örnekler içermelidir."
+  },
+  "The filesystem leaves no CD sectors for drawing.": {
+    "zh-CN": "文件系统未给 CD 绘图留下可用扇区。",
+    "zh-TW": "檔案系統未給 CD 繪圖留下可用磁區。",
+    "en": "The filesystem leaves no CD sectors for drawing.",
+    "ja": "ファイルシステムにより CD の描画用セクターが残っていません。",
+    "tr": "Dosya sistemi CD çizimi için sektör bırakmıyor."
+  },
+  "CD data output must be a Mode 1 .iso image.": {
+    "zh-CN": "CD 数据输出必须为 Mode 1 .iso 镜像。",
+    "zh-TW": "CD 資料輸出必須為 Mode 1 .iso 映像。",
+    "en": "CD data output must be a Mode 1 .iso image.",
+    "ja": "CD データ出力は Mode 1 の .iso イメージである必要があります。",
+    "tr": "CD veri çıktısı Mode 1 .iso imajı olmalıdır."
+  },
+  "The output must be outside the source data folder and must not overwrite the source image.": {
+    "zh-CN": "输出必须位于源数据文件夹之外，且不能覆盖源图像。",
+    "zh-TW": "輸出必須位於來源資料夾之外，且不能覆寫來源影像。",
+    "en": "The output must be outside the source data folder and must not overwrite the source image.",
+    "ja": "出力は元のデータフォルダーの外に置き、元の画像を上書きしないでください。",
+    "tr": "Çıktı kaynak veri klasörünün dışında olmalı ve kaynak görselin üzerine yazmamalıdır."
+  },
+  "CD data output must be writable.": {
+    "zh-CN": "CD 数据输出必须可写。",
+    "zh-TW": "CD 資料輸出必須可寫入。",
+    "en": "CD data output must be writable.",
+    "ja": "CD データ出力は書き込み可能である必要があります。",
+    "tr": "CD veri çıktısı yazılabilir olmalıdır."
+  },
+  "CD layout and geometry must have the same sector count.": {
+    "zh-CN": "CD 布局与几何参数的扇区数必须一致。",
+    "zh-TW": "CD 配置與幾何參數的磁區數必須一致。",
+    "en": "CD layout and geometry must have the same sector count.",
+    "ja": "CD レイアウトとジオメトリのセクター数は一致する必要があります。",
+    "tr": "CD yerleşiminin ve geometrisinin sektör sayıları aynı olmalıdır."
+  },
+  "CD data ISO length must match the selected 2048-byte sector count.": {
+    "zh-CN": "CD 数据 ISO 长度必须与所选的 2048 字节扇区数一致。",
+    "zh-TW": "CD 資料 ISO 長度必須與所選的 2048 位元組磁區數一致。",
+    "en": "CD data ISO length must match the selected 2048-byte sector count.",
+    "ja": "CD データ ISO の長さは、選択した 2048 バイトセクター数と一致する必要があります。",
+    "tr": "CD veri ISO uzunluğu seçilen 2048 baytlık sektör sayısıyla eşleşmelidir."
+  },
+  "Preview size must be 64..8192.": {
+    "zh-CN": "预览尺寸必须为 64..8192。",
+    "zh-TW": "預覽尺寸必須為 64..8192。",
+    "en": "Preview size must be 64..8192.",
+    "ja": "プレビューサイズは 64..8192 である必要があります。",
+    "tr": "Önizleme boyutu 64..8192 olmalıdır."
+  },
+  "Audio exceeds the RIFF/WAV size limit.": {
+    "zh-CN": "音频超出 RIFF/WAV 大小限制。",
+    "zh-TW": "音訊超出 RIFF/WAV 大小限制。",
+    "en": "Audio exceeds the RIFF/WAV size limit.",
+    "ja": "音声が RIFF/WAV のサイズ上限を超えています。",
+    "tr": "Ses RIFF/WAV boyut sınırını aşıyor."
+  },
+  "Expected a RIFF/WAV audio file.": {
+    "zh-CN": "需要 RIFF/WAV 音频文件。",
+    "zh-TW": "需要 RIFF/WAV 音訊檔案。",
+    "en": "Expected a RIFF/WAV audio file.",
+    "ja": "RIFF/WAV 音声ファイルが必要です。",
+    "tr": "RIFF/WAV ses dosyası bekleniyor."
+  },
+  "The WAV header or declared length is invalid.": {
+    "zh-CN": "WAV 文件头或声明长度无效。",
+    "zh-TW": "WAV 檔案標頭或宣告長度無效。",
+    "en": "The WAV header or declared length is invalid.",
+    "ja": "WAV ヘッダーまたは宣言された長さが無効です。",
+    "tr": "WAV başlığı veya bildirilen uzunluk geçersiz."
+  },
+  "Truncated WAV chunk header.": {
+    "zh-CN": "WAV 区块头不完整。",
+    "zh-TW": "WAV 區塊標頭不完整。",
+    "en": "Truncated WAV chunk header.",
+    "ja": "WAV チャンクヘッダーが途中で切れています。",
+    "tr": "WAV parça başlığı kesilmiş."
+  },
+  "Truncated WAV chunk data.": {
+    "zh-CN": "WAV 区块数据不完整。",
+    "zh-TW": "WAV 區塊資料不完整。",
+    "en": "Truncated WAV chunk data.",
+    "ja": "WAV チャンクデータが途中で切れています。",
+    "tr": "WAV parça verisi kesilmiş."
+  },
+  "CD WAV audio must be PCM, 44100 Hz, 16-bit stereo.": {
+    "zh-CN": "CD WAV 音频必须为 PCM、44100 Hz、16 位立体声。",
+    "zh-TW": "CD WAV 音訊必須為 PCM、44100 Hz、16 位元立體聲。",
+    "en": "CD WAV audio must be PCM, 44100 Hz, 16-bit stereo.",
+    "ja": "CD WAV 音声は PCM、44100 Hz、16 ビットステレオである必要があります。",
+    "tr": "CD WAV sesi PCM, 44100 Hz, 16 bit stereo olmalıdır."
+  },
+  "WAV must contain one data chunk with complete stereo samples.": {
+    "zh-CN": "WAV 必须包含一个具有完整立体声采样的 data 区块。",
+    "zh-TW": "WAV 必須包含一個具有完整立體聲取樣的 data 區塊。",
+    "en": "WAV must contain one data chunk with complete stereo samples.",
+    "ja": "WAV には完全なステレオサンプルを含む単一の data チャンクが必要です。",
+    "tr": "WAV, tam stereo örnekler içeren tek bir data parçası içermelidir."
+  },
+  "WAV is missing its PCM format or audio data chunk.": {
+    "zh-CN": "WAV 缺少 PCM 格式或音频 data 区块。",
+    "zh-TW": "WAV 缺少 PCM 格式或音訊 data 區塊。",
+    "en": "WAV is missing its PCM format or audio data chunk.",
+    "ja": "WAV に PCM 形式または音声 data チャンクがありません。",
+    "tr": "WAV dosyasında PCM biçim veya ses data parçası eksik."
+  },
+  "CD output must be .wav (PCM audio + CUE) or .raw (big-endian cdrecord audio).": {
+    "zh-CN": "CD 输出必须为 .wav（PCM 音频 + CUE）或 .raw（大端序 cdrecord 音频）。",
+    "zh-TW": "CD 輸出必須為 .wav（PCM 音訊 + CUE）或 .raw（大端序 cdrecord 音訊）。",
+    "en": "CD output must be .wav (PCM audio + CUE) or .raw (big-endian cdrecord audio).",
+    "ja": "CD 出力は .wav（PCM 音声 + CUE）または .raw（ビッグエンディアンの cdrecord 音声）である必要があります。",
+    "tr": "CD çıktısı .wav (PCM ses + CUE) veya .raw (büyük uçlu cdrecord sesi) olmalıdır."
+  },
+  "The output must not overwrite the source image.": {
+    "zh-CN": "输出不能覆盖源图像。",
+    "zh-TW": "輸出不能覆寫來源影像。",
+    "en": "The output must not overwrite the source image.",
+    "ja": "出力で元の画像を上書きしないでください。",
+    "tr": "Çıktı kaynak görselin üzerine yazmamalıdır."
+  },
+  "CD output stream must be writable.": {
+    "zh-CN": "CD 输出流必须可写。",
+    "zh-TW": "CD 輸出串流必須可寫入。",
+    "en": "CD output stream must be writable.",
+    "ja": "CD 出力ストリームは書き込み可能である必要があります。",
+    "tr": "CD çıktı akışı yazılabilir olmalıdır."
+  },
+  "Byte step must be positive.": {
+    "zh-CN": "字节步长必须为正数。",
+    "zh-TW": "位元組步長必須為正數。",
+    "en": "Byte step must be positive.",
+    "ja": "バイトステップは正の値である必要があります。",
+    "tr": "Bayt adımı pozitif olmalıdır."
+  },
+  "Samples per sector must be 1..{0}.": {
+    "zh-CN": "每扇区采样数必须为 1..{0}。",
+    "zh-TW": "每磁區取樣數必須為 1..{0}。",
+    "en": "Samples per sector must be 1..{0}.",
+    "ja": "セクターあたりのサンプル数は 1..{0} である必要があります。",
+    "tr": "Sektör başına örnek sayısı 1..{0} olmalıdır."
+  },
+  "UDF drawing volumes need at least {0} sectors and a multiple of 32 sectors.": {
+    "zh-CN": "UDF 绘图卷至少需要 {0} 扇区，且扇区数必须为 32 的倍数。",
+    "zh-TW": "UDF 繪圖磁碟區至少需要 {0} 磁區，且磁區數必須為 32 的倍數。",
+    "en": "UDF drawing volumes need at least {0} sectors and a multiple of 32 sectors.",
+    "ja": "UDF 描画ボリュームには最低 {0} セクターが必要で、セクター数は 32 の倍数である必要があります。",
+    "tr": "UDF çizim birimleri en az {0} sektör gerektirir ve sektör sayısı 32'nin katı olmalıdır."
+  },
+  "Data directory does not exist: {0}": {
+    "zh-CN": "数据目录不存在：{0}",
+    "zh-TW": "資料目錄不存在：{0}",
+    "en": "Data directory does not exist: {0}",
+    "ja": "データディレクトリが存在しません：{0}",
+    "tr": "Veri dizini mevcut değil: {0}"
+  },
+  "File needs more allocation descriptors than one UDF file entry supports: {0}": {
+    "zh-CN": "文件所需的分配描述符数量超出一个 UDF 文件条目的支持范围：{0}",
+    "zh-TW": "檔案所需的配置描述元數量超出一個 UDF 檔案項目的支援範圍：{0}",
+    "en": "File needs more allocation descriptors than one UDF file entry supports: {0}",
+    "ja": "ファイルに必要な割り当て記述子数が 1 つの UDF ファイルエントリーの上限を超えています：{0}",
+    "tr": "Dosya, bir UDF dosya girdisinin desteklediğinden fazla ayırma tanımlayıcısı gerektiriyor: {0}"
+  },
+  "Too many child directories for a UDF link count: {0}": {
+    "zh-CN": "子目录过多，超出 UDF 链接计数范围：{0}",
+    "zh-TW": "子目錄過多，超出 UDF 連結計數範圍：{0}",
+    "en": "Too many child directories for a UDF link count: {0}",
+    "ja": "子ディレクトリ数が UDF のリンク数上限を超えています：{0}",
+    "tr": "UDF bağlantı sayısı için çok fazla alt dizin var: {0}"
+  },
+  "Files and UDF metadata need {0} sectors, leaving no complete drawing cluster before the backup metadata at sector {1}.": {
+    "zh-CN": "文件及 UDF 元数据需要 {0} 扇区，在扇区 {1} 的备份元数据之前没有留下完整的绘图簇。",
+    "zh-TW": "檔案及 UDF 中繼資料需要 {0} 磁區，在磁區 {1} 的備份中繼資料之前沒有留下完整的繪圖叢集。",
+    "en": "Files and UDF metadata need {0} sectors, leaving no complete drawing cluster before the backup metadata at sector {1}.",
+    "ja": "ファイルと UDF メタデータに {0} セクターが必要なため、セクター {1} のバックアップメタデータより前に完全な描画クラスターが残りません。",
+    "tr": "Dosyalar ve UDF meta verileri {0} sektör gerektiriyor; sektör {1} konumundaki yedek meta veriden önce tam bir çizim kümesi kalmıyor."
+  },
+  "The UDF suffix must start at DrawingEndLbaExclusive.": {
+    "zh-CN": "UDF 后缀必须从 DrawingEndLbaExclusive 开始。",
+    "zh-TW": "UDF 後綴必須從 DrawingEndLbaExclusive 開始。",
+    "en": "The UDF suffix must start at DrawingEndLbaExclusive.",
+    "ja": "UDF サフィックスは DrawingEndLbaExclusive から始まる必要があります。",
+    "tr": "UDF son eki DrawingEndLbaExclusive konumunda başlamalıdır."
+  },
+  "UDF 2.01 filenames must use CS0 Unicode BMP characters without byte-order marks: {0}": {
+    "zh-CN": "UDF 2.01 文件名必须使用不含字节序标记的 CS0 Unicode BMP 字符：{0}",
+    "zh-TW": "UDF 2.01 檔名必須使用不含位元組順序標記的 CS0 Unicode BMP 字元：{0}",
+    "en": "UDF 2.01 filenames must use CS0 Unicode BMP characters without byte-order marks: {0}",
+    "ja": "UDF 2.01 のファイル名はバイトオーダーマークを含まない CS0 Unicode BMP 文字である必要があります：{0}",
+    "tr": "UDF 2.01 dosya adları bayt sırası işareti içermeyen CS0 Unicode BMP karakterleri kullanmalıdır: {0}"
+  },
+  "Filename exceeds the UDF CS0 identifier limit (254 single-byte or 127 two-byte characters): {0}": {
+    "zh-CN": "文件名超出 UDF CS0 标识符限制（254 个单字节或 127 个双字节字符）：{0}",
+    "zh-TW": "檔名超出 UDF CS0 識別碼限制（254 個單位元組或 127 個雙位元組字元）：{0}",
+    "en": "Filename exceeds the UDF CS0 identifier limit (254 single-byte or 127 two-byte characters): {0}",
+    "ja": "ファイル名が UDF CS0 識別子の上限（1 バイト文字 254 個または 2 バイト文字 127 個）を超えています：{0}",
+    "tr": "Dosya adı UDF CS0 tanımlayıcı sınırını aşıyor (254 tek baytlık veya 127 çift baytlık karakter): {0}"
+  },
+  "UDF volume labels must use CS0 Unicode BMP characters without byte-order marks.": {
+    "zh-CN": "UDF 卷标必须使用不含字节序标记的 CS0 Unicode BMP 字符。",
+    "zh-TW": "UDF 磁碟區標籤必須使用不含位元組順序標記的 CS0 Unicode BMP 字元。",
+    "en": "UDF volume labels must use CS0 Unicode BMP characters without byte-order marks.",
+    "ja": "UDF ボリュームラベルはバイトオーダーマークを含まない CS0 Unicode BMP 文字である必要があります。",
+    "tr": "UDF birim etiketleri bayt sırası işareti içermeyen CS0 Unicode BMP karakterleri kullanmalıdır."
+  },
+  "UDF dstring does not fit its descriptor field.": {
+    "zh-CN": "UDF dstring 超出其描述符字段长度。",
+    "zh-TW": "UDF dstring 超出其描述元欄位長度。",
+    "en": "UDF dstring does not fit its descriptor field.",
+    "ja": "UDF dstring が記述子フィールドに収まりません。",
+    "tr": "UDF dstring, tanımlayıcı alanına sığmıyor."
+  },
+  "UDF output stream must be writable.": {
+    "zh-CN": "UDF 输出流必须可写。",
+    "zh-TW": "UDF 輸出串流必須可寫入。",
+    "en": "UDF output stream must be writable.",
+    "ja": "UDF 出力ストリームは書き込み可能である必要があります。",
+    "tr": "UDF çıktı akışı yazılabilir olmalıdır."
+  },
+  "Reparse points are not supported in the UDF data directory: {0}": {
+    "zh-CN": "UDF 数据目录不支持重解析点：{0}",
+    "zh-TW": "UDF 資料目錄不支援重新分析點：{0}",
+    "en": "Reparse points are not supported in the UDF data directory: {0}",
+    "ja": "UDF データディレクトリの再解析ポイントは未対応です：{0}",
+    "tr": "UDF veri dizininde yeniden ayrıştırma noktaları desteklenmiyor: {0}"
+  },
+  "Source directory changed after UDF planning: {0}": {
+    "zh-CN": "UDF 规划后源目录已发生变化：{0}",
+    "zh-TW": "UDF 規劃後來源目錄已發生變更：{0}",
+    "en": "Source directory changed after UDF planning: {0}",
+    "ja": "UDF 計画後にソースディレクトリが変更されました：{0}",
+    "tr": "UDF planlamasından sonra kaynak dizin değişti: {0}"
+  },
+  "Source file changed after UDF planning: {0}": {
+    "zh-CN": "UDF 规划后源文件已发生变化：{0}",
+    "zh-TW": "UDF 規劃後來源檔案已發生變更：{0}",
+    "en": "Source file changed after UDF planning: {0}",
+    "ja": "UDF 計画後にソースファイルが変更されました：{0}",
+    "tr": "UDF planlamasından sonra kaynak dosya değişti: {0}"
+  },
+  "Source file size changed while streaming UDF: {0}": {
+    "zh-CN": "流式写入 UDF 时源文件大小发生变化：{0}",
+    "zh-TW": "串流寫入 UDF 時來源檔案大小發生變更：{0}",
+    "en": "Source file size changed while streaming UDF: {0}",
+    "ja": "UDF ストリーミング中にソースファイルのサイズが変更されました：{0}",
+    "tr": "UDF akışı sırasında kaynak dosya boyutu değişti: {0}"
+  },
+  "Source file ended early while streaming UDF: {0}": {
+    "zh-CN": "流式写入 UDF 时源文件提前结束：{0}",
+    "zh-TW": "串流寫入 UDF 時來源檔案提早結束：{0}",
+    "en": "Source file ended early while streaming UDF: {0}",
+    "ja": "UDF ストリーミング中にソースファイルが途中で終了しました：{0}",
+    "tr": "UDF akışı sırasında kaynak dosya erken sona erdi: {0}"
+  },
+  "Sequential UDF layout moved backwards from {0} to {1}.": {
+    "zh-CN": "顺序 UDF 布局从 {0} 后退到了 {1}。",
+    "zh-TW": "循序 UDF 配置從 {0} 後退到了 {1}。",
+    "en": "Sequential UDF layout moved backwards from {0} to {1}.",
+    "ja": "シーケンシャル UDF レイアウトが {0} から {1} に後退しました。",
+    "tr": "Sıralı UDF yerleşimi {0} konumundan {1} konumuna geriledi."
+  },
+  "Hybrid ISO volume is too small for filesystem metadata.": {
+    "zh-CN": "混合 ISO 卷太小，无法容纳文件系统元数据。",
+    "zh-TW": "混合 ISO 磁碟區太小，無法容納檔案系統中繼資料。",
+    "en": "Hybrid ISO volume is too small for filesystem metadata.",
+    "ja": "ハイブリッド ISO ボリュームが小さすぎてファイルシステムメタデータを格納できません。",
+    "tr": "Karma ISO birimi dosya sistemi meta verileri için çok küçük."
+  },
+  "Reparse points are not supported in --data-dir: {0}": {
+    "zh-CN": "--data-dir 不支持重解析点：{0}",
+    "zh-TW": "--data-dir 不支援重新分析點：{0}",
+    "en": "Reparse points are not supported in --data-dir: {0}",
+    "ja": "--data-dir の再解析ポイントは未対応です：{0}",
+    "tr": "--data-dir içinde yeniden ayrıştırma noktaları desteklenmiyor: {0}"
+  },
+  "Hybrid ISO output stream must be writable.": {
+    "zh-CN": "混合 ISO 输出流必须可写。",
+    "zh-TW": "混合 ISO 輸出串流必須可寫入。",
+    "en": "Hybrid ISO output stream must be writable.",
+    "ja": "ハイブリッド ISO 出力ストリームは書き込み可能である必要があります。",
+    "tr": "Karma ISO çıktı akışı yazılabilir olmalıdır."
+  },
+  "Sequential prefix must end between LBA {0} and {1}.": {
+    "zh-CN": "顺序前缀必须在 LBA {0} 到 {1} 之间结束。",
+    "zh-TW": "循序前綴必須在 LBA {0} 到 {1} 之間結束。",
+    "en": "Sequential prefix must end between LBA {0} and {1}.",
+    "ja": "シーケンシャルプレフィックスは LBA {0} から {1} の間で終わる必要があります。",
+    "tr": "Sıralı ön ek LBA {0} ile {1} arasında bitmelidir."
+  },
+  "ISO output must be writable.": {
+    "zh-CN": "ISO 输出必须可写。",
+    "zh-TW": "ISO 輸出必須可寫入。",
+    "en": "ISO output must be writable.",
+    "ja": "ISO 出力は書き込み可能である必要があります。",
+    "tr": "ISO çıktısı yazılabilir olmalıdır."
+  },
+  "Outer-file drawing boundary overlaps metadata or files.": {
+    "zh-CN": "外圈文件模式的绘图边界与元数据或文件重叠。",
+    "zh-TW": "外圈檔案模式的繪圖邊界與中繼資料或檔案重疊。",
+    "en": "Outer-file drawing boundary overlaps metadata or files.",
+    "ja": "外周ファイルモードの描画境界がメタデータまたはファイルと重なっています。",
+    "tr": "Dış halka dosya modunun çizim sınırı meta verilerle veya dosyalarla örtüşüyor."
+  },
+  "ISO9660 files larger than 4 GiB minus 1 byte are not supported: {0}": {
+    "zh-CN": "ISO9660 不支持大于 4 GiB 减 1 字节的文件：{0}",
+    "zh-TW": "ISO9660 不支援大於 4 GiB 減 1 位元組的檔案：{0}",
+    "en": "ISO9660 files larger than 4 GiB minus 1 byte are not supported: {0}",
+    "ja": "ISO9660 では 4 GiB − 1 バイトを超えるファイルは未対応です：{0}",
+    "tr": "ISO9660, 4 GiB eksi 1 bayttan büyük dosyaları desteklemiyor: {0}"
+  },
+  "ISO contains too many directories.": {
+    "zh-CN": "ISO 包含的目录过多。",
+    "zh-TW": "ISO 包含的目錄過多。",
+    "en": "ISO contains too many directories.",
+    "ja": "ISO のディレクトリ数が多すぎます。",
+    "tr": "ISO çok fazla dizin içeriyor."
+  },
+  "Data directory and filesystem metadata exceed the disc capacity.": {
+    "zh-CN": "数据目录与文件系统元数据超出光盘容量。",
+    "zh-TW": "資料目錄與檔案系統中繼資料超出光碟容量。",
+    "en": "Data directory and filesystem metadata exceed the disc capacity.",
+    "ja": "データディレクトリとファイルシステムメタデータがディスク容量を超えています。",
+    "tr": "Veri dizini ve dosya sistemi meta verileri disk kapasitesini aşıyor."
+  },
+  "Data directory needs {0} sectors including filesystem metadata, but the disc has only {1} sectors.": {
+    "zh-CN": "数据目录含文件系统元数据需要 {0} 扇区，但光盘仅有 {1} 扇区。",
+    "zh-TW": "資料目錄含檔案系統中繼資料需要 {0} 磁區，但光碟僅有 {1} 磁區。",
+    "en": "Data directory needs {0} sectors including filesystem metadata, but the disc has only {1} sectors.",
+    "ja": "データディレクトリはファイルシステムメタデータを含め {0} セクター必要ですが、ディスクには {1} セクターしかありません。",
+    "tr": "Veri dizini dosya sistemi meta verileriyle birlikte {0} sektör gerektiriyor, ancak diskte yalnızca {1} sektör var."
+  },
+  "Too many colliding ISO identifiers derived from '{0}'.": {
+    "zh-CN": "从 '{0}' 派生的 ISO 标识符冲突过多。",
+    "zh-TW": "從 '{0}' 衍生的 ISO 識別碼衝突過多。",
+    "en": "Too many colliding ISO identifiers derived from '{0}'.",
+    "ja": "'{0}' から派生した ISO 識別子の衝突が多すぎます。",
+    "tr": "'{0}' değerinden türetilen çok fazla çakışan ISO tanımlayıcısı var."
+  },
+  "Source file changed after ISO planning: {0}": {
+    "zh-CN": "ISO 规划后源文件已发生变化：{0}",
+    "zh-TW": "ISO 規劃後來源檔案已發生變更：{0}",
+    "en": "Source file changed after ISO planning: {0}",
+    "ja": "ISO 計画後にソースファイルが変更されました：{0}",
+    "tr": "ISO planlamasından sonra kaynak dosya değişti: {0}"
+  },
+  "Source file size changed while streaming ISO: {0}": {
+    "zh-CN": "流式写入 ISO 时源文件大小发生变化：{0}",
+    "zh-TW": "串流寫入 ISO 時來源檔案大小發生變更：{0}",
+    "en": "Source file size changed while streaming ISO: {0}",
+    "ja": "ISO ストリーミング中にソースファイルのサイズが変更されました：{0}",
+    "tr": "ISO akışı sırasında kaynak dosya boyutu değişti: {0}"
+  },
+  "Source file ended early while streaming ISO: {0}": {
+    "zh-CN": "流式写入 ISO 时源文件提前结束：{0}",
+    "zh-TW": "串流寫入 ISO 時來源檔案提早結束：{0}",
+    "en": "Source file ended early while streaming ISO: {0}",
+    "ja": "ISO ストリーミング中にソースファイルが途中で終了しました：{0}",
+    "tr": "ISO akışı sırasında kaynak dosya erken sona erdi: {0}"
+  },
+  "Sequential ISO layout moved backwards from byte {0} to {1}.": {
+    "zh-CN": "顺序 ISO 布局从字节 {0} 后退到了 {1}。",
+    "zh-TW": "循序 ISO 配置從位元組 {0} 後退到了 {1}。",
+    "en": "Sequential ISO layout moved backwards from byte {0} to {1}.",
+    "ja": "シーケンシャル ISO レイアウトがバイト {0} から {1} に後退しました。",
+    "tr": "Sıralı ISO yerleşimi bayt {0} konumundan {1} konumuna geriledi."
+  },
+  "完整曲线采样超出点数上限；请缩小预测范围或提高采样上限后再确认形状。": {
+    "zh-CN": "完整曲线采样超出点数上限；请缩小预测范围或提高采样上限后再确认形状。",
+    "zh-TW": "完整曲線取樣超出點數上限；請縮小預測範圍或提高取樣上限後再確認形狀。",
+    "en": "Sampling the full curve exceeds the point limit; reduce the prediction range or raise the sampling limit before confirming the shape.",
+    "ja": "曲線全体のサンプリングが点数上限を超えます。予測範囲を狭めるかサンプリング上限を増やしてから形状を確認してください。",
+    "tr": "Tam eğri örneklemesi nokta sınırını aşıyor; şekli onaylamadan önce tahmin aralığını daraltın veya örnekleme sınırını yükseltin."
+  },
+  "候选绕行过多，完整轮廓采样超出上限；请缩小搜索范围或提高采样上限后再确认形状。": {
+    "zh-CN": "候选绕行过多，完整轮廓采样超出上限；请缩小搜索范围或提高采样上限后再确认形状。",
+    "zh-TW": "候選繞行過多，完整輪廓取樣超出上限；請縮小搜尋範圍或提高取樣上限後再確認形狀。",
+    "en": "The candidate makes too many turns and full-outline sampling exceeds the limit; reduce the search range or raise the sampling limit before confirming the shape.",
+    "ja": "候補の周回数が多すぎて輪郭全体のサンプリングが上限を超えます。探索範囲を狭めるかサンプリング上限を増やしてから形状を確認してください。",
+    "tr": "Aday çok fazla tur attığından tam dış hat örneklemesi sınırı aşıyor; şekli onaylamadan önce arama aralığını daraltın veya örnekleme sınırını yükseltin."
+  },
+  "图层 '{0}' 的 {1} 必须是有限数值。": {
+    "zh-CN": "图层 '{0}' 的 {1} 必须是有限数值。",
+    "zh-TW": "圖層 '{0}' 的 {1} 必須是有限數值。",
+    "en": "Layer '{0}' {1} must be a finite number.",
+    "ja": "レイヤー '{0}' の {1} は有限値である必要があります。",
+    "tr": "'{0}' katmanının {1} değeri sonlu bir sayı olmalıdır."
+  },
+  "预设 '{0}' 的 {1} 不能为空。": {
+    "zh-CN": "预设 '{0}' 的 {1} 不能为空。",
+    "zh-TW": "預設 '{0}' 的 {1} 不能為空。",
+    "en": "Preset '{0}' {1} must not be empty.",
+    "ja": "プリセット '{0}' の {1} は空にできません。",
+    "tr": "'{0}' ön ayarının {1} alanı boş olamaz."
+  },
+  "预设 '{0}' 的 {1} 必须大于 innerRadiusMm。": {
+    "zh-CN": "预设 '{0}' 的 {1} 必须大于 innerRadiusMm。",
+    "zh-TW": "預設 '{0}' 的 {1} 必須大於 innerRadiusMm。",
+    "en": "Preset '{0}' {1} must be greater than innerRadiusMm.",
+    "ja": "プリセット '{0}' の {1} は innerRadiusMm より大きい必要があります。",
+    "tr": "'{0}' ön ayarının {1} değeri innerRadiusMm değerinden büyük olmalıdır."
+  },
+  "预设 '{0}' 的 {1} 必须是大于 0 的有限数值。": {
+    "zh-CN": "预设 '{0}' 的 {1} 必须是大于 0 的有限数值。",
+    "zh-TW": "預設 '{0}' 的 {1} 必須是大於 0 的有限數值。",
+    "en": "Preset '{0}' {1} must be a finite number greater than 0.",
+    "ja": "プリセット '{0}' の {1} は 0 より大きい有限値である必要があります。",
+    "tr": "'{0}' ön ayarının {1} değeri 0'dan büyük sonlu bir sayı olmalıdır."
+  },
+  "内置盘片预设": {
+    "zh-CN": "内置盘片预设",
+    "zh-TW": "內建光碟預設",
+    "en": "Built-in disc presets",
+    "ja": "内蔵ディスクプリセット",
+    "tr": "Yerleşik disk ön ayarları"
+  },
+  "disabled CD": {
+    "zh-CN": "已禁用的 CD",
+    "zh-TW": "停用的 CD",
+    "en": "disabled CD",
+    "ja": "無効化された CD",
+    "tr": "devre dışı CD"
+  },
+  "disabled DVD": {
+    "zh-CN": "已禁用的 DVD",
+    "zh-TW": "停用的 DVD",
+    "en": "disabled DVD",
+    "ja": "無効化された DVD",
+    "tr": "devre dışı DVD"
+  },
+  "disabled Blu-ray": {
+    "zh-CN": "已禁用的 Blu-ray",
+    "zh-TW": "停用的 Blu-ray",
+    "en": "disabled Blu-ray",
+    "ja": "無効化された Blu-ray",
+    "tr": "devre dışı Blu-ray"
+  },
+  "请分别输入实体外缘和实体内缘轮廓。": {
+    "zh-CN": "请分别输入实体外缘和实体内缘轮廓。",
+    "zh-TW": "請分別輸入實體外緣與實體內緣輪廓。",
+    "en": "Enter the physical outer-edge and inner-edge outlines separately.",
+    "ja": "実物の外縁と内縁の輪郭をそれぞれ入力してください。",
+    "tr": "Fiziksel dış ve iç kenar dış hatlarını ayrı ayrı girin."
+  },
+  "盘片与内缘的实体尺寸无效。常规盘为直径 120 mm、孔径 15 mm。": {
+    "zh-CN": "盘片与内缘的实体尺寸无效。常规盘为直径 120 mm、孔径 15 mm。",
+    "zh-TW": "光碟與內緣的實體尺寸無效。一般光碟為直徑 120 mm、孔徑 15 mm。",
+    "en": "The physical disc and inner-edge dimensions are invalid. A standard disc has a 120 mm diameter and a 15 mm hole diameter.",
+    "ja": "ディスクと内縁の実寸が無効です。通常のディスクは直径 120 mm、穴の直径 15 mm です。",
+    "tr": "Diskin ve iç kenarın fiziksel boyutları geçersiz. Standart disk çapı 120 mm, delik çapı 15 mm'dir."
+  },
+  "外缘和内缘各需要至少 5 个分散的点，且每条轮廓不超过 256 个点。": {
+    "zh-CN": "外缘和内缘各需要至少 5 个分散的点，且每条轮廓不超过 256 个点。",
+    "zh-TW": "外緣與內緣各需要至少 5 個分散的點，且每條輪廓不超過 256 個點。",
+    "en": "The outer and inner edges each need at least 5 spread-out points, with no more than 256 points per outline.",
+    "ja": "外縁と内縁には、それぞれ分散した点が最低 5 個必要です。各輪郭の点数は 256 個以下にしてください。",
+    "tr": "Dış ve iç kenarların her biri en az 5 dağınık nokta gerektirir; her dış hat en fazla 256 nokta içerebilir."
+  },
+  "轮廓中存在无效坐标。": {
+    "zh-CN": "轮廓中存在无效坐标。",
+    "zh-TW": "輪廓中存在無效座標。",
+    "en": "The outline contains invalid coordinates.",
+    "ja": "輪郭に無効な座標があります。",
+    "tr": "Dış hat geçersiz koordinatlar içeriyor."
+  },
+  "照片中的盘片过小，无法稳定矫正。": {
+    "zh-CN": "照片中的盘片过小，无法稳定矫正。",
+    "zh-TW": "照片中的光碟過小，無法穩定校正。",
+    "en": "The disc is too small in the photo for stable rectification.",
+    "ja": "写真内のディスクが小さすぎて、安定した補正ができません。",
+    "tr": "Fotoğraftaki disk kararlı düzeltme için çok küçük."
+  },
+  "轮廓点重复或接近一条直线，请沿外缘和内缘分别分散布点。": {
+    "zh-CN": "轮廓点重复或接近一条直线，请沿外缘和内缘分别分散布点。",
+    "zh-TW": "輪廓點重複或接近一條直線，請沿外緣與內緣分別分散布點。",
+    "en": "Outline points are duplicated or nearly collinear; spread points along the outer and inner edges separately.",
+    "ja": "輪郭点が重複しているかほぼ一直線上にあります。外縁と内縁のそれぞれに点を分散して配置してください。",
+    "tr": "Dış hat noktaları yinelenmiş veya neredeyse aynı doğru üzerinde; dış ve iç kenarlar boyunca noktaları ayrı ayrı dağıtın."
+  },
+  "外缘轮廓无法形成稳定椭圆，请核对实体外缘上的点。": {
+    "zh-CN": "外缘轮廓无法形成稳定椭圆，请核对实体外缘上的点。",
+    "zh-TW": "外緣輪廓無法形成穩定橢圓，請核對實體外緣上的點。",
+    "en": "The outer-edge outline cannot form a stable ellipse; check the points on the physical outer edge.",
+    "ja": "外縁の輪郭から安定した楕円を作れません。実物の外縁上の点を確認してください。",
+    "tr": "Dış kenar dış hattı kararlı bir elips oluşturamıyor; fiziksel dış kenardaki noktaları kontrol edin."
+  },
+  "内缘轮廓与外缘位置不符，请确认选中的是贯通的实体内缘，而非盘面的印刷圆环。": {
+    "zh-CN": "内缘轮廓与外缘位置不符，请确认选中的是贯通的实体内缘，而非盘面的印刷圆环。",
+    "zh-TW": "內緣輪廓與外緣位置不符，請確認選中的是貫通的實體內緣，而非碟面的印刷圓環。",
+    "en": "The inner-edge outline is inconsistent with the outer-edge position; select the physical edge of the through-hole, rather than a printed ring on the disc.",
+    "ja": "内縁の輪郭が外縁の位置と一致しません。ディスク面の印刷された円ではなく、貫通穴の実際の縁を選んでいるか確認してください。",
+    "tr": "İç kenar dış hattı dış kenar konumuyla tutarsız; disk yüzeyindeki basılı halkayı değil, gerçek geçiş deliğinin fiziksel kenarını seçtiğinizden emin olun."
+  },
+  "两条轮廓不能得到有效的联合投影，请检查布点。": {
+    "zh-CN": "两条轮廓不能得到有效的联合投影，请检查布点。",
+    "zh-TW": "兩條輪廓無法得到有效的聯合投影，請檢查布點。",
+    "en": "The two outlines cannot produce a valid joint projection; check the point placement.",
+    "ja": "2 つの輪郭から有効な共通投影を得られません。点の配置を確認してください。",
+    "tr": "İki dış hattan geçerli bir ortak izdüşüm elde edilemiyor; nokta yerleşimini kontrol edin."
+  },
+  "拍摄角度或轮廓对应关系导致投影退化，请换角度拍摄或重新布点。": {
+    "zh-CN": "拍摄角度或轮廓对应关系导致投影退化，请换角度拍摄或重新布点。",
+    "zh-TW": "拍攝角度或輪廓對應關係導致投影退化，請換角度拍攝或重新布點。",
+    "en": "The camera angle or outline correspondence makes the projection degenerate; take a photo from another angle or reposition the points.",
+    "ja": "撮影角度または輪郭の対応関係により投影が退化しています。別の角度で撮影するか、点を配置し直してください。",
+    "tr": "Çekim açısı veya dış hat eşleşmesi izdüşümü dejenere ediyor; başka bir açıdan fotoğraf çekin veya noktaları yeniden yerleştirin."
+  },
+  "轮廓点集中在局部，请在两条完整圆周的不同方向补点。": {
+    "zh-CN": "轮廓点集中在局部，请在两条完整圆周的不同方向补点。",
+    "zh-TW": "輪廓點集中於局部，請在兩條完整圓周的不同方向補點。",
+    "en": "Outline points are concentrated in one area; add points in different directions around both complete circles.",
+    "ja": "輪郭点が一部に集中しています。両方の円周全体にわたり、異なる方向に点を追加してください。",
+    "tr": "Dış hat noktaları bir bölgede toplanmış; her iki tam çemberin farklı yönlerine noktalar ekleyin."
+  },
+  "两条实体轮廓无法同时吻合：外缘误差 {0:0.##} px，内缘误差 {1:0.##} px。请检查内缘、外缘与盘片尺寸。": {
+    "zh-CN": "两条实体轮廓无法同时吻合：外缘误差 {0:0.##} px，内缘误差 {1:0.##} px。请检查内缘、外缘与盘片尺寸。",
+    "zh-TW": "兩條實體輪廓無法同時吻合：外緣誤差 {0:0.##} px，內緣誤差 {1:0.##} px。請檢查內緣、外緣與光碟尺寸。",
+    "en": "The two physical outlines cannot be fitted simultaneously: outer-edge error {0:0.##} px, inner-edge error {1:0.##} px. Check the inner edge, outer edge, and disc dimensions.",
+    "ja": "2 つの実物の輪郭を同時に一致させられません。外縁誤差 {0:0.##} px、内縁誤差 {1:0.##} px。内縁、外縁、ディスクの実寸を確認してください。",
+    "tr": "İki fiziksel dış hat aynı anda uydurulamıyor: dış kenar hatası {0:0.##} px, iç kenar hatası {1:0.##} px. İç kenarı, dış kenarı ve disk boyutlarını kontrol edin."
+  },
+  "已联合校正外缘与内缘。轮廓误差：外缘 {0:0.##} px，内缘 {1:0.##} px。请继续核对两条轮廓。": {
+    "zh-CN": "已联合校正外缘与内缘。轮廓误差：外缘 {0:0.##} px，内缘 {1:0.##} px。请继续核对两条轮廓。",
+    "zh-TW": "已聯合校正外緣與內緣。輪廓誤差：外緣 {0:0.##} px，內緣 {1:0.##} px。請繼續核對兩條輪廓。",
+    "en": "The outer and inner edges have been rectified jointly. Outline error: outer edge {0:0.##} px, inner edge {1:0.##} px. Continue checking both outlines.",
+    "ja": "外縁と内縁を同時に補正しました。輪郭誤差：外縁 {0:0.##} px、内縁 {1:0.##} px。引き続き両方の輪郭を確認してください。",
+    "tr": "Dış ve iç kenarlar birlikte düzeltildi. Dış hat hatası: dış kenar {0:0.##} px, iç kenar {1:0.##} px. Her iki dış hattı kontrol etmeye devam edin."
+  },
+  "预设 '{0}' 的 {1} 必须大于 0。": {
+    "zh-CN": "预设 '{0}' 的 {1} 必须大于 0。",
+    "zh-TW": "預設 '{0}' 的 {1} 必須大於 0。",
+    "en": "Preset '{0}' {1} must be greater than 0.",
+    "ja": "プリセット '{0}' の {1} は 0 より大きい必要があります。",
+    "tr": "'{0}' ön ayarının {1} değeri 0'dan büyük olmalıdır."
+  },
+  "预设 '{0}' 的 {1} 必须是 16 的倍数。": {
+    "zh-CN": "预设 '{0}' 的 {1} 必须是 16 的倍数。",
+    "zh-TW": "預設 '{0}' 的 {1} 必須是 16 的倍數。",
+    "en": "Preset '{0}' {1} must be a multiple of 16.",
+    "ja": "プリセット '{0}' の {1} は 16 の倍数である必要があります。",
+    "tr": "'{0}' ön ayarının {1} değeri 16'nın katı olmalıdır."
+  },
+  "预设 '{0}' 的 {1} 必须是 32 的倍数且不超过 {2:N0}。": {
+    "zh-CN": "预设 '{0}' 的 {1} 必须是 32 的倍数且不超过 {2:N0}。",
+    "zh-TW": "預設 '{0}' 的 {1} 必須是 32 的倍數且不超過 {2:N0}。",
+    "en": "Preset '{0}' {1} must be a multiple of 32 and no greater than {2:N0}.",
+    "ja": "プリセット '{0}' の {1} は 32 の倍数で、{2:N0} 以下である必要があります。",
+    "tr": "'{0}' ön ayarının {1} değeri 32'nin katı olmalı ve {2:N0} değerini aşmamalıdır."
+  },
+  "预设 '{0}' 的 {1} 不能超过 60。": {
+    "zh-CN": "预设 '{0}' 的 {1} 不能超过 60。",
+    "zh-TW": "預設 '{0}' 的 {1} 不能超過 60。",
+    "en": "Preset '{0}' {1} must not exceed 60.",
+    "ja": "プリセット '{0}' の {1} は 60 を超えてはいけません。",
+    "tr": "'{0}' ön ayarının {1} değeri 60'ı aşamaz."
+  }
+}

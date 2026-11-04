@@ -1,0 +1,93 @@
+{
+  "至少确认 4 个用于拟合的角点，并选择分布在不同半径的控制块；验证组与未确认角点不参与拟合。": {
+    "zh-CN": "至少确认 4 个用于拟合的角点，并选择分布在不同半径的控制块；验证组与未确认角点不参与拟合。",
+    "zh-TW": "至少確認 4 個用於擬合的角點，並選擇分布於不同半徑的控制區塊；驗證組與未確認角點不參與擬合。",
+    "en": "Confirm at least 4 fitting corners and select control blocks at different radii; validation groups and unconfirmed corners do not participate in fitting.",
+    "ja": "フィッティング用の頂点を最低 4 個確定し、異なる半径に分布する制御ブロックを選んでください。検証グループと未確定の頂点はフィッティングに使用しません。",
+    "tr": "Uydurma için en az 4 köşeyi onaylayın ve farklı yarıçaplardaki kontrol bloklarını seçin; doğrulama grupları ve onaylanmamış köşeler uydurmaya katılmaz."
+  },
+  "控制点集中在相近半径，无法稳定区分内外半径；请补选靠内圈或外圈的角点。": {
+    "zh-CN": "控制点集中在相近半径，无法稳定区分内外半径；请补选靠内圈或外圈的角点。",
+    "zh-TW": "控制點集中於相近半徑，無法穩定區分內外半徑；請補選靠內圈或外圈的角點。",
+    "en": "Control points are concentrated at similar radii, so the inner and outer radii cannot be reliably distinguished; add corners near the inner or outer ring.",
+    "ja": "制御点が近い半径に集中しているため、内外半径を安定して区別できません。内周または外周寄りの頂点を追加してください。",
+    "tr": "Kontrol noktaları benzer yarıçaplarda toplandığından iç ve dış yarıçaplar kararlı biçimde ayırt edilemiyor; iç veya dış halkaya yakın köşeler ekleyin."
+  },
+  "搜索范围内没有有效模型，请检查控制点对应关系或扩大搜索范围。": {
+    "zh-CN": "搜索范围内没有有效模型，请检查控制点对应关系或扩大搜索范围。",
+    "zh-TW": "搜尋範圍內沒有有效模型，請檢查控制點對應關係或擴大搜尋範圍。",
+    "en": "No valid model was found within the search range; check control point correspondences or expand the range.",
+    "ja": "探索範囲内に有効なモデルがありません。制御点の対応関係を確認するか、探索範囲を広げてください。",
+    "tr": "Arama aralığında geçerli model bulunamadı; kontrol noktası eşleşmelerini kontrol edin veya aralığı genişletin."
+  },
+  "控制点覆盖的径向范围偏窄，建议补选更靠内、外的角点复核。": {
+    "zh-CN": "控制点覆盖的径向范围偏窄，建议补选更靠内、外的角点复核。",
+    "zh-TW": "控制點涵蓋的徑向範圍偏窄，建議補選更靠內、外的角點複核。",
+    "en": "The control points cover a narrow radial range; add corners farther inward and outward to verify the result.",
+    "ja": "制御点が覆う半径方向の範囲が狭いため、より内側と外側の頂点を追加して再確認してください。",
+    "tr": "Kontrol noktalarının kapsadığı radyal aralık dar; sonucu doğrulamak için daha içte ve dışta köşeler ekleyin."
+  },
+  "控制点与预测图形偏差较大，请检查分组与弧片身份、控制点对应关系和显示尺度。": {
+    "zh-CN": "控制点与预测图形偏差较大，请检查分组与弧片身份、控制点对应关系和显示尺度。",
+    "zh-TW": "控制點與預測圖形偏差較大，請檢查分組與弧片身分、控制點對應關係及顯示尺度。",
+    "en": "Control points differ substantially from the predicted shape; check group and arc-piece identities, control point correspondences, and display scale.",
+    "ja": "制御点と予測形状のずれが大きいため、グループと弧片の識別、制御点の対応関係、表示縮尺を確認してください。",
+    "tr": "Kontrol noktaları tahmin edilen şekilden çok sapıyor; grup ve yay parçası kimliklerini, kontrol noktası eşleşmelerini ve görüntü ölçeğini kontrol edin."
+  },
+  "最佳结果靠近搜索边界，建议扩大搜索范围并补充控制点复核。": {
+    "zh-CN": "最佳结果靠近搜索边界，建议扩大搜索范围并补充控制点复核。",
+    "zh-TW": "最佳結果靠近搜尋邊界，建議擴大搜尋範圍並補充控制點複核。",
+    "en": "The best result is near the search boundary; expand the search range and add control points to verify it.",
+    "ja": "最良結果が探索境界に近いため、探索範囲を広げて制御点を追加し、再確認してください。",
+    "tr": "En iyi sonuç arama sınırına yakın; arama aralığını genişletin ve doğrulamak için kontrol noktaları ekleyin."
+  },
+  "存在拟合程度接近的绕圈候选，暂不能唯一确定参数；请在预测差异明显的另一半径补选角点。": {
+    "zh-CN": "存在拟合程度接近的绕圈候选，暂不能唯一确定参数；请在预测差异明显的另一半径补选角点。",
+    "zh-TW": "存在擬合程度接近的繞圈候選，暫時無法唯一確定參數；請在預測差異明顯的另一半徑補選角點。",
+    "en": "Candidates with different turn counts have similar fits, so parameters cannot yet be uniquely determined; add corners at another radius where their predictions differ clearly.",
+    "ja": "周回数の異なる候補に同程度の適合があるため、パラメーターをまだ一意に決定できません。予測が明確に異なる別の半径に頂点を追加してください。",
+    "tr": "Farklı tur sayılarına sahip adayların uyumları benzer olduğundan parametreler henüz tekil olarak belirlenemiyor; tahminlerin belirgin biçimde ayrıldığı başka bir yarıçapa köşeler ekleyin."
+  },
+  "搜索范围包含过多绕圈组合，已进行有限多起点搜索；请缩小范围或增加分散的控制点后复核。": {
+    "zh-CN": "搜索范围包含过多绕圈组合，已进行有限多起点搜索；请缩小范围或增加分散的控制点后复核。",
+    "zh-TW": "搜尋範圍包含過多繞圈組合，已進行有限多起點搜尋；請縮小範圍或增加分散的控制點後複核。",
+    "en": "The search range contains too many turn-count combinations, so only a limited multistart search was performed; reduce the range or add spread-out control points and verify again.",
+    "ja": "探索範囲に周回数の組み合わせが多すぎるため、有限個の初期点による探索のみ行いました。範囲を狭めるか、分散した制御点を追加して再確認してください。",
+    "tr": "Arama aralığı çok fazla tur sayısı birleşimi içerdiğinden sınırlı sayıda başlangıçla arama yapıldı; aralığı daraltın veya dağınık kontrol noktaları ekleyip yeniden doğrulayın."
+  },
+  "三次轨距拟合需要至少 12 个不同半径的点且覆盖至少 60% 绘图区；本次保持轨距系数，只拟合内外半径。": {
+    "zh-CN": "三次轨距拟合需要至少 12 个不同半径的点且覆盖至少 60% 绘图区；本次保持轨距系数，只拟合内外半径。",
+    "zh-TW": "三次軌距擬合需要至少 12 個不同半徑的點且涵蓋至少 60% 繪圖區；本次保留軌距係數，僅擬合內外半徑。",
+    "en": "Cubic track pitch fitting requires at least 12 points at different radii covering at least 60% of the drawing area; this run keeps the pitch coefficients and fits only the inner and outer radii.",
+    "ja": "3 次トラックピッチのフィッティングには、異なる半径の点が最低 12 個、描画領域の最低 60% を覆う必要があります。今回はピッチ係数を保持し、内外半径のみフィットします。",
+    "tr": "Kübik iz aralığı uydurması, çizim alanının en az %60'ını kapsayan farklı yarıçaplarda en az 12 nokta gerektirir; bu çalıştırma iz aralığı katsayılarını korur ve yalnızca iç ve dış yarıçapları uydurur."
+  },
+  "三次轨距没有带来稳定改善，保留原轨距系数；可增加内、中、外圈点位后重试。": {
+    "zh-CN": "三次轨距没有带来稳定改善，保留原轨距系数；可增加内、中、外圈点位后重试。",
+    "zh-TW": "三次軌距未帶來穩定改善，保留原軌距係數；可增加內、中、外圈點位後重試。",
+    "en": "Cubic track pitch did not yield a stable improvement, so the original pitch coefficients are retained; add inner, middle, and outer-ring points and retry.",
+    "ja": "3 次トラックピッチで安定した改善が得られなかったため、元のピッチ係数を保持します。内周、中間、外周の点を追加して再試行してください。",
+    "tr": "Kübik iz aralığı kararlı iyileşme sağlamadığından özgün iz aralığı katsayıları korunuyor; iç, orta ve dış halka noktaları ekleyip yeniden deneyin."
+  },
+  "当前点位无法稳定区分三个轨距系数与内外半径，本次保留原轨距系数；请扩大径向覆盖并提高点位精度。": {
+    "zh-CN": "当前点位无法稳定区分三个轨距系数与内外半径，本次保留原轨距系数；请扩大径向覆盖并提高点位精度。",
+    "zh-TW": "目前點位無法穩定區分三個軌距係數與內外半徑，本次保留原軌距係數；請擴大徑向涵蓋範圍並提高點位精度。",
+    "en": "The current points cannot reliably distinguish the three pitch coefficients from the inner and outer radii, so the original pitch coefficients are retained; widen radial coverage and improve point accuracy.",
+    "ja": "現在の点では 3 つのピッチ係数と内外半径を安定して分離できないため、元のピッチ係数を保持します。半径方向の範囲を広げ、点の精度を高めてください。",
+    "tr": "Geçerli noktalar üç iz aralığı katsayısını iç ve dış yarıçaplardan kararlı biçimde ayırt edemediğinden özgün katsayılar korunuyor; radyal kapsamı genişletin ve nokta doğruluğunu artırın."
+  },
+  "已拟合 DVD 三次轨距；三个形状系数与内外半径可能互相补偿，低残差不表示参数唯一，应用前请核对整条预测曲线。": {
+    "zh-CN": "已拟合 DVD 三次轨距；三个形状系数与内外半径可能互相补偿，低残差不表示参数唯一，应用前请核对整条预测曲线。",
+    "zh-TW": "已擬合 DVD 三次軌距；三個形狀係數與內外半徑可能互相補償，低殘差不表示參數唯一，套用前請核對整條預測曲線。",
+    "en": "DVD cubic track pitch has been fitted; the three shape coefficients and inner/outer radii may compensate for each other. A low residual does not imply unique parameters; check the entire predicted curve before applying.",
+    "ja": "DVD の 3 次トラックピッチをフィットしました。3 つの形状係数と内外半径は互いに補償し得るため、残差が小さくてもパラメーターが一意とは限りません。適用前に予測曲線全体を確認してください。",
+    "tr": "DVD kübik iz aralığı uyduruldu; üç şekil katsayısı ile iç/dış yarıçaplar birbirini telafi edebilir. Düşük artık, parametrelerin tekil olduğunu göstermez; uygulamadan önce tahmin edilen eğrinin tamamını kontrol edin."
+  },
+  "轨距系数接近搜索边界，请复核点位，必要时扩大系数搜索范围。": {
+    "zh-CN": "轨距系数接近搜索边界，请复核点位，必要时扩大系数搜索范围。",
+    "zh-TW": "軌距係數接近搜尋邊界，請複核點位，必要時擴大係數搜尋範圍。",
+    "en": "The pitch coefficients are near the search boundary; check the points and expand the coefficient search range if necessary.",
+    "ja": "ピッチ係数が探索境界に近いため、点を再確認し、必要に応じて係数の探索範囲を広げてください。",
+    "tr": "İz aralığı katsayıları arama sınırına yakın; noktaları kontrol edin ve gerekirse katsayı arama aralığını genişletin."
+  }
+}

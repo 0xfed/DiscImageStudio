@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Diagnostics;
 using DvdImageSolver.Encoding;
 
@@ -18,7 +19,7 @@ public sealed class LocalSearchSolver
     {
         if (initialPayloads.Length != DvdEccBlockEncoder.PayloadBytesPerBlock)
         {
-            throw new ArgumentException("Initial payload must contain one complete 16-sector ECC Block.", nameof(initialPayloads));
+            throw new ArgumentException(L.T("Initial payload must contain one complete 16-sector ECC Block."), nameof(initialPayloads));
         }
 
         if (options.Iterations < 0
@@ -30,7 +31,7 @@ public sealed class LocalSearchSolver
         {
             throw new ArgumentOutOfRangeException(
                 nameof(options),
-                "Iterations must be non-negative; mutation bytes and temperatures must be positive.");
+                L.T("Iterations must be non-negative; mutation bytes and temperatures must be positive."));
         }
 
         Random random = new(options.RandomSeed);

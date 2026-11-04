@@ -1,4 +1,6 @@
+using System.Text;
 using System.Text.Json;
+using DiscImageStudio.Localization;
 using DiscImageStudio.Core;
 using DvdImageSolver.Encoding;
 using DvdImageSolver.Solver;
@@ -7,12 +9,17 @@ namespace DvdImageSolver;
 
 internal static class Program
 {
-    private static int Main(string[] args) => RunCommand(args);
+    private static int Main(string[] args) => RunCommand(args, initializeLanguage: true);
 
-    internal static int RunCommand(string[] args)
+    internal static int RunCommand(string[] args, bool initializeLanguage = false)
     {
         try
         {
+            if (initializeLanguage)
+            {
+                Console.OutputEncoding = new UTF8Encoding(false);
+                args = CommandLineLanguage.Initialize(args);
+            }
             if (args.Length == 0 || args[0] is "help" or "--help" or "-h")
             {
                 PrintHelp();
@@ -26,12 +33,12 @@ internal static class Program
                 "calibrate" => Calibrate(CliArguments.Parse(args.AsSpan(1))),
                 "simulate" => Simulate(CliArguments.Parse(args.AsSpan(1))),
                 "selftest" => RunSelfTests(),
-                _ => throw new ArgumentException($"Unknown command '{args[0]}'."),
+                _ => throw new ArgumentException(L.F($"Unknown command '{args[0]}'.")),
             };
         }
         catch (Exception exception)
         {
-            Console.Error.WriteLine($"error: {exception.Message}");
+            Console.Error.WriteLine(L.Format("Cli.Error", exception.Message));
             return 1;
         }
     }
@@ -51,7 +58,7 @@ internal static class Program
         string? isoOutputPath = arguments.Has("iso-output") ? arguments.Require("iso-output") : null;
         if (outputPath is null && isoOutputPath is null)
         {
-            throw new ArgumentException("Specify --output, --iso-output, or both.");
+            throw new ArgumentException(L.T("Specify --output, --iso-output, or both."));
         }
 
         if (outputPath is not null
@@ -61,7 +68,7 @@ internal static class Program
                 Path.GetFullPath(isoOutputPath),
                 StringComparison.OrdinalIgnoreCase))
         {
-            throw new ArgumentException("--output and --iso-output must be different files.");
+            throw new ArgumentException(L.T("--output and --iso-output must be different files."));
         }
 
         uint lba = arguments.GetUInt("lba", 0);
@@ -93,34 +100,24 @@ internal static class Program
             arguments.GetInt("search-lanes", 1));
 
         Console.WriteLine(
-            $"ECC Block: LBA {lba}, PSN 0x{checked(lba + psnOffset):X6}, "
-            + $"constraints {constraint.ConstrainedBits}, algorithm={AlgorithmName(algorithm)}, "
-            + $"iterations {options.Iterations}");
+            L.Format("ECC Block: LBA {0}, PSN 0x{1:X6}, constraints {2}, algorithm={3}, iterations {4}", lba, checked(lba + psnOffset), constraint.ConstrainedBits, AlgorithmName(algorithm), options.Iterations));
         if (algorithm == SolverAlgorithm.StateControl)
         {
             string adaptive = options.AdaptiveRetryEnabled
-                ? $"beam {options.RetryBeamWidth} on failed single frames"
-                : "disabled";
+                ? L.F($"beam {options.RetryBeamWidth} on failed single frames")
+                : L.T("disabled");
             Console.WriteLine(
-                $"bridge bytes/edge={options.BridgeBytes}, beam width={options.BeamWidth}, "
-                + $"frame fraction/pass={options.RetryFrameFraction:P0}, singleton retry={adaptive}, "
-                + $"ECC-closed batch={options.BatchFrames} frames/{options.BatchCandidates} candidates, "
-                + $"search lanes={options.SearchLanes}, "
-                + "payload candidates=state/level/DSV binary byte pairs, "
-                + "scoring=majority error then gray error");
+                L.Format("bridge bytes/edge={0}, beam width={1}, frame fraction/pass={2:P0}, singleton retry={3}, ECC-closed batch={4} frames/{5} candidates, search lanes={6}, payload candidates=state/level/DSV binary byte pairs, scoring=majority error then gray error", options.BridgeBytes, options.BeamWidth, options.RetryFrameFraction, adaptive, options.BatchFrames, options.BatchCandidates, options.SearchLanes));
         }
         else if (algorithm == SolverAlgorithm.Dispersion)
         {
             Console.WriteLine(
-                DispersionPaletteDescription() + ", "
-                + "image sampled at every payload code-word center");
+                L.Format("{0}, image sampled at every payload code-word center", DispersionPaletteDescription()));
         }
         if (constraint.ImageMapping is { } mapping)
         {
             Console.WriteLine(
-                $"image: {mapping.ImageWidth}x{mapping.ImageHeight}, "
-                + $"pitch={mapping.TrackPitchMicrometres:F4} um, "
-                + $"block radius={mapping.BlockStartRadiusMm:F6}..{mapping.BlockEndRadiusMm:F6} mm");
+                L.Format("image: {0}x{1}, pitch={2:F4} um, block radius={3:F6}..{4:F6} mm", mapping.ImageWidth, mapping.ImageHeight, mapping.TrackPitchMicrometres, mapping.BlockStartRadiusMm, mapping.BlockEndRadiusMm));
         }
 
         if (arguments.Has("constraint-output"))
@@ -142,7 +139,7 @@ internal static class Program
             {
                 if (iteration == 1 || iteration % progressEvery == 0 || best == 0)
                 {
-                    Console.WriteLine($"iteration {iteration}: current={current}, best={best}");
+                    Console.WriteLine(L.Format("iteration {0}: current={1}, best={2}", iteration, current, best));
                 }
             });
 
@@ -235,8 +232,7 @@ internal static class Program
                     : string.Empty)
             : string.Empty;
         Console.WriteLine(
-            $"done: {result.ScoreMetric}={result.Score}/{result.ScoreMaximum}{gray}{controlled}, "
-            + $"elapsed={result.Elapsed.TotalSeconds:F2}s, output={outputs}");
+            L.Format("done: {0}={1}/{2}{3}{4}, elapsed={5:F2}s, output={6}", result.ScoreMetric, result.Score, result.ScoreMaximum, gray, controlled, result.Elapsed.TotalSeconds, outputs));
         return 0;
     }
 
@@ -277,8 +273,7 @@ internal static class Program
             imageMapping: null,
             iso: null);
         Console.WriteLine(
-            $"encoded {payloads.Length} payload bytes into {result.ChannelLevels.Length} channel levels "
-            + $"({new FileInfo(outputPath).Length} packed bytes)");
+            L.Format("encoded {0} payload bytes into {1} channel levels ({2} packed bytes)", payloads.Length, result.ChannelLevels.Length, new FileInfo(outputPath).Length));
         return 0;
     }
 
@@ -317,9 +312,7 @@ internal static class Program
         CalibrationPreviewSummary summary = CalibrationPreviewRenderer.Render(imagePath, outputPath, options);
         WriteJson(outputPath + ".json", summary);
         Console.WriteLine(
-            $"preview: {summary.PreviewSize}x{summary.PreviewSize}, "
-            + $"generated pitch={summary.GeneratedTrackPitchMicrometres:F4} um, "
-            + $"actual pitch={summary.ActualTrackPitchMicrometres:F4} um, output={outputPath}");
+            L.Format("preview: {0}x{1}, generated pitch={2:F4} um, actual pitch={3:F4} um, output={4}", summary.PreviewSize, summary.PreviewSize, summary.GeneratedTrackPitchMicrometres, summary.ActualTrackPitchMicrometres, outputPath));
         return 0;
     }
 
@@ -376,9 +369,7 @@ internal static class Program
         IsoReadbackSummary summary = IsoReadbackRenderer.Render(isoPath, outputPath, options);
         WriteJson(outputPath + ".json", summary);
         Console.WriteLine(
-            $"readback: {summary.PreviewSize}x{summary.PreviewSize}, "
-            + $"classified={summary.ClassifiedSamples}/{summary.TotalSamples}, "
-            + $"pitch={summary.TrackPitchMicrometres:F4} um, output={outputPath}");
+            L.Format("readback: {0}x{1}, classified={2}/{3}, pitch={4:F4} um, output={5}", summary.PreviewSize, summary.PreviewSize, summary.ClassifiedSamples, summary.TotalSamples, summary.TrackPitchMicrometres, outputPath));
         return 0;
     }
 
@@ -417,7 +408,7 @@ internal static class Program
         bool filesAtOuterRing = ReadFilesAtOuterRing(arguments);
         if (!arguments.Has("image") || arguments.Has("target"))
         {
-            throw new ArgumentException("Range or fast output requires --image and does not accept --target.");
+            throw new ArgumentException(L.T("Range or fast output requires --image and does not accept --target."));
         }
 
         string isoOutputPath = arguments.Require("iso-output");
@@ -433,19 +424,18 @@ internal static class Program
         string? unsupportedOption = unsupported.FirstOrDefault(arguments.Has);
         if (unsupportedOption is not null)
         {
-            throw new ArgumentException($"--{unsupportedOption} is not supported with multi-block --fill-sectors.");
+            throw new ArgumentException(L.F($"--{unsupportedOption} is not supported with multi-block --fill-sectors."));
         }
 
         if (hybridMode && (arguments.Has("lba") || arguments.Has("fill-sectors")))
         {
             throw new ArgumentException(
-                "Hybrid --data-dir mode calculates --lba and --fill-sectors automatically; "
-                + "use --drawing-start-lba only when extra inner-ring space is required.");
+                L.T("Hybrid --data-dir mode calculates --lba and --fill-sectors automatically; use --drawing-start-lba only when extra inner-ring space is required."));
         }
 
         if (!hybridMode && arguments.Has("drawing-start-lba"))
         {
-            throw new ArgumentException("--drawing-start-lba requires --data-dir.");
+            throw new ArgumentException(L.T("--drawing-start-lba requires --data-dir."));
         }
 
         uint psnOffset = arguments.GetUInt("psn-offset", 0x30000);
@@ -455,14 +445,14 @@ internal static class Program
             ? true
             : initialMode.Equals("random", StringComparison.OrdinalIgnoreCase)
                 ? false
-                : throw new ArgumentException("--initial must be 'random' or 'zero'.");
+                : throw new ArgumentException(L.T("--initial must be 'random' or 'zero'."));
         SolverAlgorithm algorithm = ReadSolverAlgorithm(
             arguments,
             hybridMode ? "dispersion" : "full");
         bool fastOutput = ReadBoolean(arguments, "fast-output", fallback: hybridMode);
         if (fastOutput && algorithm != SolverAlgorithm.Dispersion)
         {
-            throw new ArgumentException("--fast-output true requires --algorithm dispersion.");
+            throw new ArgumentException(L.T("--fast-output true requires --algorithm dispersion."));
         }
 
         int iterationsPerBlock = arguments.Has("iterations-per-block")
@@ -486,7 +476,7 @@ internal static class Program
             if ((psnOffset & 0xF) != 0)
             {
                 throw new ArgumentException(
-                    "Hybrid mode requires --psn-offset to be aligned to a 16-sector ECC Block.");
+                    L.T("Hybrid mode requires --psn-offset to be aligned to a 16-sector ECC Block."));
             }
 
             HybridIsoImageWriter.LayoutPlan isoLayout = HybridIsoImageWriter.Plan(
@@ -503,53 +493,50 @@ internal static class Program
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(arguments),
-                    $"--drawing-start-lba must be at least {minimumDrawingLba} so it does not overwrite files.");
+                    L.F($"--drawing-start-lba must be at least {minimumDrawingLba} so it does not overwrite files."));
             }
 
             if (((lba + psnOffset) & 0xF) != 0)
             {
                 throw new ArgumentException(
-                    "--drawing-start-lba plus --psn-offset must be aligned to 16 sectors.");
+                    L.T("--drawing-start-lba plus --psn-offset must be aligned to 16 sectors."));
             }
 
             if (lba > imageMapping.TotalSectors)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(arguments),
-                    "--drawing-start-lba exceeds the reported disc size.");
+                    L.T("--drawing-start-lba exceeds the reported disc size."));
             }
 
             uint drawingEndLba = filesAtOuterRing
                 ? isoLayout.FileDataStartLba / DvdEccBlockEncoder.SectorCount * DvdEccBlockEncoder.SectorCount
                 : imageMapping.TotalSectors;
             if (drawingEndLba < lba)
-                throw new ArgumentException("The selected drawing range overlaps the outer-ring files.");
+                throw new ArgumentException(L.T("The selected drawing range overlaps the outer-ring files."));
             fillSectors = checked((drawingEndLba - lba)
                 / DvdEccBlockEncoder.SectorCount
                 * DvdEccBlockEncoder.SectorCount);
             if (fillSectors < DvdEccBlockEncoder.SectorCount)
             {
                 throw new ArgumentException(
-                    "The filesystem leaves no complete ECC Block for drawing in the selected file layout.");
+                    L.T("The filesystem leaves no complete ECC Block for drawing in the selected file layout."));
             }
 
             hybridIso = HybridIsoImageWriter.Create(isoLayout, isoOutputPath);
 
             Console.WriteLine(
-                $"hybrid ISO: files={hybridIso.FileCount}, directories={hybridIso.DirectoryCount}, "
-                + $"data={hybridIso.FileBytes} bytes, filesystem end LBA={hybridIso.DataEndLbaExclusive}, "
-                + $"files={(filesAtOuterRing ? "outer" : "inner")}, drawing LBA {lba}..{lba + fillSectors - 1}");
+                L.Format("hybrid ISO: files={0}, directories={1}, data={2} bytes, filesystem end LBA={3}, files={4}, drawing LBA {5}..{6}", hybridIso.FileCount, hybridIso.DirectoryCount, hybridIso.FileBytes, hybridIso.DataEndLbaExclusive, (filesAtOuterRing ? "outer" : "inner"), lba, lba + fillSectors - 1));
             if (!fastOutput)
             {
-                Console.WriteLine($"replaying inner-ring modulation boundary: 0..{lba - 1}");
+                Console.WriteLine(L.Format("replaying inner-ring modulation boundary: 0..{0}", lba - 1));
                 drawingInitialBoundary = ReplayIsoBoundary(
                     isoOutputPath,
                     lba,
                     psnOffset,
                     discInitialBoundary);
                 Console.WriteLine(
-                    $"drawing boundary: state={drawingInitialBoundary.State}, "
-                    + $"DSV={drawingInitialBoundary.Dsv}, level={drawingInitialBoundary.LevelName}");
+                    L.Format("drawing boundary: state={0}, DSV={1}, level={2}", drawingInitialBoundary.State, drawingInitialBoundary.Dsv, drawingInitialBoundary.LevelName));
             }
         }
         else
@@ -591,10 +578,7 @@ internal static class Program
         }
 
         Console.WriteLine(
-            $"raw ISO fill: LBA {lba}..{checked(lba + fillSectors - 1)}, "
-            + $"ECC blocks={totalBlocks}, iterations/block={iterationsPerBlock}, "
-            + $"algorithm={AlgorithmName(algorithm)}, "
-            + $"constraint step={imageMapping.SampleEveryChannelBits}");
+            L.Format("raw ISO fill: LBA {0}..{1}, ECC blocks={2}, iterations/block={3}, algorithm={4}, constraint step={5}", lba, checked(lba + fillSectors - 1), totalBlocks, iterationsPerBlock, AlgorithmName(algorithm), imageMapping.SampleEveryChannelBits));
         if (algorithm == SolverAlgorithm.Dispersion)
         {
             Console.WriteLine(
@@ -612,22 +596,17 @@ internal static class Program
                     || progress.CompletedBlocks % progressEvery == 0)
                 {
                     Console.WriteLine(
-                        $"block {progress.CompletedBlocks}/{progress.TotalBlocks}, LBA={progress.BlockLba}, "
-                        + $"{progress.ScoreMetric}={progress.Score}/{progress.ScoreMaximum}"
-                        + (progress.GrayScore is { } grayScore
+                        L.Format("block {0}/{1}, LBA={2}, {3}={4}/{5}{6}{7}state={8}, DSV={9}, elapsed={10:F1}s", progress.CompletedBlocks, progress.TotalBlocks, progress.BlockLba, progress.ScoreMetric, progress.Score, progress.ScoreMaximum, (progress.GrayScore is { } grayScore
                             && progress.GrayScoreMaximum is { } grayMaximum
                             ? $", {progress.GrayScoreMetric ?? "gray-error"}={grayScore}/{grayMaximum}, "
-                            : ", ")
-                        + (progress.ControlledScore is { } controlledScore
+                            : ", "), (progress.ControlledScore is { } controlledScore
                             && progress.ControlledScoreMaximum is { } controlledMaximum
                             ? $"controlled-majority={controlledScore}/{controlledMaximum}"
                                 + (progress.ControlledGrayScore is { } controlledGrayScore
                                     && progress.ControlledGrayScoreMaximum is { } controlledGrayMaximum
                                     ? $", controlled-gray={controlledGrayScore}/{controlledGrayMaximum}, "
                                     : ", ")
-                            : string.Empty)
-                        + $"state={progress.FinalBoundary.State}, DSV={progress.FinalBoundary.Dsv}, "
-                        + $"elapsed={progress.Elapsed.TotalSeconds:F1}s");
+                            : string.Empty), progress.FinalBoundary.State, progress.FinalBoundary.Dsv, progress.Elapsed.TotalSeconds));
                 }
             });
 
@@ -735,21 +714,17 @@ internal static class Program
         };
         WriteJson(isoOutputPath + ".json", metadata);
         Console.WriteLine(
-            $"done: blocks={result.CompletedBlocks}, "
-            + $"{result.ScoreMetric}={result.TotalScore}/{result.TotalScoreMaximum}"
-            + (result.TotalGrayScore is { } grayScore
+            L.Format("done: blocks={0}, {1}={2}/{3}{4}{5}elapsed={6:F1}s, output={7}", result.CompletedBlocks, result.ScoreMetric, result.TotalScore, result.TotalScoreMaximum, (result.TotalGrayScore is { } grayScore
                 && result.TotalGrayScoreMaximum is { } grayMaximum
                 ? $", {result.GrayScoreMetric ?? "gray-error"}={grayScore}/{grayMaximum}, "
-                : ", ")
-            + (result.TotalControlledScore is { } controlledScore
+                : ", "), (result.TotalControlledScore is { } controlledScore
                 && result.TotalControlledScoreMaximum is { } controlledMaximum
                 ? $"controlled-majority={controlledScore}/{controlledMaximum}"
                     + (result.TotalControlledGrayScore is { } controlledGrayScore
                         && result.TotalControlledGrayScoreMaximum is { } controlledGrayMaximum
                         ? $", controlled-gray={controlledGrayScore}/{controlledGrayMaximum}, "
                         : ", ")
-                : string.Empty)
-            + $"elapsed={result.Elapsed.TotalSeconds:F1}s, output={isoOutputPath}");
+                : string.Empty), result.Elapsed.TotalSeconds, isoOutputPath));
         return 0;
     }
 
@@ -759,10 +734,10 @@ internal static class Program
         {
             "inner" => false,
             "outer" => true,
-            _ => throw new ArgumentException("--file-position must be 'inner' or 'outer'."),
+            _ => throw new ArgumentException(L.T("--file-position must be 'inner' or 'outer'.")),
         };
         if (outer && !arguments.Has("data-dir"))
-            throw new ArgumentException("--file-position outer requires --data-dir.");
+            throw new ArgumentException(L.T("--file-position outer requires --data-dir."));
         return outer;
     }
 
@@ -774,14 +749,9 @@ internal static class Program
         HybridIsoWriteSummary? hybridIso)
     {
         Console.WriteLine(
-            $"fast raw ISO fill: LBA {options.StartLba}.."
-            + $"{checked(options.StartLba + options.FillSectors - 1)}, "
-            + $"ECC blocks={options.FillSectors / DvdEccBlockEncoder.SectorCount}, "
-            + "algorithm=dispersion, ECC/EFM replay=skipped, "
-            + $"workers={(options.FastParallelism == 0 ? Environment.ProcessorCount : options.FastParallelism)}");
+            L.Format("fast raw ISO fill: LBA {0}..{1}, ECC blocks={2}, algorithm=dispersion, ECC/EFM replay=skipped, workers={3}", options.StartLba, checked(options.StartLba + options.FillSectors - 1), options.FillSectors / DvdEccBlockEncoder.SectorCount, (options.FastParallelism == 0 ? Environment.ProcessorCount : options.FastParallelism)));
         Console.WriteLine(
-            DispersionPaletteDescription() + ", "
-            + "image sampled at every payload code-word center");
+            L.Format("{0}, image sampled at every payload code-word center", DispersionPaletteDescription()));
 
         FastDispersionWriteResult result = FastDispersionImageWriter.Write(
             arguments.Require("image"),
@@ -800,9 +770,7 @@ internal static class Program
                         ? 0
                         : mebibytes / progress.Elapsed.TotalSeconds;
                     Console.WriteLine(
-                        $"block {progress.CompletedBlocks}/{progress.TotalBlocks}, "
-                        + $"LBA={progress.BlockLba}, controlled={progress.ControlledWords}, "
-                        + $"rate={rate:F2} MiB/s, elapsed={progress.Elapsed.TotalSeconds:F1}s");
+                        L.Format("block {0}/{1}, LBA={2}, controlled={3}, rate={4:F2} MiB/s, elapsed={5:F1}s", progress.CompletedBlocks, progress.TotalBlocks, progress.BlockLba, progress.ControlledWords, rate, progress.Elapsed.TotalSeconds));
                 }
             });
 
@@ -853,10 +821,7 @@ internal static class Program
             ? 0
             : totalMebibytes / result.Elapsed.TotalSeconds;
         Console.WriteLine(
-            $"done: blocks={result.CompletedBlocks}, controlled={result.ControlledWords}, "
-            + "payload-transition-class-error=0, boundary=not replayed, "
-            + $"rate={finalRate:F2} MiB/s, elapsed={result.Elapsed.TotalSeconds:F1}s, "
-            + $"output={isoOutputPath}");
+            L.Format("done: blocks={0}, controlled={1}, payload-transition-class-error=0, boundary=not replayed, rate={2:F2} MiB/s, elapsed={3:F1}s, output={4}", result.CompletedBlocks, result.ControlledWords, finalRate, result.Elapsed.TotalSeconds, isoOutputPath));
         return 0;
     }
 
@@ -868,7 +833,7 @@ internal static class Program
             if (payload.Length != DvdEccBlockEncoder.PayloadBytesPerBlock)
             {
                 throw new ArgumentException(
-                    $"Seed payload must contain exactly {DvdEccBlockEncoder.PayloadBytesPerBlock} bytes.");
+                    L.F($"Seed payload must contain exactly {DvdEccBlockEncoder.PayloadBytesPerBlock} bytes."));
             }
 
             return payload;
@@ -882,7 +847,7 @@ internal static class Program
         }
         else if (!mode.Equals("zero", StringComparison.OrdinalIgnoreCase))
         {
-            throw new ArgumentException("--initial must be 'random' or 'zero'.");
+            throw new ArgumentException(L.T("--initial must be 'random' or 'zero'."));
         }
 
         return generated;
@@ -894,7 +859,7 @@ internal static class Program
         bool hasImage = arguments.Has("image");
         if (hasTarget == hasImage)
         {
-            throw new ArgumentException("Specify exactly one of --target or --image.");
+            throw new ArgumentException(L.T("Specify exactly one of --target or --image."));
         }
 
         if (hasTarget)
@@ -949,7 +914,7 @@ internal static class Program
         if (!tone.IsDvdCompatible)
         {
             throw new ArgumentException(
-                "DVD dispersion uses two textures; --tone-levels must be 2.");
+                L.T("DVD dispersion uses two textures; --tone-levels must be 2."));
         }
 
         return tone;
@@ -960,7 +925,7 @@ internal static class Program
         string plain = $"pitch-{order}";
         string generated = $"generated-pitch-{order}";
         if (arguments.Has(plain) && arguments.Has(generated))
-            throw new ArgumentException($"Use only one of --{plain} and --{generated}.");
+            throw new ArgumentException(L.F($"Use only one of --{plain} and --{generated}."));
         return arguments.GetDouble(arguments.Has(generated) ? generated : plain, 0);
     }
 
@@ -987,12 +952,12 @@ internal static class Program
         bool hasBlocks = arguments.Has("total-blocks");
         if (hasSectors && hasBlocks)
         {
-            throw new ArgumentException("Use only one of --total-sectors and --total-blocks.");
+            throw new ArgumentException(L.T("Use only one of --total-sectors and --total-blocks."));
         }
 
         if (!hasSectors && !hasBlocks)
         {
-            throw new ArgumentException("Image mapping requires --total-sectors (or its alias --total-blocks).");
+            throw new ArgumentException(L.T("Image mapping requires --total-sectors (or its alias --total-blocks)."));
         }
 
         return arguments.GetUInt(hasSectors ? "total-sectors" : "total-blocks", 0);
@@ -1014,7 +979,7 @@ internal static class Program
     {
         if (sectorCount % DvdEccBlockEncoder.SectorCount != 0)
         {
-            throw new ArgumentException("Boundary replay sector count must be aligned to 16 sectors.");
+            throw new ArgumentException(L.T("Boundary replay sector count must be aligned to 16 sectors."));
         }
 
         int totalBlocks = checked((int)(sectorCount / DvdEccBlockEncoder.SectorCount));
@@ -1042,8 +1007,7 @@ internal static class Program
             if (completed == 1 || completed == totalBlocks || completed % progressEvery == 0)
             {
                 Console.WriteLine(
-                    $"inner boundary block {completed}/{totalBlocks}, "
-                    + $"state={boundary.State}, DSV={boundary.Dsv}, level={boundary.LevelName}");
+                    L.Format("inner boundary block {0}/{1}, state={2}, DSV={3}, level={4}", completed, totalBlocks, boundary.State, boundary.Dsv, boundary.LevelName));
             }
         }
 
@@ -1061,7 +1025,7 @@ internal static class Program
         {
             if (arguments.Has("iso-template") || arguments.Has("iso-sectors"))
             {
-                throw new ArgumentException("--iso-template and --iso-sectors require --iso-output.");
+                throw new ArgumentException(L.T("--iso-template and --iso-sectors require --iso-output."));
             }
 
             return null;
@@ -1071,7 +1035,7 @@ internal static class Program
         {
             if (arguments.Has("iso-sectors"))
             {
-                throw new ArgumentException("--iso-sectors cannot be combined with --iso-template.");
+                throw new ArgumentException(L.T("--iso-sectors cannot be combined with --iso-template."));
             }
 
             string templatePath = arguments.Require("iso-template");
@@ -1079,8 +1043,7 @@ internal static class Program
             if (imageMapping is not null && templateSectors != imageMapping.TotalSectors)
             {
                 throw new ArgumentException(
-                    $"ISO template has {templateSectors} sectors, but image mapping used "
-                    + $"{imageMapping.TotalSectors} sectors.");
+                    L.F($"ISO template has {templateSectors} sectors, but image mapping used {imageMapping.TotalSectors} sectors."));
             }
 
             return IsoImageWriter.PatchTemplate(templatePath, isoOutputPath, payloads, lba);
@@ -1093,8 +1056,7 @@ internal static class Program
             if (imageMapping is not null && volumeSectors != imageMapping.TotalSectors)
             {
                 throw new ArgumentException(
-                    $"--iso-sectors is {volumeSectors}, but image mapping used "
-                    + $"{imageMapping.TotalSectors} sectors.");
+                    L.F($"--iso-sectors is {volumeSectors}, but image mapping used {imageMapping.TotalSectors} sectors."));
             }
         }
         else if (imageMapping is not null)
@@ -1104,7 +1066,7 @@ internal static class Program
         else
         {
             throw new ArgumentException(
-                "Minimal ISO output requires --iso-sectors when the constraint does not come from an image.");
+                L.T("Minimal ISO output requires --iso-sectors when the constraint does not come from an image."));
         }
 
         return IsoImageWriter.CreateMinimal(
@@ -1124,7 +1086,7 @@ internal static class Program
             ? true
             : level.Equals("pit", StringComparison.OrdinalIgnoreCase)
                 ? false
-                : throw new ArgumentException("--initial-level must be 'pit' or 'land'.");
+                : throw new ArgumentException(L.T("--initial-level must be 'pit' or 'land'."));
         return ModulationBoundary.Validate(checked((byte)state), dsv, isLand);
     }
 
@@ -1135,7 +1097,7 @@ internal static class Program
             ? true
             : direction.Equals("ccw", StringComparison.OrdinalIgnoreCase)
                 ? false
-                : throw new ArgumentException("--spiral-direction must be 'ccw' or 'cw'.");
+                : throw new ArgumentException(L.T("--spiral-direction must be 'ccw' or 'cw'."));
     }
 
     private static SolverAlgorithm ReadSolverAlgorithm(
@@ -1149,8 +1111,7 @@ internal static class Program
             "state-control" or "control" => SolverAlgorithm.StateControl,
             "dispersion" or "byte-pool" => SolverAlgorithm.Dispersion,
             _ => throw new ArgumentException(
-                "--algorithm must be 'full' (alias 'exact'), 'state-control' "
-                + "(alias 'control'), or 'dispersion' (alias 'byte-pool')."),
+                L.T("--algorithm must be 'full' (alias 'exact'), 'state-control' (alias 'control'), or 'dispersion' (alias 'byte-pool').")),
         };
     }
 
@@ -1169,7 +1130,7 @@ internal static class Program
             || arguments.Has("parallelism")
             || arguments.Has("word-candidates"))
         {
-            throw new ArgumentException("--frame-candidates, --parallel-candidates, --parallelism and --word-candidates belonged to removed search modes; state-control now uses state/level/current-DSV binary byte pairs and --beam-width.");
+            throw new ArgumentException(L.T("--frame-candidates, --parallel-candidates, --parallelism and --word-candidates belonged to removed search modes; state-control now uses state/level/current-DSV binary byte pairs and --beam-width."));
         }
 
         if (algorithm != SolverAlgorithm.StateControl)
@@ -1179,13 +1140,13 @@ internal static class Program
 
         if (arguments.Has("control-bytes"))
         {
-            throw new ArgumentException("--control-bytes belonged to the removed control-pool algorithm; use --bridge-bytes.");
+            throw new ArgumentException(L.T("--control-bytes belonged to the removed control-pool algorithm; use --bridge-bytes."));
         }
 
         if (arguments.Has("mutation-bytes"))
         {
             throw new ArgumentException(
-                "--mutation-bytes is only used by --algorithm full; state-control uses deterministic codeword selection.");
+                L.T("--mutation-bytes is only used by --algorithm full; state-control uses deterministic codeword selection."));
         }
     }
 
@@ -1194,7 +1155,7 @@ internal static class Program
         int value = arguments.GetInt(key, fallback);
         if (value < minimum || value > 255)
         {
-            throw new ArgumentOutOfRangeException(nameof(arguments), $"--{key} must be {minimum}..255.");
+            throw new ArgumentOutOfRangeException(nameof(arguments), L.F($"--{key} must be {minimum}..255."));
         }
 
         return value;
@@ -1217,13 +1178,13 @@ internal static class Program
                     || value == "0"
                         ? false
                         : throw new ArgumentException(
-                            $"--{key} must be true/false, yes/no, or 1/0.");
+                            L.F($"--{key} must be true/false, yes/no, or 1/0."));
     }
 
     private static double RequireDouble(CliArguments arguments, string key)
         => arguments.Has(key)
             ? arguments.GetDouble(key, 0)
-            : throw new ArgumentException($"Missing required option --{key}.");
+            : throw new ArgumentException(L.F($"Missing required option --{key}."));
 
     private static void WriteMetadata(
         string path,
@@ -1348,10 +1309,9 @@ internal static class Program
     }
 
     private static string DispersionPaletteDescription()
-        => "dispersion black/white pool: Q="
-            + string.Join(",", Enumerable.Range(0, 2)
-                .Select(level => $"0x{DvdGrayscalePalette.GetScrambledByteForLevel(level):X2}"))
-            + "; nominal luminance=0,255; threshold=128";
+        => L.Format("dispersion black/white pool: Q={0}; nominal luminance=0,255; threshold=128",
+            string.Join(",", Enumerable.Range(0, 2)
+                .Select(level => $"0x{DvdGrayscalePalette.GetScrambledByteForLevel(level):X2}")));
 
     private static object DispersionPaletteMetadata() => new
     {
@@ -1410,148 +1370,7 @@ internal static class Program
 
     private static void PrintHelp()
     {
-        Console.WriteLine(
-            """
-            DVD NRZI image constraint solver
-
-            Solve one 16-sector ECC Block:
-              DvdImageSolver solve (--target TARGET.txt | --image IMAGE.png)
-                (--output payload.bin | --iso-output image.iso) [options]
-
-            Encode one 32768-byte payload block:
-              DvdImageSolver encode --input payload.bin --output channel.bin [options]
-
-            Render a radius-calibration preview:
-              DvdImageSolver calibrate --image IMAGE.png --output PREVIEW.png [options]
-
-            Simulate the read-back of a generated ISO:
-              DvdImageSolver simulate --iso IMAGE.iso --output PREVIEW.png [options]
-
-            Common options:
-              --lba N                   Initial LBA only; following 15 sectors are consecutive (default 0)
-              --psn-offset N            Decimal or 0x-prefixed PSN offset (default 0x30000)
-              --initial-state 1..4      Initial EFMPlus state (default 1)
-              --initial-dsv N           Initial DSV (default 0)
-              --initial-level pit|land Initial physical NRZI level (default land)
-
-            Solve options:
-              --image FILE              Source image mapped onto the disc (e.g. PNG or JPEG)
-              --total-sectors N         Reported count of 2048-byte sectors (required with --image)
-              --total-blocks N          Alias for --total-sectors
-              --inner-radius-mm N       Track start radius (default 24.0)
-              --outer-radius-mm N       Track end radius (default 58.0)
-              --pitch-linear N          Linear radial pitch coefficient (default 0)
-              --pitch-quadratic N       Quadratic radial pitch coefficient (default 0)
-              --pitch-cubic N           Cubic radial pitch coefficient (default 0)
-                                        pitch(r)=p0*(1+a1*x+a2*x^2+a3*x^3),
-                                        x=(r-inner)/(outer-inner); p0 follows total track length
-              --channel-bit-nm N        Physical channel-bit length (default 133.3)
-              --start-angle-deg N       Track start angle (default 0)
-              --spiral-direction ccw|cw Polar direction (default cw)
-              --image-threshold 0..255  Binary full/state-control threshold (default 128)
-              --tone-dither 0..1        Mix black/white textures per sample; 0 is the hard threshold
-              --tone-levels 2           DVD dispersion has two textures; only 2 is accepted
-              --tone-brightness N       Shift the tone ramp by -64..64 (default 0)
-              --tone-gamma true|false   Decode sRGB before dithering (default false)
-              --alpha-threshold 1..255  Lower alpha is unconstrained (default 1)
-              --constraint-output FILE  Save the mapped 619008-symbol target
-              --constraint-step N       Constrain every Nth channel bit (single block default 1)
-              --fill-sectors N          Fill N consecutive sectors; N must be a multiple of 16
-              --data-dir DIR            Hybrid disc: store this directory together with the drawing
-              --file-position MODE      inner (default) or outer; outer requires --data-dir
-              --drawing-start-lba N     Hybrid override; must follow all files and align to an ECC Block
-              --fast-output true|false Direct dispersion ISO output without ECC/EFM replay
-                                        (default false; true in hybrid mode)
-              --fast-parallelism 0..64 Fast-output workers; 0 selects processor count (default 0)
-              --iterations-per-block N  Full/state-control passes; dispersion ignores search (defaults 100/3/1)
-              --iso-output FILE         Write a directly burnable 2048-byte/sector ISO image
-              --iso-sectors N           Sector count for a new minimal ISO (image mode reuses total sectors)
-              --iso-template FILE       Copy an existing ISO and replace sectors LBA..LBA+15
-              --volume-label TEXT       Label for a new minimal ISO (default DVD_IMAGE)
-              --target-sector 0..15     Placement for a one-sector target (default 0)
-              --algorithm full|state-control|dispersion
-                                        Bit search, state control, or black/white dispersion texture pool
-              --iterations N            Full/state-control passes; dispersion ignores search (defaults 1000/3/1)
-              --mutation-bytes N        Bytes changed per full-mode proposal (default 4)
-              --bridge-bytes N          Payload bridge bytes at each free-frame edge (default 2)
-              --beam-width N            Base EFMPlus prefix paths per Sync Frame (default 8)
-              --retry-beam-width N      Beam for failed single-frame retries (default 32; 0 disables)
-              --retry-frame-fraction N  Worst-frame fraction attempted per pass; 0 means all (default 0.25)
-              --batch-frames N          Frames per ECC-closed candidate batch (default 8)
-              --batch-candidates N      Fully rebuilt candidates per batch (default 4)
-              --search-lanes 1..8       Deterministic independent restarts; exact best wins (default 1)
-              --seed N                  Deterministic random seed (default 1)
-              --initial random|zero     Initial payload mode (default random)
-              --seed-payload FILE       Initial 32768-byte payload
-              --channel-output FILE     Also write packed final NRZI levels
-
-            Target format:
-              38688 symbols for one sector or 619008 for a full ECC Block.
-              0/P = pit/black, 1/L = land/white, ? = unconstrained; whitespace is ignored.
-
-            State-control chooses payload bytes directly from image-ranked EFMPlus code words and
-            keeps a beam of exact dual-stream prefix states. Search is driven by controllable payload
-            words; the reported majority/gray scores cover every 16-bit channel word, including
-            fixed/EDC/PI/PO and both SYNC words. Stream, DSV and final boundaries remain exact.
-
-            Dispersion maps luminance bins 0..127 and 128..255 to scrambled
-            EFMPlus input bytes 0xA5 and 0x92 (5 and 2 transitions), then
-            reverses DVD payload scrambling for ISO output. Nominal preview levels are 0 and 255.
-            It samples every payload code-word center regardless of --constraint-step and
-            --image-threshold. These values are not calibrated optical luminance. Opaque
-            black/white images use nearest-neighbor sampling to preserve their dither pattern.
-            Other images retain alpha-weighted bilinear sampling. Q=0x66 and 0xB9 are not
-            generated; old ISOs retain readback of 66 as black and B9 as nominal dark gray 85.
-            With --fast-output true, payload selection is unchanged but final ECC/EFM boundary and
-            DSV verification are skipped; the JSON finalBoundary is therefore null.
-
-            Hybrid --data-dir mode builds a mountable ISO9660/Joliet filesystem. Files default to the inner ring;
-            --file-position outer reserves the outer ring for files and draws between front metadata and files.
-            Drawing boundaries align to ECC Blocks and never overwrite the filesystem.
-            It defaults to dispersion plus fast output. --lba and --fill-sectors are
-            automatic in this mode; use --drawing-start-lba to leave additional inner-ring space.
-
-            Calibration options:
-              --total-sectors N
-              --generated-inner-radius-mm N
-              --generated-outer-radius-mm N
-              --actual-inner-radius-mm N
-              --actual-outer-radius-mm N
-              --pitch-linear N          Generated linear pitch coefficient (default 0)
-              --pitch-quadratic N       Generated quadratic pitch coefficient (default 0)
-              --pitch-cubic N           Generated cubic pitch coefficient (default 0)
-                                        --generated-pitch-* aliases are also accepted
-              --actual-pitch-linear N   Actual linear pitch coefficient (default 0)
-              --actual-pitch-quadratic N Actual quadratic pitch coefficient (default 0)
-              --actual-pitch-cubic N    Actual cubic pitch coefficient (default 0)
-              --channel-bit-nm N        Default 133.3
-              --spiral-direction ccw|cw Default cw; no rotation-offset calibration
-              --image-threshold 0..255  Accepted for compatibility; black/white preview uses 128
-              --alpha-threshold 1..255  Default 1
-              --preview-size 64..8192   Square PNG size (default 1024)
-              --samples-per-sector 1..4096 Forward geometry samples per sector (default 16)
-              --lba N                   First visible sector (default 0)
-              --fill-sectors N          Visible sector count (default: remainder of disc)
-
-            Simulation options (source is the generated ISO, not an image):
-              --iso FILE                Generated ISO image (required)
-              --inner-radius-mm N       Measured inner radius of the burned spiral
-              --outer-radius-mm N       Measured outer radius of the burned spiral
-              --pitch-linear N          Measured linear pitch coefficient (default 0)
-              --pitch-quadratic N       Measured quadratic pitch coefficient (default 0)
-              --pitch-cubic N           Measured cubic pitch coefficient (default 0)
-              --total-sectors N         Disc sector count; defaults to the solve sidecar
-                                        JSON (IMAGE.iso.json) or the ISO file size
-              --psn-offset N            Decimal or 0x-prefixed PSN offset (default 0x30000)
-              --lba N                   First visible sector; defaults to the sidecar
-                                        drawing start (0 when absent)
-              --fill-sectors N          Visible sector count; defaults to the sidecar
-                                        drawing length (remainder of the ISO when absent)
-              --channel-bit-nm N        Default 133.3
-              --spiral-direction ccw|cw Default cw
-              --preview-size 64..8192   Square PNG size (default 1024)
-              --samples-per-sector 1..2048 Payload bytes sampled per sector (default 16)
-
-            """);
+        Console.WriteLine(CommandHelp.Dvd);
+        Console.WriteLine(L.T("Cli.LanguageHelp"));
     }
 }

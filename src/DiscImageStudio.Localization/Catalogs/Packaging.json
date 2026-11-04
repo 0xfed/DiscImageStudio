@@ -1,0 +1,317 @@
+{
+  "Packaging.WindowsRequired": {
+    "en": "The Windows executable and its WPF smoke checks must be built on Windows.",
+    "zh-CN": "Windows 可执行文件及其 WPF 冒烟检查必须在 Windows 上构建。",
+    "zh-TW": "Windows 執行檔及其 WPF 冒煙檢查必須在 Windows 上建置。",
+    "ja": "Windows 実行ファイルと WPF スモークチェックは Windows 上でビルドする必要があります。",
+    "tr": "Windows yürütülebilir dosyası ve WPF duman denetimleri Windows üzerinde derlenmelidir."
+  },
+  "Packaging.ReleaseOutside": {
+    "en": "Release output resolved outside the workspace: {0}",
+    "zh-CN": "发布输出解析到了工作区之外：{0}",
+    "zh-TW": "發行輸出解析至工作區之外：{0}",
+    "ja": "リリース出力の解決先がワークスペース外です：{0}",
+    "tr": "Sürüm çıktısı çalışma alanı dışına çözümlendi: {0}"
+  },
+  "Packaging.ReleaseLink": {
+    "en": "Release output must not pass through a junction or symbolic link: {0}",
+    "zh-CN": "发布输出不得经过联接点或符号链接：{0}",
+    "zh-TW": "發行輸出不得經過接合點或符號連結：{0}",
+    "ja": "リリース出力のパスにジャンクションやシンボリックリンクは使用できません：{0}",
+    "tr": "Sürüm çıktısı bir birleşim noktası veya sembolik bağlantıdan geçmemelidir: {0}"
+  },
+  "Packaging.RefuseClearLinks": {
+    "en": "Refusing to clear a release directory containing junctions or symbolic links: {0}",
+    "zh-CN": "拒绝清空含联接点或符号链接的发布目录：{0}",
+    "zh-TW": "拒絕清空含接合點或符號連結的發行目錄：{0}",
+    "ja": "ジャンクションやシンボリックリンクを含むリリースディレクトリは消去しません：{0}",
+    "tr": "Birleşim noktası veya sembolik bağlantı içeren sürüm dizini temizlenmedi: {0}"
+  },
+  "Packaging.CommandFailed": {
+    "en": "{0} failed with exit code {1}.",
+    "zh-CN": "{0} 失败，退出码为 {1}。",
+    "zh-TW": "{0} 失敗，結束代碼為 {1}。",
+    "ja": "{0} が終了コード {1} で失敗しました。",
+    "tr": "{0}, {1} çıkış koduyla başarısız oldu."
+  },
+  "Packaging.ExecutableMissing": {
+    "en": "Published executable is missing: {0}",
+    "zh-CN": "缺少已发布的可执行文件：{0}",
+    "zh-TW": "缺少已發佈的執行檔：{0}",
+    "ja": "発行した実行ファイルがありません：{0}",
+    "tr": "Yayımlanan yürütülebilir dosya eksik: {0}"
+  },
+  "Packaging.ExecutableVersion": {
+    "en": "Published executable version '{0}' does not match '{1}'.",
+    "zh-CN": "已发布的可执行文件版本“{0}”与“{1}”不一致。",
+    "zh-TW": "已發佈的執行檔版本「{0}」與「{1}」不一致。",
+    "ja": "発行した実行ファイルのバージョン「{0}」が「{1}」と一致しません。",
+    "tr": "Yayımlanan yürütülebilir dosyanın '{0}' sürümü '{1}' ile eşleşmiyor."
+  },
+  "Packaging.CheckingPackage": {
+    "en": "Checking published package: {0}",
+    "zh-CN": "正在检查发布包：{0}",
+    "zh-TW": "正在檢查發行套件：{0}",
+    "ja": "発行したパッケージを確認中：{0}",
+    "tr": "Yayımlanan paket denetleniyor: {0}"
+  },
+  "Packaging.PackageCheckFailed": {
+    "en": "Published package check '{0}' failed with exit code {1}. See {2} for logs.",
+    "zh-CN": "发布包检查“{0}”失败，退出码为 {1}。日志见 {2}。",
+    "zh-TW": "發行套件檢查「{0}」失敗，結束代碼為 {1}。記錄請見 {2}。",
+    "ja": "発行パッケージのチェック「{0}」が終了コード {1} で失敗しました。ログ：{2}。",
+    "tr": "Yayımlanan paket denetimi '{0}', {1} çıkış koduyla başarısız oldu. Günlükler: {2}."
+  },
+  "Packaging.SmokeMissing": {
+    "en": "Smoke check did not produce its expected output: {0}",
+    "zh-CN": "冒烟检查未生成预期输出：{0}",
+    "zh-TW": "冒煙檢查未產生預期輸出：{0}",
+    "ja": "スモークチェックで期待する出力が生成されませんでした：{0}",
+    "tr": "Duman denetimi beklenen çıktıyı üretmedi: {0}"
+  },
+  "Packaging.SmokeLength": {
+    "en": "Smoke output '{0}' has {1} bytes; expected {2}.",
+    "zh-CN": "冒烟输出“{0}”为 {1} 字节；预期 {2} 字节。",
+    "zh-TW": "冒煙輸出「{0}」為 {1} 位元組；預期 {2} 位元組。",
+    "ja": "スモーク出力「{0}」は {1} バイトです。期待値は {2} バイトです。",
+    "tr": "Duman çıktısı '{0}' {1} bayt; beklenen {2}."
+  },
+  "Packaging.CueMissing": {
+    "en": "WAV generation did not produce a CUE sheet: {0}",
+    "zh-CN": "WAV 生成未产出 CUE 文件：{0}",
+    "zh-TW": "WAV 產生作業未產出 CUE 檔案：{0}",
+    "ja": "WAV 生成で CUE シートが生成されませんでした：{0}",
+    "tr": "WAV üretimi CUE dosyası oluşturmadı: {0}"
+  },
+  "Packaging.UnexpectedCue": {
+    "en": "cd-generate --cue false still produced a CUE sheet for {0}",
+    "zh-CN": "cd-generate --cue false 仍为 {0} 生成了 CUE 文件",
+    "zh-TW": "cd-generate --cue false 仍為 {0} 產生了 CUE 檔案",
+    "ja": "cd-generate --cue false が {0} の CUE シートを生成しました",
+    "tr": "cd-generate --cue false, {0} için yine CUE dosyası üretti"
+  },
+  "Packaging.SnapshotMissing": {
+    "en": "WPF smoke check did not produce a UI snapshot: {0}",
+    "zh-CN": "WPF 冒烟检查未生成界面快照：{0}",
+    "zh-TW": "WPF 冒煙檢查未產生介面快照：{0}",
+    "ja": "WPF スモークチェックで UI スナップショットが生成されませんでした：{0}",
+    "tr": "WPF duman denetimi arayüz anlık görüntüsü üretmedi: {0}"
+  },
+  "Packaging.IsolatedMismatch": {
+    "en": "The isolated executable does not match the release executable.",
+    "zh-CN": "隔离目录中的可执行文件与发布文件不一致。",
+    "zh-TW": "隔離目錄中的執行檔與發行檔案不一致。",
+    "ja": "隔離した実行ファイルがリリース実行ファイルと一致しません。",
+    "tr": "Yalıtılmış yürütülebilir dosya sürüm dosyasıyla eşleşmiyor."
+  },
+  "Packaging.ReleaseReady": {
+    "en": "Single executable release ready: {0}",
+    "zh-CN": "单文件可执行发布已就绪：{0}",
+    "zh-TW": "單一執行檔發行已就緒：{0}",
+    "ja": "単一実行ファイルのリリースが準備できました：{0}",
+    "tr": "Tek yürütülebilir dosyalı sürüm hazır: {0}"
+  },
+  "Packaging.Checksums": {
+    "en": "Checksums: {0}",
+    "zh-CN": "校验和：{0}",
+    "zh-TW": "總和檢查碼：{0}",
+    "ja": "チェックサム：{0}",
+    "tr": "Sağlama toplamları: {0}"
+  },
+  "Packaging.StableRequired": {
+    "en": "Store packages require a stable version. Clear VersionSuffix or explicitly select a numeric test-package version.",
+    "zh-CN": "商店包需要正式版本。请清空 VersionSuffix，或明确指定纯数字的测试包版本。",
+    "zh-TW": "商店套件需要正式版本。請清空 VersionSuffix，或明確指定純數字的測試套件版本。",
+    "ja": "Store パッケージには安定版が必要です。VersionSuffix を空にするか、数値だけのテストパッケージバージョンを明示してください。",
+    "tr": "Mağaza paketleri kararlı sürüm gerektirir. VersionSuffix değerini temizleyin veya sayısal test paketi sürümünü açıkça seçin."
+  },
+  "Packaging.SigningConflict": {
+    "en": "UnsignedDevelopmentPackage cannot be combined with CertificateThumbprint.",
+    "zh-CN": "UnsignedDevelopmentPackage 不能与 CertificateThumbprint 同时使用。",
+    "zh-TW": "UnsignedDevelopmentPackage 不能與 CertificateThumbprint 同時使用。",
+    "ja": "UnsignedDevelopmentPackage と CertificateThumbprint は同時に指定できません。",
+    "tr": "UnsignedDevelopmentPackage ile CertificateThumbprint birlikte kullanılamaz."
+  },
+  "Packaging.StoreVersion": {
+    "en": "Store package version must be A.B.C.0; A must be 1..65535 and B/C must be 0..65535.",
+    "zh-CN": "商店包版本必须为 A.B.C.0；A 必须为 1..65535，B/C 必须为 0..65535。",
+    "zh-TW": "商店套件版本必須為 A.B.C.0；A 必須為 1..65535，B/C 必須為 0..65535。",
+    "ja": "Store パッケージのバージョンは A.B.C.0、A は 1..65535、B/C は 0..65535 にする必要があります。",
+    "tr": "Mağaza paketi sürümü A.B.C.0 olmalı; A 1..65535, B/C 0..65535 aralığında olmalıdır."
+  },
+  "Packaging.PackageOutside": {
+    "en": "Packaging output resolved outside the workspace.",
+    "zh-CN": "打包输出解析到了工作区之外。",
+    "zh-TW": "封裝輸出解析至工作區之外。",
+    "ja": "パッケージ出力の解決先がワークスペース外です。",
+    "tr": "Paketleme çıktısı çalışma alanı dışına çözümlendi."
+  },
+  "Packaging.SourceChanged": {
+    "en": "Source files changed while publishing. Run the package build again from a stable workspace.",
+    "zh-CN": "发布过程中源文件发生变化。请在工作区稳定后重新构建包。",
+    "zh-TW": "發佈過程中來源檔案已變更。請在工作區穩定後重新建置套件。",
+    "ja": "発行中にソースファイルが変更されました。ワークスペースが安定してから再度パッケージをビルドしてください。",
+    "tr": "Yayımlama sırasında kaynak dosyalar değişti. Kararlı çalışma alanından paket derlemesini yeniden çalıştırın."
+  },
+  "Packaging.ManifestVersion": {
+    "en": "Published executable version does not match the MSIX manifest version.",
+    "zh-CN": "已发布的可执行文件版本与 MSIX 清单版本不一致。",
+    "zh-TW": "已發佈的執行檔版本與 MSIX 資訊清單版本不一致。",
+    "ja": "発行した実行ファイルのバージョンが MSIX マニフェストと一致しません。",
+    "tr": "Yayımlanan yürütülebilir dosyanın sürümü MSIX bildirim sürümüyle eşleşmiyor."
+  },
+  "Packaging.LegacySetter": {
+    "en": "Published executable contains the legacy CD session-finalization setter.",
+    "zh-CN": "已发布的可执行文件含有旧版 CD 会话收尾设置器。",
+    "zh-TW": "已發佈的執行檔含有舊版 CD 工作階段收尾設定器。",
+    "ja": "発行した実行ファイルに旧 CD セッション終了処理の設定メソッドが含まれています。",
+    "tr": "Yayımlanan yürütülebilir dosya eski CD oturum sonlandırma ayarlayıcısını içeriyor."
+  },
+  "Packaging.PublisherOid": {
+    "en": "Publisher already contains an unsigned-package OID. Pass only the normal CN when using UnsignedDevelopmentPackage.",
+    "zh-CN": "Publisher 已含未签名包 OID。使用 UnsignedDevelopmentPackage 时只需传入常规 CN。",
+    "zh-TW": "Publisher 已含未簽署套件 OID。使用 UnsignedDevelopmentPackage 時只須傳入一般 CN。",
+    "ja": "Publisher に署名なしパッケージの OID が既に含まれています。UnsignedDevelopmentPackage では通常の CN だけを渡してください。",
+    "tr": "Publisher zaten imzasız paket OID içeriyor. UnsignedDevelopmentPackage kullanırken yalnızca normal CN verin."
+  },
+  "Packaging.MakeAppxMissing": {
+    "en": "MakeAppx.exe was not found. Install the Windows 10/11 SDK packaging tools.",
+    "zh-CN": "未找到 MakeAppx.exe。请安装 Windows 10/11 SDK 打包工具。",
+    "zh-TW": "找不到 MakeAppx.exe。請安裝 Windows 10/11 SDK 封裝工具。",
+    "ja": "MakeAppx.exe が見つかりません。Windows 10/11 SDK のパッケージツールをインストールしてください。",
+    "tr": "MakeAppx.exe bulunamadı. Windows 10/11 SDK paketleme araçlarını yükleyin."
+  },
+  "Packaging.SignToolMissing": {
+    "en": "SignTool.exe was not found. Install the Windows 10/11 SDK signing tools.",
+    "zh-CN": "未找到 SignTool.exe。请安装 Windows 10/11 SDK 签名工具。",
+    "zh-TW": "找不到 SignTool.exe。請安裝 Windows 10/11 SDK 簽署工具。",
+    "ja": "SignTool.exe が見つかりません。Windows 10/11 SDK の署名ツールをインストールしてください。",
+    "tr": "SignTool.exe bulunamadı. Windows 10/11 SDK imzalama araçlarını yükleyin."
+  },
+  "Packaging.MsixReady": {
+    "en": "MSIX ready: {0}",
+    "zh-CN": "MSIX 已就绪：{0}",
+    "zh-TW": "MSIX 已就緒：{0}",
+    "ja": "MSIX の準備ができました：{0}",
+    "tr": "MSIX hazır: {0}"
+  },
+  "Packaging.UnsignedReady": {
+    "en": "Unsigned development package ready. Install from an elevated PowerShell with Add-AppxPackage -AllowUnsigned.",
+    "zh-CN": "未签名开发包已就绪。请在管理员 PowerShell 中使用 Add-AppxPackage -AllowUnsigned 安装。",
+    "zh-TW": "未簽署開發套件已就緒。請在系統管理員 PowerShell 使用 Add-AppxPackage -AllowUnsigned 安裝。",
+    "ja": "署名なし開発パッケージの準備ができました。管理者 PowerShell で Add-AppxPackage -AllowUnsigned を使ってインストールしてください。",
+    "tr": "İmzasız geliştirme paketi hazır. Yönetici PowerShell içinde Add-AppxPackage -AllowUnsigned ile yükleyin."
+  },
+  "Packaging.DevelopmentPublisher": {
+    "en": "Development publisher: {0}",
+    "zh-CN": "开发包发布者：{0}",
+    "zh-TW": "開發套件發行者：{0}",
+    "ja": "開発パッケージ発行元：{0}",
+    "tr": "Geliştirme yayımcısı: {0}"
+  },
+  "Packaging.StoreUnsigned": {
+    "en": "Package is unsigned, which is appropriate for Partner Center submission. Sign it to sideload locally.",
+    "zh-CN": "此包未签名，适用于提交 Partner Center。如需本地旁加载，请先签名。",
+    "zh-TW": "此套件未簽署，適用於提交 Partner Center。如需本機側載，請先簽署。",
+    "ja": "パッケージは未署名で、Partner Center への提出に適しています。ローカルでサイドロードするには署名してください。",
+    "tr": "Paket imzasızdır; Partner Center gönderimine uygundur. Yerelde yandan yüklemek için imzalayın."
+  },
+  "Packaging.VersionSuffix": {
+    "en": "VersionSuffix must be empty or (alpha|beta|rc).N, with N starting at 1.",
+    "zh-CN": "VersionSuffix 必须为空或 (alpha|beta|rc).N，N 从 1 开始。",
+    "zh-TW": "VersionSuffix 必須為空或 (alpha|beta|rc).N，N 從 1 開始。",
+    "ja": "VersionSuffix は空、または (alpha|beta|rc).N とし、N は 1 から始めてください。",
+    "tr": "VersionSuffix boş veya (alpha|beta|rc).N olmalı; N 1 ile başlamalıdır."
+  },
+  "Packaging.VersionPrefix": {
+    "en": "Directory.Build.props must define one VersionPrefix in A.B.C format.",
+    "zh-CN": "Directory.Build.props 必须定义一个 A.B.C 格式的 VersionPrefix。",
+    "zh-TW": "Directory.Build.props 必須定義一個 A.B.C 格式的 VersionPrefix。",
+    "ja": "Directory.Build.props に A.B.C 形式の VersionPrefix を一つ定義してください。",
+    "tr": "Directory.Build.props, A.B.C biçiminde tek bir VersionPrefix tanımlamalıdır."
+  },
+  "Packaging.VersionRange": {
+    "en": "Version components must be in 0..65534 for .NET assembly versions.",
+    "zh-CN": ".NET 程序集版本各段必须位于 0..65534。",
+    "zh-TW": ".NET 組件版本各段必須位於 0..65534。",
+    "ja": ".NET アセンブリのバージョン各要素は 0..65534 の範囲にしてください。",
+    "tr": ".NET derleme sürümü bileşenleri 0..65534 aralığında olmalıdır."
+  },
+  "Packaging.TagFormat": {
+    "en": "Tag must be vA.B.C or vA.B.C-(alpha|beta|rc).N, with N starting at 1.",
+    "zh-CN": "标签必须为 vA.B.C 或 vA.B.C-(alpha|beta|rc).N，N 从 1 开始。",
+    "zh-TW": "標籤必須為 vA.B.C 或 vA.B.C-(alpha|beta|rc).N，N 從 1 開始。",
+    "ja": "タグは vA.B.C または vA.B.C-(alpha|beta|rc).N とし、N は 1 から始めてください。",
+    "tr": "Etiket vA.B.C veya vA.B.C-(alpha|beta|rc).N olmalı; N 1 ile başlamalıdır."
+  },
+  "Packaging.TagMismatch": {
+    "en": "Tag {0} does not match VersionPrefix {1} in Directory.Build.props.",
+    "zh-CN": "标签 {0} 与 Directory.Build.props 中的 VersionPrefix {1} 不一致。",
+    "zh-TW": "標籤 {0} 與 Directory.Build.props 中的 VersionPrefix {1} 不一致。",
+    "ja": "タグ {0} が Directory.Build.props の VersionPrefix {1} と一致しません。",
+    "tr": "{0} etiketi Directory.Build.props içindeki VersionPrefix {1} ile eşleşmiyor."
+  },
+  "Packaging.NotesSection": {
+    "en": "CHANGELOG.md must contain exactly one '## [{0}] - YYYY-MM-DD' section.",
+    "zh-CN": "CHANGELOG.md 必须恰好含一个“## [{0}] - YYYY-MM-DD”段落。",
+    "zh-TW": "CHANGELOG.md 必須恰好含一個「## [{0}] - YYYY-MM-DD」區段。",
+    "ja": "CHANGELOG.md に「## [{0}] - YYYY-MM-DD」の節が正確に一つ必要です。",
+    "tr": "CHANGELOG.md tam bir adet '## [{0}] - YYYY-MM-DD' bölümü içermelidir."
+  },
+  "Packaging.NotesEmpty": {
+    "en": "The changelog section for {0} must not be empty.",
+    "zh-CN": "{0} 的更新日志段落不能为空。",
+    "zh-TW": "{0} 的變更記錄區段不可為空。",
+    "ja": "{0} の変更履歴の節を空にすることはできません。",
+    "tr": "{0} değişiklik günlüğü bölümü boş olmamalıdır."
+  },
+  "Packaging.PackageCount": {
+    "en": "Expected exactly one signed test MSIX in {0}, but found {1}.",
+    "zh-CN": "预期在 {0} 中恰有一个已签名测试 MSIX，实际找到 {1} 个。",
+    "zh-TW": "預期 {0} 中恰有一個已簽署測試 MSIX，實際找到 {1} 個。",
+    "ja": "{0} に署名済みテスト MSIX が一つ必要ですが、{1} 個見つかりました。",
+    "tr": "{0} içinde tam bir imzalı test MSIX bekleniyordu, {1} bulundu."
+  },
+  "Packaging.TestPackageMissing": {
+    "en": "Signed test package was not found: {0}",
+    "zh-CN": "未找到已签名测试包：{0}",
+    "zh-TW": "找不到已簽署測試套件：{0}",
+    "ja": "署名済みテストパッケージが見つかりません：{0}",
+    "tr": "İmzalı test paketi bulunamadı: {0}"
+  },
+  "Packaging.CertificateMissing": {
+    "en": "Test certificate was not found: {0}",
+    "zh-CN": "未找到测试证书：{0}",
+    "zh-TW": "找不到測試憑證：{0}",
+    "ja": "テスト証明書が見つかりません：{0}",
+    "tr": "Test sertifikası bulunamadı: {0}"
+  },
+  "Packaging.InstallUnreported": {
+    "en": "Windows did not report the test package as installed.",
+    "zh-CN": "Windows 未报告测试包已安装。",
+    "zh-TW": "Windows 未回報測試套件已安裝。",
+    "ja": "Windows がテストパッケージのインストールを報告していません。",
+    "tr": "Windows test paketinin yüklendiğini bildirmedi."
+  },
+  "Packaging.Installed": {
+    "en": "Disc Image Studio Test installed successfully.",
+    "zh-CN": "Disc Image Studio Test 安装成功。",
+    "zh-TW": "Disc Image Studio Test 安裝成功。",
+    "ja": "Disc Image Studio Test をインストールしました。",
+    "tr": "Disc Image Studio Test başarıyla yüklendi."
+  },
+  "Packaging.StartMenu": {
+    "en": "Open it from the Start menu by searching for: Disc Image Studio Test",
+    "zh-CN": "请在开始菜单中搜索 Disc Image Studio Test 并打开。",
+    "zh-TW": "請在開始功能表搜尋 Disc Image Studio Test 並開啟。",
+    "ja": "スタートメニューで Disc Image Studio Test を検索して開いてください。",
+    "tr": "Başlat menüsünde Disc Image Studio Test arayarak açın."
+  },
+  "Packaging.CloseWindow": {
+    "en": "Press Enter to close this window.",
+    "zh-CN": "按 Enter 关闭此窗口。",
+    "zh-TW": "按 Enter 關閉此視窗。",
+    "ja": "Enter を押すとこのウィンドウを閉じます。",
+    "tr": "Bu pencereyi kapatmak için Enter tuşuna basın."
+  }
+}

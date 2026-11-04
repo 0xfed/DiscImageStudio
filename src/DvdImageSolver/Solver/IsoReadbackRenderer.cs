@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using DiscImageStudio.ImageIO;
 using DvdImageSolver.Encoding;
 
@@ -69,7 +70,7 @@ internal static class IsoReadbackRenderer
         {
             throw new ArgumentOutOfRangeException(
                 nameof(options),
-                "The visible sector range exceeds the ISO image contents.");
+                L.T("The visible sector range exceeds the ISO image contents."));
         }
 
         double bitLengthMm = options.ChannelBitLengthNm * 1e-6;
@@ -230,7 +231,7 @@ internal static class IsoReadbackRenderer
         {
             throw new ArgumentOutOfRangeException(
                 nameof(options),
-                "Total sector count must cover at least one ECC Block.");
+                L.T("Total sector count must cover at least one ECC Block."));
         }
 
         if (options.FillSectors == 0
@@ -240,24 +241,24 @@ internal static class IsoReadbackRenderer
         {
             throw new ArgumentOutOfRangeException(
                 nameof(options),
-                "The visible range must be ECC-Block aligned and fit inside the disc.");
+                L.T("The visible range must be ECC-Block aligned and fit inside the disc."));
         }
 
         if (!double.IsFinite(options.ChannelBitLengthNm) || options.ChannelBitLengthNm <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(options), "Channel-bit length must be positive.");
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Channel-bit length must be positive."));
         }
 
         if (options.PreviewSize is < 64 or > 8192)
         {
-            throw new ArgumentOutOfRangeException(nameof(options), "Preview size must be 64..8192 pixels.");
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Preview size must be 64..8192 pixels."));
         }
 
         if (options.SamplesPerSector is < 1 or > DvdEccBlockEncoder.PayloadBytesPerSector)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(options),
-                $"Preview samples per sector must be 1..{DvdEccBlockEncoder.PayloadBytesPerSector}.");
+                L.F($"Preview samples per sector must be 1..{DvdEccBlockEncoder.PayloadBytesPerSector}."));
         }
     }
 }

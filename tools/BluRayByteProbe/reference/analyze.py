@@ -4,11 +4,14 @@ Q means data entering 17PP, no DC insertions, ECC, BIS, or sync in this model.
 This is a finite-state cycle analysis, so reported densities are exact ratios.
 """
 import collections
-import argparse
 import csv
 import fractions
 import json
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from localization import ArgumentParser, initialize, run, t
 
 TABLE = (
     ('00000000', '010100100100'),
@@ -96,13 +99,14 @@ def canonical_rotation(bits):
     return min(bits[i:] + bits[:i] for i in range(len(bits)))
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output-dir',type=Path,default=Path.cwd())
-    out = parser.parse_args().output_dir
+    arguments = initialize()
+    parser = ArgumentParser(description=t('Python.ReferenceDescription'))
+    parser.add_argument('--output-dir',type=Path,default=Path.cwd(),help=t('Python.OutputDirectory'))
+    out = parser.parse_args(arguments).output_dir
     out.mkdir(parents=True,exist_ok=True)
     rows = [cycle(q) for q in range(256)]
     phase_results = {f'{q:02X}':[cycle(q,p,previous) for p in range(8) for previous in range(2)] for q in range(256)}
-    (out/'independent-periodic-results.json').write_text(json.dumps({'reference':'ISO/IEC 30190:2021 Fig. 41','domain':'repeated post-scramble Q, no DC/ECC/BIS/sync','all_bytes':rows,'phase_results':phase_results},indent=2),encoding='utf-8')
+    (out/'independent-periodic-results.json').write_text(json.dumps({'reference':'ISO/IEC 30190:2021 Fig. 41','domain':t('repeated post-scramble Q, no DC/ECC/BIS/sync'),'all_bytes':rows,'phase_results':phase_results},indent=2),encoding='utf-8')
     with (out/'independent-periodic-results.csv').open('w',newline='',encoding='utf-8-sig') as f:
         writer=csv.writer(f)
         writer.writerow(['Q','Density','Exact ratio','Mean run T','NRZI level one','Min run T','Max run T','Cycle channel pattern','2T','3T','4T','5T','6T','7T','8T'])
@@ -111,29 +115,29 @@ def main():
     groups=collections.defaultdict(list)
     for r in rows:
         groups[r['density_ratio']].append(r['hex'])
-    print('DENSITY GROUPS')
+    print(t('DENSITY GROUPS'))
     for ratio,qs in sorted(groups.items(),key=lambda x:fractions.Fraction(x[0])):
         print(ratio, len(qs), ' '.join(qs))
-    print('LOW/HIGH DETAIL')
+    print(t('LOW/HIGH DETAIL'))
     for r in sorted(rows,key=lambda r:r['density'])[:20] + sorted(rows,key=lambda r:r['density'],reverse=True)[:20]:
         print(r['hex'],r['density_ratio'],r['run_hist'],r['level_one_ratio'],r['period'])
-    print('INITIAL PREV DEPENDENCE', [key for key,rs in phase_results.items() if any(rs[p*2]['density']!=rs[p*2+1]['density'] for p in range(8))])
-    print('EVEN PHASE DEPENDENCE', [key for key,rs in phase_results.items() if len(set(r['density_ratio'] for i,r in enumerate(rs) if i//2%2==0))>1])
-    print('EVEN ODD PHASE DIFFERENCES')
+    print(t('INITIAL PREV DEPENDENCE'), [key for key,rs in phase_results.items() if any(rs[p*2]['density']!=rs[p*2+1]['density'] for p in range(8))])
+    print(t('EVEN PHASE DEPENDENCE'), [key for key,rs in phase_results.items() if len(set(r['density_ratio'] for i,r in enumerate(rs) if i//2%2==0))>1])
+    print(t('EVEN ODD PHASE DIFFERENCES'))
     for key,rs in phase_results.items():
         if rs[0]['density_ratio']!=rs[2]['density_ratio']:
             print(key,rs[0]['density_ratio'],rs[2]['density_ratio'])
     selected=[0x08,0x11,0x22,0x44,0x88,0x7e,0x55,0xaa,0x00,0xff]
-    print('SELECTED INPUT / OUTPUT')
+    print(t('SELECTED INPUT / OUTPUT'))
     for q in selected:
         print(f'{q:02X}',finite(f'{q:08b}'*4))
     finite_examples = {f'{q:02X}':finite(f'{q:08b}'*4) for q in range(256)}
     (out/'independent-finite-vectors.json').write_text(json.dumps(finite_examples,indent=2),encoding='utf-8')
     dc = {f'{q:02X}':{controls:{k:v for k,v in cycle_with_fixed_dc(q,controls).items() if k not in ('trace','prefix','period')} for controls in ('0','1','01')} for q in range(256)}
     (out/'independent-fixed-dc-results.json').write_text(json.dumps(dc,indent=2),encoding='utf-8')
-    print('FIXED PERIODIC DC SELECTED')
+    print(t('FIXED PERIODIC DC SELECTED'))
     for q in (0x11,0x22,0x44,0x88,0x3d,0x4f,0x7a,0x9e,0xa7,0xd3,0xe9,0xf4,0x07,0x37,0x00,0xff,0x55,0xaa):
         print(f'{q:02X}',[(key,v['density_ratio'],v['level_one_ratio']) for key,v in dc[f'{q:02X}'].items()])
 
 if __name__=='__main__':
-    main()
+    raise SystemExit(run(main))

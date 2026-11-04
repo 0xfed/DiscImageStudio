@@ -8,5 +8,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\DiscImageStudio.BluRay\DiscImageStudio.BluRay.csproj" />
+    <ProjectReference Include="../../src/DiscImageStudio.Localization/DiscImageStudio.Localization.csproj" />
   </ItemGroup>
 </Project>

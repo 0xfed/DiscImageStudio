@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DiscImageStudio.Core.Calibration;
 
 /// <summary>
@@ -26,20 +27,20 @@ public static partial class CalibrationCrossFitter
     {
         ArgumentNullException.ThrowIfNull(target);
         ArgumentNullException.ThrowIfNull(traces);
-        if (traces.Count > 4) throw new ArgumentException("十字线最多包含四条臂。");
+        if (traces.Count > 4) throw new ArgumentException(L.T("十字线最多包含四条臂。"));
         var arms = new HashSet<int>();
         int count = 0;
         foreach (CalibrationCrossTrace trace in traces)
         {
             if (trace is null || trace.ArmIndex is < 0 or > 3 || !arms.Add(trace.ArmIndex) || trace.Points is null)
-                throw new ArgumentException("曲线编号无效或重复。");
+                throw new ArgumentException(L.T("曲线编号无效或重复。"));
             count += trace.Points.Count;
-            if (count > 20_000) throw new ArgumentException("曲线点数量超出限制。");
+            if (count > 20_000) throw new ArgumentException(L.T("曲线点数量超出限制。"));
             foreach (CalibrationPoint point in trace.Points)
                 if (point is null || !double.IsFinite(point.X) || !double.IsFinite(point.Y)
                     || Math.Abs(point.X) > 1000 || Math.Abs(point.Y) > 1000
                     || point.X * point.X + point.Y * point.Y < 0.01)
-                    throw new ArgumentException("曲线点坐标无效，请使用矫正后以盘心为原点的坐标。");
+                    throw new ArgumentException(L.T("曲线点坐标无效，请使用矫正后以盘心为原点的坐标。"));
         }
     }
 

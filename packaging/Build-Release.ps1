@@ -1,16 +1,19 @@
 [CmdletBinding()]
 param(
-    [string]$Tag
+    [string]$Tag,
+    [string]$Language
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'Localization.ps1')
+Initialize-ToolLanguage -Language $Language -Explicit ($PSBoundParameters.ContainsKey('Language'))
 
 if ([Environment]::OSVersion.Platform -ne [PlatformID]::Win32NT) {
-    throw 'The Windows executable and its WPF smoke checks must be built on Windows.'
+    throw (Get-ToolText 'Packaging.WindowsRequired')
 }
 
-$metadata = & (Join-Path $PSScriptRoot 'Get-ReleaseMetadata.ps1') -Tag $Tag
+$metadata = & (Join-Path $PSScriptRoot 'Get-ReleaseMetadata.ps1') -Tag $Tag -Language $script:DiscToolLanguage
 $workspaceRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $workspacePrefix = $workspaceRoot.TrimEnd([IO.Path]::DirectorySeparatorChar) + [IO.Path]::DirectorySeparatorChar
 $releaseDirectory = [IO.Path]::GetFullPath((Join-Path $workspaceRoot "artifacts\release\$($metadata.Tag)"))
@@ -18,7 +21,7 @@ $releaseDirectory = [IO.Path]::GetFullPath((Join-Path $workspaceRoot "artifacts\
 function Assert-SafeReleasePath([string]$Path) {
     $fullPath = [IO.Path]::GetFullPath($Path)
     if (-not $fullPath.StartsWith($workspacePrefix, [StringComparison]::OrdinalIgnoreCase)) {
-        throw "Release output resolved outside the workspace: $fullPath"
+        throw (Get-ToolText 'Packaging.ReleaseOutside' @($fullPath))
     }
 
     # A junction or symbolic link could make a lexically safe path leave the workspace.
@@ -27,7 +30,7 @@ function Assert-SafeReleasePath([string]$Path) {
         if (Test-Path -LiteralPath $currentPath) {
             $item = Get-Item -LiteralPath $currentPath -Force
             if (($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) {
-                throw "Release output must not pass through a junction or symbolic link: $currentPath"
+                throw (Get-ToolText 'Packaging.ReleaseLink' @($currentPath))
             }
         }
         if ($currentPath.Equals($workspaceRoot, [StringComparison]::OrdinalIgnoreCase)) {
@@ -42,7 +45,7 @@ if (Test-Path -LiteralPath $releaseDirectory) {
     $linkedItems = @(Get-ChildItem -LiteralPath $releaseDirectory -Force -Recurse |
         Where-Object { ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0 })
     if ($linkedItems.Count -ne 0) {
-        throw "Refusing to clear a release directory containing junctions or symbolic links: $releaseDirectory"
+        throw (Get-ToolText 'Packaging.RefuseClearLinks' @($releaseDirectory))
     }
     # Only this validated tag's output is replaced; other release versions are retained.
     Remove-Item -LiteralPath $releaseDirectory -Recurse -Force
@@ -70,16 +73,16 @@ New-Item -ItemType Directory -Path $publishDirectory, $isolatedAppDirectory -For
     -p:IncludeNativeLibrariesForSelfExtract=true `
     -p:IncludeAllContentForSelfExtract=true
 if ($LASTEXITCODE -ne 0) {
-    throw "dotnet publish failed with exit code $LASTEXITCODE."
+    throw (Get-ToolText 'Packaging.CommandFailed' @('dotnet publish', $LASTEXITCODE))
 }
 
 $publishedExecutable = Join-Path $publishDirectory 'DiscImageStudio.exe'
 if (-not (Test-Path -LiteralPath $publishedExecutable -PathType Leaf)) {
-    throw "Published executable is missing: $publishedExecutable"
+    throw (Get-ToolText 'Packaging.ExecutableMissing' @($publishedExecutable))
 }
 $fileVersion = [Diagnostics.FileVersionInfo]::GetVersionInfo($publishedExecutable).FileVersion
 if ($fileVersion -ne $metadata.FileVersion) {
-    throw "Published executable version '$fileVersion' does not match '$($metadata.FileVersion)'."
+    throw (Get-ToolText 'Packaging.ExecutableVersion' @($fileVersion, $metadata.FileVersion))
 }
 
 Get-ChildItem -LiteralPath $publishDirectory -Filter '*.pdb' -File -Recurse -Force |
@@ -104,8 +107,8 @@ function ConvertTo-WindowsArgument([string]$Value) {
 }
 
 function Invoke-PublishedCheck([string]$Name, [string[]]$Arguments) {
-    Write-Host "Checking published package: $Name"
-    $commandLine = ($Arguments | ForEach-Object { ConvertTo-WindowsArgument $_ }) -join ' '
+    Write-Host (Get-ToolText 'Packaging.CheckingPackage' @($Name))
+    $commandLine = (@($Arguments) + @('--language', $script:DiscToolLanguage) | ForEach-Object { ConvertTo-WindowsArgument $_ }) -join ' '
     $process = Start-Process -FilePath $checkExecutable `
         -ArgumentList $commandLine `
         -WorkingDirectory $isolatedAppDirectory `
@@ -116,17 +119,17 @@ function Invoke-PublishedCheck([string]$Name, [string[]]$Arguments) {
     $exitCode = $process.ExitCode
     $process.Dispose()
     if ($exitCode -ne 0) {
-        throw "Published package check '$Name' failed with exit code $exitCode. See $smokeDirectory for logs."
+        throw (Get-ToolText 'Packaging.PackageCheckFailed' @($Name, $exitCode, $smokeDirectory))
     }
 }
 
 function Assert-FileLength([string]$Path, [long]$ExpectedLength) {
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
-        throw "Smoke check did not produce its expected output: $Path"
+        throw (Get-ToolText 'Packaging.SmokeMissing' @($Path))
     }
     $actualLength = (Get-Item -LiteralPath $Path).Length
     if ($actualLength -ne $ExpectedLength) {
-        throw "Smoke output '$Path' has $actualLength bytes; expected $ExpectedLength."
+        throw (Get-ToolText 'Packaging.SmokeLength' @($Path, $actualLength, $ExpectedLength))
     }
 }
 
@@ -146,7 +149,7 @@ Invoke-PublishedCheck 'cd-wav' @('cd-generate', '--input', $inputImage, '--outpu
 Assert-FileLength $wavePath 4748
 $cuePath = [IO.Path]::ChangeExtension($wavePath, '.cue')
 if (-not (Test-Path -LiteralPath $cuePath -PathType Leaf) -or (Get-Item -LiteralPath $cuePath).Length -eq 0) {
-    throw "WAV generation did not produce a CUE sheet: $cuePath"
+    throw (Get-ToolText 'Packaging.CueMissing' @($cuePath))
 }
 
 # The CUE sheet is opt-out: --cue false must still write the WAV and leave no .cue behind.
@@ -155,20 +158,20 @@ Invoke-PublishedCheck 'cd-wav-no-cue' @(
     'cd-generate', '--input', $inputImage, '--output', $noCuePath, '--sectors', '2', '--cue', 'false')
 Assert-FileLength $noCuePath 4748
 if (Test-Path -LiteralPath ([IO.Path]::ChangeExtension($noCuePath, '.cue'))) {
-    throw "cd-generate --cue false still produced a CUE sheet for $noCuePath"
+    throw (Get-ToolText 'Packaging.UnexpectedCue' @($noCuePath))
 }
 
 $snapshotPath = Join-Path $smokeDirectory 'ui snapshot.png'
 Invoke-PublishedCheck 'ui-snapshot' @('ui-snapshot', '--output', $snapshotPath)
 if (-not (Test-Path -LiteralPath $snapshotPath -PathType Leaf) -or (Get-Item -LiteralPath $snapshotPath).Length -eq 0) {
-    throw "WPF smoke check did not produce a UI snapshot: $snapshotPath"
+    throw (Get-ToolText 'Packaging.SnapshotMissing' @($snapshotPath))
 }
 
 $hash = (Get-FileHash -LiteralPath $packagePath -Algorithm SHA256).Hash.ToLowerInvariant()
 if ((Get-FileHash -LiteralPath $checkExecutable -Algorithm SHA256).Hash.ToLowerInvariant() -ne $hash) {
-    throw 'The isolated executable does not match the release executable.'
+    throw (Get-ToolText 'Packaging.IsolatedMismatch')
 }
 $checksumPath = Join-Path $releaseDirectory 'SHA256SUMS.txt'
 [IO.File]::WriteAllText($checksumPath, "$hash  $packageFileName`n", [Text.UTF8Encoding]::new($false))
-Write-Host "Single executable release ready: $packagePath"
-Write-Host "Checksums: $checksumPath"
+Write-Host (Get-ToolText 'Packaging.ReleaseReady' @($packagePath))
+Write-Host (Get-ToolText 'Packaging.Checksums' @($checksumPath))

@@ -1,0 +1,548 @@
+{
+  "--{0} must be a finite number.": {
+    "en": "--{0} must be a finite number.",
+    "zh-CN": "--{0} 必须为有限数值。",
+    "zh-TW": "--{0} 必須為有限數值。",
+    "ja": "--{0} は有限の数値にしてください。",
+    "tr": "--{0} sonlu bir sayı olmalıdır."
+  },
+  "--{0} must be an unsigned integer (decimal or 0x hex).": {
+    "en": "--{0} must be an unsigned integer (decimal or 0x hex).",
+    "zh-CN": "--{0} 必须为无符号整数（十进制或以 0x 开头的十六进制）。",
+    "zh-TW": "--{0} 必須為不帶正負號的整數（十進位或以 0x 開頭的十六進位）。",
+    "ja": "--{0} は符号なし整数（10 進数または 0x で始まる 16 進数）にしてください。",
+    "tr": "--{0} işaretsiz bir tam sayı olmalıdır (ondalık veya 0x ile başlayan onaltılık)."
+  },
+  "--{0} must be true or false.": {
+    "en": "--{0} must be true or false.",
+    "zh-CN": "--{0} 必须为 true 或 false。",
+    "zh-TW": "--{0} 必須為 true 或 false。",
+    "ja": "--{0} は true または false にしてください。",
+    "tr": "--{0}, true veya false olmalıdır."
+  },
+  "17PP consumes complete pairs of data bits.": {
+    "en": "17PP consumes complete pairs of data bits.",
+    "zh-CN": "17PP 必须以完整的数据位对为输入。",
+    "zh-TW": "17PP 必須以完整的資料位元對為輸入。",
+    "ja": "17PP の入力データビットは完全な 2 ビット組である必要があります。",
+    "tr": "17PP, veri bitlerini tam çiftler halinde alır."
+  },
+  "A BD cluster contains 65536 user-data bytes.": {
+    "en": "A BD cluster contains 65536 user-data bytes.",
+    "zh-CN": "一个 BD 簇包含 65536 字节的用户数据。",
+    "zh-TW": "一個 BD 叢集包含 65536 位元組的使用者資料。",
+    "ja": "BD クラスターには 65536 バイトのユーザーデータが含まれます。",
+    "tr": "Bir BD kümesi 65536 bayt kullanıcı verisi içerir."
+  },
+  "A BD data frame contains exactly 2052 bytes.": {
+    "en": "A BD data frame contains exactly 2052 bytes.",
+    "zh-CN": "一个 BD 数据帧恰好包含 2052 字节。",
+    "zh-TW": "一個 BD 資料框架恰好包含 2052 位元組。",
+    "ja": "BD データフレームは正確に 2052 バイトです。",
+    "tr": "Bir BD veri çerçevesi tam olarak 2052 bayt içerir."
+  },
+  "A BD user-data frame contains exactly 2048 bytes.": {
+    "en": "A BD user-data frame contains exactly 2048 bytes.",
+    "zh-CN": "一个 BD 用户数据帧恰好包含 2048 字节。",
+    "zh-TW": "一個 BD 使用者資料框架恰好包含 2048 位元組。",
+    "ja": "BD ユーザーデータフレームは正確に 2048 バイトです。",
+    "tr": "Bir BD kullanıcı verisi çerçevesi tam olarak 2048 bayt içerir."
+  },
+  "A Blu-ray payload contains exactly 2048 bytes.": {
+    "en": "A Blu-ray payload contains exactly 2048 bytes.",
+    "zh-CN": "蓝光有效载荷恰好包含 2048 字节。",
+    "zh-TW": "藍光有效負載恰好包含 2048 位元組。",
+    "ja": "Blu-ray のペイロードは正確に 2048 バイトです。",
+    "tr": "Blu-ray yükü tam olarak 2048 bayt içerir."
+  },
+  "A Gray8 raster needs exactly width × height bytes.": {
+    "en": "A Gray8 raster needs exactly width × height bytes.",
+    "zh-CN": "Gray8 栅格恰好需要 width × height 字节。",
+    "zh-TW": "Gray8 點陣恰好需要 width × height 位元組。",
+    "ja": "Gray8 ラスターには正確に width × height バイトが必要です。",
+    "tr": "Gray8 rasteri tam olarak width × height bayt gerektirir."
+  },
+  "A cluster PSN must be a multiple of 32 with reserved bits 31..27 clear.": {
+    "en": "A cluster PSN must be a multiple of 32 with reserved bits 31..27 clear.",
+    "zh-CN": "簇的 PSN 必须是 32 的倍数，且保留位 31..27 必须为零。",
+    "zh-TW": "叢集的 PSN 必須是 32 的倍數，且保留位元 31..27 必須為零。",
+    "ja": "クラスターの PSN は 32 の倍数で、予約ビット 31..27 はゼロである必要があります。",
+    "tr": "Küme PSN değeri 32’nin katı olmalı ve ayrılmış 31..27 bitleri sıfır olmalıdır."
+  },
+  "A complete aligned image cluster is required.": {
+    "en": "A complete aligned image cluster is required.",
+    "zh-CN": "需要完整且对齐的图像簇。",
+    "zh-TW": "需要完整且對齊的影像叢集。",
+    "ja": "完全でアラインメントされた画像クラスターが必要です。",
+    "tr": "Tam ve hizalanmış bir görsel kümesi gereklidir."
+  },
+  "A complete aligned pattern cluster must match the source disc.": {
+    "en": "A complete aligned pattern cluster must match the source disc.",
+    "zh-CN": "完整且对齐的图案簇必须与源光盘匹配。",
+    "zh-TW": "完整且對齊的圖案叢集必須與來源光碟相符。",
+    "ja": "完全でアラインメントされたパターンクラスターは、ソースディスクと一致する必要があります。",
+    "tr": "Tam ve hizalanmış desen kümesi kaynak diskle eşleşmelidir."
+  },
+  "A recording frame starts with 155 ECC bytes.": {
+    "en": "A recording frame starts with 155 ECC bytes.",
+    "zh-CN": "记录帧以 155 个 ECC 字节开头。",
+    "zh-TW": "記錄框架以 155 個 ECC 位元組開頭。",
+    "ja": "記録フレームは 155 バイトの ECC データで始まります。",
+    "tr": "Bir kayıt çerçevesi 155 ECC baytıyla başlar."
+  },
+  "A scrambling sequence cannot exceed one 2052-byte data frame.": {
+    "en": "A scrambling sequence cannot exceed one 2052-byte data frame.",
+    "zh-CN": "扰码序列不能超过一个 2052 字节的数据帧。",
+    "zh-TW": "擾碼序列不能超過一個 2052 位元組的資料框架。",
+    "ja": "スクランブル系列は 2052 バイトのデータフレーム 1 個分を超えることはできません。",
+    "tr": "Karıştırma dizisi, 2052 baytlık bir veri çerçevesini aşamaz."
+  },
+  "A writable output stream is required.": {
+    "en": "A writable output stream is required.",
+    "zh-CN": "需要可写的输出流。",
+    "zh-TW": "需要可寫入的輸出串流。",
+    "ja": "書き込み可能な出力ストリームが必要です。",
+    "tr": "Yazılabilir bir çıktı akışı gereklidir."
+  },
+  "An ECC cluster contains 496 rows of 155 bytes.": {
+    "en": "An ECC cluster contains 496 rows of 155 bytes.",
+    "zh-CN": "一个 ECC 簇包含 496 行，每行 155 字节。",
+    "zh-TW": "一個 ECC 叢集包含 496 列，每列 155 位元組。",
+    "ja": "ECC クラスターは 155 バイトの行を 496 行含みます。",
+    "tr": "Bir ECC kümesi, her biri 155 bayt olan 496 satır içerir."
+  },
+  "BD address and LDC/BIS codes use 4 or 32 parity bytes.": {
+    "en": "BD address and LDC/BIS codes use 4 or 32 parity bytes.",
+    "zh-CN": "BD 地址码与 LDC/BIS 码使用 4 或 32 个校验字节。",
+    "zh-TW": "BD 位址碼與 LDC/BIS 碼使用 4 或 32 個同位檢查位元組。",
+    "ja": "BD アドレス符号と LDC/BIS 符号は、4 または 32 バイトのパリティを使用します。",
+    "tr": "BD adres ve LDC/BIS kodları 4 veya 32 eşlik baytı kullanır."
+  },
+  "BD range must be inside the disc, start on a 32-sector boundary, and contain a positive multiple of 32 sectors.": {
+    "en": "BD range must be inside the disc, start on a 32-sector boundary, and contain a positive multiple of 32 sectors.",
+    "zh-CN": "BD 范围必须位于光盘内，从 32 扇区边界开始，并包含正的 32 倍数个扇区。",
+    "zh-TW": "BD 範圍必須位於光碟內，從 32 磁區邊界開始，並包含正的 32 倍數個磁區。",
+    "ja": "BD の範囲はディスク内にあり、32 セクター境界から始まり、セクター数が正の 32 の倍数である必要があります。",
+    "tr": "BD aralığı diskin içinde olmalı, 32 sektörlük bir sınırda başlamalı ve pozitif 32 katı sayıda sektör içermelidir."
+  },
+  "BD sidecar drawing bounds are invalid.": {
+    "en": "BD sidecar drawing bounds are invalid.",
+    "zh-CN": "BD sidecar 中的绘图边界无效。",
+    "zh-TW": "BD sidecar 中的繪圖邊界無效。",
+    "ja": "BD sidecar の描画範囲が無効です。",
+    "tr": "BD yan dosyasındaki çizim sınırları geçersiz."
+  },
+  "BD sidecar radii are outside the supported data zone.": {
+    "en": "BD sidecar radii are outside the supported data zone.",
+    "zh-CN": "BD sidecar 中的半径超出支持的数据区。",
+    "zh-TW": "BD sidecar 中的半徑超出支援的資料區。",
+    "ja": "BD sidecar の半径がサポートされるデータ領域の範囲外です。",
+    "tr": "BD yan dosyasındaki yarıçaplar desteklenen veri bölgesinin dışında."
+  },
+  "BD sidecar sectors must be a 32-aligned single-layer size.": {
+    "en": "BD sidecar sectors must be a 32-aligned single-layer size.",
+    "zh-CN": "BD sidecar 中的扇区数必须是按 32 对齐的单层容量。",
+    "zh-TW": "BD sidecar 中的磁區數必須是以 32 對齊的單層容量。",
+    "ja": "BD sidecar のセクター数は、32 セクターにアラインメントされた単層サイズである必要があります。",
+    "tr": "BD yan dosyasındaki sektör sayısı, 32’ye hizalanmış tek katmanlı bir boyut olmalıdır."
+  },
+  "BD-R radii must satisfy 0 < inner < outer <= 60 mm.": {
+    "en": "BD-R radii must satisfy 0 < inner < outer <= 60 mm.",
+    "zh-CN": "BD-R 半径必须满足 0 < 内半径 < 外半径 <= 60 mm。",
+    "zh-TW": "BD-R 半徑必須滿足 0 < 內半徑 < 外半徑 <= 60 mm。",
+    "ja": "BD-R の半径は 0 < 内半径 < 外半径 <= 60 mm を満たす必要があります。",
+    "tr": "BD-R yarıçapları 0 < iç < dış <= 60 mm koşulunu sağlamalıdır."
+  },
+  "BD-R total sectors must be a positive multiple of 32, no greater than {0}.": {
+    "en": "BD-R total sectors must be a positive multiple of 32, no greater than {0}.",
+    "zh-CN": "BD-R 总扇区数必须是正的 32 的倍数，且不大于 {0}。",
+    "zh-TW": "BD-R 總磁區數必須是正的 32 的倍數，且不大於 {0}。",
+    "ja": "BD-R の総セクター数は正の 32 の倍数で、{0} 以下である必要があります。",
+    "tr": "BD-R toplam sektör sayısı, {0} değerini aşmayan pozitif bir 32 katı olmalıdır."
+  },
+  "Blu-ray ISO generation did not produce the planned byte length.": {
+    "en": "Blu-ray ISO generation did not produce the planned byte length.",
+    "zh-CN": "蓝光 ISO 生成结果的字节长度与计划不符。",
+    "zh-TW": "藍光 ISO 產生結果的位元組長度與規劃不符。",
+    "ja": "生成された Blu-ray ISO のバイト長が計画と一致しません。",
+    "tr": "Oluşturulan Blu-ray ISO imajının bayt uzunluğu planlanandan farklı."
+  },
+  "Data bits must be represented as 0 or 1.": {
+    "en": "Data bits must be represented as 0 or 1.",
+    "zh-CN": "数据位必须用 0 或 1 表示。",
+    "zh-TW": "資料位元必須以 0 或 1 表示。",
+    "ja": "データビットは 0 または 1 で表してください。",
+    "tr": "Veri bitleri 0 veya 1 olarak gösterilmelidir."
+  },
+  "Duplicate option --{0}.": {
+    "en": "Duplicate option --{0}.",
+    "zh-CN": "选项 --{0} 重复。",
+    "zh-TW": "選項 --{0} 重複。",
+    "ja": "オプション --{0} が重複しています。",
+    "tr": "Yinelenen seçenek: --{0}."
+  },
+  "Empty value for --{0}.": {
+    "en": "Empty value for --{0}.",
+    "zh-CN": "--{0} 的值为空。",
+    "zh-TW": "--{0} 的值為空。",
+    "ja": "--{0} の値が空です。",
+    "tr": "--{0} değeri boş."
+  },
+  "Expected a named option, got '{0}'.": {
+    "en": "Expected a named option, got '{0}'.",
+    "zh-CN": "应为命名选项，实际收到“{0}”。",
+    "zh-TW": "應為具名選項，實際收到「{0}」。",
+    "ja": "名前付きオプションが必要ですが、「{0}」が指定されました。",
+    "tr": "Adlandırılmış bir seçenek bekleniyordu, '{0}' alındı."
+  },
+  "First sector must be inside the disc.": {
+    "en": "First sector must be inside the disc.",
+    "zh-CN": "首扇区必须位于光盘范围内。",
+    "zh-TW": "第一個磁區必須位於光碟範圍內。",
+    "ja": "先頭セクターはディスクの範囲内である必要があります。",
+    "tr": "İlk sektör diskin sınırları içinde olmalıdır."
+  },
+  "ISO output must be outside the source directory to preserve source files.": {
+    "en": "ISO output must be outside the source directory to preserve source files.",
+    "zh-CN": "为保护源文件，ISO 输出必须位于源目录之外。",
+    "zh-TW": "為保護來源檔案，ISO 輸出必須位於來源目錄之外。",
+    "ja": "ソースファイルを保護するため、ISO の出力先はソースディレクトリの外にしてください。",
+    "tr": "Kaynak dosyaları korumak için ISO çıktısı kaynak dizinin dışında olmalıdır."
+  },
+  "Incorrect recording-unit length.": {
+    "en": "Incorrect recording-unit length.",
+    "zh-CN": "记录单元长度不正确。",
+    "zh-TW": "記錄單元長度不正確。",
+    "ja": "記録ユニットの長さが正しくありません。",
+    "tr": "Kayıt birimi uzunluğu yanlış."
+  },
+  "Initial digital sum is too close to Int64 limits.": {
+    "en": "Initial digital sum is too close to Int64 limits.",
+    "zh-CN": "初始数字和过于接近 Int64 的界限。",
+    "zh-TW": "初始數位和過於接近 Int64 的界限。",
+    "ja": "初期ディジタルサムが Int64 の限界値に近すぎます。",
+    "tr": "Başlangıç sayısal toplamı Int64 sınırlarına çok yakın."
+  },
+  "Input and output paths must be different.": {
+    "en": "Input and output paths must be different.",
+    "zh-CN": "输入与输出路径必须不同。",
+    "zh-TW": "輸入與輸出路徑必須不同。",
+    "ja": "入力パスと出力パスは異なる必要があります。",
+    "tr": "Girdi ve çıktı yolları farklı olmalıdır."
+  },
+  "Missing --{0}.": {
+    "en": "Missing --{0}.",
+    "zh-CN": "缺少 --{0}。",
+    "zh-TW": "缺少 --{0}。",
+    "ja": "--{0} がありません。",
+    "tr": "--{0} eksik."
+  },
+  "Modulation bits must be represented as 0 or 1.": {
+    "en": "Modulation bits must be represented as 0 or 1.",
+    "zh-CN": "调制位必须用 0 或 1 表示。",
+    "zh-TW": "調變位元必須以 0 或 1 表示。",
+    "ja": "変調ビットは 0 または 1 で表してください。",
+    "tr": "Modülasyon bitleri 0 veya 1 olarak gösterilmelidir."
+  },
+  "Next-frame lookahead requires 155 ECC bytes.": {
+    "en": "Next-frame lookahead requires 155 ECC bytes.",
+    "zh-CN": "下一帧前视需要 155 个 ECC 字节。",
+    "zh-TW": "下一框架的前瞻需要 155 個 ECC 位元組。",
+    "ja": "次フレームの先読みには 155 バイトの ECC データが必要です。",
+    "tr": "Sonraki çerçeveye önden bakış için 155 ECC baytı gerekir."
+  },
+  "Only single-layer 25 GB BD-R is currently supported.": {
+    "en": "Only single-layer 25 GB BD-R is currently supported.",
+    "zh-CN": "目前只支持单层 25 GB BD-R。",
+    "zh-TW": "目前只支援單層 25 GB BD-R。",
+    "ja": "現在は単層 25 GB BD-R のみをサポートしています。",
+    "tr": "Şu anda yalnızca tek katmanlı 25 GB BD-R destekleniyor."
+  },
+  "Outer-ring files require a data directory.": {
+    "en": "Outer-ring files require a data directory.",
+    "zh-CN": "外圈文件布局需要数据目录。",
+    "zh-TW": "外圈檔案配置需要資料目錄。",
+    "ja": "ファイルを外周に配置するにはデータディレクトリが必要です。",
+    "tr": "Dış halka dosyaları için bir veri dizini gereklidir."
+  },
+  "PSN must start a complete, aligned BD-R data-zone cluster.": {
+    "en": "PSN must start a complete, aligned BD-R data-zone cluster.",
+    "zh-CN": "PSN 必须是完整且对齐的 BD-R 数据区簇的起始地址。",
+    "zh-TW": "PSN 必須是完整且對齊的 BD-R 資料區叢集的起始位址。",
+    "ja": "PSN は、完全でアラインメントされた BD-R データ領域クラスターの先頭である必要があります。",
+    "tr": "PSN, tam ve hizalanmış bir BD-R veri bölgesi kümesinin başlangıcı olmalıdır."
+  },
+  "Pixel buffer length does not match the dimensions and format.": {
+    "en": "Pixel buffer length does not match the dimensions and format.",
+    "zh-CN": "像素缓冲区长度与尺寸和格式不匹配。",
+    "zh-TW": "像素緩衝區長度與尺寸及格式不符。",
+    "ja": "ピクセルバッファーの長さが寸法と形式に一致しません。",
+    "tr": "Piksel arabelleği uzunluğu boyutlar ve biçimle eşleşmiyor."
+  },
+  "Probe byte must be 0..255 or 0x00..0xFF.": {
+    "en": "Probe byte must be 0..255 or 0x00..0xFF.",
+    "zh-CN": "探测字节必须在 0..255 或 0x00..0xFF 范围内。",
+    "zh-TW": "探測位元組必須在 0..255 或 0x00..0xFF 範圍內。",
+    "ja": "プローブのバイト値は 0..255 または 0x00..0xFF の範囲にしてください。",
+    "tr": "Deneme baytı 0..255 veya 0x00..0xFF aralığında olmalıdır."
+  },
+  "Raster dimensions are too large.": {
+    "en": "Raster dimensions are too large.",
+    "zh-CN": "栅格尺寸过大。",
+    "zh-TW": "點陣尺寸過大。",
+    "ja": "ラスターの寸法が大きすぎます。",
+    "tr": "Raster boyutları çok büyük."
+  },
+  "Sector context does not match the image mapping's disc and address.": {
+    "en": "Sector context does not match the image mapping's disc and address.",
+    "zh-CN": "扇区上下文与图像映射的光盘和地址不匹配。",
+    "zh-TW": "磁區內容資訊與影像映射的光碟及位址不符。",
+    "ja": "セクターコンテキストが画像マッピングのディスクとアドレスに一致しません。",
+    "tr": "Sektör bağlamı, görsel eşlemesinin diski ve adresiyle eşleşmiyor."
+  },
+  "Supply 18 control bytes for each of the 32 sectors.": {
+    "en": "Supply 18 control bytes for each of the 32 sectors.",
+    "zh-CN": "请为 32 个扇区中的每个扇区提供 18 个控制字节。",
+    "zh-TW": "請為 32 個磁區中的每個磁區提供 18 個控制位元組。",
+    "ja": "32 セクターの各セクターに 18 バイトの制御データを指定してください。",
+    "tr": "32 sektörün her biri için 18 kontrol baytı sağlayın."
+  },
+  "Supply exactly 28 dc-control bits.": {
+    "en": "Supply exactly 28 dc-control bits.",
+    "zh-CN": "请提供恰好 28 个直流控制位。",
+    "zh-TW": "請提供恰好 28 個直流控制位元。",
+    "ja": "正確に 28 個の DC 制御ビットを指定してください。",
+    "tr": "Tam olarak 28 DC kontrol biti sağlayın."
+  },
+  "Supply one flag byte for each of the 16 address units.": {
+    "en": "Supply one flag byte for each of the 16 address units.",
+    "zh-CN": "请为 16 个地址单元中的每个单元提供一个标志字节。",
+    "zh-TW": "請為 16 個位址單元中的每個單元提供一個旗標位元組。",
+    "ja": "16 個のアドレスユニットそれぞれにフラグを 1 バイト指定してください。",
+    "tr": "16 adres biriminin her biri için bir bayrak baytı sağlayın."
+  },
+  "Supply the next frame and all its final control bits together.": {
+    "en": "Supply the next frame and all its final control bits together.",
+    "zh-CN": "请同时提供下一帧及其全部最终控制位。",
+    "zh-TW": "請同時提供下一框架及其全部最終控制位元。",
+    "ja": "次のフレームとその最終制御ビットすべてを一緒に指定してください。",
+    "tr": "Sonraki çerçeveyi ve onun tüm nihai kontrol bitlerini birlikte sağlayın."
+  },
+  "The calibration drawing range must be 32-sector aligned and lie inside the disc.": {
+    "en": "The calibration drawing range must be 32-sector aligned and lie inside the disc.",
+    "zh-CN": "标定绘图范围必须按 32 扇区对齐，且位于光盘范围内。",
+    "zh-TW": "校準繪圖範圍必須以 32 磁區對齊，且位於光碟範圍內。",
+    "ja": "キャリブレーションの描画範囲は 32 セクターにアラインメントされ、ディスク内にある必要があります。",
+    "tr": "Kalibrasyon çizim aralığı 32 sektöre hizalanmış ve diskin içinde olmalıdır."
+  },
+  "The drawing range must lie inside the disc.": {
+    "en": "The drawing range must lie inside the disc.",
+    "zh-CN": "绘图范围必须位于光盘范围内。",
+    "zh-TW": "繪圖範圍必須位於光碟範圍內。",
+    "ja": "描画範囲はディスクの範囲内にしてください。",
+    "tr": "Çizim aralığı diskin sınırları içinde olmalıdır."
+  },
+  "The shortened code word must contain 1..255 symbols.": {
+    "en": "The shortened code word must contain 1..255 symbols.",
+    "zh-CN": "缩短码字必须包含 1..255 个符号。",
+    "zh-TW": "縮短碼字必須包含 1..255 個符號。",
+    "ja": "短縮符号語は 1..255 シンボルである必要があります。",
+    "tr": "Kısaltılmış kod sözcüğü 1..255 simge içermelidir."
+  },
+  "The source image contains no frames.": {
+    "en": "The source image contains no frames.",
+    "zh-CN": "源图片不包含任何帧。",
+    "zh-TW": "來源圖片不包含任何影格。",
+    "ja": "ソース画像にフレームがありません。",
+    "tr": "Kaynak görsel hiçbir çerçeve içermiyor."
+  },
+  "The source image must be no larger than {0:G} MiB.": {
+    "en": "The source image must be no larger than {0:G} MiB.",
+    "zh-CN": "源图片不得大于 {0:G} MiB。",
+    "zh-TW": "來源圖片不得大於 {0:G} MiB。",
+    "ja": "ソース画像は {0:G} MiB 以下にしてください。",
+    "tr": "Kaynak görsel {0:G} MiB boyutunu aşmamalıdır."
+  },
+  "The source image must contain between 1 and {0:N0} pixels.": {
+    "en": "The source image must contain between 1 and {0:N0} pixels.",
+    "zh-CN": "源图片必须包含 1 至 {0:N0} 个像素。",
+    "zh-TW": "來源圖片必須包含 1 至 {0:N0} 個像素。",
+    "ja": "ソース画像のピクセル数は 1～{0:N0} にしてください。",
+    "tr": "Kaynak görsel 1 ile {0:N0} arasında piksel içermelidir."
+  },
+  "This drawing plan has no filesystem.": {
+    "en": "This drawing plan has no filesystem.",
+    "zh-CN": "此绘图计划不包含文件系统。",
+    "zh-TW": "此繪圖規劃不包含檔案系統。",
+    "ja": "この描画計画にはファイルシステムがありません。",
+    "tr": "Bu çizim planında dosya sistemi yok."
+  },
+  "Transform one data frame at a time.": {
+    "en": "Transform one data frame at a time.",
+    "zh-CN": "每次只能转换一个数据帧。",
+    "zh-TW": "每次只能轉換一個資料框架。",
+    "ja": "データフレームは 1 個ずつ変換してください。",
+    "tr": "Veri çerçevelerini birer birer dönüştürün."
+  },
+  "UDF metadata and files must leave at least 32 sectors for drawing.": {
+    "en": "UDF metadata and files must leave at least 32 sectors for drawing.",
+    "zh-CN": "UDF 元数据与文件必须为绘图保留至少 32 个扇区。",
+    "zh-TW": "UDF 中繼資料與檔案必須為繪圖保留至少 32 個磁區。",
+    "ja": "UDF メタデータとファイルの配置後に、描画用の領域を少なくとも 32 セクター残す必要があります。",
+    "tr": "UDF üst verileri ve dosyalar, çizim için en az 32 sektör bırakmalıdır."
+  },
+  "Unknown BD-R preset '{0}'.": {
+    "en": "Unknown BD-R preset '{0}'.",
+    "zh-CN": "未知的 BD-R 预设“{0}”。",
+    "zh-TW": "未知的 BD-R 預設「{0}」。",
+    "ja": "不明な BD-R プリセット「{0}」です。",
+    "tr": "Bilinmeyen BD-R önayarı: '{0}'."
+  },
+  "Unknown Blu-ray command '{0}'.": {
+    "en": "Unknown Blu-ray command '{0}'.",
+    "zh-CN": "未知的蓝光命令“{0}”。",
+    "zh-TW": "未知的藍光命令「{0}」。",
+    "ja": "不明な Blu-ray コマンド「{0}」です。",
+    "tr": "Bilinmeyen Blu-ray komutu: '{0}'."
+  },
+  "Unknown option --{0} for {1}.": {
+    "en": "Unknown option --{0} for {1}.",
+    "zh-CN": "{1} 的选项 --{0} 未知。",
+    "zh-TW": "{1} 的選項 --{0} 未知。",
+    "ja": "{1} のオプション --{0} は不明です。",
+    "tr": "{1} için bilinmeyen seçenek: --{0}."
+  },
+  "Unsupported or invalid image. Use a PNG, JPEG, BMP or GIF.": {
+    "en": "Unsupported or invalid image. Use a PNG, JPEG, BMP or GIF.",
+    "zh-CN": "不支持或无效的图片。请使用 PNG、JPEG、BMP 或 GIF。",
+    "zh-TW": "不支援或無效的圖片。請使用 PNG、JPEG、BMP 或 GIF。",
+    "ja": "サポートされていないか、無効な画像です。PNG、JPEG、BMP、GIF を使用してください。",
+    "tr": "Desteklenmeyen veya geçersiz görsel. PNG, JPEG, BMP veya GIF kullanın."
+  },
+  "bd-encode input must contain exactly 65536 bytes (32 user sectors).": {
+    "en": "bd-encode input must contain exactly 65536 bytes (32 user sectors).",
+    "zh-CN": "bd-encode 的输入必须恰好包含 65536 字节（32 个用户扇区）。",
+    "zh-TW": "bd-encode 的輸入必須恰好包含 65536 位元組（32 個使用者磁區）。",
+    "ja": "bd-encode の入力は正確に 65536 バイト（32 ユーザーセクター）にしてください。",
+    "tr": "bd-encode girdisi tam olarak 65536 bayt (32 kullanıcı sektörü) içermelidir."
+  },
+  "bd-generate accepts only --tone-levels 2.": {
+    "en": "bd-generate accepts only --tone-levels 2.",
+    "zh-CN": "bd-generate 仅接受 --tone-levels 2。",
+    "zh-TW": "bd-generate 僅接受 --tone-levels 2。",
+    "ja": "bd-generate では --tone-levels 2 のみを指定できます。",
+    "tr": "bd-generate yalnızca --tone-levels 2 değerini kabul eder."
+  },
+  "bd-generate now outputs a complete ISO. Use --total-sectors for disc capacity; raw ranges remain available in bd-probe.": {
+    "en": "bd-generate now outputs a complete ISO. Use --total-sectors for disc capacity; raw ranges remain available in bd-probe.",
+    "zh-CN": "bd-generate 现在输出完整 ISO。请使用 --total-sectors 设置光盘容量；bd-probe 仍支持原始范围。",
+    "zh-TW": "bd-generate 現在輸出完整 ISO。請使用 --total-sectors 設定光碟容量；bd-probe 仍支援原始範圍。",
+    "ja": "bd-generate は完全な ISO を出力します。ディスク容量には --total-sectors を指定してください。生の範囲は引き続き bd-probe で使用できます。",
+    "tr": "bd-generate artık tam bir ISO üretir. Disk kapasitesi için --total-sectors kullanın; ham aralıklar bd-probe içinde kullanılabilir olmaya devam eder."
+  },
+  "dc-control bits must be 0 or 1.": {
+    "en": "dc-control bits must be 0 or 1.",
+    "zh-CN": "直流控制位必须为 0 或 1。",
+    "zh-TW": "直流控制位元必須為 0 或 1。",
+    "ja": "DC 制御ビットは 0 または 1 にしてください。",
+    "tr": "DC kontrol bitleri 0 veya 1 olmalıdır."
+  },
+  "Run-count bias is not an optical-reflectance calibration.": {
+    "en": "Run-count bias is not an optical-reflectance calibration.",
+    "zh-CN": "游程数量偏向不是光学反射率标定。",
+    "zh-TW": "游程數量偏向不是光學反射率校準。",
+    "ja": "ラン数バイアスは光学反射率のキャリブレーションではありません。",
+    "tr": "Dizi sayısı ağırlığı, optik yansıtma kalibrasyonu değildir."
+  },
+  "Nominal data zones; drive spare areas and defect remapping require calibration.": {
+    "en": "Nominal data zones; drive spare areas and defect remapping require calibration.",
+    "zh-CN": "标称数据区；光驱备用区与缺陷重映射需要标定。",
+    "zh-TW": "標稱資料區；光碟機備用區與缺陷重新映射需要校準。",
+    "ja": "公称データ領域です。ドライブの予備領域と欠陥リマッピングにはキャリブレーションが必要です。",
+    "tr": "Nominal veri bölgeleri; sürücü yedek alanları ve kusur yeniden eşlemesi kalibrasyon gerektirir."
+  },
+  "BD ECC diagnostic: {0} bytes; no 17PP/RUB or filesystem in this file.": {
+    "en": "BD ECC diagnostic: {0} bytes; no 17PP/RUB or filesystem in this file.",
+    "zh-CN": "BD ECC 诊断：{0} 字节；此文件不含 17PP/RUB 或文件系统。",
+    "zh-TW": "BD ECC 診斷：{0} 位元組；此檔案不含 17PP/RUB 或檔案系統。",
+    "ja": "BD ECC 診断: {0} バイト。このファイルには 17PP/RUB もファイルシステムも含まれません。",
+    "tr": "BD ECC tanılaması: {0} bayt; bu dosyada 17PP/RUB veya dosya sistemi yok."
+  },
+  "BD picture generation requires an image loader. Run bd-generate through the application or provide a BluRayGray8Raster loader.": {
+    "en": "BD picture generation requires an image loader. Run bd-generate through the application or provide a BluRayGray8Raster loader.",
+    "zh-CN": "BD 图片生成需要图像加载器。请通过应用运行 bd-generate，或提供 BluRayGray8Raster 加载器。",
+    "zh-TW": "BD 圖片產生需要影像載入器。請透過應用程式執行 bd-generate，或提供 BluRayGray8Raster 載入器。",
+    "ja": "BD 画像の生成には画像ローダーが必要です。アプリケーションから bd-generate を実行するか、BluRayGray8Raster ローダーを指定してください。",
+    "tr": "BD görseli oluşturmak için bir görsel yükleyici gerekir. bd-generate komutunu uygulama üzerinden çalıştırın veya bir BluRayGray8Raster yükleyicisi sağlayın."
+  },
+  "dark-to-6T / light-to-3T run-count bias": {
+    "en": "dark-to-6T / light-to-3T run-count bias",
+    "zh-CN": "暗部映射到 6T / 亮部映射到 3T 的游程数量偏向",
+    "zh-TW": "暗部映射至 6T / 亮部映射至 3T 的游程數量偏向",
+    "ja": "暗部→6T / 明部→3T のラン数バイアス",
+    "tr": "koyu→6T / açık→3T dizi sayısı ağırlığı"
+  },
+  "dark-to-3T / light-to-6T run-count bias": {
+    "en": "dark-to-3T / light-to-6T run-count bias",
+    "zh-CN": "暗部映射到 3T / 亮部映射到 6T 的游程数量偏向",
+    "zh-TW": "暗部映射至 3T / 亮部映射至 6T 的游程數量偏向",
+    "ja": "暗部→3T / 明部→6T のラン数バイアス",
+    "tr": "koyu→3T / açık→6T dizi sayısı ağırlığı"
+  },
+  "scrambled byte 0x{0:X2}; no black/white interpretation": {
+    "en": "scrambled byte 0x{0:X2}; no black/white interpretation",
+    "zh-CN": "扰码字节 0x{0:X2}；不作黑白解释",
+    "zh-TW": "擾碼位元組 0x{0:X2}；不作黑白解釋",
+    "ja": "スクランブル済みバイト 0x{0:X2}。白黒の解釈は行いません",
+    "tr": "karıştırılmış bayt 0x{0:X2}; siyah/beyaz yorumu yok"
+  },
+  "BD {0}/{1} bytes": {
+    "en": "BD {0}/{1} bytes",
+    "zh-CN": "BD {0}/{1} 字节",
+    "zh-TW": "BD {0}/{1} 位元組",
+    "ja": "BD {0}/{1} バイト",
+    "tr": "BD {0}/{1} bayt"
+  },
+  "full-area drawing, no filesystem": {
+    "en": "full-area drawing, no filesystem",
+    "zh-CN": "全区域绘图，无文件系统",
+    "zh-TW": "全區域繪圖，無檔案系統",
+    "ja": "全領域の描画、ファイルシステムなし",
+    "tr": "tam alan çizimi, dosya sistemi yok"
+  },
+  "BD {0}: {1} bytes, {2} sectors; {3} {4} files; drawing sectors {5}..{6}; {7}.": {
+    "en": "BD {0}: {1} bytes, {2} sectors; {3} {4} files; drawing sectors {5}..{6}; {7}.",
+    "zh-CN": "BD {0}：{1} 字节，{2} 个扇区；{3} 个{4}文件；绘图扇区 {5}..{6}；{7}。",
+    "zh-TW": "BD {0}：{1} 位元組，{2} 個磁區；{3} 個{4}檔案；繪圖磁區 {5}..{6}；{7}。",
+    "ja": "BD {0}: {1} バイト、{2} セクター。{4}のファイル数 {3}。描画セクター {5}..{6}。{7}。",
+    "tr": "BD {0}: {1} bayt, {2} sektör; {4} halkada {3} dosya; çizim sektörleri {5}..{6}; {7}."
+  },
+  "BD probe: {0} raw payload bytes, sectors {1}..{2}; {3}. No filesystem.": {
+    "en": "BD probe: {0} raw payload bytes, sectors {1}..{2}; {3}. No filesystem.",
+    "zh-CN": "BD 探测：{0} 个原始有效载荷字节，扇区 {1}..{2}；{3}。无文件系统。",
+    "zh-TW": "BD 探測：{0} 個原始有效負載位元組，磁區 {1}..{2}；{3}。無檔案系統。",
+    "ja": "BD プローブ: 生のペイロード {0} バイト、セクター {1}..{2}。{3}。ファイルシステムなし。",
+    "tr": "BD denemesi: {0} ham yük baytı, sektörler {1}..{2}; {3}. Dosya sistemi yok."
+  },
+  "BluRay.OuterFilePosition": {
+    "en": "outer",
+    "zh-CN": "外圈",
+    "zh-TW": "外圈",
+    "ja": "外周",
+    "tr": "dış"
+  },
+  "BluRay.InnerFilePosition": {
+    "en": "inner",
+    "zh-CN": "内圈",
+    "zh-TW": "內圈",
+    "ja": "内周",
+    "tr": "iç"
+  },
+  "请提供蓝光数据映射；图片可使用 BluRayRunLengthMapping 的 3T / 6T 数量偏向策略。": {
+    "zh-CN": "请提供蓝光数据映射；图片可使用 BluRayRunLengthMapping 的 3T / 6T 数量偏向策略。",
+    "zh-TW": "請提供藍光資料映射；圖片可使用 BluRayRunLengthMapping 的 3T / 6T 數量偏向策略。",
+    "en": "Provide a Blu-ray data mapping; images can use the 3T / 6T run-count bias strategy in BluRayRunLengthMapping.",
+    "ja": "Blu-ray データマッピングを指定してください。画像には BluRayRunLengthMapping の 3T / 6T ラン数バイアス方式を使用できます。",
+    "tr": "Bir Blu-ray veri eşlemesi sağlayın; görseller BluRayRunLengthMapping içindeki 3T / 6T dizi sayısı ağırlığı stratejisini kullanabilir."
+  }
+}

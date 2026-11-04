@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DvdImageSolver.Encoding;
 
 internal static partial class EfmPlusTables
@@ -37,7 +38,7 @@ internal static partial class EfmPlusTables
     {
         if (value > 87)
         {
-            throw new ArgumentOutOfRangeException(nameof(value), "The substitution table only covers bytes 0..87.");
+            throw new ArgumentOutOfRangeException(nameof(value), L.T("The substitution table only covers bytes 0..87."));
         }
 
         int index = value * 4 + StateIndex(state);
@@ -59,7 +60,7 @@ internal static partial class EfmPlusTables
     {
         if (state is < 1 or > 4)
         {
-            throw new ArgumentOutOfRangeException(nameof(state), "EFMPlus state must be 1..4.");
+            throw new ArgumentOutOfRangeException(nameof(state), L.T("EFMPlus state must be 1..4."));
         }
 
         return state - 1;

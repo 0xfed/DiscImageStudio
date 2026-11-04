@@ -1,10 +1,17 @@
 # 蓝光字节与位周期密度分析
 
+[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md) | [日本語](README.ja.md) | [Türkçe](README.tr.md)
+
 分析单层 BD-R 的数字编码链，筛选用于实盘明暗映射测试的输入模式。结果不定义黑白极性，也不生成整盘镜像或执行刻录。详细结论见 [分析报告](../../docs/BLURAY_BYTE_DENSITY.md)。
 
 需要 .NET 10 SDK；独立标准表分析只需 Python 标准库，画图另需 matplotlib / numpy。在仓库根目录运行：
 
+C# 探针入口的帮助、进度、错误及说明性 JSON 文案支持五种语言。使用 `--language zh-CN|zh-TW|en|ja|tr|system` 显式选择；否则优先使用环境变量 `DISC_IMAGE_STUDIO_LANGUAGE`，再跟随系统界面语言。JSON/CSV 标识、数值结果、位序列与文件名不参与翻译。
+
+Python 参考搜索和绘图工具也支持相同的 `--language` 选项及环境偏好。帮助、错误、进度、图表标注、生成的 Markdown 和说明性 JSON/CSV 文案会翻译；字段名、列名、模式标识与数值数据保留原样。图表优先使用可用的系统语言字体，并以仓库附带的 HarmonyOS 字体补足 CJK 字形。
+
 ```powershell
+dotnet run --project tools/BluRayByteProbe --configuration Release -- --language ja --help
 dotnet run --project tools/BluRayByteProbe --configuration Release -- artifacts/bluray-byte-density 4
 dotnet run --project tools/BluRayByteProbe --configuration Release -- --fine artifacts/bluray-byte-density
 

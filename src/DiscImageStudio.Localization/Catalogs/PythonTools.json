@@ -1,0 +1,821 @@
+{
+  "Python.EfmHelp": {
+    "en": "Generate the C# EFMPlus tables from ECMA-267 Annex G.\nUsage: generate_efm_tables.py ECMA-267.pdf output.cs\nPDF extraction requires pdfplumber. Generated C# table data and provenance comments are language-independent.",
+    "zh-CN": "依据 ECMA-267 附录 G 生成 C# EFMPlus 表。\n用法：generate_efm_tables.py ECMA-267.pdf output.cs\nPDF 提取需要 pdfplumber。生成的 C# 表数据和来源注释不随语言改变。",
+    "zh-TW": "依據 ECMA-267 附錄 G 生成 C# EFMPlus 表。\n用法：generate_efm_tables.py ECMA-267.pdf output.cs\nPDF 擷取需要 pdfplumber。生成的 C# 表資料與來源註解不隨語言改變。",
+    "ja": "ECMA-267 附属書 G から C# EFMPlus テーブルを生成します。\n使用法：generate_efm_tables.py ECMA-267.pdf output.cs\nPDF 抽出には pdfplumber が必要です。生成する C# テーブルデータと出典コメントは言語に依存しません。",
+    "tr": "ECMA-267 Ek G'den C# EFMPlus tablolarını üretir.\nKullanım: generate_efm_tables.py ECMA-267.pdf output.cs\nPDF çıkarma pdfplumber gerektirir. Üretilen C# tablo verileri ve kaynak açıklamaları dilden bağımsızdır."
+  },
+  "Python.EfmUsage": {
+    "en": "usage: generate_efm_tables.py ECMA-267.pdf output.cs",
+    "zh-CN": "用法：generate_efm_tables.py ECMA-267.pdf output.cs",
+    "zh-TW": "用法：generate_efm_tables.py ECMA-267.pdf output.cs",
+    "ja": "使用法：generate_efm_tables.py ECMA-267.pdf output.cs",
+    "tr": "Kullanım: generate_efm_tables.py ECMA-267.pdf output.cs"
+  },
+  "unexpected table layout on page {0}": {
+    "en": "unexpected table layout on page {0}",
+    "zh-CN": "第 {0} 页的表格布局异常",
+    "zh-TW": "第 {0} 頁的表格配置異常",
+    "ja": "ページ {0} のテーブル配置が想定外です",
+    "tr": "{0}. sayfada beklenmeyen tablo düzeni"
+  },
+  "misaligned state {0} on page {1}": {
+    "en": "misaligned state {0} on page {1}",
+    "zh-CN": "第 {1} 页的状态 {0} 未对齐",
+    "zh-TW": "第 {1} 頁的狀態 {0} 未對齊",
+    "ja": "ページ {1} の状態 {0} が整列していません",
+    "tr": "{1}. sayfada hizalanmamış durum {0}"
+  },
+  "main table does not contain bytes 0..255 exactly once": {
+    "en": "main table does not contain bytes 0..255 exactly once",
+    "zh-CN": "主表未将字节 0..255 各包含恰好一次",
+    "zh-TW": "主表未將位元組 0..255 各包含恰好一次",
+    "ja": "メインテーブルにバイト 0..255 がそれぞれ正確に 1 回ずつ含まれていません",
+    "tr": "Ana tablo 0..255 baytlarını tam birer kez içermiyor"
+  },
+  "substitution table does not contain bytes 0..87 exactly once": {
+    "en": "substitution table does not contain bytes 0..87 exactly once",
+    "zh-CN": "替代表未将字节 0..87 各包含恰好一次",
+    "zh-TW": "替代表未將位元組 0..87 各包含恰好一次",
+    "ja": "置換テーブルにバイト 0..87 がそれぞれ正確に 1 回ずつ含まれていません",
+    "tr": "İkame tablosu 0..87 baytlarını tam birer kez içermiyor"
+  },
+  "Python.ValidationFailed": {
+    "en": "Validation failed.",
+    "zh-CN": "验证失败。",
+    "zh-TW": "驗證失敗。",
+    "ja": "検証に失敗しました。",
+    "tr": "Doğrulama başarısız."
+  },
+  "DENSITY GROUPS": {
+    "en": "DENSITY GROUPS",
+    "zh-CN": "密度分组",
+    "zh-TW": "密度分組",
+    "ja": "密度別グループ",
+    "tr": "YOĞUNLUK GRUPLARI"
+  },
+  "LOW/HIGH DETAIL": {
+    "en": "LOW/HIGH DETAIL",
+    "zh-CN": "低／高密度详情",
+    "zh-TW": "低／高密度詳細資料",
+    "ja": "低密度／高密度の詳細",
+    "tr": "DÜŞÜK/YÜKSEK YOĞUNLUK AYRINTILARI"
+  },
+  "INITIAL PREV DEPENDENCE": {
+    "en": "INITIAL PREV DEPENDENCE",
+    "zh-CN": "初始前一位依赖性",
+    "zh-TW": "初始前一位元相依性",
+    "ja": "初期の直前ビットへの依存性",
+    "tr": "BAŞLANGIÇTAKİ ÖNCEKİ BİTE BAĞIMLILIK"
+  },
+  "EVEN PHASE DEPENDENCE": {
+    "en": "EVEN PHASE DEPENDENCE",
+    "zh-CN": "偶数相位依赖性",
+    "zh-TW": "偶數相位相依性",
+    "ja": "偶数位相への依存性",
+    "tr": "ÇİFT FAZA BAĞIMLILIK"
+  },
+  "EVEN ODD PHASE DIFFERENCES": {
+    "en": "EVEN ODD PHASE DIFFERENCES",
+    "zh-CN": "偶数与奇数相位差异",
+    "zh-TW": "偶數與奇數相位差異",
+    "ja": "偶数位相と奇数位相の差",
+    "tr": "ÇİFT VE TEK FAZ FARKLARI"
+  },
+  "SELECTED INPUT / OUTPUT": {
+    "en": "SELECTED INPUT / OUTPUT",
+    "zh-CN": "选定的输入／输出",
+    "zh-TW": "選定的輸入／輸出",
+    "ja": "選択した入力／出力",
+    "tr": "SEÇİLEN GİRDİ / ÇIKTI"
+  },
+  "FIXED PERIODIC DC SELECTED": {
+    "en": "FIXED PERIODIC DC SELECTED",
+    "zh-CN": "选定的固定周期 DC 结果",
+    "zh-TW": "選定的固定週期 DC 結果",
+    "ja": "選択した固定周期 DC の結果",
+    "tr": "SEÇİLEN SABİT PERİYODİK DC SONUÇLARI"
+  },
+  "Python.ReferenceDescription": {
+    "en": "Independent periodic 17PP reference, transcribed from ISO/IEC 30190:2021 Fig. 41.\n\nQ means data entering 17PP, no DC insertions, ECC, BIS, or sync in this model.\nThis is a finite-state cycle analysis, so reported densities are exact ratios.",
+    "zh-CN": "依据 ISO/IEC 30190:2021 图 41 转录的独立周期 17PP 参考实现。\n\nQ 指进入 17PP 的数据；此模型不包含 DC 插入、ECC、BIS 或同步。\n本工具进行有限状态循环分析，因此报告的密度为精确比率。",
+    "zh-TW": "依據 ISO/IEC 30190:2021 圖 41 轉錄的獨立週期 17PP 參考實作。\n\nQ 指進入 17PP 的資料；此模型不包含 DC 插入、ECC、BIS 或同步。\n本工具進行有限狀態循環分析，因此報告的密度為精確比率。",
+    "ja": "ISO/IEC 30190:2021 図 41 から転記した独立した周期 17PP 参照実装。\n\nQ は 17PP への入力データです。このモデルには DC 挿入、ECC、BIS、同期を含みません。\n有限状態の循環解析を行うため、報告する密度は厳密な比率です。",
+    "tr": "ISO/IEC 30190:2021 Şekil 41'den aktarılmış bağımsız periyodik 17PP referansı.\n\nQ, 17PP'ye giren veridir; bu modelde DC ekleme, ECC, BIS veya eşzamanlama yoktur.\nSonlu durum döngüsü analizi yapıldığından bildirilen yoğunluklar kesin oranlardır."
+  },
+  "Python.OutputDirectory": {
+    "en": "Directory for generated results (default: current directory).",
+    "zh-CN": "生成结果的目录（默认：当前目录）。",
+    "zh-TW": "生成結果的目錄（預設：目前目錄）。",
+    "ja": "生成結果のディレクトリ（既定：現在のディレクトリ）。",
+    "tr": "Üretilen sonuçların dizini (varsayılan: geçerli dizin)."
+  },
+  "repeated post-scramble Q, no DC/ECC/BIS/sync": {
+    "en": "repeated post-scramble Q, no DC/ECC/BIS/sync",
+    "zh-CN": "重复的扰码后 Q，不含 DC/ECC/BIS/同步",
+    "zh-TW": "重複的擾碼後 Q，不含 DC/ECC/BIS／同步",
+    "ja": "繰り返しのスクランブル後 Q。DC/ECC/BIS／同期なし",
+    "tr": "Tekrarlanan karıştırma sonrası Q; DC/ECC/BIS/eşzamanlama yok"
+  },
+  "MIN": {
+    "en": "MIN",
+    "zh-CN": "最小值",
+    "zh-TW": "最小值",
+    "ja": "最小値",
+    "tr": "EN AZ"
+  },
+  "MAX": {
+    "en": "MAX",
+    "zh-CN": "最大值",
+    "zh-TW": "最大值",
+    "ja": "最大値",
+    "tr": "EN ÇOK"
+  },
+  "Exhaustive 17PP periodic-input search; both previous-bit states are checked.": {
+    "en": "Exhaustive 17PP periodic-input search; both previous-bit states are checked.",
+    "zh-CN": "穷举 17PP 周期输入搜索；检查前一位的两种状态。",
+    "zh-TW": "窮舉 17PP 週期輸入搜尋；檢查前一位元的兩種狀態。",
+    "ja": "17PP 周期入力の全数探索。直前ビットの両状態を確認します。",
+    "tr": "Kapsamlı 17PP periyodik girdi araması; önceki bitin iki durumu da kontrol edilir."
+  },
+  "Python.MaximumPeriod": {
+    "en": "Largest input period in bits (default: 16).",
+    "zh-CN": "最大的输入周期位数（默认：16）。",
+    "zh-TW": "最大的輸入週期位元數（預設：16）。",
+    "ja": "入力周期の最大ビット数（既定：16）。",
+    "tr": "Bit cinsinden en büyük girdi periyodu (varsayılan: 16)."
+  },
+  "Python.PatternProgress": {
+    "en": "{0}: {1} strings, {2} classes; min {3} {4}; max {5} {6}",
+    "zh-CN": "{0}：{1} 个位串，{2} 类；最小值 {3} {4}；最大值 {5} {6}",
+    "zh-TW": "{0}：{1} 個位元串，{2} 類；最小值 {3} {4}；最大值 {5} {6}",
+    "ja": "{0}：{1} 文字列、{2} クラス。最小 {3} {4}、最大 {5} {6}",
+    "tr": "{0}: {1} dizi, {2} sınıf; en az {3} {4}; en çok {5} {6}"
+  },
+  "previous-bit dependence": {
+    "en": "previous-bit dependence",
+    "zh-CN": "前一位依赖性",
+    "zh-TW": "前一位元相依性",
+    "ja": "直前ビットへの依存性",
+    "tr": "Önceki bite bağımlılık"
+  },
+  "even-rotation density mismatch": {
+    "en": "even-rotation density mismatch",
+    "zh-CN": "偶数位旋转后的密度不匹配",
+    "zh-TW": "偶數位元旋轉後的密度不符",
+    "ja": "偶数ビット回転後の密度不一致",
+    "tr": "Çift bit döndürme sonrası yoğunluk uyuşmazlığı"
+  },
+  "AVERAGE_LOW": {
+    "en": "AVERAGE_LOW",
+    "zh-CN": "平均低密度",
+    "zh-TW": "平均低密度",
+    "ja": "平均低密度",
+    "tr": "ORTALAMA DÜŞÜK YOĞUNLUK"
+  },
+  "AVERAGE_HIGH": {
+    "en": "AVERAGE_HIGH",
+    "zh-CN": "平均高密度",
+    "zh-TW": "平均高密度",
+    "ja": "平均高密度",
+    "tr": "ORTALAMA YÜKSEK YOĞUNLUK"
+  },
+  "FIXED DC": {
+    "en": "FIXED DC",
+    "zh-CN": "固定 DC",
+    "zh-TW": "固定 DC",
+    "ja": "固定 DC",
+    "tr": "SABİT DC"
+  },
+  "Search short input patterns robust to either bit-pair phase.": {
+    "en": "Search short input patterns robust to either bit-pair phase.",
+    "zh-CN": "搜索对两种位对相位均稳健的短输入位串。",
+    "zh-TW": "搜尋對兩種位元對相位皆穩健的短輸入位元串。",
+    "ja": "ビットペアの両位相で安定する短い入力パターンを探索します。",
+    "tr": "İki bit çifti fazına da dayanıklı kısa girdi dizilerini ara."
+  },
+  "Python.RobustProgress": {
+    "en": "{0}: {1} patterns; robust limits {2} {3}; average limits {4} {5}",
+    "zh-CN": "{0}：{1} 个位串；稳健界限 {2} {3}；平均界限 {4} {5}",
+    "zh-TW": "{0}：{1} 個位元串；穩健界限 {2} {3}；平均界限 {4} {5}",
+    "ja": "{0}：{1} パターン。安定性の上下限 {2} {3}、平均の上下限 {4} {5}",
+    "tr": "{0}: {1} dizi; dayanıklı sınırlar {2} {3}; ortalama sınırlar {4} {5}"
+  },
+  "Python.InvalidByteSet": {
+    "en": "Expected one record for each of the 256 Q bytes.",
+    "zh-CN": "256 个 Q 字节各应恰好对应一条记录。",
+    "zh-TW": "256 個 Q 位元組各應恰好對應一筆記錄。",
+    "ja": "256 個の各 Q バイトに 1 件ずつの記録が必要です。",
+    "tr": "256 Q baytının her biri için bir kayıt bekleniyor."
+  },
+  "Python.InvalidFineCluster": {
+    "en": "Expected a 958,272-bit cluster with 65,536 verified payload bytes.",
+    "zh-CN": "应为 958,272 位的簇，并含 65,536 个已验证的负载字节。",
+    "zh-TW": "應為 958,272 位元的叢集，並含 65,536 個已驗證的負載位元組。",
+    "ja": "958,272 ビットのクラスターと、65,536 個の検証済みペイロードバイトが必要です。",
+    "tr": "65.536 doğrulanmış yük baytı içeren 958.272 bitlik küme bekleniyor."
+  },
+  "Python.InvalidHistogram": {
+    "en": "The run histogram does not conserve the transition count.",
+    "zh-CN": "游程直方图不满足跳变数守恒。",
+    "zh-TW": "遊程直方圖不符合跳變數守恆。",
+    "ja": "ラン長ヒストグラムで遷移数が保存されていません。",
+    "tr": "Geçiş aralığı histogramı geçiş sayısını korumuyor."
+  },
+  "Python.InvalidTransitionPartition": {
+    "en": "Data and parity transitions do not sum to the cluster transition count.",
+    "zh-CN": "数据区与校验区跳变数之和不等于簇跳变数。",
+    "zh-TW": "資料區與同位元檢查區跳變數總和不等於叢集跳變數。",
+    "ja": "データ領域とパリティ領域の遷移数の合計が、クラスターの遷移数と一致しません。",
+    "tr": "Veri ve eşlik geçişlerinin toplamı küme geçiş sayısına eşit değil."
+  },
+  "Python.ShortFineRun": {
+    "en": "Fine-pattern cluster contains runs shorter than 2T.",
+    "zh-CN": "细粒度位串簇含有短于 2T 的游程。",
+    "zh-TW": "細粒度位元串叢集含有短於 2T 的遊程。",
+    "ja": "細粒度パターンのクラスターに 2T 未満のラン長があります。",
+    "tr": "İnce desen kümesi 2T'den kısa geçiş aralıkları içeriyor."
+  },
+  "Python.FourAddressesRequired": {
+    "en": "Expected four address confirmations for the selected pattern, layout, and phase.",
+    "zh-CN": "选定的位串、布局和相位应有四个地址复核结果。",
+    "zh-TW": "選定的位元串、配置與相位應有四個位址複核結果。",
+    "ja": "選択したパターン、配置、位相について 4 件のアドレス確認結果が必要です。",
+    "tr": "Seçilen desen, düzen ve faz için dört adres doğrulaması bekleniyor."
+  },
+  "完整编码簇跳变密度（%）": {
+    "en": "Full encoded-cluster transition density (%)",
+    "zh-CN": "完整编码簇跳变密度（%）",
+    "zh-TW": "完整編碼叢集跳變密度（%）",
+    "ja": "完全な符号化クラスターの遷移密度（%）",
+    "tr": "Tam kodlanmış küme geçiş yoğunluğu (%)"
+  },
+  "位级控制扩大密度差：19.41 → 27.42 个百分点": {
+    "en": "Bit-level control widens the density gap:\n19.41 → 27.42 percentage points",
+    "zh-CN": "位级控制扩大密度差：19.41 → 27.42 个百分点",
+    "zh-TW": "位元級控制擴大密度差：19.41 → 27.42 個百分點",
+    "ja": "ビット単位の制御による密度差の拡大：\n19.41 → 27.42 パーセントポイント",
+    "tr": "Bit düzeyinde kontrol yoğunluk farkını artırır:\n19.41 → 27.42 yüzde puan"
+  },
+  "条形：greedy DC 诊断；横线：四种 DC 策略的测试范围，非置信区间。\n单层 BD-R，PSN 0x100000，包含 EDC / ECC / BIS / DC / 同步；数字密度不等于实盘明暗。": {
+    "en": "Bars: greedy DC diagnostics; lines: tested range of four DC strategies, not confidence intervals.\nSingle-layer BD-R, PSN 0x100000, includes EDC / ECC / BIS / DC / sync; digital density is not disc brightness.",
+    "zh-CN": "条形：greedy DC 诊断；横线：四种 DC 策略的测试范围，非置信区间。\n单层 BD-R，PSN 0x100000，包含 EDC / ECC / BIS / DC / 同步；数字密度不等于实盘明暗。",
+    "zh-TW": "長條：greedy DC 診斷；橫線：四種 DC 策略的測試範圍，非信賴區間。\n單層 BD-R，PSN 0x100000，包含 EDC / ECC / BIS / DC／同步；數位密度不等於實體光碟明暗。",
+    "ja": "棒：greedy DC 診断。線：4 種の DC 戦略のテスト範囲であり、信頼区間ではありません。\n単層 BD-R、PSN 0x100000。EDC / ECC / BIS / DC／同期を含む。デジタル密度は実ディスクの明暗ではありません。",
+    "tr": "Çubuklar: greedy DC tanılaması; çizgiler: dört DC stratejisinin test aralığı, güven aralığı değil.\nTek katmanlı BD-R, PSN 0x100000; EDC / ECC / BIS / DC / eşzamanlama dahil; dijital yoğunluk disk parlaklığı değildir."
+  },
+  "Python.InvalidClusterSize": {
+    "en": "Expected 958,272 channel bits per cluster.",
+    "zh-CN": "每簇应有 958,272 个通道位。",
+    "zh-TW": "每叢集應有 958,272 個通道位元。",
+    "ja": "クラスターあたり 958,272 チャネルビットが必要です。",
+    "tr": "Küme başına 958.272 kanal biti bekleniyor."
+  },
+  "Python.InvalidRunBits": {
+    "en": "The run histogram does not conserve completed-run bit lengths.",
+    "zh-CN": "游程直方图不满足完整游程位长守恒。",
+    "zh-TW": "遊程直方圖不符合完整遊程位元長度守恆。",
+    "ja": "ラン長ヒストグラムで完了ランのビット長が保存されていません。",
+    "tr": "Geçiş aralığı histogramı tamamlanmış aralıkların bit uzunluklarını korumuyor."
+  },
+  "Python.InvalidClusterRuns": {
+    "en": "Cluster contains 1T or 10T+ runs.",
+    "zh-CN": "簇含有 1T 或 10T 以上的游程。",
+    "zh-TW": "叢集含有 1T 或 10T 以上的遊程。",
+    "ja": "クラスターに 1T または 10T 以上のラン長があります。",
+    "tr": "Küme 1T veya 10T ve üzeri geçiş aralıkları içeriyor."
+  },
+  "Python.InvalidDensity": {
+    "en": "Cluster transition density must be strictly between 0 and 0.5.",
+    "zh-CN": "簇跳变密度必须严格位于 0 与 0.5 之间。",
+    "zh-TW": "叢集跳變密度必須嚴格介於 0 與 0.5 之間。",
+    "ja": "クラスターの遷移密度は 0 より大きく 0.5 より小さい必要があります。",
+    "tr": "Küme geçiş yoğunluğu 0'dan büyük, 0.5'ten küçük olmalıdır."
+  },
+  "Python.InvalidSyntheticRuns": {
+    "en": "Synthetic data frames contain runs outside 2T..8T.",
+    "zh-CN": "合成数据帧含有 2T..8T 范围外的游程。",
+    "zh-TW": "合成資料框架含有 2T..8T 範圍外的遊程。",
+    "ja": "合成データフレームに 2T..8T の範囲外のラン長があります。",
+    "tr": "Sentetik veri çerçeveleri 2T..8T aralığı dışında geçiş aralıkları içeriyor."
+  },
+  "Q 低四位（十六进制）": {
+    "en": "Q low nibble (hexadecimal)",
+    "zh-CN": "Q 低四位（十六进制）",
+    "zh-TW": "Q 低四位元（十六進位）",
+    "ja": "Q の下位 4 ビット（16 進数）",
+    "tr": "Q alt dört biti (onaltılık)"
+  },
+  "Q 高四位（十六进制）": {
+    "en": "Q high nibble (hexadecimal)",
+    "zh-CN": "Q 高四位（十六进制）",
+    "zh-TW": "Q 高四位元（十六進位）",
+    "ja": "Q の上位 4 ビット（16 進数）",
+    "tr": "Q üst dört biti (onaltılık)"
+  },
+  "单层 BD-R：256 种重复 Q 字节的完整簇跳变密度": {
+    "en": "Single-layer BD-R: full-cluster transition density\nfor all 256 repeated Q bytes",
+    "zh-CN": "单层 BD-R：256 种重复 Q 字节的完整簇跳变密度",
+    "zh-TW": "單層 BD-R：256 種重複 Q 位元組的完整叢集跳變密度",
+    "ja": "単層 BD-R：256 種の繰り返し Q バイトの\n完全なクラスターの遷移密度",
+    "tr": "Tek katmanlı BD-R: 256 tekrarlanan Q baytının\ntam küme geçiş yoğunluğu"
+  },
+  "Q 为扰码后的 payload 值；包含 EDC、LDC/BIS、DC、17PP 与同步。\nPSN 0x100000，greedy DC 诊断模型；数字密度不等于实盘明暗。": {
+    "en": "Q is the post-scramble payload value; includes EDC, LDC/BIS, DC, 17PP, and sync.\nPSN 0x100000, greedy DC diagnostic model; digital density is not disc brightness.",
+    "zh-CN": "Q 为扰码后的 payload 值；包含 EDC、LDC/BIS、DC、17PP 与同步。\nPSN 0x100000，greedy DC 诊断模型；数字密度不等于实盘明暗。",
+    "zh-TW": "Q 為擾碼後的負載值；包含 EDC、LDC/BIS、DC、17PP 與同步。\nPSN 0x100000，greedy DC 診斷模型；數位密度不等於實體光碟明暗。",
+    "ja": "Q はスクランブル後のペイロード値。EDC、LDC/BIS、DC、17PP、同期を含みます。\nPSN 0x100000、greedy DC 診断モデル。デジタル密度は実ディスクの明暗ではありません。",
+    "tr": "Q, karıştırma sonrası yük değeridir; EDC, LDC/BIS, DC, 17PP ve eşzamanlama dahil.\nPSN 0x100000, greedy DC tanılama modeli; dijital yoğunluk disk parlaklığı değildir."
+  },
+  "跳变密度（%）": {
+    "en": "Transition density (%)",
+    "zh-CN": "跳变密度（%）",
+    "zh-TW": "跳變密度（%）",
+    "ja": "遷移密度（%）",
+    "tr": "Geçiş yoğunluğu (%)"
+  },
+  "字节基线：低密度组、高密度组及常见对照": {
+    "en": "Byte baselines: low/high-density groups and common controls",
+    "zh-CN": "字节基线：低密度组、高密度组及常见对照",
+    "zh-TW": "位元組基準：低密度組、高密度組與常見對照",
+    "ja": "バイト基準：低密度群、高密度群、一般的な対照",
+    "tr": "Bayt referansları: düşük/yüksek yoğunluk grupları ve yaygın kontroller"
+  },
+  "这些值是数字编码结果；还没有指定哪组对应黑、哪组对应白。": {
+    "en": "These values are digital encoding results; neither group has been assigned to black or white yet.",
+    "zh-CN": "这些值是数字编码结果；还没有指定哪组对应黑、哪组对应白。",
+    "zh-TW": "這些值為數位編碼結果；尚未指定哪組對應黑、哪組對應白。",
+    "ja": "これらはデジタル符号化の結果です。どの群が黒または白に対応するかは、まだ指定していません。",
+    "tr": "Bu değerler dijital kodlama sonuçlarıdır; hangi grubun siyaha, hangisinin beyaza karşılık geldiği henüz belirlenmedi."
+  },
+  "# 全部 256 字节的测量结果": {
+    "en": "# Measurements for all 256 bytes",
+    "zh-CN": "# 全部 256 字节的测量结果",
+    "zh-TW": "# 全部 256 位元組的測量結果",
+    "ja": "# 全 256 バイトの測定結果",
+    "tr": "# Tüm 256 baytın ölçüm sonuçları"
+  },
+  "Q 指扰码后的目标 payload 字节。完整簇为 958,272 channel bits，PSN 0x100000。": {
+    "en": "Q is the target post-scramble payload byte. A full cluster has 958,272 channel bits, PSN 0x100000.",
+    "zh-CN": "Q 指扰码后的目标 payload 字节。完整簇为 958,272 channel bits，PSN 0x100000。",
+    "zh-TW": "Q 指擾碼後的目標負載位元組。完整叢集為 958,272 通道位元，PSN 0x100000。",
+    "ja": "Q はスクランブル後の目標ペイロードバイトです。完全なクラスターは 958,272 チャネルビット、PSN 0x100000 です。",
+    "tr": "Q, karıştırma sonrası hedef yük baytıdır. Tam küme 958.272 kanal bitidir, PSN 0x100000."
+  },
+  "| Q | 纯 17PP % | 完整簇 greedy % | DC 全 0 % | DC 全 1 % | DC 随机 % | 平均 run / T |": {
+    "en": "| Q | Pure 17PP % | Full cluster greedy % | All-zero DC % | All-one DC % | Random DC % | Mean run / T |",
+    "zh-CN": "| Q | 纯 17PP % | 完整簇 greedy % | DC 全 0 % | DC 全 1 % | DC 随机 % | 平均 run / T |",
+    "zh-TW": "| Q | 純 17PP % | 完整叢集 greedy % | DC 全 0 % | DC 全 1 % | DC 隨機 % | 平均遊程 / T |",
+    "ja": "| Q | 純粋な 17PP % | 完全なクラスター greedy % | DC 全 0 % | DC 全 1 % | ランダム DC % | 平均ラン長 / T |",
+    "tr": "| Q | Yalın 17PP % | Tam küme greedy % | Tümü sıfır DC % | Tümü bir DC % | Rastgele DC % | Ortalama geçiş aralığı / T |"
+  },
+  "Python.ProbePlotsComplete": {
+    "en": "Validated all 256 bytes; reference comparisons: {0}. Figures written to {1}.",
+    "zh-CN": "已验证全部 256 个字节；参考比较次数：{0}。图表已写入 {1}。",
+    "zh-TW": "已驗證全部 256 個位元組；參考比較次數：{0}。圖表已寫入 {1}。",
+    "ja": "全 256 バイトを検証しました。参照との比較：{0} 件。図の出力先：{1}。",
+    "tr": "Tüm 256 bayt doğrulandı; referans karşılaştırmaları: {0}. Grafikler {1} konumuna yazıldı."
+  },
+  "稀疏位串：16 bit，DC 段重启": {
+    "en": "Sparse bit pattern: 16 bits, restart at each DC block",
+    "zh-CN": "稀疏位串：16 bit，DC 段重启",
+    "zh-TW": "稀疏位元串：16 位元，DC 區塊重啟",
+    "ja": "疎なビット列：16 ビット、DC ブロックごとに再開",
+    "tr": "Seyrek bit dizisi: 16 bit, her DC bloğunda yeniden başlatma"
+  },
+  "稳健高密度：6 bit，预留 DC 槽": {
+    "en": "Robust high density: 6 bits, reserved DC slots",
+    "zh-CN": "稳健高密度：6 bit，预留 DC 槽",
+    "zh-TW": "穩健高密度：6 位元，預留 DC 槽位",
+    "ja": "安定した高密度：6 ビット、DC スロットを予約",
+    "tr": "Dayanıklı yüksek yoğunluk: 6 bit, ayrılmış DC yuvaları"
+  },
+  "高密度位串：10 bit，DC 段重启": {
+    "en": "High-density bit pattern: 10 bits, restart at each DC block",
+    "zh-CN": "高密度位串：10 bit，DC 段重启",
+    "zh-TW": "高密度位元串：10 位元，DC 區塊重啟",
+    "ja": "高密度ビット列：10 ビット、DC ブロックごとに再開",
+    "tr": "Yüksek yoğunluklu bit dizisi: 10 bit, her DC bloğunda yeniden başlatma"
+  },
+  "字节基线：0x09": {
+    "en": "Byte baseline: 0x09",
+    "zh-CN": "字节基线：0x09",
+    "zh-TW": "位元組基準：0x09",
+    "ja": "バイト基準：0x09",
+    "tr": "Bayt referansı: 0x09"
+  },
+  "16 位串 · phase 2\n按 DC 段重启": {
+    "en": "16-bit pattern · phase 2\nRestart at each DC block",
+    "zh-CN": "16 位串 · 相位 2\n按 DC 段重启",
+    "zh-TW": "16 位元串 · 相位 2\n按 DC 區塊重啟",
+    "ja": "16 ビット列・位相 2\nDC ブロックごとに再開",
+    "tr": "16 bit dizi · faz 2\nHer DC bloğunda yeniden başlatma"
+  },
+  "字节基线：0x9E": {
+    "en": "Byte baseline: 0x9E",
+    "zh-CN": "字节基线：0x9E",
+    "zh-TW": "位元組基準：0x9E",
+    "ja": "バイト基準：0x9E",
+    "tr": "Bayt referansı: 0x9E"
+  },
+  "6 位串 · phase 3\n预留 DC 槽": {
+    "en": "6-bit pattern · phase 3\nReserved DC slots",
+    "zh-CN": "6 位串 · 相位 3\n预留 DC 槽",
+    "zh-TW": "6 位元串 · 相位 3\n預留 DC 槽位",
+    "ja": "6 ビット列・位相 3\nDC スロットを予約",
+    "tr": "6 bit dizi · faz 3\nAyrılmış DC yuvaları"
+  },
+  "10 位串 · phase 4\n按 DC 段重启": {
+    "en": "10-bit pattern · phase 4\nRestart at each DC block",
+    "zh-CN": "10 位串 · 相位 4\n按 DC 段重启",
+    "zh-TW": "10 位元串 · 相位 4\n按 DC 區塊重啟",
+    "ja": "10 ビット列・位相 4\nDC ブロックごとに再開",
+    "tr": "10 bit dizi · faz 4\nHer DC bloğunda yeniden başlatma"
+  },
+  "Python.PlotDescription": {
+    "en": "Validate probe outputs and draw standalone scientific figures (requires matplotlib and NumPy).",
+    "zh-CN": "验证探针输出并绘制独立科学图表（需要 matplotlib 和 NumPy）。",
+    "zh-TW": "驗證探針輸出並繪製獨立科學圖表（需要 matplotlib 與 NumPy）。",
+    "ja": "プローブ出力を検証し、独立した科学図を描画します（matplotlib と NumPy が必要）。",
+    "tr": "Prob çıktılarını doğrular ve bağımsız bilimsel grafikler çizer (matplotlib ve NumPy gerektirir)."
+  },
+  "Python.PlotDirectory": {
+    "en": "Probe output directory (default: artifacts/bluray-byte-density).",
+    "zh-CN": "探针输出目录（默认：artifacts/bluray-byte-density）。",
+    "zh-TW": "探針輸出目錄（預設：artifacts/bluray-byte-density）。",
+    "ja": "プローブ出力ディレクトリ（既定：artifacts/bluray-byte-density）。",
+    "tr": "Prob çıktı dizini (varsayılan: artifacts/bluray-byte-density)."
+  },
+  "Python.ReferenceOrderMismatch": {
+    "en": "Reference Q-byte order does not match the probe.",
+    "zh-CN": "参考 Q 字节顺序与探针不匹配。",
+    "zh-TW": "參考 Q 位元組順序與探針不符。",
+    "ja": "参照の Q バイト順がプローブと一致しません。",
+    "tr": "Referans Q bayt sırası probla uyuşmuyor."
+  },
+  "Python.ReferenceDensityMismatch": {
+    "en": "Pure 17PP density disagrees with the independent periodic reference.",
+    "zh-CN": "纯 17PP 密度与独立周期参考不一致。",
+    "zh-TW": "純 17PP 密度與獨立週期參考不一致。",
+    "ja": "純粋な 17PP の密度が独立した周期参照と一致しません。",
+    "tr": "Yalın 17PP yoğunluğu bağımsız periyodik referansla uyuşmuyor."
+  },
+  "跳变数 / channel bits（%）": {
+    "en": "Transitions / channel bits (%)",
+    "zh-CN": "跳变数 / channel bits（%）",
+    "zh-TW": "跳變數／通道位元（%）",
+    "ja": "遷移数／チャネルビット数（%）",
+    "tr": "Geçişler / kanal bitleri (%)"
+  },
+  "纯 17PP，未插 DC": {
+    "en": "Pure 17PP, no DC insertion",
+    "zh-CN": "纯 17PP，未插 DC",
+    "zh-TW": "純 17PP，未插入 DC",
+    "ja": "純粋な 17PP、DC 挿入なし",
+    "tr": "Yalın 17PP, DC eklenmeden"
+  },
+  "完整簇，greedy DC": {
+    "en": "Full cluster, greedy DC",
+    "zh-CN": "完整簇，greedy DC",
+    "zh-TW": "完整叢集，greedy DC",
+    "ja": "完全なクラスター、greedy DC",
+    "tr": "Tam küme, greedy DC"
+  },
+  "Validated fine-pattern clusters and generated fine-pattern comparison.": {
+    "en": "Validated fine-pattern clusters and generated fine-pattern comparison.",
+    "zh-CN": "已验证细粒度位串簇，并生成细粒度位串比较图。",
+    "zh-TW": "已驗證細粒度位元串叢集，並生成細粒度位元串比較圖。",
+    "ja": "細粒度パターンのクラスターを検証し、比較図を生成しました。",
+    "tr": "İnce desen kümeleri doğrulandı ve ince desen karşılaştırması üretildi."
+  },
+  "actual atlas pixel occupancy; excludes panel margins and column gutters; not optical brightness or ISO channel-sample occupancy": {
+    "en": "actual atlas pixel occupancy; excludes panel margins and column gutters; not optical brightness or ISO channel-sample occupancy",
+    "zh-CN": "实际图集像素占比；排除面板边缘和列间留白；并非光学亮度或 ISO 通道采样占比",
+    "zh-TW": "實際圖集像素佔比；排除面板邊緣與欄間留白；並非光學亮度或 ISO 通道取樣佔比",
+    "ja": "実際のアトラス画素占有率。パネル余白と列間の空白を除外。光学的な明るさや ISO チャネルサンプルの占有率ではありません",
+    "tr": "Gerçek atlas piksel doluluğu; panel kenarları ve sütun araları hariç; optik parlaklık veya ISO kanal örneği doluluğu değildir"
+  },
+  "Unsupported prepared probe schema": {
+    "en": "Unsupported prepared probe schema",
+    "zh-CN": "不支持的准备探针架构",
+    "zh-TW": "不支援的準備探針結構描述",
+    "ja": "準備済みプローブのスキーマは未対応です",
+    "tr": "Desteklenmeyen hazırlanmış prob şeması"
+  },
+  "This verifier expects the documented 6000-square 20-um probe": {
+    "en": "This verifier expects the documented 6000-square 20-um probe",
+    "zh-CN": "此验证器需要文档所述的 6000 像素见方、20 µm 网格探针",
+    "zh-TW": "此驗證器需要文件所述的 6000 像素見方、20 µm 網格探針",
+    "ja": "この検証器は、文書記載の 6000 ピクセル四方・20 µm 格子のプローブを想定しています",
+    "tr": "Bu doğrulayıcı, belgelenen 6000 piksel kare ve 20 µm hücreli probu bekler"
+  },
+  "Expected 12 unique numbered panels": {
+    "en": "Expected 12 unique numbered panels",
+    "zh-CN": "应有 12 个编号唯一的面板",
+    "zh-TW": "應有 12 個編號唯一的面板",
+    "ja": "一意の番号を持つ 12 個のパネルが必要です",
+    "tr": "Benzersiz numaralı 12 panel bekleniyor"
+  },
+  "Atlas length does not match its declared dimensions": {
+    "en": "Atlas length does not match its declared dimensions",
+    "zh-CN": "图集长度与声明的尺寸不符",
+    "zh-TW": "圖集長度與宣告的尺寸不符",
+    "ja": "アトラスの長さが宣言された寸法と一致しません",
+    "tr": "Atlas uzunluğu bildirilen boyutlarla uyuşmuyor"
+  },
+  "Atlas SHA-256 differs from probe.json": {
+    "en": "Atlas SHA-256 differs from probe.json",
+    "zh-CN": "图集 SHA-256 与 probe.json 不符",
+    "zh-TW": "圖集 SHA-256 與 probe.json 不符",
+    "ja": "アトラスの SHA-256 が probe.json と一致しません",
+    "tr": "Atlas SHA-256 değeri probe.json ile uyuşmuyor"
+  },
+  "Python.MixtureHelp": {
+    "en": "Measure actual Q-byte occupancies in the prepared probe's mixture cells.\n\nRun with Python 3 and NumPy:\n    python tools/DvdGrayProbe/verify_mixtures.py --prepared ../artifacts/dvd-gray-probe-64-e4\n\nReads the emitted atlas independently of the C# mask generator. Measurements describe atlas pixels, not the optical brightness or the ISO's encoded samples.",
+    "zh-CN": "测量准备探针混合单元中实际的 Q 字节占比。\n\n使用 Python 3 和 NumPy 运行：\n    python tools/DvdGrayProbe/verify_mixtures.py --prepared ../artifacts/dvd-gray-probe-64-e4\n\n独立于 C# 掩模生成器读取输出图集。测量结果描述图集像素，不代表光学亮度或 ISO 的编码采样。",
+    "zh-TW": "測量準備探針混合單元中實際的 Q 位元組佔比。\n\n使用 Python 3 與 NumPy 執行：\n    python tools/DvdGrayProbe/verify_mixtures.py --prepared ../artifacts/dvd-gray-probe-64-e4\n\n獨立於 C# 遮罩生成器讀取輸出圖集。測量結果描述圖集像素，不代表光學亮度或 ISO 的編碼取樣。",
+    "ja": "準備済みプローブの混合セルで、実際の Q バイト占有率を測定します。\n\nPython 3 と NumPy で実行：\n    python tools/DvdGrayProbe/verify_mixtures.py --prepared ../artifacts/dvd-gray-probe-64-e4\n\nC# マスク生成器とは独立して出力アトラスを読み取ります。測定はアトラス画素を表し、光学的な明るさや ISO の符号化サンプルではありません。",
+    "tr": "Hazırlanmış probun karışım hücrelerindeki gerçek Q bayt doluluğunu ölçer.\n\nPython 3 ve NumPy ile çalıştırın:\n    python tools/DvdGrayProbe/verify_mixtures.py --prepared ../artifacts/dvd-gray-probe-64-e4\n\nÜretilen atlası C# maske üreticisinden bağımsız okur. Ölçümler atlas piksellerini tanımlar; optik parlaklığı veya ISO'nun kodlanmış örneklerini değil."
+  },
+  "Python.PreparedDirectory": {
+    "en": "Directory containing probe.json and atlas.q8.",
+    "zh-CN": "包含 probe.json 和 atlas.q8 的目录。",
+    "zh-TW": "包含 probe.json 與 atlas.q8 的目錄。",
+    "ja": "probe.json と atlas.q8 を含むディレクトリ。",
+    "tr": "probe.json ve atlas.q8 içeren dizin."
+  },
+  "Python.ChunkRows": {
+    "en": "Rows processed per batch (default: 128).",
+    "zh-CN": "每批处理的行数（默认：128）。",
+    "zh-TW": "每批處理的列數（預設：128）。",
+    "ja": "バッチごとに処理する行数（既定：128）。",
+    "tr": "Toplu iş başına işlenen satır sayısı (varsayılan: 128)."
+  },
+  "Python.Tolerance": {
+    "en": "Exclusive tolerance in percentage points (default: 1.0).",
+    "zh-CN": "以百分点为单位的容差上限（不含上限；默认：1.0）。",
+    "zh-TW": "以百分點為單位的容許誤差上限（不含上限；預設：1.0）。",
+    "ja": "パーセントポイント単位の許容差の上限（上限値を含まない、既定：1.0）。",
+    "tr": "Yüzde puan cinsinden tolerans üst sınırı, sınır hariç (varsayılan: 1.0)."
+  },
+  "chunk rows and tolerance must be positive": {
+    "en": "chunk rows and tolerance must be positive",
+    "zh-CN": "分批行数和容差必须为正数",
+    "zh-TW": "分批列數與容許誤差必須為正數",
+    "ja": "バッチ行数と許容差は正である必要があります",
+    "tr": "Toplu iş satır sayısı ve tolerans pozitif olmalıdır"
+  },
+  "Empty cell: {0}, panel {1}, column {2}": {
+    "en": "Empty cell: {0}, panel {1}, column {2}",
+    "zh-CN": "空单元：{0}，面板 {1}，列 {2}",
+    "zh-TW": "空單元：{0}，面板 {1}，欄 {2}",
+    "ja": "空のセル：{0}、パネル {1}、列 {2}",
+    "tr": "Boş hücre: {0}, panel {1}, sütun {2}"
+  },
+  "conflicting option string: %s": {
+    "en": "conflicting option string: %s",
+    "zh-CN": "选项字符串冲突：%s",
+    "zh-TW": "選項字串衝突：%s",
+    "ja": "オプション文字列の競合：%s",
+    "tr": "Çakışan seçenek dizgesi: %s"
+  },
+  "conflicting option strings: %s": {
+    "en": "conflicting option strings: %s",
+    "zh-CN": "选项字符串冲突：%s",
+    "zh-TW": "選項字串衝突：%s",
+    "ja": "オプション文字列の競合：%s",
+    "tr": "Çakışan seçenek dizgeleri: %s"
+  },
+  "usage: ": {
+    "en": "usage: ",
+    "zh-CN": "用法： ",
+    "zh-TW": "用法： ",
+    "ja": "使用法： ",
+    "tr": "Kullanım: "
+  },
+  "argument %(argument_name)s: %(message)s": {
+    "en": "argument %(argument_name)s: %(message)s",
+    "zh-CN": "参数 %(argument_name)s：%(message)s",
+    "zh-TW": "引數 %(argument_name)s：%(message)s",
+    "ja": "引数 %(argument_name)s：%(message)s",
+    "tr": "%(argument_name)s bağımsız değişkeni: %(message)s"
+  },
+  "show program's version number and exit": {
+    "en": "show program's version number and exit",
+    "zh-CN": "显示程序版本号并退出",
+    "zh-TW": "顯示程式版本號碼並結束",
+    "ja": "プログラムのバージョン番号を表示して終了",
+    "tr": "Programın sürüm numarasını göster ve çık"
+  },
+  "positional arguments": {
+    "en": "positional arguments",
+    "zh-CN": "位置参数",
+    "zh-TW": "位置引數",
+    "ja": "位置引数",
+    "tr": "Konumsal bağımsız değişkenler"
+  },
+  "options": {
+    "en": "options",
+    "zh-CN": "选项",
+    "zh-TW": "選項",
+    "ja": "オプション",
+    "tr": "Seçenekler"
+  },
+  "invalid choice: %(value)r (choose from %(choices)s)": {
+    "en": "invalid choice: %(value)r (choose from %(choices)s)",
+    "zh-CN": "无效选项：%(value)r（可选：%(choices)s）",
+    "zh-TW": "無效選項：%(value)r（可選：%(choices)s）",
+    "ja": "無効な選択肢：%(value)r（選択肢：%(choices)s）",
+    "tr": "Geçersiz seçim: %(value)r (seçenekler: %(choices)s)"
+  },
+  "can't open '%(filename)s': %(error)s": {
+    "en": "can't open '%(filename)s': %(error)s",
+    "zh-CN": "无法打开“%(filename)s”：%(error)s",
+    "zh-TW": "無法開啟「%(filename)s」：%(error)s",
+    "ja": "「%(filename)s」を開けません：%(error)s",
+    "tr": "'%(filename)s' açılamıyor: %(error)s"
+  },
+  "subcommands": {
+    "en": "subcommands",
+    "zh-CN": "子命令",
+    "zh-TW": "子命令",
+    "ja": "サブコマンド",
+    "tr": "Alt komutlar"
+  },
+  "unrecognized arguments: %s": {
+    "en": "unrecognized arguments: %s",
+    "zh-CN": "无法识别的参数：%s",
+    "zh-TW": "無法辨識的引數：%s",
+    "ja": "認識できない引数：%s",
+    "tr": "Tanınmayan bağımsız değişkenler: %s"
+  },
+  "ambiguous option: %(option)s could match %(matches)s": {
+    "en": "ambiguous option: %(option)s could match %(matches)s",
+    "zh-CN": "选项不明确：%(option)s 可能匹配 %(matches)s",
+    "zh-TW": "選項不明確：%(option)s 可能符合 %(matches)s",
+    "ja": "曖昧なオプション：%(option)s は %(matches)s に一致する可能性があります",
+    "tr": "Belirsiz seçenek: %(option)s, %(matches)s ile eşleşebilir"
+  },
+  "expected one argument": {
+    "en": "expected one argument",
+    "zh-CN": "需要一个参数",
+    "zh-TW": "需要一個引數",
+    "ja": "引数が 1 個必要です",
+    "tr": "Bir bağımsız değişken bekleniyor"
+  },
+  "expected at most one argument": {
+    "en": "expected at most one argument",
+    "zh-CN": "最多可有一个参数",
+    "zh-TW": "最多可有一個引數",
+    "ja": "引数は最大 1 個です",
+    "tr": "En fazla bir bağımsız değişken bekleniyor"
+  },
+  "expected at least one argument": {
+    "en": "expected at least one argument",
+    "zh-CN": "至少需要一个参数",
+    "zh-TW": "至少需要一個引數",
+    "ja": "引数が少なくとも 1 個必要です",
+    "tr": "En az bir bağımsız değişken bekleniyor"
+  },
+  "invalid %(type)s value: %(value)r": {
+    "en": "invalid %(type)s value: %(value)r",
+    "zh-CN": "无效的 %(type)s 值：%(value)r",
+    "zh-TW": "無效的 %(type)s 值：%(value)r",
+    "ja": "無効な %(type)s 値：%(value)r",
+    "tr": "Geçersiz %(type)s değeri: %(value)r"
+  },
+  "%(prog)s: error: %(message)s\n": {
+    "en": "%(prog)s: error: %(message)s\n",
+    "zh-CN": "%(prog)s：错误：%(message)s\n",
+    "zh-TW": "%(prog)s：錯誤：%(message)s\n",
+    "ja": "%(prog)s：エラー：%(message)s\n",
+    "tr": "%(prog)s: hata: %(message)s\n"
+  },
+  "%(prog)s: warning: %(message)s\n": {
+    "en": "%(prog)s: warning: %(message)s\n",
+    "zh-CN": "%(prog)s：警告：%(message)s\n",
+    "zh-TW": "%(prog)s：警告：%(message)s\n",
+    "ja": "%(prog)s：警告：%(message)s\n",
+    "tr": "%(prog)s: uyarı: %(message)s\n"
+  },
+  "%(heading)s:": {
+    "en": "%(heading)s:",
+    "zh-CN": "%(heading)s：",
+    "zh-TW": "%(heading)s：",
+    "ja": "%(heading)s：",
+    "tr": "%(heading)s:"
+  },
+  " (default: %(default)s)": {
+    "en": " (default: %(default)s)",
+    "zh-CN": "（默认：%(default)s）",
+    "zh-TW": "（預設：%(default)s）",
+    "ja": "（既定：%(default)s）",
+    "tr": " (varsayılan: %(default)s)"
+  },
+  "unknown parser %(parser_name)r (choices: %(choices)s)": {
+    "en": "unknown parser %(parser_name)r (choices: %(choices)s)",
+    "zh-CN": "未知的解析器 %(parser_name)r（可选：%(choices)s）",
+    "zh-TW": "未知的剖析器 %(parser_name)r（可選：%(choices)s）",
+    "ja": "不明なパーサー %(parser_name)r（選択肢：%(choices)s）",
+    "tr": "Bilinmeyen ayrıştırıcı %(parser_name)r (seçenekler: %(choices)s)"
+  },
+  "command '%(parser_name)s' is deprecated": {
+    "en": "command '%(parser_name)s' is deprecated",
+    "zh-CN": "命令“%(parser_name)s”已弃用",
+    "zh-TW": "命令「%(parser_name)s」已淘汰",
+    "ja": "コマンド「%(parser_name)s」は非推奨です",
+    "tr": "'%(parser_name)s' komutu kullanım dışıdır"
+  },
+  "show this help message and exit": {
+    "en": "show this help message and exit",
+    "zh-CN": "显示此帮助信息并退出",
+    "zh-TW": "顯示此說明訊息並結束",
+    "ja": "このヘルプを表示して終了",
+    "tr": "Bu yardım mesajını göster ve çık"
+  },
+  "the following arguments are required: %s": {
+    "en": "the following arguments are required: %s",
+    "zh-CN": "以下参数为必需：%s",
+    "zh-TW": "以下引數為必要：%s",
+    "ja": "次の引数が必要です：%s",
+    "tr": "Şu bağımsız değişkenler gereklidir: %s"
+  },
+  "one of the arguments %s is required": {
+    "en": "one of the arguments %s is required",
+    "zh-CN": "需要以下参数之一：%s",
+    "zh-TW": "需要以下引數之一：%s",
+    "ja": "引数 %s のいずれかが必要です",
+    "tr": "%s bağımsız değişkenlerinden biri gereklidir"
+  },
+  "expected %s argument": {
+    "en": "expected %s argument",
+    "zh-CN": "需要 %s 个参数",
+    "zh-TW": "需要 %s 個引數",
+    "ja": "引数が %s 個必要です",
+    "tr": "%s bağımsız değişken bekleniyor"
+  },
+  "expected %s arguments": {
+    "en": "expected %s arguments",
+    "zh-CN": "需要 %s 个参数",
+    "zh-TW": "需要 %s 個引數",
+    "ja": "引数が %s 個必要です",
+    "tr": "%s bağımsız değişken bekleniyor"
+  },
+  "argument \"-\" with mode %r": {
+    "en": "argument \"-\" with mode %r",
+    "zh-CN": "模式 %r 下的参数“-”",
+    "zh-TW": "模式 %r 下的引數「-」",
+    "ja": "モード %r での引数「-」",
+    "tr": "%r modunda \"-\" bağımsız değişkeni"
+  },
+  "not allowed with argument %s": {
+    "en": "not allowed with argument %s",
+    "zh-CN": "不能与参数 %s 一起使用",
+    "zh-TW": "不可與引數 %s 一起使用",
+    "ja": "引数 %s と同時には使用できません",
+    "tr": "%s bağımsız değişkeniyle birlikte kullanılamaz"
+  },
+  "unexpected option string: %s": {
+    "en": "unexpected option string: %s",
+    "zh-CN": "意外的选项字符串：%s",
+    "zh-TW": "非預期的選項字串：%s",
+    "ja": "予期しないオプション文字列：%s",
+    "tr": "Beklenmeyen seçenek dizgesi: %s"
+  },
+  "invalid choice: %(value)r, maybe you meant %(closest)r? (choose from %(choices)s)": {
+    "en": "invalid choice: %(value)r, maybe you meant %(closest)r? (choose from %(choices)s)",
+    "zh-CN": "无效选项：%(value)r，是否想使用 %(closest)r？（可选：%(choices)s）",
+    "zh-TW": "無效選項：%(value)r，是否要使用 %(closest)r？（可選：%(choices)s）",
+    "ja": "無効な選択肢：%(value)r。%(closest)r ではありませんか？（選択肢：%(choices)s）",
+    "tr": "Geçersiz seçim: %(value)r, %(closest)r demek mi istediniz? (seçenekler: %(choices)s)"
+  },
+  "ignored explicit argument %r": {
+    "en": "ignored explicit argument %r",
+    "zh-CN": "已忽略显式参数 %r",
+    "zh-TW": "已忽略明確指定的引數 %r",
+    "ja": "明示された引数 %r は無視されました",
+    "tr": "Açıkça verilen %r bağımsız değişkeni yok sayıldı"
+  },
+  "option '%(option)s' is deprecated": {
+    "en": "option '%(option)s' is deprecated",
+    "zh-CN": "选项“%(option)s”已弃用",
+    "zh-TW": "選項「%(option)s」已淘汰",
+    "ja": "オプション「%(option)s」は非推奨です",
+    "tr": "'%(option)s' seçeneği kullanım dışıdır"
+  },
+  "argument '%(argument_name)s' is deprecated": {
+    "en": "argument '%(argument_name)s' is deprecated",
+    "zh-CN": "参数“%(argument_name)s”已弃用",
+    "zh-TW": "引數「%(argument_name)s」已淘汰",
+    "ja": "引数「%(argument_name)s」は非推奨です",
+    "tr": "'%(argument_name)s' bağımsız değişkeni kullanım dışıdır"
+  },
+  "optional arguments": {
+    "en": "optional arguments",
+    "zh-CN": "可选参数",
+    "zh-TW": "選用引數",
+    "ja": "省略可能な引数",
+    "tr": "İsteğe bağlı bağımsız değişkenler"
+  }
+}

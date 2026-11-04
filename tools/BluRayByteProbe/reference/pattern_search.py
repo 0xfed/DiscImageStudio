@@ -1,7 +1,10 @@
 import json
-import argparse
 from fractions import Fraction
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from localization import ArgumentParser, initialize, run, t
 from analyze import word, cycle_bits, finite
 
 def fast_cycle(pattern, previous=0):
@@ -20,10 +23,11 @@ def fast_cycle(pattern, previous=0):
     return Fraction(output.count('1'),len(output))
 
 def main():
-    parser=argparse.ArgumentParser(description='Exhaustive 17PP periodic-input search; both previous-bit states are checked.')
-    parser.add_argument('--output-dir',type=Path,default=Path.cwd())
-    parser.add_argument('--max-period',type=int,default=16)
-    args=parser.parse_args()
+    arguments=initialize()
+    parser=ArgumentParser(description=t('Exhaustive 17PP periodic-input search; both previous-bit states are checked.'))
+    parser.add_argument('--output-dir',type=Path,default=Path.cwd(),help=t('Python.OutputDirectory'))
+    parser.add_argument('--max-period',type=int,default=16,help=t('Python.MaximumPeriod'))
+    args=parser.parse_args(arguments)
     args.output_dir.mkdir(parents=True,exist_ok=True)
     best_low=Fraction(1);best_high=Fraction(0)
     low_patterns=[];high_patterns=[];by_length=[];vectors={}
@@ -37,9 +41,9 @@ def main():
             canonical=min(pattern[(2*i)%n:]+pattern[:(2*i)%n] for i in range(n))
             d=fast_cycle(pattern)
             alternate=fast_cycle(pattern,1)
-            assert d==alternate, ('previous-bit dependence',pattern,d,alternate)
+            assert d==alternate, (t('previous-bit dependence'),pattern,d,alternate)
             if canonical in classes:
-                assert d==classes[canonical], ('even-rotation density mismatch',pattern,canonical,d,classes[canonical])
+                assert d==classes[canonical], (t('even-rotation density mismatch'),pattern,canonical,d,classes[canonical])
                 continue
             classes[canonical]=d
             if d < lowest:lowest=d;lows=[pattern]
@@ -55,14 +59,14 @@ def main():
             for previous in (0,1):
                 bits=p*16
                 vectors[f'{p}:{previous}']={'data_bits':bits,'previous_modulation_bit':previous,'modulation_bits':finite(bits,previous)}
-        print(n,2**n,'strings',len(classes),'classes','min',lowest,lows[:8],'max',highest,highs[:8],flush=True)
+        print(t('Python.PatternProgress',n,2**n,len(classes),lowest,lows[:8],highest,highs[:8]),flush=True)
     result={'raw_strings_tested':sum(x['raw_strings_tested'] for x in by_length),'rotation_equivalence_verified':True,'previous_bit_density_independence_verified':True,'lengths':by_length,'minimum':str(best_low),'maximum':str(best_high),
             'min_candidates':[{'input':p,'even':cycle_bits(p),'odd':cycle_bits(p,1)} for p in low_patterns],
             'max_candidates':[{'input':p,'even':cycle_bits(p),'odd':cycle_bits(p,1)} for p in high_patterns]}
     out=args.output_dir/'periodic-bitpattern-search.json'
     out.write_text(json.dumps(result,indent=2),encoding='utf-8')
     (args.output_dir/'independent-pattern-vectors.json').write_text(json.dumps(vectors,indent=2),encoding='utf-8')
-    print('MIN',best_low,low_patterns,flush=True)
-    print('MAX',best_high,high_patterns,flush=True)
+    print(t('MIN'),best_low,low_patterns,flush=True)
+    print(t('MAX'),best_high,high_patterns,flush=True)
 
-if __name__=='__main__':main()
+if __name__=='__main__':raise SystemExit(run(main))

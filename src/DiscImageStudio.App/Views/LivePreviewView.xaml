@@ -73,7 +73,10 @@
                                         <!-- Expert rows: the projection works without them (the
                                              measured set falls back to the generated geometry), so
                                              they stay folded until someone is comparing. -->
-                                        <Expander Header="{loc:Text Xaml.MeasurementsAndQualityAdvanced}" IsExpanded="False">
+                                        <Expander IsExpanded="False">
+                                            <Expander.Header>
+                                                <TextBlock Text="{loc:Text Xaml.MeasurementsAndQualityAdvanced}" TextWrapping="Wrap" />
+                                            </Expander.Header>
                                             <StackPanel Margin="0,4,0,0">
                                                 <Grid Margin="0,0,0,12">
                                                     <Grid.ColumnDefinitions>
@@ -82,12 +85,12 @@
                                                         <ColumnDefinition Width="*" />
                                                     </Grid.ColumnDefinitions>
                                                     <StackPanel Grid.Column="0">
-                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{loc:Text Xaml.InnerRadiusMm}" />
+                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{loc:Text Xaml.InnerRadiusMm}" TextWrapping="Wrap" />
                                                         <TextBox Style="{StaticResource CompactTextBox}"
                                                                  Text="{Binding Inspector.MeasuredInnerRadius, UpdateSourceTrigger=PropertyChanged}" />
                                                     </StackPanel>
                                                     <StackPanel Grid.Column="2">
-                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{loc:Text Xaml.OuterRadiusMm}" />
+                                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{loc:Text Xaml.OuterRadiusMm}" TextWrapping="Wrap" />
                                                         <TextBox Style="{StaticResource CompactTextBox}"
                                                                  Text="{Binding Inspector.MeasuredOuterRadius, UpdateSourceTrigger=PropertyChanged}" />
                                                     </StackPanel>

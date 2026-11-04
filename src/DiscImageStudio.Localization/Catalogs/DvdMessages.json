@@ -1,0 +1,163 @@
+{
+  "ECC Block: LBA {0}, PSN 0x{1:X6}, constraints {2}, algorithm={3}, iterations {4}": {
+    "en": "ECC Block: LBA {0}, PSN 0x{1:X6}, constraints {2}, algorithm={3}, iterations {4}",
+    "zh-CN": "ECC 块：LBA {0}，PSN 0x{1:X6}，约束数 {2}，算法={3}，迭代 {4}",
+    "zh-TW": "ECC 區塊：LBA {0}，PSN 0x{1:X6}，約束數 {2}，演算法={3}，迭代 {4}",
+    "ja": "ECC ブロック：LBA {0}、PSN 0x{1:X6}、制約数 {2}、アルゴリズム={3}、反復 {4}",
+    "tr": "ECC bloğu: LBA {0}, PSN 0x{1:X6}, kısıtlar {2}, algoritma={3}, yineleme {4}"
+  },
+  "bridge bytes/edge={0}, beam width={1}, frame fraction/pass={2:P0}, singleton retry={3}, ECC-closed batch={4} frames/{5} candidates, search lanes={6}, payload candidates=state/level/DSV binary byte pairs, scoring=majority error then gray error": {
+    "en": "bridge bytes/edge={0}, beam width={1}, frame fraction/pass={2:P0}, singleton retry={3}, ECC-closed batch={4} frames/{5} candidates, search lanes={6}, payload candidates=state/level/DSV binary byte pairs, scoring=majority error then gray error",
+    "zh-CN": "每边桥接字节={0}，束宽={1}，每轮帧比例={2:P0}，单帧重试={3}，ECC 闭合批次={4} 帧/{5} 候选，搜索通道={6}，负载候选=状态/电平/DSV 二进制字节对，评分=先多数误差后灰度误差",
+    "zh-TW": "每邊橋接位元組={0}，束寬={1}，每回合框架比例={2:P0}，單框架重試={3}，ECC 閉合批次={4} 框架/{5} 候選，搜尋通道={6}，負載候選=狀態／準位／DSV 二進位位元組對，評分=先多數誤差後灰階誤差",
+    "ja": "端ごとのブリッジバイト={0}、ビーム幅={1}、反復あたりフレーム割合={2:P0}、単一フレーム再試行={3}、ECC 完結バッチ={4} フレーム/{5} 候補、探索レーン={6}、ペイロード候補=状態／レベル／DSV の 2 値バイトペア、評価=多数決誤差、次に階調誤差",
+    "tr": "Kenar başına köprü baytları={0}, ışın genişliği={1}, geçiş başına çerçeve oranı={2:P0}, tek çerçeve yeniden denemesi={3}, ECC açısından kapalı toplu iş={4} çerçeve/{5} aday, arama hatları={6}, yük adayları=durum/düzey/DSV ikili bayt çiftleri, puanlama=önce çoğunluk hatası, sonra gri hatası"
+  },
+  "{0}, image sampled at every payload code-word center": {
+    "en": "{0}, image sampled at every payload code-word center",
+    "zh-CN": "{0}，图像在每个负载码字中心采样",
+    "zh-TW": "{0}，影像在每個負載碼字中心取樣",
+    "ja": "{0}、画像は各ペイロードコードワードの中心でサンプリング",
+    "tr": "{0}, görsel her yük kod sözcüğü merkezinde örneklenir"
+  },
+  "image: {0}x{1}, pitch={2:F4} um, block radius={3:F6}..{4:F6} mm": {
+    "en": "image: {0}x{1}, pitch={2:F4} um, block radius={3:F6}..{4:F6} mm",
+    "zh-CN": "图像：{0}x{1}，轨距={2:F4} um，块半径={3:F6}..{4:F6} mm",
+    "zh-TW": "影像：{0}x{1}，軌距={2:F4} um，區塊半徑={3:F6}..{4:F6} mm",
+    "ja": "画像：{0}x{1}、トラックピッチ={2:F4} um、ブロック半径={3:F6}..{4:F6} mm",
+    "tr": "Görsel: {0}x{1}, iz aralığı={2:F4} um, blok yarıçapı={3:F6}..{4:F6} mm"
+  },
+  "iteration {0}: current={1}, best={2}": {
+    "en": "iteration {0}: current={1}, best={2}",
+    "zh-CN": "迭代 {0}：当前={1}，最佳={2}",
+    "zh-TW": "迭代 {0}：目前={1}，最佳={2}",
+    "ja": "反復 {0}：現在={1}、最良={2}",
+    "tr": "Yineleme {0}: geçerli={1}, en iyi={2}"
+  },
+  "done: {0}={1}/{2}{3}{4}, elapsed={5:F2}s, output={6}": {
+    "en": "done: {0}={1}/{2}{3}{4}, elapsed={5:F2}s, output={6}",
+    "zh-CN": "完成：{0}={1}/{2}{3}{4}，耗时={5:F2} 秒，输出={6}",
+    "zh-TW": "完成：{0}={1}/{2}{3}{4}，耗時={5:F2} 秒，輸出={6}",
+    "ja": "完了：{0}={1}/{2}{3}{4}、経過={5:F2} 秒、出力={6}",
+    "tr": "Tamamlandı: {0}={1}/{2}{3}{4}, süre={5:F2} saniye, çıktı={6}"
+  },
+  "encoded {0} payload bytes into {1} channel levels ({2} packed bytes)": {
+    "en": "encoded {0} payload bytes into {1} channel levels ({2} packed bytes)",
+    "zh-CN": "已将 {0} 个负载字节编码为 {1} 个通道电平（{2} 个打包字节）",
+    "zh-TW": "已將 {0} 個負載位元組編碼為 {1} 個通道準位（{2} 個封裝位元組）",
+    "ja": "{0} ペイロードバイトを {1} チャネルレベルに符号化（パック後 {2} バイト）",
+    "tr": "{0} yük baytı {1} kanal düzeyine kodlandı ({2} paketlenmiş bayt)"
+  },
+  "preview: {0}x{1}, generated pitch={2:F4} um, actual pitch={3:F4} um, output={4}": {
+    "en": "preview: {0}x{1}, generated pitch={2:F4} um, actual pitch={3:F4} um, output={4}",
+    "zh-CN": "预览：{0}x{1}，生成轨距={2:F4} um，实际轨距={3:F4} um，输出={4}",
+    "zh-TW": "預覽：{0}x{1}，產生軌距={2:F4} um，實際軌距={3:F4} um，輸出={4}",
+    "ja": "プレビュー：{0}x{1}、生成時ピッチ={2:F4} um、実際のピッチ={3:F4} um、出力={4}",
+    "tr": "Önizleme: {0}x{1}, oluşturma iz aralığı={2:F4} um, gerçek iz aralığı={3:F4} um, çıktı={4}"
+  },
+  "readback: {0}x{1}, classified={2}/{3}, pitch={4:F4} um, output={5}": {
+    "en": "readback: {0}x{1}, classified={2}/{3}, pitch={4:F4} um, output={5}",
+    "zh-CN": "读回：{0}x{1}，已分类={2}/{3}，轨距={4:F4} um，输出={5}",
+    "zh-TW": "讀回：{0}x{1}，已分類={2}/{3}，軌距={4:F4} um，輸出={5}",
+    "ja": "読み戻し：{0}x{1}、分類済み={2}/{3}、トラックピッチ={4:F4} um、出力={5}",
+    "tr": "Geri okuma: {0}x{1}, sınıflandırılan={2}/{3}, iz aralığı={4:F4} um, çıktı={5}"
+  },
+  "hybrid ISO: files={0}, directories={1}, data={2} bytes, filesystem end LBA={3}, files={4}, drawing LBA {5}..{6}": {
+    "en": "hybrid ISO: files={0}, directories={1}, data={2} bytes, filesystem end LBA={3}, files={4}, drawing LBA {5}..{6}",
+    "zh-CN": "混合 ISO：文件={0}，目录={1}，数据={2} 字节，文件系统结束 LBA={3}，文件位置={4}，绘图 LBA {5}..{6}",
+    "zh-TW": "混合 ISO：檔案={0}，目錄={1}，資料={2} 位元組，檔案系統結束 LBA={3}，檔案位置={4}，繪圖 LBA {5}..{6}",
+    "ja": "ハイブリッド ISO：ファイル={0}、ディレクトリ={1}、データ={2} バイト、ファイルシステム終端 LBA={3}、ファイル配置={4}、描画 LBA {5}..{6}",
+    "tr": "Karma ISO: dosyalar={0}, dizinler={1}, veri={2} bayt, dosya sistemi bitiş LBA={3}, dosya konumu={4}, çizim LBA {5}..{6}"
+  },
+  "replaying inner-ring modulation boundary: 0..{0}": {
+    "en": "replaying inner-ring modulation boundary: 0..{0}",
+    "zh-CN": "正在重放内圈调制边界：0..{0}",
+    "zh-TW": "正在重播內圈調變邊界：0..{0}",
+    "ja": "内周の変調境界を再生中：0..{0}",
+    "tr": "İç halka modülasyon sınırı yeniden yürütülüyor: 0..{0}"
+  },
+  "drawing boundary: state={0}, DSV={1}, level={2}": {
+    "en": "drawing boundary: state={0}, DSV={1}, level={2}",
+    "zh-CN": "绘图边界：状态={0}，DSV={1}，电平={2}",
+    "zh-TW": "繪圖邊界：狀態={0}，DSV={1}，準位={2}",
+    "ja": "描画境界：状態={0}、DSV={1}、レベル={2}",
+    "tr": "Çizim sınırı: durum={0}, DSV={1}, düzey={2}"
+  },
+  "raw ISO fill: LBA {0}..{1}, ECC blocks={2}, iterations/block={3}, algorithm={4}, constraint step={5}": {
+    "en": "raw ISO fill: LBA {0}..{1}, ECC blocks={2}, iterations/block={3}, algorithm={4}, constraint step={5}",
+    "zh-CN": "原始 ISO 填充：LBA {0}..{1}，ECC 块={2}，每块迭代={3}，算法={4}，约束步长={5}",
+    "zh-TW": "原始 ISO 填入：LBA {0}..{1}，ECC 區塊={2}，每區塊迭代={3}，演算法={4}，約束步長={5}",
+    "ja": "生 ISO 埋め込み：LBA {0}..{1}、ECC ブロック={2}、ブロックごとの反復={3}、アルゴリズム={4}、制約ステップ={5}",
+    "tr": "Ham ISO doldurma: LBA {0}..{1}, ECC blokları={2}, blok başına yineleme={3}, algoritma={4}, kısıt adımı={5}"
+  },
+  "block {0}/{1}, LBA={2}, {3}={4}/{5}{6}{7}state={8}, DSV={9}, elapsed={10:F1}s": {
+    "en": "block {0}/{1}, LBA={2}, {3}={4}/{5}{6}{7}state={8}, DSV={9}, elapsed={10:F1}s",
+    "zh-CN": "块 {0}/{1}，LBA={2}，{3}={4}/{5}{6}{7}状态={8}，DSV={9}，耗时={10:F1} 秒",
+    "zh-TW": "區塊 {0}/{1}，LBA={2}，{3}={4}/{5}{6}{7}狀態={8}，DSV={9}，耗時={10:F1} 秒",
+    "ja": "ブロック {0}/{1}、LBA={2}、{3}={4}/{5}{6}{7}状態={8}、DSV={9}、経過={10:F1} 秒",
+    "tr": "Blok {0}/{1}, LBA={2}, {3}={4}/{5}{6}{7}durum={8}, DSV={9}, süre={10:F1} saniye"
+  },
+  "done: blocks={0}, {1}={2}/{3}{4}{5}elapsed={6:F1}s, output={7}": {
+    "en": "done: blocks={0}, {1}={2}/{3}{4}{5}elapsed={6:F1}s, output={7}",
+    "zh-CN": "完成：块数={0}，{1}={2}/{3}{4}{5}耗时={6:F1} 秒，输出={7}",
+    "zh-TW": "完成：區塊數={0}，{1}={2}/{3}{4}{5}耗時={6:F1} 秒，輸出={7}",
+    "ja": "完了：ブロック={0}、{1}={2}/{3}{4}{5}経過={6:F1} 秒、出力={7}",
+    "tr": "Tamamlandı: bloklar={0}, {1}={2}/{3}{4}{5}süre={6:F1} saniye, çıktı={7}"
+  },
+  "fast raw ISO fill: LBA {0}..{1}, ECC blocks={2}, algorithm=dispersion, ECC/EFM replay=skipped, workers={3}": {
+    "en": "fast raw ISO fill: LBA {0}..{1}, ECC blocks={2}, algorithm=dispersion, ECC/EFM replay=skipped, workers={3}",
+    "zh-CN": "快速原始 ISO 填充：LBA {0}..{1}，ECC 块={2}，算法=dispersion，ECC/EFM 重放=跳过，工作线程={3}",
+    "zh-TW": "快速原始 ISO 填入：LBA {0}..{1}，ECC 區塊={2}，演算法=dispersion，ECC/EFM 重播=略過，工作執行緒={3}",
+    "ja": "高速生 ISO 埋め込み：LBA {0}..{1}、ECC ブロック={2}、アルゴリズム=dispersion、ECC/EFM 再生=省略、ワーカー={3}",
+    "tr": "Hızlı ham ISO doldurma: LBA {0}..{1}, ECC blokları={2}, algoritma=dispersion, ECC/EFM yeniden yürütme=atlandı, çalışanlar={3}"
+  },
+  "block {0}/{1}, LBA={2}, controlled={3}, rate={4:F2} MiB/s, elapsed={5:F1}s": {
+    "en": "block {0}/{1}, LBA={2}, controlled={3}, rate={4:F2} MiB/s, elapsed={5:F1}s",
+    "zh-CN": "块 {0}/{1}，LBA={2}，受控码字={3}，速率={4:F2} MiB/s，耗时={5:F1} 秒",
+    "zh-TW": "區塊 {0}/{1}，LBA={2}，受控碼字={3}，速率={4:F2} MiB/s，耗時={5:F1} 秒",
+    "ja": "ブロック {0}/{1}、LBA={2}、制御対象ワード={3}、レート={4:F2} MiB/s、経過={5:F1} 秒",
+    "tr": "Blok {0}/{1}, LBA={2}, denetlenen sözcükler={3}, hız={4:F2} MiB/s, süre={5:F1} saniye"
+  },
+  "done: blocks={0}, controlled={1}, payload-transition-class-error=0, boundary=not replayed, rate={2:F2} MiB/s, elapsed={3:F1}s, output={4}": {
+    "en": "done: blocks={0}, controlled={1}, payload-transition-class-error=0, boundary=not replayed, rate={2:F2} MiB/s, elapsed={3:F1}s, output={4}",
+    "zh-CN": "完成：块数={0}，受控码字={1}，payload-transition-class-error=0，边界=未重放，速率={2:F2} MiB/s，耗时={3:F1} 秒，输出={4}",
+    "zh-TW": "完成：區塊數={0}，受控碼字={1}，payload-transition-class-error=0，邊界=未重播，速率={2:F2} MiB/s，耗時={3:F1} 秒，輸出={4}",
+    "ja": "完了：ブロック={0}、制御対象ワード={1}、payload-transition-class-error=0、境界=未再生、レート={2:F2} MiB/s、経過={3:F1} 秒、出力={4}",
+    "tr": "Tamamlandı: bloklar={0}, denetlenen sözcükler={1}, payload-transition-class-error=0, sınır=yeniden yürütülmedi, hız={2:F2} MiB/s, süre={3:F1} saniye, çıktı={4}"
+  },
+  "inner boundary block {0}/{1}, state={2}, DSV={3}, level={4}": {
+    "en": "inner boundary block {0}/{1}, state={2}, DSV={3}, level={4}",
+    "zh-CN": "内圈边界块 {0}/{1}，状态={2}，DSV={3}，电平={4}",
+    "zh-TW": "內圈邊界區塊 {0}/{1}，狀態={2}，DSV={3}，準位={4}",
+    "ja": "内周境界ブロック {0}/{1}、状態={2}、DSV={3}、レベル={4}",
+    "tr": "İç sınır bloğu {0}/{1}, durum={2}, DSV={3}, düzey={4}"
+  },
+  "selftest: all checks passed": {
+    "en": "selftest: all checks passed",
+    "zh-CN": "自检：全部检查通过",
+    "zh-TW": "自我測試：全部檢查通過",
+    "ja": "セルフテスト：すべてのチェックに合格",
+    "tr": "Öz test: tüm kontroller geçti"
+  },
+  "beam {0} on failed single frames": {
+    "en": "beam {0} on failed single frames",
+    "zh-CN": "失败单帧使用束宽 {0}",
+    "zh-TW": "失敗單框架使用束寬 {0}",
+    "ja": "失敗した単一フレームにビーム幅 {0}",
+    "tr": "Başarısız tek çerçevelerde ışın {0}"
+  },
+  "disabled": {
+    "en": "disabled",
+    "zh-CN": "已禁用",
+    "zh-TW": "已停用",
+    "ja": "無効",
+    "tr": "Kapalı"
+  },
+  "dispersion black/white pool: Q={0}; nominal luminance=0,255; threshold=128": {
+    "en": "dispersion black/white pool: Q={0}; nominal luminance=0,255; threshold=128",
+    "zh-CN": "dispersion 黑白池：Q={0}；名义亮度=0,255；阈值=128",
+    "zh-TW": "dispersion 黑白池：Q={0}；名義亮度=0,255；閾值=128",
+    "ja": "dispersion 白黒プール：Q={0}、公称輝度=0,255、しきい値=128",
+    "tr": "dispersion siyah/beyaz havuzu: Q={0}; nominal parlaklık=0,255; eşik=128"
+  }
+}

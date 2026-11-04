@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Buffers.Binary;
 
 namespace DiscImageStudio.BluRay.Encoding;
@@ -22,9 +23,9 @@ public static class BluRayEdc
     public static void WriteDataFrame(ReadOnlySpan<byte> userData, Span<byte> destination)
     {
         if (userData.Length != UserDataBytes)
-            throw new ArgumentException("A BD user-data frame contains exactly 2048 bytes.", nameof(userData));
+            throw new ArgumentException(L.T("A BD user-data frame contains exactly 2048 bytes."), nameof(userData));
         if (destination.Length != DataFrameBytes)
-            throw new ArgumentException("A BD data frame contains exactly 2052 bytes.", nameof(destination));
+            throw new ArgumentException(L.T("A BD data frame contains exactly 2052 bytes."), nameof(destination));
         uint edc = Compute(userData);
         userData.CopyTo(destination);
         BinaryPrimitives.WriteUInt32BigEndian(destination[UserDataBytes..], edc);

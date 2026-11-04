@@ -1,4 +1,6 @@
 using System.IO;
+using System.Globalization;
+using DiscImageStudio.Localization;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using DiscImageStudio.BluRay;
@@ -252,8 +254,10 @@ internal static class BluRayImageMappingTests
         System.Buffers.Binary.BinaryPrimitives.WriteUInt32BigEndian(oversized.AsSpan(29, 4), ~crc);
         string dimensionsPath = Path.Combine(directory, "oversized-dimensions.png");
         File.WriteAllBytes(dimensionsPath, oversized);
-        AssertSourceLimit(() => BluRayImageLoader.ValidateSource(dimensionsPath), "67,108,864 pixels");
-        AssertSourceLimit(() => BluRayImageLoader.Load(dimensionsPath), "67,108,864 pixels");
+        string pixelLimit = string.Format(CultureInfo.InvariantCulture,
+            L.T("The source image must contain between 1 and {0:N0} pixels."), 67_108_864);
+        AssertSourceLimit(() => BluRayImageLoader.ValidateSource(dimensionsPath), pixelLimit);
+        AssertSourceLimit(() => BluRayImageLoader.Load(dimensionsPath), pixelLimit);
 
         string lengthPath = Path.Combine(directory, "oversized-file.png");
         using (FileStream stream = File.Create(lengthPath)) stream.SetLength(256L * 1024 * 1024 + 1);

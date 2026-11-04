@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Diagnostics;
 using DiscImageStudio.Core;
 using DvdImageSolver;
@@ -37,14 +38,14 @@ public sealed record DvdStreamingOptions(
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(Tone),
-                    "DVD dispersion uses two textures; tone levels must be 2.");
+                    L.T("DVD dispersion uses two textures; tone levels must be 2."));
             }
         }
         if (TotalSectors == 0 || TotalSectors % DvdEccBlockEncoder.SectorCount != 0)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(TotalSectors),
-                "DVD streaming sector count must be a positive multiple of 16.");
+                L.T("DVD streaming sector count must be a positive multiple of 16."));
         }
 
         if (!double.IsFinite(InnerRadiusMm)
@@ -54,14 +55,14 @@ public sealed record DvdStreamingOptions(
         {
             throw new ArgumentOutOfRangeException(
                 nameof(OuterRadiusMm),
-                "DVD outer radius must be greater than its positive inner radius.");
+                L.T("DVD outer radius must be greater than its positive inner radius."));
         }
 
         if (!double.IsFinite(ChannelBitLengthNm) || ChannelBitLengthNm <= 0)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(ChannelBitLengthNm),
-                "DVD channel-bit length must be positive.");
+                L.T("DVD channel-bit length must be positive."));
         }
 
         if (!double.IsFinite(StartAngleDegrees))
@@ -73,7 +74,7 @@ public sealed record DvdStreamingOptions(
         {
             throw new ArgumentOutOfRangeException(
                 nameof(FastParallelism),
-                "DVD streaming parallelism must be automatic (0) or 1..64.");
+                L.T("DVD streaming parallelism must be automatic (0) or 1..64."));
         }
 
         _ = ContentLength;
@@ -162,7 +163,7 @@ public static class DvdStreamingGenerator
         if (drawingEndLba < drawingStartLba || drawingEndLba - drawingStartLba < DvdEccBlockEncoder.SectorCount)
         {
             throw new ArgumentException(
-                "The filesystem leaves no complete ECC Block for drawing in the selected file layout.",
+                L.T("The filesystem leaves no complete ECC Block for drawing in the selected file layout."),
                 nameof(dataDirectory));
         }
 
@@ -259,7 +260,7 @@ public static class DvdStreamingGenerator
         if (plan.TotalSectors != options.TotalSectors)
         {
             throw new ArgumentException(
-                "Hybrid layout and DVD streaming options describe different disc sizes.",
+                L.T("Hybrid layout and DVD streaming options describe different disc sizes."),
                 nameof(plan));
         }
 

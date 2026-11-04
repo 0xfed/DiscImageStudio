@@ -1,6 +1,6 @@
 <div align="center">
 
-**简体中文** | [繁體中文](README.zh-TW.md) | [English](README.en.md) | [日本語](README.ja.md)
+[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md) | [日本語](README.ja.md) | [Türkçe](README.tr.md)
 
 ![Banner](docs/images/DiscImageStudio_Banner_2.png)
 
@@ -96,6 +96,12 @@ Disc Image Studio 提供了一套智能且精准的辅助标定流程，相较�
 - 构建：.NET 10 SDK（`global.json` 锁定 10.0.x）；自行构建的非自包含 GUI 需要 .NET 10 Windows 桌面运行时。Release EXE 已包含运行时，无需另行安装 .NET。
 - “即时刻录”功能需要一台 Windows 可识别的 CD / DVD / BD 刻录机与空白盘片；BD-R 需要支持顺序写入的单层空白盘。
 
+## 界面语言
+
+Windows 桌面版支持简体中文、繁體中文、English、日本語与 Türkçe。点击右上角「设置 → 通用 → 语言」选择语言或跟随系统，保存后立即生效，无须重启；取消不修改偏好。语言与主题默认跟随系统。
+
+语言切换不改变工程名、图层名、用户预设、路径、几何参数或数值解析。系统语言映射、命令行语言与维护方式见 [LOCALIZATION.md](docs/LOCALIZATION.md)。
+
 ## 构建与运行
 
 ```powershell
@@ -115,6 +121,8 @@ dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Rel
 ## 命令行
 
 Linux（glibc）可选 `linux-x64` 或 `linux-arm64`。Apple Silicon Mac 选 `osx-arm64`，Intel Mac 选 `osx-x64`。CLI 在本地生成镜像，实际写盘可交给支持相应镜像或音轨的刻录软件。
+
+CLI 支持全局 `--language zh-CN|zh-TW|en|ja|tr|system`（也可写作 `--language=ja`）；显式选项优先于环境变量 `DISC_IMAGE_STUDIO_LANGUAGE`，否则跟随系统界面语言。命令、选项名、路径与数值解析不随语言变化。
 
 使用 .NET 10 SDK 从源码运行 CLI
 
@@ -145,23 +153,24 @@ CLI 可读取 PNG、JPEG、BMP 和 GIF，使用动画图片的第一帧。下面
 
 ## 源码结构
 
-```text
-src/DiscImageStudio.Cli/     Linux 和 macOS 离线命令行入口
-src/DiscImageStudio.ImageIO/ WIC 和跨平台图像编解码
-src/DiscImageStudio.Core/    介质无关的模块契约、工程/预设模型、任务与命令目录
-src/DiscImageStudio.Imaging/ CD/DVD/BD 共用的图片预处理与抖动辅助
-src/DiscImageStudio.Burning/ Windows IMAPI2 设备枚举、流缓冲与安全刻录层
-src/DiscImageStudio.Cd/      CD-DA 生成核心与 CD 模块
-src/DiscImageStudio.Dvd/     DVD 引擎适配模块
-src/DiscImageStudio.BluRay/  BD-R 几何、17PP/ECC、3T/6T 映射、流式生成与 ISO
-src/DiscImageStudio.Iso/     UDF 2.01 / ISO9660 写入器
-src/DiscImageStudio.App/     WPF GUI、统一命令行与商店资源
-src/DvdImageSolver/          保持隔离的 DVD 编码/求解引擎
-tests/                       无第三方测试框架的架构回归测试
-packaging/                   MSIX 清单与打包脚本
-tools/                       独立辅助工具与资产生成脚本
-docs/                        架构、引擎、预设、发布等文档
-```
+| 路径 | 职责 |
+| --- | --- |
+| `src/DiscImageStudio.Cli/` | Linux 和 macOS 离线命令行入口 |
+| `src/DiscImageStudio.ImageIO/` | WIC 和跨平台图像编解码 |
+| `src/DiscImageStudio.Localization/` | 界面、CLI 与模块共用的五语资源、语言选择与格式化 |
+| `src/DiscImageStudio.Core/` | 介质无关的模块契约、工程/预设模型、任务与命令目录 |
+| `src/DiscImageStudio.Imaging/` | CD/DVD/BD 共用的图片预处理与抖动辅助 |
+| `src/DiscImageStudio.Burning/` | Windows IMAPI2 设备枚举、流缓冲与安全刻录层 |
+| `src/DiscImageStudio.Cd/` | CD-DA 生成核心与 CD 模块 |
+| `src/DiscImageStudio.Dvd/` | DVD 引擎适配模块 |
+| `src/DiscImageStudio.BluRay/` | BD-R 几何、17PP/ECC、3T/6T 映射、流式生成与 ISO |
+| `src/DiscImageStudio.Iso/` | UDF 2.01 / ISO9660 写入器 |
+| `src/DiscImageStudio.App/` | WPF GUI、统一命令行与商店资源 |
+| `src/DvdImageSolver/` | 保持隔离的 DVD 编码/求解引擎 |
+| `tests/` | 无第三方测试框架的架构回归测试 |
+| `packaging/` | MSIX 清单与打包脚本 |
+| `tools/` | 独立辅助工具与资产生成脚本 |
+| `docs/` | 架构、引擎、预设、发布等文档 |
 
 ## 文档
 

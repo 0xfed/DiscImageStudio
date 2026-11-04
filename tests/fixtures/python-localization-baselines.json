@@ -1,0 +1,25 @@
+{
+  "source_commit": "46fa699eb482a3915ac754d6d58a981913d9a56d",
+  "scope": "Original scripts, max-period 8; synthetic plot and deliberately invalid atlas fixtures. No optical measurement or full production probe sweep.",
+  "reference": {
+    "bitpattern-fixed-dc.json": "1562c1611f0cf37e569c7cd7c5593766a361d80f916c102172d600e5be6025de",
+    "independent-finite-vectors.json": "eae790ca0382b904798d1c0f4c157d24e826e89ea7f21bb3217f85e36421505c",
+    "independent-fixed-dc-results.json": "c81c103d7cde055f4aaadecad102a813905368a687ed69a84fd660751d43eb5c",
+    "independent-pattern-vectors.json": "6827a3c444a715a5e8eceb694ce63642f7a7ab72024ae5f87fbf20a110b49915",
+    "independent-periodic-results.csv": "ada17899213e896e3882d4154b3ce0ce9f703baf8635e8acc23bc98731351acb",
+    "independent-periodic-results.json": "92fc5d0616c42224637dfb754c19ab20bc07f0726d96eef32dd039a7737570a5",
+    "periodic-bitpattern-search.json": "8ced617d77f09be76a05795cdbc3c5803abcb09e632babb1a907e2d148a354a8",
+    "robust-bitpattern-search.json": "3fd27846fde5059e7a041a1d0bae20d35b234f09723675ef3722cbb072d3a32e"
+  },
+  "mixture-json": "4b92cadbdb1f315caac0883abb5fa8d13c27774f6801c95f2e5988fcdae69a75",
+  "mixture-csv": "fe8d2dd3790fcc64aef43e04c6f402b91f5cfe92fff7523f1db0a56903a82e28",
+  "plot": {
+    "validation": "7ab82c68baccf01e3553f3c30dee0cab1d634ebaf2dc32c31dd98130fae3144a",
+    "fine-validation": "392437771b95c639fc5725352c3e845f80ca472d5d0d84eeb72d51bc7da27d9d",
+    "recommended-header": "64f6be2289641a89ad256b3dd5a52655bf6f8047c4f35e578ca77473fe7cecd8",
+    "recommended-values": "3c4b3bba44bfaf832de782c2f3f35d71f25918031bc3c438461db3bea505879f",
+    "fine-csv": "5fad06289d9c0cc08a7c356dc71db700a1de03226d546ef6128074a63ae4689e",
+    "markdown-values": "ab51268a32c2a60414367349c9e4830bac039ad5c46ec55f04c0bc799191fac8"
+  },
+  "efm-source": "403439d2b612951fad39c7d56d49d9a1ed99371dd16175791fa434b0ee630b00"
+}

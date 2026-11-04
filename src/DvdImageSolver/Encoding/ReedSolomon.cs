@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DvdImageSolver.Encoding;
 
 internal static class ReedSolomon
@@ -31,7 +32,7 @@ internal static class ReedSolomon
     {
         if (parity.Length != generator.Length - 1)
         {
-            throw new ArgumentException("Parity and generator sizes do not match.", nameof(parity));
+            throw new ArgumentException(L.T("Parity and generator sizes do not match."), nameof(parity));
         }
 
         parity.Clear();

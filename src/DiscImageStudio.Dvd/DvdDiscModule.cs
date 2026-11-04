@@ -1,4 +1,5 @@
 using DiscImageStudio.Core;
+using DiscImageStudio.Localization;
 using DvdImageSolver;
 
 namespace DiscImageStudio.Dvd;
@@ -76,14 +77,14 @@ public sealed class DvdDiscModule : IOpticalDiscModule
             command => command.Name.Equals(request.Command, StringComparison.OrdinalIgnoreCase)))
         {
             throw new ArgumentException(
-                $"DVD module does not support command '{request.Command}'.",
+                L.F($"DVD module does not support command '{request.Command}'."),
                 nameof(request));
         }
 
         progress?.Report(new DiscJobProgress(
             ModuleId,
             "execute",
-            $"Running DVD command {request.Command}…"));
+            L.F($"Running DVD command {request.Command}…")));
         IReadOnlyList<string> normalizedArguments = NormalizeArguments(
             request.Command,
             request.Arguments);
@@ -91,8 +92,8 @@ public sealed class DvdDiscModule : IOpticalDiscModule
         int exitCode = DvdCommandRunner.Run(commandLine);
         string? outputPath = FindOutputPath(request.Arguments);
         string summary = exitCode == 0
-            ? $"DVD command {request.Command} completed."
-            : $"DVD command {request.Command} failed with exit code {exitCode}.";
+            ? L.F($"DVD command {request.Command} completed.")
+            : L.F($"DVD command {request.Command} failed with exit code {exitCode}.");
         return Task.FromResult(new DiscJobResult(
             ModuleId,
             request.Command,

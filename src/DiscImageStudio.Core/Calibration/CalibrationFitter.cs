@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DiscImageStudio.Core.Calibration;
 
 public sealed record CalibrationObservation(
@@ -15,7 +16,7 @@ public sealed record CalibrationFitOptions(
             || !double.IsFinite(HuberDeltaMm) || HuberDeltaMm is <= 0 or > 10
             || MaxCandidates is < 1 or > 20
             || !double.IsFinite(PitchCoefficientRange) || PitchCoefficientRange is <= 0 or > 10)
-            throw new ArgumentException("搜索半径范围应在 0–5 mm 内，控制点容差应在 0–10 mm 内，轨距系数搜索范围应在 0–10 内。");
+            throw new ArgumentException(L.T("搜索半径范围应在 0–5 mm 内，控制点容差应在 0–10 mm 内，轨距系数搜索范围应在 0–10 内。"));
         if (SearchCenter is not null) target.ValidateCompatible(SearchCenter);
     }
 }
@@ -225,7 +226,7 @@ public static class CalibrationFitter
 
     public static void ValidateObservations(CalibrationTarget target, IReadOnlyList<CalibrationObservation> observations)
     {
-        if (observations.Count > 2000) throw new ArgumentException("控制点数量超出限制。");
+        if (observations.Count > 2000) throw new ArgumentException(L.T("控制点数量超出限制。"));
         var identifiers = new HashSet<(string, int)>();
         var physicalPoints = new HashSet<string>(StringComparer.Ordinal);
         foreach (CalibrationObservation observation in observations)
@@ -234,11 +235,11 @@ public static class CalibrationFitter
                 || !double.IsFinite(observation.Weight) || observation.Weight is <= 0 or > 1000
                 || Math.Abs(observation.X) > 1000 || Math.Abs(observation.Y) > 1000
                 || observation.X * observation.X + observation.Y * observation.Y < 0.01)
-                throw new ArgumentException("控制点坐标或权重无效。");
+                throw new ArgumentException(L.T("控制点坐标或权重无效。"));
             CalibrationControlPoint source = target.GetControlPoint(observation.CellId, observation.CornerIndex);
             if (!identifiers.Add((observation.CellId, observation.CornerIndex))
                 || !physicalPoints.Add(source.Id))
-                throw new ArgumentException("同一角点或共享角点不能重复录入。");
+                throw new ArgumentException(L.T("同一角点或共享角点不能重复录入。"));
         }
     }
 

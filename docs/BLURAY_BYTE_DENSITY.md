@@ -1,12 +1,16 @@
 # 单层 BD-R：字节与位周期的跳变密度分析
 
+[简体中文](BLURAY_BYTE_DENSITY.md) | [繁體中文](BLURAY_BYTE_DENSITY.zh-TW.md) | [English](BLURAY_BYTE_DENSITY.en.md) | [日本語](BLURAY_BYTE_DENSITY.ja.md) | [Türkçe](BLURAY_BYTE_DENSITY.tr.md)
+
 2026-10-24。依据提供的 ISO/IEC 30190:2021，尤其是 13.15–13.18、Figure 40/41，并使用本项目的 EDC、扰码、LDC/BIS、DC、17PP 编码链进行数值试验。仅考虑单层盘。
 
 **以总跳变密度为目标时：值得采用按位构造的模式。** 最佳重复字节基线在完整簇中的密度约为 **19.20% / 38.61%**；考虑物理交织和 DC 段边界后，所测位周期方案达到 **15.95% / 43.37%**。两端密度差由 19.41 增至 27.42 个百分点，增加约 41%。这些是数字编码结果，实盘反射亮度和黑白方向尚未确定。当前绘图按用户选择采用下面的 **3T / 6T 数量偏向**，不是这里的密度极端方案。
 
+<a id="按-3t--6t-数量接入绘图"></a>
+
 ## 按 3T / 6T 数量接入绘图
 
-采用相同 958,272 channel bits 的完整簇，统计相邻 modulation ONE 之间完整间隔为 3T 或 6T 的**绝对次数**。mark 与 space 都计入；这不是 NRZI 电平占空比，也不是 `目标 run 数 / 全部 run 数` 的排名。
+采用相同 958,272 channel bits 的完整簇，统计相邻 modulation ONE 之间完整间隔为 3T 或 6T 的**绝对次数**。mark 与 space 都计入；这不是 NRZI 电平占空比，也不是 目标 run 数 / 全部 run 数 的排名。
 
 | 默认图像端 | 扰码域 Q | 基准簇目标 run 数 | 目标 run 占比 | 四地址目标数量范围 |
 |---|---|---:|---:|---:|
@@ -22,7 +26,7 @@
 ## 测量口径
 
 - 跳变密度 = modulation ONE 数 / channel-bit 数。ONE 表示一次 NRZI 翻转，不能用 NRZI 电平中 ONE 的比例替代。
-- Q 是**扰码后的目标 payload**。host payload 应写入 `Q XOR 扰码掩码`；原始 host 字节直接循环会失去目标模式。
+- Q 是**扰码后的目标 payload**。host payload 应写入 `Q XOR scramblingMask`；原始 host 字节直接循环会失去目标模式。
 - 纯 17PP 结果无 DC、ECC、BIS、同步；用独立标准表和有限状态精确循环计算。
 - 完整簇由 65,536 host bytes 生成，统计 `496 × 1932 = 958272` channel bits，包括 EDC、LDC parity、BIS、DC、同步；不含 run-in/out/Guard3，但使用 run-in 结束时的电平和 DSV。
 - 默认 PSN 为 `0x100000`，地址 flags 和 user control data 为零。候选另外在 `0x234560`、`0x6D3A00`、`0xCA73E0` 验证。
@@ -80,12 +84,18 @@
 
 ```text
 DCbefore(j) = j < 25 ? 0 : 1 + floor((j - 25) / 45)
+```
 
 预留 DC 槽：
+
+```text
 index = RecordingFrame × 1268 + j + DCbefore(j)
 Qbit = pattern[(index + phase) % period]
+```
 
 按 DC 数据段重启：
+
+```text
 index = j < 25 ? j : (j - 25) % 45
 Qbit = pattern[(index + phase) % period]
 ```

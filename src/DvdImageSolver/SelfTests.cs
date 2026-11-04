@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Buffers.Binary;
 using System.Numerics;
 using DiscImageStudio.Core;
@@ -22,32 +23,32 @@ internal static class SelfTests
         TestImageMapping();
         TestIsoOutput();
         TestCalibrationAndRange();
-        Console.WriteLine("selftest: all checks passed");
+        Console.WriteLine(L.T("selftest: all checks passed"));
     }
 
     private static void TestTables()
     {
-        Equal((ushort)0x2009, EfmPlusTables.LookupMain(0, 1).Word, "main[0,state1]");
-        Equal((byte)1, EfmPlusTables.LookupMain(0, 1).NextState, "main next state");
-        Equal((ushort)0x4120, EfmPlusTables.LookupMain(0, 2).Word, "main[0,state2]");
-        Equal((ushort)0x4212, EfmPlusTables.LookupMain(255, 4).Word, "main[255,state4]");
-        Equal((ushort)0x0480, EfmPlusTables.Substitution(0, 1).Word, "substitution[0,state1]");
+        Equal((ushort)0x2009, EfmPlusTables.LookupMain(0, 1).Word, L.T("main[0,state1]"));
+        Equal((byte)1, EfmPlusTables.LookupMain(0, 1).NextState, L.T("main next state"));
+        Equal((ushort)0x4120, EfmPlusTables.LookupMain(0, 2).Word, L.T("main[0,state2]"));
+        Equal((ushort)0x4212, EfmPlusTables.LookupMain(255, 4).Word, L.T("main[255,state4]"));
+        Equal((ushort)0x0480, EfmPlusTables.Substitution(0, 1).Word, L.T("substitution[0,state1]"));
     }
 
     private static void TestDataFrame()
     {
         byte[] payload = new byte[DvdDataFrameBuilder.PayloadBytes];
         byte[] frame = DvdDataFrameBuilder.BuildDataFrame(payload, 0x030000);
-        SequenceEqual(new byte[] { 0x00, 0x03, 0x00, 0x00 }, frame.AsSpan(0, 4), "ID bytes");
-        True(frame.AsSpan(6, 6).IndexOfAnyExcept((byte)0) < 0, "DVD-R RSV must be zero");
-        True(ReedSolomon.HasZeroRemainder(frame.AsSpan(0, 6), 2), "IED codeword remainder");
-        True(DvdDataFrameBuilder.HasValidEdc(frame), "EDC");
+        SequenceEqual(new byte[] { 0x00, 0x03, 0x00, 0x00 }, frame.AsSpan(0, 4), L.T("ID bytes"));
+        True(frame.AsSpan(6, 6).IndexOfAnyExcept((byte)0) < 0, L.T("DVD-R RSV must be zero"));
+        True(ReedSolomon.HasZeroRemainder(frame.AsSpan(0, 6), 2), L.T("IED codeword remainder"));
+        True(DvdDataFrameBuilder.HasValidEdc(frame), L.T("EDC"));
 
         byte[] scrambled = (byte[])frame.Clone();
         DvdDataFrameBuilder.ScrambleMainData(scrambled, 0x030000);
-        True(!scrambled.AsSpan(12, 2048).SequenceEqual(frame.AsSpan(12, 2048)), "scrambler must change zero payload");
+        True(!scrambled.AsSpan(12, 2048).SequenceEqual(frame.AsSpan(12, 2048)), L.T("scrambler must change zero payload"));
         DvdDataFrameBuilder.ScrambleMainData(scrambled, 0x030000);
-        SequenceEqual(frame, scrambled, "scrambler XOR round trip");
+        SequenceEqual(frame, scrambled, L.T("scrambler XOR round trip"));
     }
 
     private static void TestEcc()
@@ -56,7 +57,7 @@ internal static class SelfTests
         byte[] ecc = DvdEccBlockEncoder.BuildEccBytes(payloads, 0x030000);
         for (int row = 0; row < 208; row++)
         {
-            True(ReedSolomon.HasZeroRemainder(ecc.AsSpan(row * 182, 182), 10), $"PI row {row}");
+            True(ReedSolomon.HasZeroRemainder(ecc.AsSpan(row * 182, 182), 10), L.F($"PI row {row}"));
         }
 
         byte[] column = new byte[208];
@@ -67,11 +68,11 @@ internal static class SelfTests
                 column[row] = ecc[row * 182 + columnIndex];
             }
 
-            True(ReedSolomon.HasZeroRemainder(column, 16), $"PO column {columnIndex}");
+            True(ReedSolomon.HasZeroRemainder(column, 16), L.F($"PO column {columnIndex}"));
         }
 
         byte[] interleaved = DvdEccBlockEncoder.InterleaveRecordingFrames(ecc);
-        Equal(ecc.Length, interleaved.Length, "recording frame size");
+        Equal(ecc.Length, interleaved.Length, L.T("recording frame size"));
 
         byte[] updatedPayloads = (byte[])payloads.Clone();
         updatedPayloads[17] = 0x5A;
@@ -85,7 +86,7 @@ internal static class SelfTests
         byte[] fullyRebuilt = DvdEccBlockEncoder.BuildRecordingFrames(
             updatedPayloads,
             0x030000);
-        SequenceEqual(fullyRebuilt, incrementallyUpdated, "incremental ECC recording frames");
+        SequenceEqual(fullyRebuilt, incrementallyUpdated, L.T("incremental ECC recording frames"));
 
         Random random = new(731);
         byte[] randomPayloads = new byte[DvdEccBlockEncoder.PayloadBytesPerBlock];
@@ -104,7 +105,7 @@ internal static class SelfTests
             randomFrames,
             0x030000);
         fullyRebuilt = DvdEccBlockEncoder.BuildRecordingFrames(mutatedPayloads, 0x030000);
-        SequenceEqual(fullyRebuilt, incrementallyUpdated, "incremental ECC random mutations");
+        SequenceEqual(fullyRebuilt, incrementallyUpdated, L.T("incremental ECC random mutations"));
     }
 
     private static void TestPhysicalEncoding()
@@ -114,16 +115,16 @@ internal static class SelfTests
         ModulationBoundary initial = new(1, 0, IsLand: true);
         EncodedEccBlock first = encoder.Encode(payloads, 0, 0x30000, initial);
         EncodedEccBlock second = encoder.Encode(payloads, 0, 0x30000, initial);
-        Equal(DvdEccBlockEncoder.ChannelBitsPerBlock, first.ChannelLevels.Length, "channel bit count");
-        Equal((uint)0x30000, first.FirstPhysicalSectorNumber, "first PSN");
-        True(first.ChannelLevels.AsSpan().IndexOfAnyExcept((byte)0, (byte)1) < 0, "channel levels are binary");
-        SequenceEqual(first.ChannelLevels, second.ChannelLevels, "deterministic modulation");
-        Equal(first.FinalBoundary, second.FinalBoundary, "deterministic final boundary");
+        Equal(DvdEccBlockEncoder.ChannelBitsPerBlock, first.ChannelLevels.Length, L.T("channel bit count"));
+        Equal((uint)0x30000, first.FirstPhysicalSectorNumber, L.T("first PSN"));
+        True(first.ChannelLevels.AsSpan().IndexOfAnyExcept((byte)0, (byte)1) < 0, L.T("channel levels are binary"));
+        SequenceEqual(first.ChannelLevels, second.ChannelLevels, L.T("deterministic modulation"));
+        Equal(first.FinalBoundary, second.FinalBoundary, L.T("deterministic final boundary"));
         byte[] recordingFrames = DvdEccBlockEncoder.BuildRecordingFrames(payloads, 0x30000);
         Equal(
             first.FinalBoundary,
             DvdEccBlockEncoder.ReplayRecordingFrameBoundary(recordingFrames, initial),
-            "word replay final boundary");
+            L.T("word replay final boundary"));
         ValidateDataRll(first.ChannelLevels, initial.IsLand);
     }
 
@@ -132,11 +133,11 @@ internal static class SelfTests
         Equal(
             (byte)0xA5,
             DispersionPoolSolver.BlackScrambledByte,
-            "dispersion physical black byte polarity");
+            L.T("dispersion physical black byte polarity"));
         Equal(
             (byte)0x92,
             DispersionPoolSolver.WhiteScrambledByte,
-            "dispersion physical white byte polarity");
+            L.T("dispersion physical white byte polarity"));
         const uint firstPsn = 0x30000;
         RasterImage black = RasterImage.CreateForTest(8, 8, 0, 0, 0, 255);
         ImageConstraint mapped = ImageTargetMapper.Map(
@@ -191,7 +192,7 @@ internal static class SelfTests
             Equal(
                 expected,
                 frames[DvdEccBlockEncoder.PayloadRecordingFrameIndex(payloadIndex)],
-                $"dispersion scrambled payload {payloadIndex}");
+                L.F($"dispersion scrambled payload {payloadIndex}"));
         }
 
         EncodedEccBlock exact = new DvdEccBlockEncoder().Encode(
@@ -199,17 +200,17 @@ internal static class SelfTests
             0,
             firstPsn,
             boundary);
-        Equal(exact.FinalBoundary, result.Encoded.FinalBoundary, "dispersion exact final boundary");
-        Equal(0, result.Encoded.ChannelLevels.Length, "dispersion avoids channel-bit materialization");
-        Equal(0, result.Score, "dispersion transition class error");
+        Equal(exact.FinalBoundary, result.Encoded.FinalBoundary, L.T("dispersion exact final boundary"));
+        Equal(0, result.Encoded.ChannelLevels.Length, L.T("dispersion avoids channel-bit materialization"));
+        Equal(0, result.Score, L.T("dispersion transition class error"));
         Equal(
             DvdEccBlockEncoder.PayloadBytesPerBlock,
             result.ScoreMaximum,
-            "dispersion controlled word count");
+            L.T("dispersion controlled word count"));
         Equal(
             "payload-transition-class-error",
             result.ScoreMetric,
-            "dispersion score metric");
+            L.T("dispersion score metric"));
     }
 
     private static void TestBinaryDispersion()
@@ -221,28 +222,28 @@ internal static class SelfTests
         for (int index = 0; index < inputLevels.Length; index++)
         {
             Equal(expectedBytes[index], DvdGrayscalePalette.GetScrambledByte(inputLevels[index]),
-                $"DVD grayscale threshold {inputLevels[index]}");
+                L.F($"DVD grayscale threshold {inputLevels[index]}"));
         }
 
         for (int level = 0; level < displayLevels.Length; level++)
         {
             byte value = expectedBytes[level * 2];
-            True(DvdGrayscalePalette.TryGetLuminance(value, out byte luminance), "DVD palette readback");
-            Equal(displayLevels[level], luminance, "DVD nominal readback level");
+            True(DvdGrayscalePalette.TryGetLuminance(value, out byte luminance), L.T("DVD palette readback"));
+            Equal(displayLevels[level], luminance, L.T("DVD nominal readback level"));
             for (byte state = 1; state <= 4; state++)
             {
                 Equal(transitionCounts[level], BitOperations.PopCount(EfmPlusTables.LookupMain(value, state).Word),
-                    $"DVD tone 0x{value:X2} has stable transitions in state {state}");
+                    L.F($"DVD tone 0x{value:X2} has stable transitions in state {state}"));
             }
         }
 
-        True(!DvdGrayscalePalette.TryGetLuminance(0, out _), "unknown DVD byte is not classified");
-        True(DvdGrayscalePalette.TryGetLuminance(0x66, out byte legacyLuminance), "legacy Q66 is recognized");
-        Equal((byte)0, legacyLuminance, "legacy Q66 readback matches observed black appearance");
-        True(DvdGrayscalePalette.TryGetLuminance(0xB9, out legacyLuminance), "legacy QB9 is recognized");
-        Equal((byte)85, legacyLuminance, "legacy QB9 readback remains nominal dark gray");
+        True(!DvdGrayscalePalette.TryGetLuminance(0, out _), L.T("unknown DVD byte is not classified"));
+        True(DvdGrayscalePalette.TryGetLuminance(0x66, out byte legacyLuminance), L.T("legacy Q66 is recognized"));
+        Equal((byte)0, legacyLuminance, L.T("legacy Q66 readback matches observed black appearance"));
+        True(DvdGrayscalePalette.TryGetLuminance(0xB9, out legacyLuminance), L.T("legacy QB9 is recognized"));
+        Equal((byte)85, legacyLuminance, L.T("legacy QB9 readback remains nominal dark gray"));
         SequenceEqual(new byte[] { 0xA5, 0x92 }, DvdGrayscalePalette.ScrambledBytes,
-            "DVD generation palette excludes rejected candidates");
+            L.T("DVD generation palette excludes rejected candidates"));
         string directory = Path.Combine(Path.GetTempPath(), $"dvd-grayscale-{Guid.NewGuid():N}");
         Directory.CreateDirectory(directory);
         try
@@ -268,10 +269,10 @@ internal static class SelfTests
             string isoPath = Path.Combine(directory, "gray.iso");
             FastDispersionImageWriter.Write(sourcePath, isoPath, fastOptions, progress: null);
             SequenceEqual(exact.Payloads, File.ReadAllBytes(isoPath).AsSpan(initialPayload.Length),
-                "binary fast file matches exact payload at nonzero LBA");
+                L.T("binary fast file matches exact payload at nonzero LBA"));
             using MemoryStream imageStream = new();
             FastDispersionImageWriter.WriteStream(sourcePath, imageStream, fastOptions);
-            SequenceEqual(exact.Payloads, imageStream.ToArray(), "binary streaming matches exact payload");
+            SequenceEqual(exact.Payloads, imageStream.ToArray(), L.T("binary streaming matches exact payload"));
 
             HashSet<byte> observedBytes = [];
             int preserved = 0;
@@ -280,11 +281,11 @@ internal static class SelfTests
                 int wordIndex = DvdEccBlockEncoder.PayloadDirectChannelOffset(payloadIndex) / 16;
                 sbyte target = constraint.ChannelWordGrayscaleTargets[wordIndex];
                 True(constraint.ChannelWordTargets[wordIndex] is -1 or 0 or 16,
-                    "dispersion targets leave full/state-control solver targets unchanged");
+                    L.T("dispersion targets leave full/state-control solver targets unchanged"));
                 if (target < 0)
                 {
                     Equal(initialPayload[payloadIndex], exact.Payloads[payloadIndex],
-                        "transparent payload remains unchanged");
+                        L.T("transparent payload remains unchanged"));
                     preserved++;
                     continue;
                 }
@@ -293,14 +294,14 @@ internal static class SelfTests
                 int byteIndex = payloadIndex % DvdEccBlockEncoder.PayloadBytesPerSector;
                 byte q = (byte)(exact.Payloads[payloadIndex] ^ DvdDataFrameBuilder.PayloadScramblerMask(
                     fastOptions.StartLba + fastOptions.PsnOffset + (uint)sector)[byteIndex]);
-                Equal(expectedBytes[target * 2], q, "binary payload reverse scrambling");
+                Equal(expectedBytes[target * 2], q, L.T("binary payload reverse scrambling"));
                 observedBytes.Add(q);
             }
 
-            Equal(2, observedBytes.Count, "both DVD tones generated from image");
+            Equal(2, observedBytes.Count, L.T("both DVD tones generated from image"));
             True(!observedBytes.Contains(0x66) && !observedBytes.Contains(0xB9),
-                "new constrained payload never uses Q66 or QB9");
-            True(preserved > 0, "binary image includes unconstrained alpha samples");
+                L.T("new constrained payload never uses Q66 or QB9"));
+            True(preserved > 0, L.T("binary image includes unconstrained alpha samples"));
 
             using MemoryStream codewordStream = new();
             FastDispersionImageWriter.WriteCodewordPatternStream(
@@ -319,7 +320,7 @@ internal static class SelfTests
                 int byteIndex = payloadIndex % DvdEccBlockEncoder.PayloadBytesPerSector;
                 byte q = (byte)(codewordPayload[payloadIndex] ^ DvdDataFrameBuilder.PayloadScramblerMask(
                     fastOptions.StartLba + fastOptions.PsnOffset + (uint)sector)[byteIndex]);
-                Equal(expectedBytes[expectedIndex], q, "codeword stream quantizes boundary values");
+                Equal(expectedBytes[expectedIndex], q, L.T("codeword stream quantizes boundary values"));
                 int transitions = 0;
                 for (int bit = channelOffset; bit < channelOffset + 16; bit++)
                 {
@@ -329,7 +330,7 @@ internal static class SelfTests
                     }
                 }
 
-                Equal(transitionCounts[expectedIndex / 2], transitions, "binary ECC/SYNC replay transition count");
+                Equal(transitionCounts[expectedIndex / 2], transitions, L.T("binary ECC/SYNC replay transition count"));
             }
 
             MultiBlockSolveOptions analyticOptions = fastOptions with { StartLba = 0 };
@@ -346,7 +347,7 @@ internal static class SelfTests
                         DvdEccBlockEncoder.PayloadBytesPerSector);
                     DvdDataFrameBuilder.TransformPayloadScrambling(scrambled, 0x30000 + (uint)sector);
                     True(scrambled.IndexOfAnyExcept(expectedBytes[level * 2]) < 0,
-                        "analytic stream generates the selected DVD tone");
+                        L.T("analytic stream generates the selected DVD tone"));
                 }
 
                 string constantIsoPath = Path.Combine(directory, $"tone-{level}.iso");
@@ -357,9 +358,9 @@ internal static class SelfTests
                     new IsoReadbackOptions(64, 0, 16, 0x30000, 24, 24.1, 133.33,
                         Clockwise: true, PreviewSize: 128, SamplesPerSector: 64));
                 Equal(readback.TotalSamples, readback.ClassifiedSamples,
-                    "ISO readback recognizes every sample of each DVD tone");
+                    L.T("ISO readback recognizes every sample of each DVD tone"));
                 True(ContainsOpaqueGray(readbackPath, displayLevels[level]),
-                    "ISO readback renders each nominal DVD tone");
+                    L.T("ISO readback renders each nominal DVD tone"));
             }
 
             string ditheredPath = Path.Combine(directory, "dithered-source.png");
@@ -371,11 +372,11 @@ internal static class SelfTests
             using MemoryStream ditheredStream = new();
             FastDispersionImageWriter.WriteStream(ditheredPath, ditheredStream, fastOptions);
             SequenceEqual(ditheredExact.Payloads, ditheredStream.ToArray(),
-                "discrete dither exact and streaming paths select identical source pixels");
+                L.T("discrete dither exact and streaming paths select identical source pixels"));
             string ditheredIsoPath = Path.Combine(directory, "dithered.iso");
             FastDispersionImageWriter.Write(ditheredPath, ditheredIsoPath, fastOptions, progress: null);
             SequenceEqual(ditheredExact.Payloads, File.ReadAllBytes(ditheredIsoPath).AsSpan(initialPayload.Length),
-                "discrete dither fast file and exact payload agree");
+                L.T("discrete dither fast file and exact payload agree"));
         }
         finally
         {
@@ -392,31 +393,31 @@ internal static class SelfTests
             string discretePath = Path.Combine(directory, "discrete.png");
             WritePixelColumns(discretePath, [0, 255, 0]);
             RasterImage discrete = RasterImage.Load(discretePath);
-            True(discrete.HasBinaryGrayscalePalette, "loaded opaque black/white PNG is detected");
+            True(discrete.HasBinaryGrayscalePalette, L.T("loaded opaque black/white PNG is detected"));
             Equal(new PixelSample(0, 255), discrete.SampleDisc(-0.6, 0, 1, preserveDiscreteGrayscale: true),
-                "dither black pixel is preserved without interpolation");
+                L.T("dither black pixel is preserved without interpolation"));
             Equal(new PixelSample(255, 255), discrete.SampleDisc(-0.4, 0, 1, preserveDiscreteGrayscale: true),
-                "dither white pixel is preserved without interpolation");
+                L.T("dither white pixel is preserved without interpolation"));
             Equal(new PixelSample(153, 255), discrete.SampleDisc(-0.4, 0, 1),
-                "binary solver retains existing bilinear sampling");
+                L.T("binary solver retains existing bilinear sampling"));
             Equal((byte)255, BinaryGrayscale.Quantize(153),
-                "continuous gray is thresholded to one of the two production tones");
+                L.T("continuous gray is thresholded to one of the two production tones"));
 
             string continuousPath = Path.Combine(directory, "continuous.png");
             WritePixelColumns(continuousPath, [0, 128, 255]);
             RasterImage continuous = RasterImage.Load(continuousPath);
-            True(!continuous.HasBinaryGrayscalePalette, "continuous grayscale is not mistaken for dither");
+            True(!continuous.HasBinaryGrayscalePalette, L.T("continuous grayscale is not mistaken for dither"));
             Equal(new PixelSample(77, 255), continuous.SampleDisc(-0.4, 0, 1, preserveDiscreteGrayscale: true),
-                "continuous image retains bilinear sampling");
+                L.T("continuous image retains bilinear sampling"));
 
             string alphaPath = Path.Combine(directory, "alpha.png");
             WritePixelColumns(alphaPath, [0, 255, 0], firstAlpha: 128);
             RasterImage alpha = RasterImage.Load(alphaPath);
-            True(!alpha.HasBinaryGrayscalePalette, "partial alpha disables discrete sampling");
+            True(!alpha.HasBinaryGrayscalePalette, L.T("partial alpha disables discrete sampling"));
             Equal(new PixelSample(145, 179), alpha.SampleDisc(-0.6, 0, 1, preserveDiscreteGrayscale: true),
-                "transparent image retains alpha-weighted bilinear sampling");
+                L.T("transparent image retains alpha-weighted bilinear sampling"));
             RasterImage color = RasterImage.CreateForTest(3, 3, 0, 255, 0, 255);
-            True(!color.HasBinaryGrayscalePalette, "color images are not treated as grayscale dither");
+            True(!color.HasBinaryGrayscalePalette, L.T("color images are not treated as grayscale dither"));
 
             void WritePixelColumns(string path, byte[] values, byte firstAlpha = 255)
             {
@@ -445,21 +446,21 @@ internal static class SelfTests
         const uint firstPsn = 0x30000;
         foreach ((byte state, bool initialIsLand, EfmPlusBinaryBytePair pair) in EfmPlusBinaryBytePairs.AtZeroDsv)
         {
-            True(pair.BlackByte != pair.WhiteByte, $"binary pair bytes differ for state {state}/{initialIsLand}");
+            True(pair.BlackByte != pair.WhiteByte, L.F($"binary pair bytes differ for state {state}/{initialIsLand}"));
             True(
                 pair.BlackWorstLandCount < pair.WhiteWorstLandCount,
-                $"binary pair preserves black/white order for state {state}/{initialIsLand}");
+                L.F($"binary pair preserves black/white order for state {state}/{initialIsLand}"));
         }
 
         EfmPlusBinaryBytePair negativeDsvPair = EfmPlusBinaryBytePairs.Get(1, initialIsLand: false, -32);
         EfmPlusBinaryBytePair positiveDsvPair = EfmPlusBinaryBytePairs.Get(1, initialIsLand: false, 32);
         True(
             negativeDsvPair.BlackByte != positiveDsvPair.BlackByte,
-            "binary pair reacts to DSV direction");
+            L.T("binary pair reacts to DSV direction"));
         Equal(
             1000,
             EfmPlusBinaryBytePairs.Get(2, initialIsLand: true, 1000).ReferenceDsv,
-            "binary pair uses exact out-of-cache DSV");
+            L.T("binary pair uses exact out-of-cache DSV"));
 
         Random random = new(7819);
         for (int test = 0; test < 64; test++)
@@ -515,9 +516,9 @@ internal static class SelfTests
                 syncCategory,
                 input,
                 desired);
-            Equal(exactBoundary, wordScore.Boundary, $"word scorer SYNC/DSV boundary {test}");
-            Equal(exactBinaryErrors, wordScore.BinaryErrors, $"word scorer majority error {test}");
-            Equal(exactGrayError, wordScore.GrayError, $"word scorer gray error {test}");
+            Equal(exactBoundary, wordScore.Boundary, L.F($"word scorer SYNC/DSV boundary {test}"));
+            Equal(exactBinaryErrors, wordScore.BinaryErrors, L.F($"word scorer majority error {test}"));
+            Equal(exactGrayError, wordScore.GrayError, L.F($"word scorer gray error {test}"));
 
             sbyte firstSyncTarget = checked((sbyte)(random.Next(2) * 16));
             sbyte secondSyncTarget = checked((sbyte)(random.Next(2) * 16));
@@ -543,15 +544,15 @@ internal static class SelfTests
                 desired,
                 firstSyncTarget,
                 secondSyncTarget);
-            Equal(exactBoundary, syncScore.Boundary, $"word scorer observed SYNC boundary {test}");
+            Equal(exactBoundary, syncScore.Boundary, L.F($"word scorer observed SYNC boundary {test}"));
             Equal(
                 exactBinaryErrors + syncBinaryErrors,
                 syncScore.BinaryErrors,
-                $"word scorer observed SYNC majority {test}");
+                L.F($"word scorer observed SYNC majority {test}"));
             Equal(
                 exactGrayError + syncGrayError,
                 syncScore.GrayError,
-                $"word scorer observed SYNC gray {test}");
+                L.F($"word scorer observed SYNC gray {test}"));
 
             EfmPlusPrefixState prefix = EfmPlusPrefixState.Initialize(input, syncCategory);
             for (int index = 0; index < frame.Length; index++)
@@ -565,9 +566,9 @@ internal static class SelfTests
                 Equal(
                     new ModulationBoundary(selected.State, selected.Dsv, selected.IsLand),
                     exactBoundary,
-                    $"prefix state boundary {test}");
-                Equal(selected.GrayError, exactGrayError, $"prefix state gray error {test}");
-                Equal(selected.BinaryErrors, exactBinaryErrors, $"prefix state majority error {test}");
+                    L.F($"prefix state boundary {test}"));
+                Equal(selected.GrayError, exactGrayError, L.F($"prefix state gray error {test}"));
+                Equal(selected.BinaryErrors, exactBinaryErrors, L.F($"prefix state majority error {test}"));
             }
         }
 
@@ -588,7 +589,7 @@ internal static class SelfTests
         Equal(
             DvdEccBlockEncoder.ChannelBitsPerBlock / 16,
             mappedBlack.ChannelWordTargets.ToArray().Count(target => target >= 0),
-            "opaque image observes every data and SYNC channel word");
+            L.T("opaque image observes every data and SYNC channel word"));
         sbyte[] alternatingTargets = new sbyte[DvdEccBlockEncoder.ChannelBitsPerBlock];
         Array.Fill(alternatingTargets, ImageConstraint.Unconstrained);
         for (int payloadIndex = 0;
@@ -614,7 +615,7 @@ internal static class SelfTests
             (sbyte)16,
             tiedImageTarget.DesiredAtRecordingIndex(
                 DvdEccBlockEncoder.PayloadRecordingFrameIndex(100)),
-            "binary image tie uses center sample");
+            L.T("binary image tie uses center sample"));
         byte[] initialPayload = new byte[DvdEccBlockEncoder.PayloadBytesPerBlock];
         random.NextBytes(initialPayload);
         SolverOptions baseOptions = new(
@@ -649,37 +650,37 @@ internal static class SelfTests
             boundary,
             options);
         int controlledScore = result.ControlledScore
-            ?? throw new InvalidOperationException("Missing controlled majority score.");
+            ?? throw new InvalidOperationException(L.T("Missing controlled majority score."));
         int controlledGrayError = result.ControlledGrayScore
-            ?? throw new InvalidOperationException("Missing controlled gray score.");
+            ?? throw new InvalidOperationException(L.T("Missing controlled gray score."));
         int controlledMaximum = result.ControlledScoreMaximum
-            ?? throw new InvalidOperationException("Missing controlled majority maximum.");
+            ?? throw new InvalidOperationException(L.T("Missing controlled majority maximum."));
         True(
             controlledScore < initialEvaluation.BinaryErrors
                 || (controlledScore == initialEvaluation.BinaryErrors
                     && controlledGrayError <= initialEvaluation.GrayError),
-            "batch search never worsens the exact block score");
-        Equal(0, result.Encoded.ChannelLevels.Length, "state-control avoids final bit materialization");
+            L.T("batch search never worsens the exact block score"));
+        Equal(0, result.Encoded.ChannelLevels.Length, L.T("state-control avoids final bit materialization"));
         Equal(
             "all-channel-word-majority-error",
             result.ScoreMetric,
-            "state-control score metric");
+            L.T("state-control score metric"));
         Equal(
             "all-channel-word-gray-error",
             result.GrayScoreMetric ?? string.Empty,
-            "state-control gray metric");
+            L.T("state-control gray metric"));
         int resultGrayError = result.GrayScore
-            ?? throw new InvalidOperationException("Missing state-control gray score.");
+            ?? throw new InvalidOperationException(L.T("Missing state-control gray score."));
         True(
             controlledScore < initialEvaluation.BinaryErrors
                 || (controlledScore == initialEvaluation.BinaryErrors
                     && controlledGrayError < initialEvaluation.GrayError),
-            "state-control improves majority/gray error lexicographically");
+            L.T("state-control improves majority/gray error lexicographically"));
         True(
             (long)controlledScore * 2 < controlledMaximum,
-            "ECC-closed batch search beats random controlled majority");
+            L.T("ECC-closed batch search beats random controlled majority"));
         EncodedEccBlock exact = new DvdEccBlockEncoder().Encode(result.Payloads, 0, firstPsn, boundary);
-        Equal(exact.FinalBoundary, result.Encoded.FinalBoundary, "state-control exact final boundary");
+        Equal(exact.FinalBoundary, result.Encoded.FinalBoundary, L.T("state-control exact final boundary"));
         byte[] resultFrames = DvdEccBlockEncoder.BuildRecordingFrames(result.Payloads, firstPsn);
         ModulationBoundary[] frameInputs = new ModulationBoundary[DvdEccBlockEncoder.SyncFrameCount];
         CodewordFrameEvaluation[] frameEvaluations =
@@ -689,34 +690,34 @@ internal static class SelfTests
             boundary,
             frameInputs,
             frameEvaluations);
-        Equal(evaluated.BinaryErrors, controlledScore, "state-control controlled majority score");
-        Equal(evaluated.GrayError, controlledGrayError, "state-control controlled gray score");
+        Equal(evaluated.BinaryErrors, controlledScore, L.T("state-control controlled majority score"));
+        Equal(evaluated.GrayError, controlledGrayError, L.T("state-control controlled gray score"));
         Equal(
             evaluated.BinaryErrors,
             frameEvaluations.Sum(frame => frame.BinaryErrors),
-            "adaptive frame majority scores sum to block score");
+            L.T("adaptive frame majority scores sum to block score"));
         Equal(
             evaluated.GrayError,
             frameEvaluations.Sum(frame => frame.GrayError),
-            "adaptive frame gray scores sum to block score");
-        Equal(evaluated.FinalBoundary, result.Encoded.FinalBoundary, "state-control word boundary");
+            L.T("adaptive frame gray scores sum to block score"));
+        Equal(evaluated.FinalBoundary, result.Encoded.FinalBoundary, L.T("state-control word boundary"));
         Equal(
             grayTarget.ScoredWords,
             result.ControlledScoreMaximum ?? -1,
-            "state-control controlled score maximum");
+            L.T("state-control controlled score maximum"));
         Equal(
             grayTarget.MaximumGrayError,
             result.ControlledGrayScoreMaximum ?? -1,
-            "state-control controlled gray maximum");
+            L.T("state-control controlled gray maximum"));
 
         CodewordBlockEvaluation observed = grayTarget.EvaluateObserved(resultFrames, boundary);
-        Equal(observed.BinaryErrors, result.Score, "state-control all-word majority score");
-        Equal(observed.GrayError, resultGrayError, "state-control all-word gray score");
-        Equal(grayTarget.ObservedWords, result.ScoreMaximum, "state-control all-word maximum");
+        Equal(observed.BinaryErrors, result.Score, L.T("state-control all-word majority score"));
+        Equal(observed.GrayError, resultGrayError, L.T("state-control all-word gray score"));
+        Equal(grayTarget.ObservedWords, result.ScoreMaximum, L.T("state-control all-word maximum"));
         Equal(
             grayTarget.MaximumObservedGrayError,
             result.GrayScoreMaximum ?? -1,
-            "state-control all-word gray maximum");
+            L.T("state-control all-word gray maximum"));
         int exactObservedBinaryErrors = 0;
         int exactObservedGrayError = 0;
         ReadOnlySpan<sbyte> observationTargets = constraint.ChannelWordTargets;
@@ -738,8 +739,8 @@ internal static class SelfTests
             exactObservedGrayError += Math.Abs(landCount - wordTarget);
         }
 
-        Equal(exactObservedBinaryErrors, result.Score, "all-word majority matches channel levels");
-        Equal(exactObservedGrayError, resultGrayError, "all-word gray matches channel levels");
+        Equal(exactObservedBinaryErrors, result.Score, L.T("all-word majority matches channel levels"));
+        Equal(exactObservedGrayError, resultGrayError, L.T("all-word gray matches channel levels"));
 
         RasterImage transparent = RasterImage.CreateForTest(8, 8, 0, 0, 0, 0);
         ImageConstraint emptyConstraint = ImageTargetMapper.Map(
@@ -762,10 +763,10 @@ internal static class SelfTests
             firstPsn,
             boundary,
             options);
-        Equal(0, emptyResult.Score, "transparent control block score");
-        Equal(0, emptyResult.CompletedIterations, "transparent control block iterations");
-        Equal(0, emptyResult.ScoreMaximum, "transparent control block score maximum");
-        Equal(0, emptyResult.GrayScoreMaximum ?? -1, "transparent gray score maximum");
+        Equal(0, emptyResult.Score, L.T("transparent control block score"));
+        Equal(0, emptyResult.CompletedIterations, L.T("transparent control block iterations"));
+        Equal(0, emptyResult.ScoreMaximum, L.T("transparent control block score maximum"));
+        Equal(0, emptyResult.GrayScoreMaximum ?? -1, L.T("transparent gray score maximum"));
     }
 
     private static void ValidateDataRll(ReadOnlySpan<byte> levels, bool initialLand)
@@ -792,7 +793,7 @@ internal static class SelfTests
                 {
                     True(
                         zeroRun is >= 2 and <= 10,
-                        $"RLL zero run {zeroRun} at channel offset {frameOffset + index}");
+                        L.F($"RLL zero run {zeroRun} at channel offset {frameOffset + index}"));
                     zeroRun = 0;
                 }
             }
@@ -816,9 +817,9 @@ internal static class SelfTests
         const double outerRadius = 58.0;
         const double trackLength = 12_000_000.0;
         ArchimedeanSpiral spiral = ArchimedeanSpiral.Create(innerRadius, outerRadius, trackLength);
-        Near(innerRadius, spiral.RadiusAtArcLength(0), 1e-9, "spiral start radius");
-        Near(outerRadius, spiral.RadiusAtArcLength(trackLength), 1e-9, "spiral end radius");
-        True(spiral.TrackPitchMm > 0, "spiral pitch");
+        Near(innerRadius, spiral.RadiusAtArcLength(0), 1e-9, L.T("spiral start radius"));
+        Near(outerRadius, spiral.RadiusAtArcLength(trackLength), 1e-9, L.T("spiral end radius"));
+        True(spiral.TrackPitchMm > 0, L.T("spiral pitch"));
 
         RasterImage black = RasterImage.CreateForTest(16, 16, 0, 0, 0, 255);
         ImageMappingOptions options = new(
@@ -831,9 +832,9 @@ internal static class SelfTests
             LuminanceThreshold: 128,
             AlphaThreshold: 1);
         ImageConstraint constraint = ImageTargetMapper.Map(black, 0, options);
-        Equal(DvdEccBlockEncoder.ChannelBitsPerBlock, constraint.ConstrainedBits, "opaque image constraint count");
-        Equal((sbyte)0, constraint.TargetAt(0), "black maps to pit");
-        Equal((sbyte)0, constraint.TargetAt(DvdEccBlockEncoder.ChannelBitsPerBlock - 1), "black final target");
+        Equal(DvdEccBlockEncoder.ChannelBitsPerBlock, constraint.ConstrainedBits, L.T("opaque image constraint count"));
+        Equal((sbyte)0, constraint.TargetAt(0), L.T("black maps to pit"));
+        Equal((sbyte)0, constraint.TargetAt(DvdEccBlockEncoder.ChannelBitsPerBlock - 1), L.T("black final target"));
     }
 
     private static void TestIsoOutput()
@@ -850,41 +851,41 @@ internal static class SelfTests
 
             string minimalPath = Path.Combine(directory, "minimal.iso");
             IsoWriteSummary minimal = IsoImageWriter.CreateMinimal(minimalPath, payload, 0, 64, "TEST_DISC");
-            Equal((uint)64, minimal.VolumeSectors, "minimal ISO sectors");
-            Equal(64L * IsoImageWriter.LogicalSectorBytes, new FileInfo(minimalPath).Length, "minimal ISO size");
-            True(minimal.VisibleFileLba is >= 18, "system-area payload has visible file copy");
+            Equal((uint)64, minimal.VolumeSectors, L.T("minimal ISO sectors"));
+            Equal(64L * IsoImageWriter.LogicalSectorBytes, new FileInfo(minimalPath).Length, L.T("minimal ISO size"));
+            True(minimal.VisibleFileLba is >= 18, L.T("system-area payload has visible file copy"));
 
             using (FileStream iso = File.OpenRead(minimalPath))
             {
                 byte[] pvd = ReadIsoSector(iso, 16);
-                Equal((byte)1, pvd[0], "PVD type");
-                SequenceEqual("CD001"u8, pvd.AsSpan(1, 5), "PVD identifier");
-                Equal((uint)64, BinaryPrimitives.ReadUInt32LittleEndian(pvd.AsSpan(80, 4)), "PVD LE volume size");
-                Equal((uint)64, BinaryPrimitives.ReadUInt32BigEndian(pvd.AsSpan(84, 4)), "PVD BE volume size");
+                Equal((byte)1, pvd[0], L.T("PVD type"));
+                SequenceEqual("CD001"u8, pvd.AsSpan(1, 5), L.T("PVD identifier"));
+                Equal((uint)64, BinaryPrimitives.ReadUInt32LittleEndian(pvd.AsSpan(80, 4)), L.T("PVD LE volume size"));
+                Equal((uint)64, BinaryPrimitives.ReadUInt32BigEndian(pvd.AsSpan(84, 4)), L.T("PVD BE volume size"));
 
                 byte[] terminator = ReadIsoSector(iso, 17);
-                Equal((byte)255, terminator[0], "descriptor terminator type");
-                SequenceEqual("CD001"u8, terminator.AsSpan(1, 5), "terminator identifier");
+                Equal((byte)255, terminator[0], L.T("descriptor terminator type"));
+                SequenceEqual("CD001"u8, terminator.AsSpan(1, 5), L.T("terminator identifier"));
 
                 byte[] solvedAtLba = new byte[payload.Length];
                 iso.Position = 0;
                 iso.ReadExactly(solvedAtLba);
-                SequenceEqual(payload, solvedAtLba, "minimal ISO solved sectors");
+                SequenceEqual(payload, solvedAtLba, L.T("minimal ISO solved sectors"));
 
                 iso.Position = checked((long)minimal.VisibleFileLba!.Value * IsoImageWriter.LogicalSectorBytes);
                 iso.ReadExactly(solvedAtLba);
-                SequenceEqual(payload, solvedAtLba, "visible SOLVED.BIN copy");
+                SequenceEqual(payload, solvedAtLba, L.T("visible SOLVED.BIN copy"));
             }
 
             byte[] replacement = payload.Select(value => (byte)(value ^ 0xA5)).ToArray();
             string patchedPath = Path.Combine(directory, "patched.iso");
             IsoWriteSummary patched = IsoImageWriter.PatchTemplate(minimalPath, patchedPath, replacement, 32);
-            Equal("template", patched.Mode, "ISO template mode");
+            Equal("template", patched.Mode, L.T("ISO template mode"));
             using FileStream patchedIso = File.OpenRead(patchedPath);
             patchedIso.Position = 32L * IsoImageWriter.LogicalSectorBytes;
             byte[] actualReplacement = new byte[replacement.Length];
             patchedIso.ReadExactly(actualReplacement);
-            SequenceEqual(replacement, actualReplacement, "template replacement sectors");
+            SequenceEqual(replacement, actualReplacement, L.T("template replacement sectors"));
 
             string dataDirectory = Path.Combine(directory, "data-source");
             string nestedDirectory = Path.Combine(dataDirectory, "子目录");
@@ -900,32 +901,32 @@ internal static class SelfTests
                 hybridPath,
                 128,
                 "HYBRID_TEST");
-            Equal("hybrid-iso9660-joliet", hybrid.Mode, "hybrid ISO mode");
-            Equal(2, hybrid.FileCount, "hybrid ISO file count");
-            Equal(2, hybrid.DirectoryCount, "hybrid ISO directory count");
-            True(hybrid.DataEndLbaExclusive < 128, "hybrid ISO leaves drawing sectors");
-            Equal(128L * IsoImageWriter.LogicalSectorBytes, new FileInfo(hybridPath).Length, "hybrid ISO size");
+            Equal("hybrid-iso9660-joliet", hybrid.Mode, L.T("hybrid ISO mode"));
+            Equal(2, hybrid.FileCount, L.T("hybrid ISO file count"));
+            Equal(2, hybrid.DirectoryCount, L.T("hybrid ISO directory count"));
+            True(hybrid.DataEndLbaExclusive < 128, L.T("hybrid ISO leaves drawing sectors"));
+            Equal(128L * IsoImageWriter.LogicalSectorBytes, new FileInfo(hybridPath).Length, L.T("hybrid ISO size"));
 
             IsoDirectoryEntry rootEntry;
             IsoDirectoryEntry nestedEntry;
             using (FileStream hybridIso = File.OpenRead(hybridPath))
             {
                 byte[] svd = ReadIsoSector(hybridIso, 17);
-                Equal((byte)2, svd[0], "Joliet descriptor type");
-                SequenceEqual("%/E"u8, svd.AsSpan(88, 3), "Joliet level 3 escape sequence");
+                Equal((byte)2, svd[0], L.T("Joliet descriptor type"));
+                SequenceEqual("%/E"u8, svd.AsSpan(88, 3), L.T("Joliet level 3 escape sequence"));
                 uint jolietRootLba = BinaryPrimitives.ReadUInt32LittleEndian(svd.AsSpan(158, 4));
                 uint jolietRootBytes = BinaryPrimitives.ReadUInt32LittleEndian(svd.AsSpan(166, 4));
                 byte[] jolietRoot = ReadIsoExtent(hybridIso, jolietRootLba, jolietRootBytes);
                 rootEntry = FindIsoDirectoryEntry(jolietRoot, "资料.txt;1", joliet: true);
                 nestedEntry = FindIsoDirectoryEntry(jolietRoot, "子目录", joliet: true);
-                True(!rootEntry.IsDirectory, "hybrid Joliet file record flag");
-                True(nestedEntry.IsDirectory, "hybrid Joliet directory record flag");
+                True(!rootEntry.IsDirectory, L.T("hybrid Joliet file record flag"));
+                True(nestedEntry.IsDirectory, L.T("hybrid Joliet directory record flag"));
 
                 byte[] actualRootFile = ReadIsoExtent(
                     hybridIso,
                     rootEntry.ExtentLba,
                     rootEntry.DataLength);
-                SequenceEqual(rootFile, actualRootFile, "hybrid Joliet root file data");
+                SequenceEqual(rootFile, actualRootFile, L.T("hybrid Joliet root file data"));
 
                 byte[] nestedRecords = ReadIsoExtent(
                     hybridIso,
@@ -939,7 +940,7 @@ internal static class SelfTests
                     hybridIso,
                     nestedFileEntry.ExtentLba,
                     nestedFileEntry.DataLength);
-                SequenceEqual(nestedFile, actualNestedFile, "hybrid Joliet nested file data");
+                SequenceEqual(nestedFile, actualNestedFile, L.T("hybrid Joliet nested file data"));
             }
 
             byte[] drawingSector = Enumerable.Repeat((byte)0xA7, IsoImageWriter.LogicalSectorBytes).ToArray();
@@ -954,11 +955,11 @@ internal static class SelfTests
                     hybridIso,
                     rootEntry.ExtentLba,
                     rootEntry.DataLength);
-                SequenceEqual(rootFile, actualRootFile, "outer write preserves hybrid file data");
+                SequenceEqual(rootFile, actualRootFile, L.T("outer write preserves hybrid file data"));
                 SequenceEqual(
                     drawingSector,
                     ReadIsoSector(hybridIso, hybrid.DataEndLbaExclusive),
-                    "hybrid outer drawing sector");
+                    L.T("hybrid outer drawing sector"));
             }
         }
         finally
@@ -1018,7 +1019,7 @@ internal static class SelfTests
         }
 
         throw new InvalidOperationException(
-            $"ISO directory entry '{expectedIdentifier}' was not found.");
+            L.F($"ISO directory entry '{expectedIdentifier}' was not found."));
     }
 
     private static void TestCalibrationAndRange()
@@ -1048,17 +1049,17 @@ internal static class SelfTests
                 imagePath,
                 previewPath,
                 previewOptions);
-            True(File.Exists(previewPath), "calibration preview exists");
+            True(File.Exists(previewPath), L.T("calibration preview exists"));
             Near(
                 preview.GeneratedTrackPitchMicrometres,
                 preview.ActualTrackPitchMicrometres,
                 1e-9,
-                "identical-radius calibration pitch");
-            Equal(16, preview.SamplesPerSector, "calibration samples per sector");
+                L.T("identical-radius calibration pitch"));
+            Equal(16, preview.SamplesPerSector, L.T("calibration samples per sector"));
             Equal(
                 "forward-channel-splat-average",
                 preview.MappingMode,
-                "calibration forward mapping mode");
+                L.T("calibration forward mapping mode"));
 
             string crossImagePath = Path.Combine(directory, "cross.png");
             WriteCrossPng(crossImagePath);
@@ -1074,7 +1075,7 @@ internal static class SelfTests
             int intermediatePixels = CountIntermediateOpaquePixels(radialPreviewPath);
             True(
                 intermediatePixels > 100,
-                "physical calibration averages sub-pixel tracks instead of binary moire");
+                L.T("physical calibration averages sub-pixel tracks instead of binary moire"));
 
             ImageMappingOptions mapping = new(
                 TotalSectors: 64,
@@ -1111,18 +1112,18 @@ internal static class SelfTests
                 new ModulationBoundary(1, 0, IsLand: true),
                 rangeOptions,
                 progress: null);
-            Equal(2, range.CompletedBlocks, "range ECC block count");
-            Equal((uint)32, range.IsoSectors, "range ISO sector count");
+            Equal(2, range.CompletedBlocks, L.T("range ECC block count"));
+            Equal((uint)32, range.IsoSectors, L.T("range ISO sector count"));
             Equal(
                 "all-channel-word-majority-error",
                 range.ScoreMetric,
-                "range state-control metric");
+                L.T("range state-control metric"));
             Equal(
                 "all-channel-word-gray-error",
                 range.GrayScoreMetric ?? string.Empty,
-                "range gray metric");
-            Equal(32L * IsoImageWriter.LogicalSectorBytes, new FileInfo(rawIsoPath).Length, "range ISO size");
-            True(File.ReadAllBytes(rawIsoPath).AsSpan().IndexOfAnyExcept((byte)0) >= 0, "range ISO payload data");
+                L.T("range gray metric"));
+            Equal(32L * IsoImageWriter.LogicalSectorBytes, new FileInfo(rawIsoPath).Length, L.T("range ISO size"));
+            True(File.ReadAllBytes(rawIsoPath).AsSpan().IndexOfAnyExcept((byte)0) >= 0, L.T("range ISO payload data"));
 
             ImageMappingOptions dispersionMapping = mapping with
             {
@@ -1155,15 +1156,15 @@ internal static class SelfTests
                 fastIsoPath,
                 fastOptions,
                 progress: null);
-            Equal(1, fast.CompletedBlocks, "fast dispersion block count");
+            Equal(1, fast.CompletedBlocks, L.T("fast dispersion block count"));
             Equal(
                 (long)DvdEccBlockEncoder.PayloadBytesPerBlock,
                 fast.ControlledWords,
-                "fast dispersion controlled words");
+                L.T("fast dispersion controlled words"));
             SequenceEqual(
                 exactDispersion.Payloads,
                 File.ReadAllBytes(fastIsoPath),
-                "fast dispersion matches exact-replay payload bytes");
+                L.T("fast dispersion matches exact-replay payload bytes"));
 
             // The read-back simulation must classify every dispersion payload byte of the
             // generated ISO and reproduce a non-trivial two-level scan image from it.
@@ -1182,13 +1183,13 @@ internal static class SelfTests
                     Clockwise: false,
                     PreviewSize: 256,
                     SamplesPerSector: 64));
-            True(File.Exists(readbackPath), "ISO readback preview exists");
-            Equal("payload-scramble-classify-splat", readback.MappingMode, "ISO readback mapping mode");
-            Equal(16L * 64, readback.TotalSamples, "ISO readback sample count");
-            Equal(readback.TotalSamples, readback.ClassifiedSamples, "ISO readback classification");
+            True(File.Exists(readbackPath), L.T("ISO readback preview exists"));
+            Equal("payload-scramble-classify-splat", readback.MappingMode, L.T("ISO readback mapping mode"));
+            Equal(16L * 64, readback.TotalSamples, L.T("ISO readback sample count"));
+            Equal(readback.TotalSamples, readback.ClassifiedSamples, L.T("ISO readback classification"));
             (int darkPixels, int lightPixels) = CountDarkAndLightPixels(readbackPath);
-            True(darkPixels > 0, "ISO readback renders dark code words");
-            True(lightPixels > 0, "ISO readback renders light code words");
+            True(darkPixels > 0, L.T("ISO readback renders dark code words"));
+            True(lightPixels > 0, L.T("ISO readback renders light code words"));
         }
         finally
         {
@@ -1305,15 +1306,15 @@ internal static class SelfTests
     {
         if (!condition)
         {
-            throw new InvalidOperationException($"selftest failed: {name}");
+            throw new InvalidOperationException(L.F($"selftest failed: {name}"));
         }
     }
 
     private static void Equal<T>(T expected, T actual, string name) where T : notnull
-        => True(EqualityComparer<T>.Default.Equals(expected, actual), $"{name}: expected {expected}, got {actual}");
+        => True(EqualityComparer<T>.Default.Equals(expected, actual), L.F($"{name}: expected {expected}, got {actual}"));
 
     private static void Near(double expected, double actual, double tolerance, string name)
-        => True(Math.Abs(expected - actual) <= tolerance, $"{name}: expected {expected}, got {actual}");
+        => True(Math.Abs(expected - actual) <= tolerance, L.F($"{name}: expected {expected}, got {actual}"));
 
     private static void SequenceEqual(ReadOnlySpan<byte> expected, ReadOnlySpan<byte> actual, string name)
         => True(expected.SequenceEqual(actual), name);

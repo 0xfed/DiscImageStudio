@@ -1,0 +1,177 @@
+{
+  "Cli.Title": {
+    "en": "Disc Image Studio | experimental Linux and macOS CLI for offline CD, DVD and Blu-ray image generation",
+    "zh-CN": "Disc Image Studio | 实验性 Linux 和 macOS 命令行工具，用于离线生成 CD、DVD 和蓝光镜像",
+    "zh-TW": "Disc Image Studio | 實驗性 Linux 與 macOS 命令列工具，用於離線產生 CD、DVD 與藍光映像檔",
+    "ja": "Disc Image Studio | CD、DVD、Blu-ray イメージをオフラインで生成する、Linux および macOS 向けの実験的な CLI",
+    "tr": "Disc Image Studio | Çevrimdışı CD, DVD ve Blu-ray imajı oluşturmak için Linux ve macOS üzerinde deneysel komut satırı arayüzü"
+  },
+  "Cli.Usage": {
+    "en": "Usage: disc-image-studio COMMAND [OPTIONS]",
+    "zh-CN": "用法：disc-image-studio 命令 [选项]",
+    "zh-TW": "用法：disc-image-studio 命令 [選項]",
+    "ja": "使用法: disc-image-studio コマンド [オプション]",
+    "tr": "Kullanım: disc-image-studio KOMUT [SEÇENEKLER]"
+  },
+  "Cli.LanguageHelp": {
+    "en": "Global option: --language zh-CN|zh-TW|en|ja|tr|system. Default: DISC_IMAGE_STUDIO_LANGUAGE, otherwise the system UI language.",
+    "zh-CN": "全局选项：--language zh-CN|zh-TW|en|ja|tr|system。默认使用 DISC_IMAGE_STUDIO_LANGUAGE；未设置时跟随系统界面语言。",
+    "zh-TW": "全域選項：--language zh-CN|zh-TW|en|ja|tr|system。預設使用 DISC_IMAGE_STUDIO_LANGUAGE；未設定時跟隨系統介面語言。",
+    "ja": "グローバルオプション: --language zh-CN|zh-TW|en|ja|tr|system。既定では DISC_IMAGE_STUDIO_LANGUAGE を使用し、未設定の場合はシステムの UI 言語に従います。",
+    "tr": "Genel seçenek: --language zh-CN|zh-TW|en|ja|tr|system. Varsayılan: DISC_IMAGE_STUDIO_LANGUAGE; ayarlanmamışsa sistem arayüz dili."
+  },
+  "Cli.DuplicateLanguage": {
+    "en": "Option --language was specified more than once.",
+    "zh-CN": "选项 --language 被多次指定。",
+    "zh-TW": "選項 --language 被指定多次。",
+    "ja": "オプション --language が複数回指定されています。",
+    "tr": "--language seçeneği birden fazla kez belirtildi."
+  },
+  "Cli.MissingLanguage": {
+    "en": "Missing value for --language.",
+    "zh-CN": "缺少 --language 的值。",
+    "zh-TW": "缺少 --language 的值。",
+    "ja": "--language の値がありません。",
+    "tr": "--language için değer eksik."
+  },
+  "Cli.UnsupportedLanguage": {
+    "en": "Unsupported language '{0}'. Choose zh-CN, zh-TW, en, ja, tr, or system.",
+    "zh-CN": "不支持语言“{0}”。请选择 zh-CN、zh-TW、en、ja、tr 或 system。",
+    "zh-TW": "不支援語言「{0}」。請選擇 zh-CN、zh-TW、en、ja、tr 或 system。",
+    "ja": "言語「{0}」はサポートされていません。zh-CN、zh-TW、en、ja、tr、system のいずれかを選択してください。",
+    "tr": "'{0}' dili desteklenmiyor. zh-CN, zh-TW, en, ja, tr veya system seçin."
+  },
+  "Cli.Cancelled": {
+    "en": "Cancelled.",
+    "zh-CN": "已取消。",
+    "zh-TW": "已取消。",
+    "ja": "キャンセルしました。",
+    "tr": "İptal edildi."
+  },
+  "At least one optical-disc module is required.": {
+    "en": "At least one optical-disc module is required.",
+    "zh-CN": "至少需要一个光盘模块。",
+    "zh-TW": "至少需要一個光碟模組。",
+    "ja": "少なくとも 1 つの光ディスクモジュールが必要です。",
+    "tr": "En az bir optik disk modülü gereklidir."
+  },
+  "Duplicate optical-disc module id '{0}'.": {
+    "en": "Duplicate optical-disc module id '{0}'.",
+    "zh-CN": "光盘模块 ID“{0}”重复。",
+    "zh-TW": "光碟模組 ID「{0}」重複。",
+    "ja": "光ディスクモジュール ID「{0}」が重複しています。",
+    "tr": "Optik disk modülü kimliği '{0}' yineleniyor."
+  },
+  "Disc command '{0}' is registered by more than one module.": {
+    "en": "Disc command '{0}' is registered by more than one module.",
+    "zh-CN": "光盘命令“{0}”被多个模块注册。",
+    "zh-TW": "光碟命令「{0}」被多個模組註冊。",
+    "ja": "ディスクコマンド「{0}」が複数のモジュールに登録されています。",
+    "tr": "'{0}' disk komutu birden fazla modül tarafından kaydedilmiş."
+  },
+  "Unknown optical-disc command '{0}'.": {
+    "en": "Unknown optical-disc command '{0}'.",
+    "zh-CN": "未知的光盘命令“{0}”。",
+    "zh-TW": "未知的光碟命令「{0}」。",
+    "ja": "不明な光ディスクコマンド「{0}」です。",
+    "tr": "Bilinmeyen optik disk komutu: '{0}'."
+  },
+  "DVD data disc": {
+    "en": "DVD data disc",
+    "zh-CN": "DVD 数据盘",
+    "zh-TW": "DVD 資料光碟",
+    "ja": "DVD データディスク",
+    "tr": "DVD veri diski"
+  },
+  "Blu-ray BD-R": {
+    "en": "Blu-ray BD-R",
+    "zh-CN": "蓝光 BD-R",
+    "zh-TW": "藍光 BD-R",
+    "ja": "Blu-ray BD-R",
+    "tr": "Blu-ray BD-R"
+  },
+  "Without files, writes WAV/CUE or RAW audio; with --data-dir, writes a Mode 1 ISO with inner/outer-ring files.": {
+    "en": "Without files, writes WAV/CUE or RAW audio; with --data-dir, writes a Mode 1 ISO with inner/outer-ring files.",
+    "zh-CN": "无文件时写入 WAV/CUE 或 RAW 音频；指定 --data-dir 时写入 Mode 1 ISO，文件位于内圈或外圈。",
+    "zh-TW": "無檔案時寫入 WAV/CUE 或 RAW 音訊；指定 --data-dir 時寫入 Mode 1 ISO，檔案位於內圈或外圈。",
+    "ja": "ファイルがない場合は WAV/CUE または RAW オーディオを書き出します。--data-dir を指定すると、ファイルを内周または外周に配置した Mode 1 ISO を書き出します。",
+    "tr": "Dosya yoksa WAV/CUE veya RAW ses yazar; --data-dir ile dosyaları iç/dış halkaya yerleştiren bir Mode 1 ISO yazar."
+  },
+  "Projects generated geometry onto measured disc geometry.": {
+    "en": "Projects generated geometry onto measured disc geometry.",
+    "zh-CN": "将生成几何投影到实测光盘几何上。",
+    "zh-TW": "將產生幾何投影到實測光碟幾何上。",
+    "ja": "生成時のジオメトリを実測したディスクのジオメトリに投影します。",
+    "tr": "Oluşturma geometrisini ölçülen disk geometrisine yansıtır."
+  },
+  "Renders WAV/RAW audio or a Mode 1 ISO with measured geometry.": {
+    "en": "Renders WAV/RAW audio or a Mode 1 ISO with measured geometry.",
+    "zh-CN": "按实测几何渲染 WAV/RAW 音频或 Mode 1 ISO。",
+    "zh-TW": "按實測幾何算繪 WAV/RAW 音訊或 Mode 1 ISO。",
+    "ja": "実測ジオメトリを使って WAV/RAW オーディオまたは Mode 1 ISO をレンダリングします。",
+    "tr": "WAV/RAW sesi veya bir Mode 1 ISO imajını ölçülen geometriyle işler."
+  },
+  "Generates a DVD image with the fixed fast dispersion mapping in CW direction.": {
+    "en": "Generates a DVD image with the fixed fast dispersion mapping in CW direction.",
+    "zh-CN": "采用固定的快速离散映射，按顺时针方向生成 DVD 镜像。",
+    "zh-TW": "採用固定的快速離散映射，按順時針方向產生 DVD 映像檔。",
+    "ja": "固定の高速分散マッピングを用い、時計回りに DVD イメージを生成します。",
+    "tr": "Sabit hızlı dağılım eşlemesiyle saat yönünde bir DVD imajı oluşturur."
+  },
+  "Encodes one DVD ECC block into packed NRZI channel levels.": {
+    "en": "Encodes one DVD ECC block into packed NRZI channel levels.",
+    "zh-CN": "将一个 DVD ECC 块编码为打包的 NRZI 通道电平。",
+    "zh-TW": "將一個 DVD ECC 區塊編碼為封裝的 NRZI 通道電平。",
+    "ja": "1 つの DVD ECC ブロックを、パックされた NRZI チャネルレベルに符号化します。",
+    "tr": "Bir DVD ECC bloğunu paketlenmiş NRZI kanal seviyelerine kodlar."
+  },
+  "Renders generated geometry through measured disc radii.": {
+    "en": "Renders generated geometry through measured disc radii.",
+    "zh-CN": "根据实测光盘半径渲染生成几何。",
+    "zh-TW": "根據實測光碟半徑算繪產生幾何。",
+    "ja": "実測したディスクの半径を使って生成時のジオメトリをレンダリングします。",
+    "tr": "Oluşturma geometrisini ölçülen disk yarıçaplarıyla işler."
+  },
+  "Renders a generated ISO's payload sectors under measured disc radii.": {
+    "en": "Renders a generated ISO's payload sectors under measured disc radii.",
+    "zh-CN": "按实测光盘半径渲染已生成 ISO 的有效载荷扇区。",
+    "zh-TW": "按實測光碟半徑算繪已產生 ISO 的有效負載磁區。",
+    "ja": "実測したディスクの半径を使って、生成済み ISO のペイロードセクターをレンダリングします。",
+    "tr": "Oluşturulmuş bir ISO imajının yük sektörlerini ölçülen disk yarıçaplarıyla işler."
+  },
+  "Runs the DVD engine's deterministic regression suite.": {
+    "en": "Runs the DVD engine's deterministic regression suite.",
+    "zh-CN": "运行 DVD 引擎的确定性回归测试套件。",
+    "zh-TW": "執行 DVD 引擎的確定性回歸測試套件。",
+    "ja": "DVD エンジンの決定的な回帰テストスイートを実行します。",
+    "tr": "DVD motorunun deterministik regresyon test paketini çalıştırır."
+  },
+  "Describe nominal BD-R geometry; optionally export JSON.": {
+    "en": "Describe nominal BD-R geometry; optionally export JSON.",
+    "zh-CN": "描述标称 BD-R 几何，可选择导出 JSON。",
+    "zh-TW": "描述標稱 BD-R 幾何，可選擇匯出 JSON。",
+    "ja": "公称 BD-R ジオメトリを表示し、必要に応じて JSON にエクスポートします。",
+    "tr": "Nominal BD-R geometrisini açıklar; isteğe bağlı olarak JSON dışa aktarır."
+  },
+  "Export raw user sectors for an explicit scrambled-byte probe (no filesystem).": {
+    "en": "Export raw user sectors for an explicit scrambled-byte probe (no filesystem).",
+    "zh-CN": "导出原始用户扇区，用于显式指定扰码字节的探测（无文件系统）。",
+    "zh-TW": "匯出原始使用者磁區，用於明確指定擾碼位元組的探測（無檔案系統）。",
+    "ja": "スクランブル済みバイトを明示的に指定したプローブ用に、生のユーザーセクターをエクスポートします（ファイルシステムなし）。",
+    "tr": "Açıkça belirtilen karıştırılmış bayt denemesi için ham kullanıcı sektörlerini dışa aktarır (dosya sistemi yok)."
+  },
+  "Encode exactly 65536 payload bytes into 76880 ECC bytes; not a burn image.": {
+    "en": "Encode exactly 65536 payload bytes into 76880 ECC bytes; not a burn image.",
+    "zh-CN": "将恰好 65536 字节的有效载荷编码为 76880 字节的 ECC 数据；不是可刻录镜像。",
+    "zh-TW": "將恰好 65536 位元組的有效負載編碼為 76880 位元組的 ECC 資料；不是可燒錄映像檔。",
+    "ja": "正確に 65536 バイトのペイロードを 76880 バイトの ECC データに符号化します。書き込み用イメージではありません。",
+    "tr": "Tam olarak 65536 bayt yükü 76880 bayt ECC verisine kodlar; yazılabilir bir disk imajı değildir."
+  },
+  "Draw the full user-data area; selecting a files directory adds a UDF 2.01 filesystem at the inner or outer ring.": {
+    "en": "Draw the full user-data area; selecting a files directory adds a UDF 2.01 filesystem at the inner or outer ring.",
+    "zh-CN": "绘制完整用户数据区；选择文件目录后，在内圈或外圈添加 UDF 2.01 文件系统。",
+    "zh-TW": "繪製完整使用者資料區；選擇檔案目錄後，在內圈或外圈新增 UDF 2.01 檔案系統。",
+    "ja": "ユーザーデータ領域全体に描画します。ファイルディレクトリを選択すると、内周または外周に UDF 2.01 ファイルシステムを追加します。",
+    "tr": "Kullanıcı veri alanının tamamını çizer; bir dosya dizini seçilirse iç veya dış halkaya UDF 2.01 dosya sistemi ekler."
+  }
+}

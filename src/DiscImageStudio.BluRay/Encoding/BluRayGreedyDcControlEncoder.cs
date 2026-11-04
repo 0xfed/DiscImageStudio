@@ -1,3 +1,5 @@
+using DiscImageStudio.Localization;
+
 namespace DiscImageStudio.BluRay.Encoding;
 
 public sealed record BluRayBalancedFrameResult(
@@ -18,7 +20,7 @@ public static class BluRayGreedyDcControlEncoder
     {
         BluRayDigitalSum.ValidateInitial(initialDigitalSum);
         if (!nextEccFrame.IsEmpty && nextEccFrame.Length != BluRayEccEncoder.EccBytesPerFrame)
-            throw new ArgumentException("Next-frame lookahead requires 155 ECC bytes.", nameof(nextEccFrame));
+            throw new ArgumentException(L.T("Next-frame lookahead requires 155 ECC bytes."), nameof(nextEccFrame));
         byte[] controls = new byte[BluRayRecordingFrameEncoder.DcControlBitsPerFrame];
         BluRayRecordingFrameResult? selected = null;
         for (int control = 0; control < controls.Length; control++)
@@ -50,7 +52,7 @@ public static class BluRayGreedyDcControlEncoder
         BluRayDigitalSum.ValidateInitial(initialDigitalSum);
         if (nextEccFrame.IsEmpty != nextDcControlBits.IsEmpty
             || (!nextEccFrame.IsEmpty && (nextEccFrame.Length != 155 || nextDcControlBits.Length != 28)))
-            throw new ArgumentException("Supply the next frame and all its final control bits together.");
+            throw new ArgumentException(L.T("Supply the next frame and all its final control bits together."));
         byte[] controls = dcControlBits.ToArray();
         BluRayRecordingFrameResult actual = BluRayRecordingFrameEncoder.Encode(eccFrame, frameWithinAddressUnit,
             controls, precedingFrameUsedTermination, initialChannelLevel);
@@ -112,6 +114,6 @@ internal static class BluRayDigitalSum
     internal static void ValidateInitial(long initialDigitalSum)
     {
         if (initialDigitalSum < -MaximumInitialMagnitude || initialDigitalSum > MaximumInitialMagnitude)
-            throw new ArgumentOutOfRangeException(nameof(initialDigitalSum), "Initial digital sum is too close to Int64 limits.");
+            throw new ArgumentOutOfRangeException(nameof(initialDigitalSum), L.T("Initial digital sum is too close to Int64 limits."));
     }
 }

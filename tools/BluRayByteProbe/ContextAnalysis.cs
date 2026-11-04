@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using DiscImageStudio.BluRay.Encoding;
 
 // Synthetic-frame diagnostics. ECC, scrambler, BIS and RUB overhead are deliberately absent.
@@ -82,15 +83,15 @@ internal static class ContextAnalysis
         {
             Method = new
             {
-                Meaning = "Synthetic post-ECC 155-byte frames; these are not user payload byte encodings. Full user-data pipeline results must be used for actual burn plans.",
-                Density = "Number of modulation ONEs divided by inspected channel bits; a modulation ONE is one NRZI level transition. All metrics exclude the 30-bit frame sync.",
-                RepeatedFrame = "256 bytes; 31 sync indices x 2 previous-termination values x 8 deterministic DC masks = 496 frames per byte. 155 identical bytes per frame; 1902 inspected channel bits per sample.",
-                Context = "Each candidate: 512 matched pseudorandom frames, 64-byte central repeated block at offsets 8..83, random neighbors, random DC mask, sync index and previous termination. Inspect inner 60 bytes using nominal 2:3 rate positions after DC insertion, with two-byte guards. This is a local stable-block metric, not an independently encoded per-byte metric.",
-                Mixtures = "Unordered candidate pairs, block lengths 1/8/32 bytes, 128 frames each with cycling phase and matched pseudorandom DC masks/sync contexts. Statistics measures the nominal channel window for raw bytes16..143: 128 bytes, exactly64 of each candidate at any cyclic phase before the nominal pair-boundary trim. WholeFrameDataStatistics additionally measures all155bytes, whose A/B proportion varies by phase for longer blocks. Short patterns may interact nonlinearly.",
-                RunCounts = "Distances between successive modulation ONEs fully inside the inspected window. Counts exclude incomplete boundary runs, sync-crossing runs and sync. Fractions normalize by all complete runs; mean run length uses these complete intervals.",
-                Weighting = "Overall mean density is total transitions/total channel bits; minimum/maximum and standard deviation are per-sample densities. DC masks and sync contexts are deliberately sampled diagnostics, not an estimate of real-drive probabilities.",
-                InitialLevel = "Initial channel level fixed at zero; NRZI complement changes mark/space polarity but cannot change transition density.",
-                Limitation = "Neither density nor NRZI level occupancy establishes reflectance or black/white polarity. Actual recorder DC selection and write strategy may differ. Repeated ECC-frame and mixture diagnostics bypass scrambling/ECC/BIS."
+                Meaning = L.T("Synthetic post-ECC 155-byte frames; these are not user payload byte encodings. Full user-data pipeline results must be used for actual burn plans."),
+                Density = L.T("Number of modulation ONEs divided by inspected channel bits; a modulation ONE is one NRZI level transition. All metrics exclude the 30-bit frame sync."),
+                RepeatedFrame = L.T("256 bytes; 31 sync indices x 2 previous-termination values x 8 deterministic DC masks = 496 frames per byte. 155 identical bytes per frame; 1902 inspected channel bits per sample."),
+                Context = L.T("Each candidate: 512 matched pseudorandom frames, 64-byte central repeated block at offsets 8..83, random neighbors, random DC mask, sync index and previous termination. Inspect inner 60 bytes using nominal 2:3 rate positions after DC insertion, with two-byte guards. This is a local stable-block metric, not an independently encoded per-byte metric."),
+                Mixtures = L.T("Unordered candidate pairs, block lengths 1/8/32 bytes, 128 frames each with cycling phase and matched pseudorandom DC masks/sync contexts. Statistics measures the nominal channel window for raw bytes16..143: 128 bytes, exactly64 of each candidate at any cyclic phase before the nominal pair-boundary trim. WholeFrameDataStatistics additionally measures all155bytes, whose A/B proportion varies by phase for longer blocks. Short patterns may interact nonlinearly."),
+                RunCounts = L.T("Distances between successive modulation ONEs fully inside the inspected window. Counts exclude incomplete boundary runs, sync-crossing runs and sync. Fractions normalize by all complete runs; mean run length uses these complete intervals."),
+                Weighting = L.T("Overall mean density is total transitions/total channel bits; minimum/maximum and standard deviation are per-sample densities. DC masks and sync contexts are deliberately sampled diagnostics, not an estimate of real-drive probabilities."),
+                InitialLevel = L.T("Initial channel level fixed at zero; NRZI complement changes mark/space polarity but cannot change transition density."),
+                Limitation = L.T("Neither density nor NRZI level occupancy establishes reflectance or black/white polarity. Actual recorder DC selection and write strategy may differ. Repeated ECC-frame and mixture diagnostics bypass scrambling/ECC/BIS.")
             },
             RepeatedFrameBytes = FrameBytes,
             RepeatedFrameDataChannelBits = DataChannelBits,
@@ -159,7 +160,7 @@ internal static class ContextAnalysis
         }
         return new
         {
-            Method = "Synthetic post-ECC frames only, 155bytes/1240 raw bits plus28 DC bits, 1902 measured channel bits excluding sync. All cyclic phases are tested. continuous_raw_bits uses pattern[(rawIndex+phase)%period]. reserve_dc_pattern_slots uses pattern[(rawIndex+precedingDcCount+phase)%period], so the 28 actual DC bits overwrite reserved pattern positions. restart_each_raw_segment starts the pattern again after each raw segment (25 then45bits). Fixed-mask experiment uses8 masks x31sync indices; random-mask experiment uses64 matched masks/sync choices; greedy uses6sync indices x initialDSV(-64,0,+64), initialNRZI level0, next identical ECCframe for lookahead. All-phases means are phase-sensitivity summaries, not a recommended recipe. These results bypass parity, scrambling, BIS and full-cluster context.",
+            Method = L.T("Synthetic post-ECC frames only, 155bytes/1240 raw bits plus28 DC bits, 1902 measured channel bits excluding sync. All cyclic phases are tested. continuous_raw_bits uses pattern[(rawIndex+phase)%period]. reserve_dc_pattern_slots uses pattern[(rawIndex+precedingDcCount+phase)%period], so the 28 actual DC bits overwrite reserved pattern positions. restart_each_raw_segment starts the pattern again after each raw segment (25 then45bits). Fixed-mask experiment uses8 masks x31sync indices; random-mask experiment uses64 matched masks/sync choices; greedy uses6sync indices x initialDSV(-64,0,+64), initialNRZI level0, next identical ECCframe for lookahead. All-phases means are phase-sensitivity summaries, not a recommended recipe. These results bypass parity, scrambling, BIS and full-cluster context."),
             Results = results
         };
     }

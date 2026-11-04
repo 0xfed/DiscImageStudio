@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Diagnostics;
 using System.Numerics;
 using DiscImageStudio.BluRay.Encoding;
@@ -38,7 +39,7 @@ public sealed record BluRayStreamingOptions(BluRayDiscParameters Disc, uint Star
         Disc.Validate();
         if (StartSector % 32 != 0 || SectorCount == 0 || SectorCount % 32 != 0
             || StartSector >= Disc.TotalSectors || SectorCount > Disc.TotalSectors - StartSector)
-            throw new ArgumentOutOfRangeException(nameof(SectorCount), "BD range must be inside the disc, start on a 32-sector boundary, and contain a positive multiple of 32 sectors.");
+            throw new ArgumentOutOfRangeException(nameof(SectorCount), L.T("BD range must be inside the disc, start on a 32-sector boundary, and contain a positive multiple of 32 sectors."));
     }
 }
 
@@ -135,7 +136,7 @@ public static class BluRayStreamingGenerator
         ArgumentException.ThrowIfNullOrWhiteSpace(outputPath);
         ArgumentNullException.ThrowIfNull(options);
         options.Validate();
-        if (mapping is null) throw new InvalidOperationException(PendingMappingMessage);
+        if (mapping is null) throw new InvalidOperationException(L.T(PendingMappingMessage));
         cancellationToken.ThrowIfCancellationRequested();
         BluRayStreamingSummary? summary = null;
         BluRayOutputPublisher.Write(outputPath, stream =>
@@ -149,8 +150,8 @@ public static class BluRayStreamingGenerator
         ArgumentNullException.ThrowIfNull(output);
         ArgumentNullException.ThrowIfNull(options);
         options.Validate();
-        if (mapping is null) throw new InvalidOperationException(PendingMappingMessage);
-        if (!output.CanWrite) throw new ArgumentException("A writable output stream is required.", nameof(output));
+        if (mapping is null) throw new InvalidOperationException(L.T(PendingMappingMessage));
+        if (!output.CanWrite) throw new ArgumentException(L.T("A writable output stream is required."), nameof(output));
         cancellationToken.ThrowIfCancellationRequested();
     }
 }

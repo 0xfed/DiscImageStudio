@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using StbImageSharp;
 using StbImageWriteSharp;
 using WriteComponents = StbImageWriteSharp.ColorComponents;
@@ -9,7 +10,7 @@ public static partial class RasterCodec
     private static ImageInfo ReadHeader(Stream stream, long maxPixels)
     {
         ImageInfo info = ImageInfo.FromStream(stream)
-            ?? throw new InvalidDataException("Unsupported or invalid image. Use a PNG, JPEG, BMP or GIF.");
+            ?? throw new InvalidDataException(L.T("Unsupported or invalid image. Use a PNG, JPEG, BMP or GIF."));
         CheckDimensions(info.Width, info.Height, maxPixels);
         return info;
     }

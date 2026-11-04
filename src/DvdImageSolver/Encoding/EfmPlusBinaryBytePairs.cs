@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DvdImageSolver.Encoding;
 
 internal readonly record struct EfmPlusBinaryBytePair(
@@ -122,7 +123,7 @@ internal static class EfmPlusBinaryBytePairs
 
         if (!hasPair)
         {
-            throw new InvalidOperationException("Could not construct a distinct EFMPlus binary byte pair.");
+            throw new InvalidOperationException(L.T("Could not construct a distinct EFMPlus binary byte pair."));
         }
 
         return new EfmPlusBinaryBytePair(

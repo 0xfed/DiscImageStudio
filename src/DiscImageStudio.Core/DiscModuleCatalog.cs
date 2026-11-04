@@ -1,3 +1,5 @@
+using DiscImageStudio.Localization;
+
 namespace DiscImageStudio.Core;
 
 public sealed class DiscModuleCatalog
@@ -11,7 +13,7 @@ public sealed class DiscModuleCatalog
         IOpticalDiscModule[] materialized = modules.ToArray();
         if (materialized.Length == 0)
         {
-            throw new ArgumentException("At least one optical-disc module is required.", nameof(modules));
+            throw new ArgumentException(L.T("At least one optical-disc module is required."), nameof(modules));
         }
 
         Dictionary<string, IOpticalDiscModule> commands = new(StringComparer.OrdinalIgnoreCase);
@@ -22,7 +24,7 @@ public sealed class DiscModuleCatalog
             if (!moduleIds.Add(module.Descriptor.Id))
             {
                 throw new ArgumentException(
-                    $"Duplicate optical-disc module id '{module.Descriptor.Id}'.",
+                    L.F($"Duplicate optical-disc module id '{module.Descriptor.Id}'."),
                     nameof(modules));
             }
 
@@ -31,7 +33,7 @@ public sealed class DiscModuleCatalog
                 if (!commands.TryAdd(command.Name, module))
                 {
                     throw new ArgumentException(
-                        $"Disc command '{command.Name}' is registered by more than one module.",
+                        L.F($"Disc command '{command.Name}' is registered by more than one module."),
                         nameof(modules));
                 }
             }
@@ -61,7 +63,7 @@ public sealed class DiscModuleCatalog
             return module;
         }
 
-        throw new ArgumentException($"Unknown optical-disc command '{command}'.", nameof(command));
+        throw new ArgumentException(L.F($"Unknown optical-disc command '{command}'."), nameof(command));
     }
 
     public Task<DiscJobResult> ExecuteAsync(

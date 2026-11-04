@@ -1,0 +1,149 @@
+{
+  "请沿同一条曲线从内到外至少标出 6 个点，覆盖靠内、中间和靠外的位置。": {
+    "zh-CN": "请沿同一条曲线从内到外至少标出 6 个点，覆盖靠内、中间和靠外的位置。",
+    "zh-TW": "請沿同一條曲線由內向外至少標出 6 個點，涵蓋內側、中間與外側的位置。",
+    "en": "Mark at least 6 points along the same curve, from inside to outside, covering the inner, middle, and outer regions.",
+    "ja": "同じ曲線に沿って内側から外側へ、内側・中央・外側を含むように少なくとも 6 点を指定してください。",
+    "tr": "Aynı eğri boyunca içten dışa doğru, iç, orta ve dış bölgeleri kapsayan en az 6 nokta işaretleyin."
+  },
+  "曲线覆盖范围太窄，无法稳定分离内外半径；请继续标出更靠内、外的曲线。": {
+    "zh-CN": "曲线覆盖范围太窄，无法稳定分离内外半径；请继续标出更靠内、外的曲线。",
+    "zh-TW": "曲線涵蓋範圍太窄，無法穩定區分內外半徑；請繼續標出更靠內、外的曲線。",
+    "en": "The curve covers too narrow a range to reliably distinguish the inner and outer radii. Add points farther inward and outward.",
+    "ja": "曲線の範囲が狭すぎるため、内外半径を安定して分離できません。さらに内側と外側の曲線上に点を追加してください。",
+    "tr": "Eğrinin kapsadığı aralık, iç ve dış yarıçapları güvenilir biçimde ayırmak için çok dar. Daha içte ve dışta noktalar ekleyin."
+  },
+  "搜索范围内没有能覆盖全部观测点的有效正半径曲线延拓，请检查照片尺度、盘心或参数范围。": {
+    "zh-CN": "搜索范围内没有能覆盖全部观测点的有效正半径曲线延拓，请检查照片尺度、盘心或参数范围。",
+    "zh-TW": "搜尋範圍內沒有能涵蓋全部觀測點的有效正半徑曲線延伸，請檢查照片比例、盤心或參數範圍。",
+    "en": "No valid curve continuation with positive radius covers all observed points within the search range. Check the photo scale, disc center, or parameter bounds.",
+    "ja": "探索範囲内に、すべての観測点を覆う有効な正半径の曲線延長がありません。写真の縮尺、ディスク中心、またはパラメーター範囲を確認してください。",
+    "tr": "Arama aralığında tüm gözlem noktalarını kapsayan, yarıçapı pozitif olan geçerli bir eğri uzantısı bulunamadı. Fotoğraf ölçeğini, disk merkezini veya parametre sınırlarını kontrol edin."
+  },
+  "部分描点在候选模型下超出原图案环带，已按连续曲线保留；请复核照片尺度、盘心及端点是否沿同一条可见曲线。": {
+    "zh-CN": "部分描点在候选模型下超出原图案环带，已按连续曲线保留；请复核照片尺度、盘心及端点是否沿同一条可见曲线。",
+    "zh-TW": "部分描點在候選模型下超出原圖案環帶，已按連續曲線保留；請複核照片比例、盤心及端點是否沿同一條可見曲線。",
+    "en": "Some traced points fall outside the original pattern band in the candidate model and have been kept on the continuous curve. Check the photo scale, disc center, and whether the endpoints follow the same visible curve.",
+    "ja": "候補モデルでは一部の指定点が元のパターン環帯を超えていますが、連続曲線上の点として保持しています。写真の縮尺、ディスク中心、端点が同じ可視曲線上にあるかを確認してください。",
+    "tr": "Aday modelde bazı izleme noktaları özgün desen halkasının dışında kalıyor; bu noktalar sürekli eğri üzerinde korundu. Fotoğraf ölçeğini, disk merkezini ve uç noktaların aynı görünür eğriyi izleyip izlemediğini kontrol edin."
+  },
+  "曲线覆盖的内外范围偏窄，参数可能互相补偿；请补充更靠内、外的点。": {
+    "zh-CN": "曲线覆盖的内外范围偏窄，参数可能互相补偿；请补充更靠内、外的点。",
+    "zh-TW": "曲線涵蓋的內外範圍偏窄，參數可能互相補償；請補充更靠內、外的點。",
+    "en": "The curve covers a narrow radial range, so parameters may compensate for each other. Add points farther inward and outward.",
+    "ja": "曲線が覆う半径方向の範囲が狭く、パラメーターが互いに補償している可能性があります。さらに内側と外側に点を追加してください。",
+    "tr": "Eğri dar bir yarıçap aralığını kapsıyor; parametreler birbirini telafi ediyor olabilir. Daha içte ve dışta noktalar ekleyin."
+  },
+  "曲线偏差较大，请检查照片矫正、点位和是否始终沿同一条线标点。": {
+    "zh-CN": "曲线偏差较大，请检查照片矫正、点位和是否始终沿同一条线标点。",
+    "zh-TW": "曲線偏差較大，請檢查照片校正、點位，以及是否始終沿同一條線標點。",
+    "en": "The curve deviation is large. Check the photo rectification, point positions, and whether all points follow the same line.",
+    "ja": "曲線の偏差が大きくなっています。写真の補正、点の位置、すべての点が同じ線に沿っているかを確認してください。",
+    "tr": "Eğri sapması yüksek. Fotoğraf düzeltmesini, nokta konumlarını ve tüm noktaların aynı çizgiyi izleyip izlemediğini kontrol edin."
+  },
+  "最佳结果靠近搜索边界，建议扩大搜索范围并补充曲线点复核。": {
+    "zh-CN": "最佳结果靠近搜索边界，建议扩大搜索范围并补充曲线点复核。",
+    "zh-TW": "最佳結果接近搜尋邊界，建議擴大搜尋範圍並補充曲線點以供複核。",
+    "en": "The best result is near the search boundary. Widen the search range and add curve points to verify it.",
+    "ja": "最良の結果が探索範囲の境界付近にあります。探索範囲を広げ、曲線上に点を追加して再確認してください。",
+    "tr": "En iyi sonuç arama sınırına yakın. Arama aralığını genişletin ve doğrulamak için eğri noktaları ekleyin."
+  },
+  "当前曲线对两个半径的约束较相似，暂不能仅凭低残差判断参数唯一；请扩大径向覆盖并检查点位精度。": {
+    "zh-CN": "当前曲线对两个半径的约束较相似，暂不能仅凭低残差判断参数唯一；请扩大径向覆盖并检查点位精度。",
+    "zh-TW": "目前曲線對兩個半徑的約束較相似，尚不能僅憑低殘差判斷參數唯一；請擴大徑向涵蓋範圍並檢查點位精度。",
+    "en": "The current curve constrains the two radii similarly. A low residual alone does not establish a unique solution. Cover a wider radial range and check point accuracy.",
+    "ja": "現在の曲線では、両半径に対する制約が似ています。残差が小さいだけでは解の一意性を判断できません。半径方向の範囲を広げ、点の精度を確認してください。",
+    "tr": "Mevcut eğri iki yarıçapı benzer biçimde kısıtlıyor. Düşük artık hata tek başına çözümün benzersiz olduğunu göstermez. Daha geniş bir yarıçap aralığını kapsayın ve nokta doğruluğunu kontrol edin."
+  },
+  "存在形状接近的参数候选，请对照整条曲线后再应用。": {
+    "zh-CN": "存在形状接近的参数候选，请对照整条曲线后再应用。",
+    "zh-TW": "存在形狀相近的參數候選，請對照整條曲線後再套用。",
+    "en": "Several parameter candidates produce similar shapes. Compare the entire curve before applying one.",
+    "ja": "形状が近いパラメーター候補があります。曲線全体と照合してから適用してください。",
+    "tr": "Benzer şekiller üreten parametre adayları var. Birini uygulamadan önce eğrinin tamamıyla karşılaştırın."
+  },
+  "宽范围只进行了有限多起点搜索，候选列表不代表穷尽所有可能参数。": {
+    "zh-CN": "宽范围只进行了有限多起点搜索，候选列表不代表穷尽所有可能参数。",
+    "zh-TW": "寬範圍僅進行了有限的多起點搜尋，候選清單並未涵蓋所有可能參數。",
+    "en": "The wide range was searched from a limited number of starting points. The candidate list does not exhaust all possible parameters.",
+    "ja": "広い範囲の探索は有限個の開始点から行っています。候補一覧は、考えられるすべてのパラメーターを網羅するものではありません。",
+    "tr": "Geniş aralık sınırlı sayıda başlangıç noktasından arandı. Aday listesi olası tüm parametreleri kapsamaz."
+  },
+  "角度展开以相邻点之间没有遗漏整圈为前提；请对照完整曲线，在弯曲或绕行处补点后确认。": {
+    "zh-CN": "角度展开以相邻点之间没有遗漏整圈为前提；请对照完整曲线，在弯曲或绕行处补点后确认。",
+    "zh-TW": "角度展開以相鄰點之間沒有遺漏整圈為前提；請對照完整曲線，在彎曲或繞行處補點後確認。",
+    "en": "Angle unwrapping assumes no full turns are missed between adjacent points. Check the full curve and add points at bends or loops before confirming.",
+    "ja": "角度のアンラップは、隣接点の間で一周分を見落としていないことを前提とします。曲線全体と照合し、曲がりや周回部分に点を追加してから確認してください。",
+    "tr": "Açı açılımı, komşu noktalar arasında tam bir turun atlanmadığını varsayar. Onaylamadan önce eğrinin tamamını kontrol edin ve kıvrımlara veya dönüşlere noktalar ekleyin."
+  },
+  "曲线出现明显向内回退，请按内到外的顺序沿同一条线标点。": {
+    "zh-CN": "曲线出现明显向内回退，请按内到外的顺序沿同一条线标点。",
+    "zh-TW": "曲線出現明顯向內回退，請由內向外依序沿同一條線標點。",
+    "en": "The curve moves noticeably inward. Mark points along the same line in order from inside to outside.",
+    "ja": "曲線が明らかに内側へ戻っています。同じ線に沿って内側から外側の順に点を指定してください。",
+    "tr": "Eğri belirgin biçimde içe dönüyor. Aynı çizgi boyunca içten dışa doğru sırayla noktalar işaretleyin."
+  },
+  "相邻曲线点转角接近半圈，无法判断是否漏掉整圈；请在这两点之间沿实际曲线补点。": {
+    "zh-CN": "相邻曲线点转角接近半圈，无法判断是否漏掉整圈；请在这两点之间沿实际曲线补点。",
+    "zh-TW": "相鄰曲線點的轉角接近半圈，無法判斷是否遺漏整圈；請在這兩點之間沿實際曲線補點。",
+    "en": "The angle between adjacent curve points is close to half a turn, so missed full turns cannot be determined. Add points along the actual curve between these two points.",
+    "ja": "隣接する曲線上の点の角度差が半周に近く、一周分の見落としを判断できません。この 2 点の間に実際の曲線に沿って点を追加してください。",
+    "tr": "Komşu eğri noktaları arasındaki açı yarım tura yakın olduğundan tam bir turun atlanıp atlanmadığı belirlenemiyor. Bu iki nokta arasına gerçek eğri boyunca noktalar ekleyin."
+  },
+  "有相邻曲线点的转角接近半圈，绕圈判断可能不可靠；请补点后复核。": {
+    "zh-CN": "有相邻曲线点的转角接近半圈，绕圈判断可能不可靠；请补点后复核。",
+    "zh-TW": "有相鄰曲線點的轉角接近半圈，繞圈判斷可能不可靠；請補點後複核。",
+    "en": "Some adjacent curve points are nearly half a turn apart, so turn counting may be unreliable. Add points and check again.",
+    "ja": "隣接する曲線上の点に半周近い角度差があり、周回数の判定が不確かです。点を追加して再確認してください。",
+    "tr": "Bazı komşu eğri noktaları arasındaki açı yarım tura yakın; tur sayımı güvenilir olmayabilir. Noktalar ekleyip yeniden kontrol edin."
+  },
+  "曲线点较多，拟合使用均匀抽取的点；完整顺序仍用于角度展开。": {
+    "zh-CN": "曲线点较多，拟合使用均匀抽取的点；完整顺序仍用于角度展开。",
+    "zh-TW": "曲線點較多，擬合使用均勻抽取的點；完整順序仍用於角度展開。",
+    "en": "There are many curve points. Fitting uses an evenly sampled subset; angle unwrapping still uses the full sequence.",
+    "ja": "曲線上の点が多いため、フィッティングには均等に抽出した点を使用します。角度のアンラップには引き続き全点の順序を使用します。",
+    "tr": "Çok sayıda eğri noktası var. Uydurma işleminde eşit aralıklarla örneklenen bir alt küme kullanılır; açı açılımında tam sıra kullanılmaya devam eder."
+  },
+  "绘图范围必须位于生成的光盘范围内。": {
+    "zh-CN": "绘图范围必须位于生成的光盘范围内。",
+    "zh-TW": "繪圖範圍必須位於生成的光碟範圍內。",
+    "en": "The drawing range must lie inside the generated disc.",
+    "ja": "描画範囲は生成するディスクの範囲内にしてください。",
+    "tr": "Çizim aralığı oluşturulan diskin sınırları içinde olmalıdır."
+  },
+  "绘图范围必须位于光盘范围内。": {
+    "zh-CN": "绘图范围必须位于光盘范围内。",
+    "zh-TW": "繪圖範圍必須位於光碟範圍內。",
+    "en": "The drawing range must lie inside the disc.",
+    "ja": "描画範囲はディスクの範囲内にしてください。",
+    "tr": "Çizim aralığı diskin sınırları içinde olmalıdır."
+  },
+  "蓝光预览尺寸必须在 64–8192 px 之间。": {
+    "zh-CN": "蓝光预览尺寸必须在 64–8192 px 之间。",
+    "zh-TW": "藍光預覽尺寸必須介於 64–8192 px。",
+    "en": "Blu-ray preview size must be between 64 and 8192 px.",
+    "ja": "Blu-ray のプレビューサイズは 64～8192 px にしてください。",
+    "tr": "Blu-ray önizleme boyutu 64 ile 8192 px arasında olmalıdır."
+  },
+  "预览绘图范围必须位于光盘范围内。": {
+    "zh-CN": "预览绘图范围必须位于光盘范围内。",
+    "zh-TW": "預覽繪圖範圍必須位於光碟範圍內。",
+    "en": "The preview drawing range must lie inside the disc.",
+    "ja": "プレビューの描画範囲はディスクの範囲内にしてください。",
+    "tr": "Önizleme çizim aralığı diskin sınırları içinde olmalıdır."
+  },
+  "光盘预览图必须为正方形。": {
+    "zh-CN": "光盘预览图必须为正方形。",
+    "zh-TW": "光碟預覽圖必須為正方形。",
+    "en": "Disc previews must be square.",
+    "ja": "ディスクのプレビュー画像は正方形にしてください。",
+    "tr": "Disk önizlemeleri kare olmalıdır."
+  },
+  "DiscPreset.UserDescription": {
+    "zh-CN": "用户预设：内半径 {0:0.###} mm、外半径 {1:0.###} mm、{2:N0} 扇区。",
+    "zh-TW": "使用者預設：內半徑 {0:0.###} mm、外半徑 {1:0.###} mm、{2:N0} 磁區。",
+    "en": "User preset: inner radius {0:0.###} mm, outer radius {1:0.###} mm, {2:N0} sectors.",
+    "ja": "ユーザープリセット：内半径 {0:0.###} mm、外半径 {1:0.###} mm、{2:N0} セクター。",
+    "tr": "Kullanıcı ön ayarı: iç yarıçap {0:0.###} mm, dış yarıçap {1:0.###} mm, {2:N0} sektör."
+  }
+}

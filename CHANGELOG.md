@@ -1,9 +1,36 @@
 # Changelog
 
+[简体中文](CHANGELOG.md) | [繁體中文](CHANGELOG.zh-TW.md) | [English](CHANGELOG.en.md) | [日本語](CHANGELOG.ja.md) | [Türkçe](CHANGELOG.tr.md)
+
 ## Unreleased
 
 ### 中文
 
+- 新增独立 Windows CI 布局检查，覆盖五语 325 个工作区、预览、标定及对话框场景，检测文字溢出与缺失字形并保存截图和报告；失败时也上传制品。夹具使用临时存储与不可写盘的假刻录机，检查语言切换后的标题及工程数据不变。已在 Linux 编译，Windows 执行等待推送后的 CI。
+
+- 补齐 DVD 流式生成的七条错误路径及空白禁用预设的上下文翻译，扩展源码守卫与五语回归；完整构建与 2,042 条资源、2,076 处引用检查通过。补齐土耳其文 README，复核其余 README，并完成 DVD 引擎指南五语全文，保留公式、命令与历史验证限制。
+
+- 完成工作流、工作区与 XAML 共 595 条既有界面资源的五语语义复核，修正刻录机采用速度、反射亮度、覆盖率边界、标定记录与操作指令；较长标签、标题及标定按钮可换行增高。完成架构指南五语全文，文档检查允许指定图示标签翻译并保留节点、连线与数字。
+
+- 四个 PowerShell 打包与安装脚本支持五语诊断、原生语言参数及子进程语言传递，保留版本元数据、日志正文、路径和校验值；新增不构建、签名、安装或提权的预检回归。资源加载失败及 CLI 错误包装也可独立翻译，避免主资源损坏时递归加载。完成公共界面资源的五语语义复核，修正点击操作、边界、保存后立即应用、路径用途及缓存迁移限定，并统一语言选择器的自称。完成发布指南五语全文。
+
+- 六个 Python 工具接入共享五语资源，翻译帮助、解析错误、进度、分析说明及图表文字，保留数值、字段和生成的 C# 表。新增原始脚本基准与五语合成图表回归，验证字体和文字边界。完成蓝光实现、字节密度分析及 CD 兼容指南的五语全文；文档检查区分源码文档与生成报告，并显式登记可重建的结果链接。
+
+- 补齐首次创建的默认用户预设文案，按盘型与 ID 识别未编辑的默认名称及说明，仅在显示时翻译，保留用户修改与保存数据。完成可编辑盘片预设指南的五语全文及 JSON 示例文案，校验字段、类型、贡献者与数值精度一致。
+
+- 补齐刻录层 CD/DVD/蓝光的错误、进度、操作、清理与设备计时诊断的五语翻译。收尾阶段改用显式状态，不再依赖中文描述。新增不依赖 WPF 的假设备回归，在 Linux 验证五语字节、MMC 命令、超时、取消与清理一致性，并保留原始设备详情及数值文化。
+
+- 补齐 Windows 扩展帮助、独立 DVD 帮助、DVD 引擎日志及自检失败说明，并翻译剩余桌面异常文案；保留命令、参数、公式与默认值。验证五语 EFMPlus、编码 JSON 与 ISO 字节一致。DVD 灰阶探针接入共享语言选择，翻译说明性 JSON，新增 Windows 图集与预览一致性回归。完成物理模型复核报告的五语全文，保留历史结论及数值。
+
+- 独立抖动工具的界面、对话框、状态及 CLI 支持五语，沿用共享语言选项与环境变量，保留模式值、调色板和默认文件名。补齐 C# 蓝光探针的进度、错误及说明性 JSON 翻译，并以独立 Python 17PP 向量验证五语 CLI。新增 Windows 界面与 PNG 字节一致性回归，完成验证说明的五语全文。
+
+- 补齐模块、命令、选项元数据以及 Core、CD/WAV、ISO/UDF 校验与照片校正提示的五语翻译；缓存说明可随语言切换，保留协议参数与用户数据。新增工程保存及内外圈 ISO9660/Joliet/UDF 的跨语言字节一致性回归。完成独立抖动工具、DVD 灰阶探针及国际化维护指南的五语文档。
+
+- 补齐蓝光与图片加载模块的五语异常、进度、结果及说明性 JSON 文案；保留技术标识与数值。新增跨平台编码与多语言字节一致性检查。完成辅助标定、固定标定参考图、蓝光字节探针与独立 17PP 参考说明的五语文档，并验证段落、公式、表格数值与命令一致性。
+
+- 国际化运行时移至共享项目，跨平台 CLI 与 Windows/DVD 命令行入口支持全局语言选项与环境变量；补充五种语言的 CLI 帮助、路由错误及 CD/DVD 模块提示，修正土耳其语抖动术语。新增隐私、安全、授权说明与贡献指南的英文、繁体中文、日文和土耳其文全文翻译，并建立文档逐项校验。
+
+- 补齐五种界面语言的标定拟合指导、预览范围校验及自动生成的用户预设说明；预设资源键现在可解析，手工编辑的文字保持原文。新增跨平台翻译完整性与源码引用检查并接入 CI。
 - 新增威宝 BD-R (64293) 内置预设，参数与 64099 相同，贡献者 bczhc。
 - 新增威宝 DVD+R AZO (43498) 内置预设，贡献者 Disappear9。
 - 新增铼德 DVD-R E时代系列内置预设，贡献者 bczhc。
@@ -14,6 +41,30 @@
 
 ### English
 
+- Added an isolated Windows CI layout check covering 325 five-language workspace, preview, calibration, and dialog scenarios, checking text bounds and missing glyphs and saving screenshots/reports even on failure. Fixtures use temporary stores and a recorder that cannot write, checking switched titles and unchanged project data. Compiled on Linux; Windows execution awaits CI after a push.
+
+- Localized seven DVD streaming error paths and blank disabled-preset contexts, expanding source guards and five-language regressions. The full build and checks for 2,042 entries and 2,076 references pass. Added the Turkish README, reconciled the other README versions, and completed the five-language DVD engine guide with formulas, commands, and historical validation limits preserved.
+
+- Reviewed all 595 existing Workflow, Workspace, and XAML UI entries in five languages, correcting recorder-adopted speed settings, reflected brightness, coverage boundaries, calibration records, and action instructions. Long labels, titles, and calibration buttons can wrap and grow. Completed the five-language architecture guide; documentation checks allow specified diagram labels to translate while preserving nodes, edges, and numbers.
+
+- Added five-language diagnostics, native language selection, and child-language forwarding to four PowerShell packaging/install scripts while preserving metadata, release-note text, paths, and checksums; preflight regressions build, sign, install, and elevate nothing. Catalog-loading failures and CLI error wrappers translate independently to avoid reloading a corrupt main catalog. Reviewed all common UI resources in five languages, restoring click actions, boundaries, immediate application after saving, path scope, and cache-migration qualifiers, with consistent language endonyms. Completed the five-language release guide.
+- Added shared five-language resources to all six Python tools for help, parser errors, progress, analysis explanations, and chart text while preserving numbers, fields, and generated C# tables. Added original-script baselines and synthetic figure regressions for fonts and text bounds. Completed five-language Blu-ray implementation, byte-density analysis, and CD compatibility guides; documentation checks distinguish source prose from generated reports and explicitly register reproducible result links.
+
+- Translated initial user-preset defaults at display time, matching unchanged names and descriptions by media family and ID while preserving user edits and saved data. Completed the editable-preset guide and its JSON example text in five languages, with matching fields, types, contributors, and exact numeric precision.
+
+- Completed five-language CD/DVD/Blu-ray burning errors, progress, operations, cleanup, and device-timing diagnostics. Finalization now uses explicit state instead of Chinese descriptions. Added fake-device regressions without WPF; Linux checks preserve bytes, MMC commands, timeouts, cancellation, and cleanup across five languages, along with original device details and numeric culture.
+
+- Completed Windows extended help, standalone DVD help, DVD engine logs and selftest failure descriptions, and the remaining desktop exception text while preserving commands, parameters, formulas, and defaults. Verified identical EFMPlus, encoding JSON, and ISO bytes across five languages. Added shared language selection and translated explanatory JSON to the DVD grayscale probe, with Windows atlas/preview consistency regressions. Completed five-language physical-model audit documentation, preserving its historical conclusions and numbers.
+
+- Added five-language UI, dialogs, status, and CLI text to the independent dithering tool, using shared language flags and environment preference while preserving mode values, palettes, and default filenames. Translated C# Blu-ray probe progress, errors, and explanatory JSON, and verified its five-language CLI against independent Python 17PP vectors. Added Windows UI/PNG byte-consistency regressions and complete five-language validation documentation.
+
+- Translated module, command, and option metadata plus Core, CD/WAV, ISO/UDF validation and photo rectification guidance in all five languages. Cached descriptions follow language switches while technical parameters and user data remain intact. Added cross-language byte-consistency checks for saved projects and inner/outer ISO9660/Joliet/UDF images. Completed five-language documentation for the independent dithering tool, DVD grayscale probe, and localization maintenance guide.
+
+- Translated Blu-ray and image-loading exceptions, progress, results, and explanatory JSON text in all five languages while preserving technical identifiers and values. Added cross-platform encoding and multilingual byte-consistency checks. Completed five-language calibration, fixed-pattern, Blu-ray probe, and independent 17PP reference documentation, with paragraph, formula, numeric-table, and command parity checks.
+
+- Moved localization into a shared project and added global language flags and an environment preference to the cross-platform CLI and Windows/DVD console entry points. Translated CLI help, routing errors, and CD/DVD module messages in all five supported languages and corrected Turkish dithering terminology. Added complete English, Traditional Chinese, Japanese, and Turkish translations of the privacy policy, security policy, license notice, and contribution guide, with documentation parity checks.
+
+- Completed calibration fit guidance, preview validation, and generated user-preset descriptions in all five UI languages. Preset resource keys now resolve while user edits remain intact. Added cross-platform catalog and source-reference checks to CI.
 - Added a built-in Verbatim BD-R (64293) preset with the same parameters as 64099, contributed by bczhc.
 - Added a built-in Verbatim DVD+R AZO (43498) preset, contributed by Disappear9.
 - Added a built-in Ritek DVD-R E-Series preset, contributed by bczhc.

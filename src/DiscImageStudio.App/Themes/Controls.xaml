@@ -1290,7 +1290,7 @@
                                                 </Grid>
                                                 <TextBlock Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center"
                                                            Text="{Binding StepTitle, RelativeSource={RelativeSource AncestorType={x:Type controls:StepCard}}}"
-                                                           Style="{StaticResource CardTitle}" />
+                                                           Style="{StaticResource CardTitle}" TextWrapping="Wrap" />
                                                 <Border Grid.Column="2" CornerRadius="{StaticResource RadiusChip}" Padding="6,2"
                                                         Background="{DynamicResource Surface3Brush}" VerticalAlignment="Center"
                                                         Margin="10,0,0,0">

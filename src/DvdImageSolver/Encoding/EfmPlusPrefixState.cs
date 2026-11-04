@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DvdImageSolver.Encoding;
 
 internal readonly record struct EfmStreamPrefix(
@@ -35,7 +36,7 @@ internal readonly record struct EfmStreamPrefix(
         int combined = TrailingZeros + metric.LeadingZeros;
         if (combined is < 2 or > 10)
         {
-            throw new InvalidOperationException("EFMPlus code word would violate the RLL(2,10) boundary.");
+            throw new InvalidOperationException(L.T("EFMPlus code word would violate the RLL(2,10) boundary."));
         }
 
         return Apply(metric) with
@@ -138,7 +139,7 @@ internal readonly record struct EfmPlusPrefixState(
         var stateFour = EfmPlusTables.LookupMain(value, 4);
         if (!stream1.CanAppend(stateOne.Word) || !stream2.CanAppend(stateFour.Word))
         {
-            throw new InvalidOperationException("Invalid State 1/4 EFMPlus branch.");
+            throw new InvalidOperationException(L.T("Invalid State 1/4 EFMPlus branch."));
         }
 
         return new EfmPlusPrefixState(

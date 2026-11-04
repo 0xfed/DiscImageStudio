@@ -1,6 +1,6 @@
 <div align="center">
 
-[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md) | **日本語**
+[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md) | [日本語](README.ja.md) | [Türkçe](README.tr.md)
 
 ![Banner](docs/images/DiscImageStudio_Banner_2.png)
 
@@ -63,14 +63,14 @@ Windows では `win-x64.exe` で終わるファイルをダウンロードして
 
 ### ディスクデータの生成
 
-- **CD 対応**：あらゆる CD に対応します。フォーマットヘッダー付きの WAV 音声トラックと対応する CUE をエクスポートでき、cdrecord、ImgBurn などの書き込みソフトと互換性があります。RAW 音声トラックのエクスポートも可能です。詳しくは [CD 書き込み互換性の説明](docs/CD_AUDIO_COMPATIBILITY.md)をご覧ください。
+- **CD 対応**：あらゆる CD に対応します。フォーマットヘッダー付きの WAV 音声トラックと対応する CUE をエクスポートでき、cdrecord、ImgBurn などの書き込みソフトと互換性があります。RAW 音声トラックのエクスポートも可能です。詳しくは [CD 書き込み互換性の説明](docs/CD_AUDIO_COMPATIBILITY.ja.md)をご覧ください。
 - **DVD 対応**：あらゆる DVD に対応します。ISO イメージをエクスポートできます。
-- **Blu-ray 対応**：あらゆる片面一層 BD-R 25 GB に対応し、描画のみのモードと UDF 2.01 ファイルをサポートします。詳しくは [ADDING_BLURAY.md](docs/ADDING_BLURAY.md) をご覧ください。
+- **Blu-ray 対応**：あらゆる片面一層 BD-R 25 GB に対応し、描画のみのモードと UDF 2.01 ファイルをサポートします。詳しくは [ADDING_BLURAY.md](docs/ADDING_BLURAY.ja.md) をご覧ください。
 - **ディスク同梱ファイル**：CD／DVD／Blu-ray では、保存するフォルダーと内周／外周の配置をデザインページで直接選択でき、エクスポートページでも調整できます。設定はプロジェクトとともに保存されます。
 - **ファイル領域プレビュー**：ハイブリッドディスクのデザイン投影と完成品の読み戻しでは、ファイル領域（ファイルシステムを含む）が黄色で示されます。
-- **メディア別の階調方式**：CD と DVD はいずれも白黒 2 階調を使用し、CD は `0D / AA`、DVD はスクランブル領域で `A5 / 92` を使用します。詳しくは [PHYSICAL_MODEL_AUDIT.md](docs/PHYSICAL_MODEL_AUDIT.md) をご覧ください。
-- **階調ディザリングツール**：独立したプログラムで、元画像を `0/255` の白黒 2 階調 PNG に変換することもできます。元画像を開く／ドラッグして読み込む操作、並べてのプレビュー、ロスレス PNG エクスポートに対応しています。詳しくは[使い方とビルド方法](tools/FourLevelDither/README.md)をご覧ください。
-- **ディスクプリセット**：CD／DVD／BD にわたる複数ブランドのディスクパラメーターを内蔵しています。ご自身でキャリブレーションしたデータをご提供いただくことも歓迎します。詳しくは[プリセットのメンテナンス](docs/DISC_PRESETS.md)をご覧ください。
+- **メディア別の階調方式**：CD と DVD はいずれも白黒 2 階調を使用し、CD は `0D / AA`、DVD はスクランブル領域で `A5 / 92` を使用します。詳しくは [PHYSICAL_MODEL_AUDIT.md](docs/PHYSICAL_MODEL_AUDIT.ja.md) をご覧ください。
+- **階調ディザリングツール**：独立したプログラムで、元画像を `0/255` の白黒 2 階調 PNG に変換することもできます。元画像を開く／ドラッグして読み込む操作、並べてのプレビュー、ロスレス PNG エクスポートに対応しています。詳しくは[使い方とビルド方法](tools/FourLevelDither/README.ja.md)をご覧ください。
+- **ディスクプリセット**：CD／DVD／BD にわたる複数ブランドのディスクパラメーターを内蔵しています。ご自身でキャリブレーションしたデータをご提供いただくことも歓迎します。詳しくは[プリセットのメンテナンス](docs/DISC_PRESETS.ja.md)をご覧ください。
 
 ### 補助キャリブレーション
 
@@ -82,7 +82,7 @@ Disc Image Studio は、インテリジェントで高精度な補助キャリ�
 | `P20261004-133519.jpg` | `P20261004-135416.jpg` |
 
 
-手順とパラメーターについては[補助キャリブレーションの説明](docs/CALIBRATION.md)をご覧ください。
+手順とパラメーターについては[補助キャリブレーションの説明](docs/CALIBRATION.ja.md)をご覧ください。
 
 ### 書き込み
 
@@ -95,6 +95,12 @@ Disc Image Studio は、インテリジェントで高精度な補助キャリ�
 - デスクトップ版には Windows 10 2004（2004/20H1、19041）以降、または Windows 11 が必要です。
 - ビルド：.NET 10 SDK（`global.json` で 10.0.x に固定）。自分でビルドした非自己完結型の GUI には .NET 10 Windows デスクトップランタイムが必要です。Release EXE にはランタイムが同梱されているため、.NET を別途インストールする必要はありません。
 - 「即時書き込み」機能には、Windows が認識できる CD / DVD / BD 書き込みドライブと空のディスクが必要です。BD-R にはシーケンシャル書き込みに対応した空の片面一層ディスクが必要です。
+
+## UI 言語
+
+Windows デスクトップ版は简体中文、繁體中文、English、日本語、Türkçe に対応します。右上の「設定 → 全般 → 言語」で言語またはシステムに従う設定を選び、保存すると再起動せずに即座に適用されます。キャンセルでは設定を変更しません。言語とテーマは既定でシステムに従います。
+
+言語を切り替えても、プロジェクト名、レイヤー名、ユーザープリセット、パス、幾何パラメーター、数値の解析は変わりません。システム言語の対応、コマンドラインの言語、保守方法は [LOCALIZATION.md](docs/LOCALIZATION.ja.md) を参照してください。
 
 ## ビルドと実行
 
@@ -110,11 +116,13 @@ dotnet run --project src/DvdImageSolver --configuration Release -- selftest
 dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release
 ```
 
-バージョン規則、CI による EXE 生成、Release ドラフトの確認、MSIX パッケージングと署名の手順については[リリースガイド](docs/RELEASING.md)をご覧ください。
+バージョン規則、CI による EXE 生成、Release ドラフトの確認、MSIX パッケージングと署名の手順については[リリースガイド](docs/RELEASING.ja.md)をご覧ください。
 
 ## コマンドライン
 
 glibc を使用する Linux では CPU に合わせて `linux-x64` または `linux-arm64` を選びます。Apple シリコン搭載 Mac では `osx-arm64`、Intel 搭載 Mac では `osx-x64` を選んでください。CLI で生成したイメージや音声トラックは、対応する書き込みソフトでディスクに書き込めます。
+
+CLI はグローバルな `--language zh-CN|zh-TW|en|ja|tr|system`（`--language=ja` も可）に対応します。明示したオプションは環境変数 `DISC_IMAGE_STUDIO_LANGUAGE` より優先され、どちらもなければシステム UI 言語に従います。コマンド、オプション名、パス、数値の解析は言語で変わりません。
 
 .NET 10 SDK を使ってソースから起動するには、次のコマンドを実行します。
 
@@ -145,39 +153,40 @@ CLI は PNG、JPEG、BMP、GIF を読み込み、アニメーション画像に�
 
 ## ソース構成
 
-```text
-src/DiscImageStudio.Cli/     Linux / macOS 用のオフライン CLI
-src/DiscImageStudio.ImageIO/  WIC とクロスプラットフォームの画像コーデック
-src/DiscImageStudio.Core/    メディア非依存のモジュール契約、プロジェクト/プリセットモデル、ジョブとコマンドカタログ
-src/DiscImageStudio.Imaging/ CD/DVD/BD 共通の画像前処理とディザリング補助
-src/DiscImageStudio.Burning/ Windows IMAPI2 のデバイス列挙、ストリームバッファー、安全な書き込みレイヤー
-src/DiscImageStudio.Cd/      CD-DA 生成コアと CD モジュール
-src/DiscImageStudio.Dvd/     DVD エンジンのアダプターモジュール
-src/DiscImageStudio.BluRay/  BD-R ジオメトリ、17PP/ECC、3T/6T マッピング、ストリーミング生成と ISO
-src/DiscImageStudio.Iso/     UDF 2.01 / ISO9660 ライター
-src/DiscImageStudio.App/     WPF GUI、統合コマンドライン、ストア用リソース
-src/DvdImageSolver/          分離を保った DVD エンコード/ソルバーエンジン
-tests/                       サードパーティのテストフレームワークを使わないアーキテクチャ回帰テスト
-packaging/                   MSIX マニフェストとパッケージングスクリプト
-tools/                       独立した補助ツールとアセット生成スクリプト
-docs/                        アーキテクチャ、エンジン、プリセット、リリースなどのドキュメント
-```
+| パス | 役割 |
+| --- | --- |
+| `src/DiscImageStudio.Cli/` | Linux / macOS 用のオフライン CLI |
+| `src/DiscImageStudio.ImageIO/` | WIC とクロスプラットフォームの画像コーデック |
+| `src/DiscImageStudio.Localization/` | UI、CLI、モジュール共通の 5 言語リソース、言語選択、書式設定 |
+| `src/DiscImageStudio.Core/` | メディア非依存のモジュール契約、プロジェクト/プリセットモデル、ジョブとコマンドカタログ |
+| `src/DiscImageStudio.Imaging/` | CD/DVD/BD 共通の画像前処理とディザリング補助 |
+| `src/DiscImageStudio.Burning/` | Windows IMAPI2 のデバイス列挙、ストリームバッファー、安全な書き込みレイヤー |
+| `src/DiscImageStudio.Cd/` | CD-DA 生成コアと CD モジュール |
+| `src/DiscImageStudio.Dvd/` | DVD エンジンのアダプターモジュール |
+| `src/DiscImageStudio.BluRay/` | BD-R ジオメトリ、17PP/ECC、3T/6T マッピング、ストリーミング生成と ISO |
+| `src/DiscImageStudio.Iso/` | UDF 2.01 / ISO9660 ライター |
+| `src/DiscImageStudio.App/` | WPF GUI、統合コマンドライン、ストア用リソース |
+| `src/DvdImageSolver/` | 分離を保った DVD エンコード/ソルバーエンジン |
+| `tests/` | サードパーティのテストフレームワークを使わないアーキテクチャ回帰テスト |
+| `packaging/` | MSIX マニフェストとパッケージングスクリプト |
+| `tools/` | 独立した補助ツールとアセット生成スクリプト |
+| `docs/` | アーキテクチャ、エンジン、プリセット、リリースなどのドキュメント |
 
 ## ドキュメント
 
 | ドキュメント | 内容 |
 | --- | --- |
-| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | モジュールの抽象化、レイヤー間の境界と拡張ルール |
-| [LOCALIZATION.md](docs/LOCALIZATION.md) | UI 言語の設定、システム言語のフォールバックと翻訳リソースのメンテナンス |
-| [DVD_ENGINE.md](docs/DVD_ENGINE.md) | DVD NRZI 画像制約ソルバーの規約、エンコードチェーンとセルフテストの範囲 |
-| [CD_AUDIO_COMPATIBILITY.md](docs/CD_AUDIO_COMPATIBILITY.md) | CD 音声トラックの形式、バイトオーダーとゴースト（多重像）のトラブルシューティング |
-| [ADDING_BLURAY.md](docs/ADDING_BLURAY.md) | Blu-ray モジュールの物理モデル、生成/書き込みの流れと拡張ポイント |
-| [DISC_PRESETS.md](docs/DISC_PRESETS.md) | 編集可能なディスクプリセットの階層型 JSON 形式とマージ規則 |
-| [CALIBRATION.md](docs/CALIBRATION.md) | 写真補正（ディスク実物の最外縁と中心穴の縁を枠で指定）、曲線キャリブレーションと DVD の 3 次トラックピッチフィッティング |
-| [PHYSICAL_MODEL_AUDIT.md](docs/PHYSICAL_MODEL_AUDIT.md) | CD / DVD 生成物理モデルの再検証 |
-| [VALIDATION.md](docs/VALIDATION.md) | 各回のビルド、回帰テスト、実ディスクテストのローカル検証記録 |
-| [RELEASING.md](docs/RELEASING.md) | GitHub Release、MSIX パッケージング、署名テストとストア申請の手順 |
-| [CHANGELOG.md](CHANGELOG.md) | バージョンごとの変更履歴 |
+| [ARCHITECTURE.md](docs/ARCHITECTURE.ja.md) | モジュールの抽象化、レイヤー間の境界と拡張ルール |
+| [LOCALIZATION.md](docs/LOCALIZATION.ja.md) | UI 言語の設定、システム言語のフォールバックと翻訳リソースのメンテナンス |
+| [DVD_ENGINE.md](docs/DVD_ENGINE.ja.md) | DVD NRZI 画像制約ソルバーの規約、エンコードチェーンとセルフテストの範囲 |
+| [CD_AUDIO_COMPATIBILITY.md](docs/CD_AUDIO_COMPATIBILITY.ja.md) | CD 音声トラックの形式、バイトオーダーとゴースト（多重像）のトラブルシューティング |
+| [ADDING_BLURAY.md](docs/ADDING_BLURAY.ja.md) | Blu-ray モジュールの物理モデル、生成/書き込みの流れと拡張ポイント |
+| [DISC_PRESETS.md](docs/DISC_PRESETS.ja.md) | 編集可能なディスクプリセットの階層型 JSON 形式とマージ規則 |
+| [CALIBRATION.md](docs/CALIBRATION.ja.md) | 写真補正（ディスク実物の最外縁と中心穴の縁を枠で指定）、曲線キャリブレーションと DVD の 3 次トラックピッチフィッティング |
+| [PHYSICAL_MODEL_AUDIT.md](docs/PHYSICAL_MODEL_AUDIT.ja.md) | CD / DVD 生成物理モデルの再検証 |
+| [VALIDATION.md](docs/VALIDATION.ja.md) | 各回のビルド、回帰テスト、実ディスクテストのローカル検証記録 |
+| [RELEASING.md](docs/RELEASING.ja.md) | GitHub Release、MSIX パッケージング、署名テストとストア申請の手順 |
+| [CHANGELOG.md](CHANGELOG.ja.md) | バージョンごとの変更履歴 |
 
 ## 参考規格
 
@@ -202,16 +211,16 @@ CD の共通エンコード部分については、[ECMA-130、第 2 版（CD-RO
 
 ## プライバシーとセキュリティ
 
-- Disc Image Studio はネットワークに接続せず、ファイルをアップロードせず、テレメトリも収集しません。詳しくは[プライバシーポリシー](PRIVACY.md)をご覧ください。
-- セキュリティ上の問題を発見した場合は、公開 Issue で開示せず、[セキュリティポリシー](SECURITY.md)に従って GitHub のプライベート報告機能をご利用ください。
+- Disc Image Studio はネットワークに接続せず、ファイルをアップロードせず、テレメトリも収集しません。詳しくは[プライバシーポリシー](PRIVACY.ja.md)をご覧ください。
+- セキュリティ上の問題を発見した場合は、公開 Issue で開示せず、[セキュリティポリシー](SECURITY.ja.md)に従って GitHub のプライベート報告機能をご利用ください。
 
 ## コントリビューション
 
-問題の報告やコードの投稿を歓迎します。開発環境の構築、モジュール境界のルール、テスト要件、Pull Request の流れについては[コントリビューションガイド](CONTRIBUTING.md)をご覧ください。
+問題の報告やコードの投稿を歓迎します。開発環境の構築、モジュール境界のルール、テスト要件、Pull Request の流れについては[コントリビューションガイド](CONTRIBUTING.ja.md)をご覧ください。
 
 ## ライセンス
 
-本プロジェクトは [GNU GPL v3.0 or later](LICENSE)（`GPL-3.0-or-later`）の下で公開されています。CD インターリーブの実装には CDImage から移植・改変したコードが含まれており、全体として互換性のある GPL ライセンスで配布されます。バイナリや改変版を配布する際は、対応するソースコードの提供などの要件を遵守する必要があります。サードパーティのフォントとコンポーネントはそれぞれのライセンスに従います。詳しくは[ライセンスに関する説明](LICENSE-NOTICE.md)および[サードパーティに関する表示](THIRD-PARTY-NOTICES.txt)をご覧ください。アプリの「バージョン情報」ページでも全文をオフラインで確認できます。
+本プロジェクトは [GNU GPL v3.0 or later](LICENSE)（`GPL-3.0-or-later`）の下で公開されています。CD インターリーブの実装には CDImage から移植・改変したコードが含まれており、全体として互換性のある GPL ライセンスで配布されます。バイナリや改変版を配布する際は、対応するソースコードの提供などの要件を遵守する必要があります。サードパーティのフォントとコンポーネントはそれぞれのライセンスに従います。詳しくは[ライセンスに関する説明](LICENSE-NOTICE.ja.md)および[サードパーティに関する表示](THIRD-PARTY-NOTICES.txt)をご覧ください。アプリの「バージョン情報」ページでも全文をオフラインで確認できます。
 
 ## 謝辞
 

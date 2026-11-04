@@ -6,6 +6,9 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../DiscImageStudio.Localization/DiscImageStudio.Localization.csproj" />
+  </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-windows'">
     <FrameworkReference Include="Microsoft.WindowsDesktop.App.WPF" />
     <Compile Remove="PortableRasterCodec.cs" />

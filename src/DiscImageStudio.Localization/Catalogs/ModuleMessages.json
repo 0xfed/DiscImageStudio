@@ -1,0 +1,149 @@
+{
+  "CD module does not support command '{0}'.": {
+    "en": "CD module does not support command '{0}'.",
+    "zh-CN": "CD 模块不支持命令“{0}”。",
+    "zh-TW": "CD 模組不支援命令「{0}」。",
+    "ja": "CD モジュールはコマンド「{0}」をサポートしていません。",
+    "tr": "CD modülü '{0}' komutunu desteklemiyor."
+  },
+  "CD data progress {0:P1}": {
+    "en": "CD data progress {0:P1}",
+    "zh-CN": "CD 数据生成进度 {0:P1}",
+    "zh-TW": "CD 資料產生進度 {0:P1}",
+    "ja": "CD データ生成の進捗 {0:P1}",
+    "tr": "CD verisi oluşturma ilerlemesi {0:P1}"
+  },
+  "CD progress {0:P1}": {
+    "en": "CD progress {0:P1}",
+    "zh-CN": "CD 生成进度 {0:P1}",
+    "zh-TW": "CD 產生進度 {0:P1}",
+    "ja": "CD 生成の進捗 {0:P1}",
+    "tr": "CD oluşturma ilerlemesi {0:P1}"
+  },
+  "CD data image complete: {0} files, {1} sectors, files={2}, output={3}": {
+    "en": "CD data image complete: {0} files, {1} sectors, files={2}, output={3}",
+    "zh-CN": "CD 数据镜像已完成：{0} 个文件，{1} 个扇区，文件位置={2}，输出={3}",
+    "zh-TW": "CD 資料映像檔已完成：{0} 個檔案，{1} 個磁區，檔案位置={2}，輸出={3}",
+    "ja": "CD データイメージが完成しました: {0} ファイル、{1} セクター、ファイル配置={2}、出力={3}",
+    "tr": "CD veri imajı tamamlandı: {0} dosya, {1} sektör, dosya konumu={2}, çıktı={3}"
+  },
+  "CD track complete: {0} sectors, {1} bytes, interleave={2}, elapsed={3:F1}s, output={4}": {
+    "en": "CD track complete: {0} sectors, {1} bytes, interleave={2}, elapsed={3:F1}s, output={4}",
+    "zh-CN": "CD 音轨已完成：{0} 个扇区，{1} 字节，交织={2}，耗时={3:F1} 秒，输出={4}",
+    "zh-TW": "CD 音軌已完成：{0} 個磁區，{1} 位元組，交錯={2}，耗時={3:F1} 秒，輸出={4}",
+    "ja": "CD トラックが完成しました: {0} セクター、{1} バイト、インターリーブ={2}、経過時間={3:F1} 秒、出力={4}",
+    "tr": "CD izi tamamlandı: {0} sektör, {1} bayt, serpiştirme={2}, geçen süre={3:F1} sn, çıktı={4}"
+  },
+  ", cue={0}": {
+    "en": ", cue={0}",
+    "zh-CN": "，CUE={0}",
+    "zh-TW": "，CUE={0}",
+    "ja": "、CUE={0}",
+    "tr": ", CUE={0}"
+  },
+  "Rendering CD geometry preview…": {
+    "en": "Rendering CD geometry preview…",
+    "zh-CN": "正在渲染 CD 几何预览…",
+    "zh-TW": "正在算繪 CD 幾何預覽…",
+    "ja": "CD ジオメトリのプレビューをレンダリングしています…",
+    "tr": "CD geometrisi önizlemesi işleniyor…"
+  },
+  "Rendering CD track preview…": {
+    "en": "Rendering CD track preview…",
+    "zh-CN": "正在渲染 CD 音轨预览…",
+    "zh-TW": "正在算繪 CD 音軌預覽…",
+    "ja": "CD トラックのプレビューをレンダリングしています…",
+    "tr": "CD izi önizlemesi işleniyor…"
+  },
+  "CD data geometry preview complete: output={0}": {
+    "en": "CD data geometry preview complete: output={0}",
+    "zh-CN": "CD 数据几何预览已完成：输出={0}",
+    "zh-TW": "CD 資料幾何預覽已完成：輸出={0}",
+    "ja": "CD データのジオメトリプレビューが完成しました: 出力={0}",
+    "tr": "CD verisi geometrisi önizlemesi tamamlandı: çıktı={0}"
+  },
+  "CD geometry preview complete: output={0}": {
+    "en": "CD geometry preview complete: output={0}",
+    "zh-CN": "CD 几何预览已完成：输出={0}",
+    "zh-TW": "CD 幾何預覽已完成：輸出={0}",
+    "ja": "CD ジオメトリのプレビューが完成しました: 出力={0}",
+    "tr": "CD geometrisi önizlemesi tamamlandı: çıktı={0}"
+  },
+  "CD data readback preview complete: output={0}": {
+    "en": "CD data readback preview complete: output={0}",
+    "zh-CN": "CD 数据读回预览已完成：输出={0}",
+    "zh-TW": "CD 資料讀回預覽已完成：輸出={0}",
+    "ja": "CD データの読み戻しプレビューが完成しました: 出力={0}",
+    "tr": "CD verisi geri okuma önizlemesi tamamlandı: çıktı={0}"
+  },
+  "CD track preview complete: output={0}": {
+    "en": "CD track preview complete: output={0}",
+    "zh-CN": "CD 音轨预览已完成：输出={0}",
+    "zh-TW": "CD 音軌預覽已完成：輸出={0}",
+    "ja": "CD トラックのプレビューが完成しました: 出力={0}",
+    "tr": "CD izi önizlemesi tamamlandı: çıktı={0}"
+  },
+  "--file-position must be inner or outer.": {
+    "en": "--file-position must be inner or outer.",
+    "zh-CN": "--file-position 必须为 inner 或 outer。",
+    "zh-TW": "--file-position 必須為 inner 或 outer。",
+    "ja": "--file-position は inner または outer にしてください。",
+    "tr": "--file-position, inner veya outer olmalıdır."
+  },
+  "Unexpected argument '{0}'.": {
+    "en": "Unexpected argument '{0}'.",
+    "zh-CN": "意外的参数“{0}”。",
+    "zh-TW": "非預期的引數「{0}」。",
+    "ja": "予期しない引数「{0}」です。",
+    "tr": "Beklenmeyen bağımsız değişken: '{0}'."
+  },
+  "Missing value for --{0}.": {
+    "en": "Missing value for --{0}.",
+    "zh-CN": "缺少 --{0} 的值。",
+    "zh-TW": "缺少 --{0} 的值。",
+    "ja": "--{0} の値がありません。",
+    "tr": "--{0} için değer eksik."
+  },
+  "Option --{0} was specified more than once.": {
+    "en": "Option --{0} was specified more than once.",
+    "zh-CN": "选项 --{0} 被多次指定。",
+    "zh-TW": "選項 --{0} 被指定多次。",
+    "ja": "オプション --{0} が複数回指定されています。",
+    "tr": "--{0} seçeneği birden fazla kez belirtildi."
+  },
+  "Missing required option --{0}.": {
+    "en": "Missing required option --{0}.",
+    "zh-CN": "缺少必需选项 --{0}。",
+    "zh-TW": "缺少必要選項 --{0}。",
+    "ja": "必須オプション --{0} がありません。",
+    "tr": "Gerekli --{0} seçeneği eksik."
+  },
+  "DVD module does not support command '{0}'.": {
+    "en": "DVD module does not support command '{0}'.",
+    "zh-CN": "DVD 模块不支持命令“{0}”。",
+    "zh-TW": "DVD 模組不支援命令「{0}」。",
+    "ja": "DVD モジュールはコマンド「{0}」をサポートしていません。",
+    "tr": "DVD modülü '{0}' komutunu desteklemiyor."
+  },
+  "Running DVD command {0}…": {
+    "en": "Running DVD command {0}…",
+    "zh-CN": "正在运行 DVD 命令 {0}…",
+    "zh-TW": "正在執行 DVD 命令 {0}…",
+    "ja": "DVD コマンド {0} を実行しています…",
+    "tr": "DVD komutu {0} çalıştırılıyor…"
+  },
+  "DVD command {0} completed.": {
+    "en": "DVD command {0} completed.",
+    "zh-CN": "DVD 命令 {0} 已完成。",
+    "zh-TW": "DVD 命令 {0} 已完成。",
+    "ja": "DVD コマンド {0} が完了しました。",
+    "tr": "DVD komutu {0} tamamlandı."
+  },
+  "DVD command {0} failed with exit code {1}.": {
+    "en": "DVD command {0} failed with exit code {1}.",
+    "zh-CN": "DVD 命令 {0} 失败，退出码为 {1}。",
+    "zh-TW": "DVD 命令 {0} 失敗，結束代碼為 {1}。",
+    "ja": "DVD コマンド {0} は終了コード {1} で失敗しました。",
+    "tr": "DVD komutu {0}, {1} çıkış koduyla başarısız oldu."
+  }
+}

@@ -1,5 +1,7 @@
 # 可编辑盘片预设
 
+[简体中文](DISC_PRESETS.md) | [繁體中文](DISC_PRESETS.zh-TW.md) | [English](DISC_PRESETS.en.md) | [日本語](DISC_PRESETS.ja.md) | [Türkçe](DISC_PRESETS.tr.md)
+
 盘片预设分为两层：
 
 - 内置层随应用发布和更新，保存官方预设。
@@ -113,11 +115,11 @@ BD 的 `totalSectors` 必须大于 0、按 32 对齐且不超过单层容量 12,
 
 扫描速度、起始角、图片外半径与 DVD channel bit 长度是方案固定的物理量，界面不提供对应表单，程序生成时一律采用 1200 mm/s（ECMA-130）、0°、57.5 mm 与 133.3 nm。
 
-它们在 JSON 中仍作为字段保留，原因是在旧版的配置文件中这几个参数是必要的，因此需要保证旧版本写出的用户文件可以直接使用。这两个值不参与生成计算。
+它们在 JSON 中仍作为字段保留，原因是在旧版的配置文件中这几个参数是必要的，因此需要保证旧版本写出的用户文件可以直接使用。这些保留值不参与生成计算。
 
 ## i18n 兼容字段
 
-格式已经预留可选的 `fallbackLanguage`、`displayNameResourceKey` 和 `descriptionResourceKey`。当前版本仍直接显示 `displayName` 与 `description`；以后接入多语言资源时会优先解析资源键，并以现有文本作为回退，因此不需要再次升级 JSON 结构。用户预设无需填写资源键。
+桌面应用优先解析已注册的 `displayNameResourceKey` 和 `descriptionResourceKey`；资源键不存在时使用现有文本作为回退。未修改的内置名称和说明也会翻译，用户自行填写的名称和说明保持原文。应用保存的几何说明使用 `DiscPreset.UserDescription` 格式键，根据预设半径和扇区数在显示时翻译；旧预设中与自动生成格式完全一致的说明也会识别。手工修改说明后保留原文，即使仍保留该格式键。用户预设无需填写资源键，`fallbackLanguage` 仍是可选的来源语言元数据，不改变界面语言选择。 初始用户预设在盘型与 ID 匹配且文字未改时，也会在显示时翻译默认文案。
 
 ## 编辑规则
 

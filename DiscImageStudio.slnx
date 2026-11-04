@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="src/DiscImageStudio.Localization/DiscImageStudio.Localization.csproj" />
   <Project Path="src/DiscImageStudio.Iso/DiscImageStudio.Iso.csproj" />
   <Project Path="src/DiscImageStudio.Core/DiscImageStudio.Core.csproj" />
   <Project Path="src/DiscImageStudio.Cli/DiscImageStudio.Cli.csproj" />
@@ -11,6 +12,8 @@
   <Project Path="src/DiscImageStudio.App/DiscImageStudio.App.csproj" />
   <Project Path="src/DvdImageSolver/DvdImageSolver.csproj" />
   <Project Path="tests/DiscImageStudio.ArchitectureTests/DiscImageStudio.ArchitectureTests.csproj" />
+  <Project Path="tests/DiscImageStudio.LocalizationTests/DiscImageStudio.LocalizationTests.csproj" />
+  <Project Path="tests/DiscImageStudio.Burning.LocalizationTests/DiscImageStudio.Burning.LocalizationTests.csproj" />
   <Project Path="tools/FourLevelDither/FourLevelDither.csproj" />
   <Project Path="tools/DvdGrayProbe/DvdGrayProbe.csproj" />
   <Project Path="tools/BluRayByteProbe/BluRayByteProbe.csproj" />

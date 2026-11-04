@@ -6,7 +6,7 @@
          TextBox + BrowseButton with drifting widths. Compact=true switches the row to the
          inspector density (36px). -->
     <StackPanel>
-        <TextBlock x:Name="LabelText" Style="{StaticResource FieldLabel}"
+        <TextBlock x:Name="LabelText" Style="{StaticResource FieldLabel}" TextWrapping="Wrap"
                    Visibility="Collapsed" />
         <Grid>
             <Grid.ColumnDefinitions>

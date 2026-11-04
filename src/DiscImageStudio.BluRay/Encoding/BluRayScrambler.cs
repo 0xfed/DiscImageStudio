@@ -1,3 +1,5 @@
+using DiscImageStudio.Localization;
+
 namespace DiscImageStudio.BluRay.Encoding;
 
 /// <summary>BD-R additive data-frame scrambler, ISO/IEC 30190:2021, 13.4.</summary>
@@ -16,7 +18,7 @@ public static class BluRayScrambler
     public static void FillMask(uint physicalSectorNumber, Span<byte> destination)
     {
         if (destination.Length > BluRayEdc.DataFrameBytes)
-            throw new ArgumentException("A scrambling sequence cannot exceed one 2052-byte data frame.", nameof(destination));
+            throw new ArgumentException(L.T("A scrambling sequence cannot exceed one 2052-byte data frame."), nameof(destination));
         ushort state = (ushort)(0x8000 | ((physicalSectorNumber >> 5) & 0x7fff));
         for (int index = 0; index < destination.Length; index++)
         {
@@ -33,7 +35,7 @@ public static class BluRayScrambler
     public static void Transform(Span<byte> data, uint physicalSectorNumber)
     {
         if (data.Length > BluRayEdc.DataFrameBytes)
-            throw new ArgumentException("Transform one data frame at a time.", nameof(data));
+            throw new ArgumentException(L.T("Transform one data frame at a time."), nameof(data));
         Span<byte> mask = stackalloc byte[BluRayEdc.DataFrameBytes];
         FillMask(physicalSectorNumber, mask[..data.Length]);
         for (int i = 0; i < data.Length; i++) data[i] ^= mask[i];

@@ -6,16 +6,15 @@ Usage:
 
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
-import pdfplumber
+from localization import initialize, run, t
 
 
 def extract_page_rows(page) -> list[tuple[int, list[tuple[int, int]]]]:
     tables = page.extract_tables()
     if len(tables) != 1 or len(tables[0]) != 3:
-        raise RuntimeError(f"unexpected table layout on page {page.page_number}")
+        raise RuntimeError(t("unexpected table layout on page {0}",page.page_number))
     row = tables[0][2]
     byte_values = [int(value) for value in row[0].splitlines()]
     states: list[list[tuple[int, int]]] = []
@@ -23,12 +22,13 @@ def extract_page_rows(page) -> list[tuple[int, list[tuple[int, int]]]]:
         words = [int(value, 2) for value in row[1 + state_index * 2].splitlines()]
         next_states = [int(value) for value in row[2 + state_index * 2].splitlines()]
         if len(words) != len(byte_values) or len(next_states) != len(byte_values):
-            raise RuntimeError(f"misaligned state {state_index + 1} on page {page.page_number}")
+            raise RuntimeError(t("misaligned state {0} on page {1}",state_index + 1,page.page_number))
         states.append(list(zip(words, next_states)))
     return [(value, [states[state][index] for state in range(4)]) for index, value in enumerate(byte_values)]
 
 
 def extract(pdf_path: Path):
+    import pdfplumber
     with pdfplumber.open(pdf_path) as pdf:
         main_rows = []
         for page_number in range(67, 73):
@@ -38,9 +38,9 @@ def extract(pdf_path: Path):
             substitution_rows.extend(extract_page_rows(pdf.pages[page_number - 1]))
 
     if [value for value, _ in main_rows] != list(range(256)):
-        raise RuntimeError("main table does not contain bytes 0..255 exactly once")
+        raise RuntimeError(t("main table does not contain bytes 0..255 exactly once"))
     if [value for value, _ in substitution_rows] != list(range(88)):
-        raise RuntimeError("substitution table does not contain bytes 0..87 exactly once")
+        raise RuntimeError(t("substitution table does not contain bytes 0..87 exactly once"))
     return main_rows, substitution_rows
 
 
@@ -70,13 +70,20 @@ def generate(pdf_path: Path) -> str:
 
 
 def main() -> None:
-    if len(sys.argv) != 3:
-        raise SystemExit("usage: generate_efm_tables.py ECMA-267.pdf output.cs")
-    pdf_path = Path(sys.argv[1])
-    output_path = Path(sys.argv[2])
+    arguments = initialize()
+    if arguments in (["--help"], ["-h"]):
+        print(t("Python.EfmHelp"))
+        print(t("Cli.LanguageHelp"))
+        return
+    if arguments[:1] == ["--"]:
+        arguments = arguments[1:]
+    if len(arguments) != 2:
+        raise SystemExit(t("Python.EfmUsage"))
+    pdf_path = Path(arguments[0])
+    output_path = Path(arguments[1])
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(generate(pdf_path), encoding="utf-8", newline="\n")
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(run(main))

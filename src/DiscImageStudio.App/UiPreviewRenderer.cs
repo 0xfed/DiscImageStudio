@@ -46,16 +46,16 @@ internal static class UiPreviewRenderer
         if (width < minimumWidth || height < 600 || width > 4096 || height > 2160)
             throw new ArgumentOutOfRangeException(
                 nameof(width),
-                "Snapshot dimensions must be at least 800×600 (640×600 for the settings dialog) and at most 4096×2160.");
+                L.T("Snapshot dimensions must be at least 800×600 (640×600 for the settings dialog) and at most 4096×2160."));
         AppTheme requestedTheme = theme?.ToLowerInvariant() switch
         {
             null or "" or "dark" => AppTheme.Dark,
             "light" => AppTheme.Light,
             "system" => AppTheme.System,
-            _ => throw new ArgumentException("Snapshot theme must be dark, light or system.", nameof(theme)),
+            _ => throw new ArgumentException(L.T("Snapshot theme must be dark, light or system."), nameof(theme)),
         };
         if (language is not (null or "zh-CN" or "zh-TW" or "en" or "ja" or "tr" or "system"))
-            throw new ArgumentException("Snapshot language must be zh-CN, zh-TW, en, ja, tr or system.", nameof(language));
+            throw new ArgumentException(L.T("Snapshot language must be zh-CN, zh-TW, en, ja, tr or system."), nameof(language));
         Application application = AppHost.CreateApplication(ShutdownMode.OnExplicitShutdown, requestedTheme,
             language ?? L.Chinese);
         if (settingsDialog)
@@ -122,7 +122,7 @@ internal static class UiPreviewRenderer
                     timer.Start();
                     Dispatcher.PushFrame(frame);
                 }
-                if (!loading.IsCompleted) throw new TimeoutException("Calibration snapshot did not finish within the timeout.");
+                if (!loading.IsCompleted) throw new TimeoutException(L.T("Calibration snapshot did not finish within the timeout."));
                 loading.GetAwaiter().GetResult();
             }
             finally { SynchronizationContext.SetSynchronizationContext(previous); }
@@ -174,7 +174,7 @@ internal static class UiPreviewRenderer
     {
         if (mode is not ("new" or "edit" or "bd"))
         {
-            throw new ArgumentException("Project dialog snapshot mode must be new, edit or bd.");
+            throw new ArgumentException(L.T("Project dialog snapshot mode must be new, edit or bd."));
         }
 
         DiscParametersState state = new();
@@ -228,7 +228,7 @@ internal static class UiPreviewRenderer
             null or "" or "general" => 0,
             "storage" => 1,
             "about" => 2,
-            _ => throw new ArgumentException("Settings snapshot view must be general, storage or about.", nameof(view)),
+            _ => throw new ArgumentException(L.T("Settings snapshot view must be general, storage or about."), nameof(view)),
         };
         AppSettingsStore store = new(Path.Combine(
             Path.GetTempPath(),
@@ -296,7 +296,7 @@ internal static class UiPreviewRenderer
         encoder.Save(output);
         window.Close();
         application.Shutdown();
-        Console.WriteLine($"UI snapshot complete: output={fullPath}");
+        Console.WriteLine(L.F($"UI snapshot complete: output={fullPath}"));
         return 0;
     }
 
@@ -321,7 +321,7 @@ internal static class UiPreviewRenderer
 
         if (!window.IsLivePreviewReady)
         {
-            throw new TimeoutException("Live preview did not finish within the snapshot timeout.");
+            throw new TimeoutException(L.T("Live preview did not finish within the snapshot timeout."));
         }
     }
 
@@ -349,7 +349,7 @@ internal static class UiPreviewRenderer
 
         if (!window.IsTonePreviewReady)
         {
-            throw new TimeoutException("Tone preview did not finish within the snapshot timeout.");
+            throw new TimeoutException(L.T("Tone preview did not finish within the snapshot timeout."));
         }
     }
 

@@ -22,6 +22,8 @@ internal static class RelocalizationTests
     internal static void Run()
     {
         TestPresetGeometryStability();
+        TestGeneratedPresetDescriptions();
+        TestCalibrationWarningTranslations();
         TestPreviewStateStability();
         TestSearchRangeSelection();
         TestToneStatusStability();
@@ -29,6 +31,81 @@ internal static class RelocalizationTests
         TestControlLoadedRefresh();
         Console.WriteLine("relocalization: passed (geometry preserved, completed and running read-backs untouched, " +
             "result and probe failures recomposed, search ranges listed, control text refreshed on load)");
+    }
+
+    private static void TestCalibrationWarningTranslations()
+    {
+        RunOnSta(() =>
+        {
+            string originalLanguage = L.CurrentLanguage;
+            SynchronizationContext? previous = SynchronizationContext.Current;
+            SynchronizationContext.SetSynchronizationContext(new DispatcherSynchronizationContext());
+            try
+            {
+                const string warning = "曲线出现明显向内回退，请按内到外的顺序沿同一条线标点。";
+                ShellViewModel shell = new(Dispatcher.CurrentDispatcher);
+                SetField(shell.Calibration, "_fit", new CalibrationFitResult(false, null, 0, 0, [], [warning]));
+                foreach (string language in new[] { L.Chinese, L.TraditionalChinese, L.English, L.Japanese, L.Turkish })
+                {
+                    L.SetLanguage(language);
+                    shell.Calibration.Relocalize();
+                    Require(shell.Calibration.FitAssessment == L.T(warning), "fit guidance follows " + language);
+                    Require(Field<CalibrationFitResult>(shell.Calibration, "_fit").Warnings[0] == warning,
+                        "presenting guidance preserves the original warning for input-failure classification");
+                }
+                shell.LivePreview.OnWindowClosed();
+            }
+            finally
+            {
+                L.Initialize(originalLanguage);
+                SynchronizationContext.SetSynchronizationContext(previous);
+            }
+        });
+    }
+
+    private static void TestGeneratedPresetDescriptions()
+    {
+        string originalLanguage = L.CurrentLanguage;
+        string directory = Path.Combine(Path.GetTempPath(), "disc-preset-language-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            string path = Path.Combine(directory, DiscPresetJsonStore.FileName);
+            DiscParametersState state = new(path);
+            L.Initialize(L.Chinese);
+            state.AddUserPreset(OpticalDiscFamily.CompactDisc, "My CD", 24.5, 56.8, 359849);
+            state.AddUserPreset(OpticalDiscFamily.Dvd, "My DVD", 24, 58, 2295104);
+            DiscPresetJsonDocument initial = DiscPresetJsonStore.CreateInitialUserDocument();
+            byte[] saved = File.ReadAllBytes(path);
+            foreach (string language in new[] { L.Chinese, L.TraditionalChinese, L.English, L.Japanese, L.Turkish })
+            {
+                L.SetLanguage(language);
+                state.Relocalize();
+                CdDiscPresetDefinition initialCd = initial.CdPresets.Single();
+                DvdDiscPresetDefinition initialDvd = initial.DvdPresets.Single();
+                BluRayDiscPresetDefinition initialBd = initial.BluRayPresets!.Single();
+                Require(state.CdPresets.Single(preset => preset.Id == initialCd.Id).DisplayName == L.T(initialCd.DisplayName)
+                        && state.CdPresets.Single(preset => preset.Id == initialCd.Id).Description == L.T(initialCd.Description),
+                    "initial CD preset text follows " + language);
+                Require(state.DvdPresets.Single(preset => preset.Id == initialDvd.Id).DisplayName == L.T(initialDvd.DisplayName)
+                        && state.DvdPresets.Single(preset => preset.Id == initialDvd.Id).Description == L.T(initialDvd.Description),
+                    "initial DVD preset text follows " + language);
+                Require(state.BluRayPresets.Single(preset => preset.Id == initialBd.Id).DisplayName == L.T(initialBd.DisplayName),
+                    "initial BD preset name follows " + language);
+                Require(state.CdPresets.Single(p => p.DisplayName == "My CD").Description
+                        == L.Format("DiscPreset.UserDescription", 24.5, 56.8, 359849L),
+                    "saved CD preset description follows " + language);
+                Require(state.DvdPresets.Single(p => p.DisplayName == "My DVD").Description
+                        == L.Format("DiscPreset.UserDescription", 24.0, 58.0, 2295104L),
+                    "saved DVD preset description follows " + language);
+                Require(saved.SequenceEqual(File.ReadAllBytes(path)), "language switching does not rewrite user presets");
+            }
+        }
+        finally
+        {
+            L.Initialize(originalLanguage);
+            Directory.Delete(directory, recursive: true);
+        }
     }
 
     private static void TestPresetGeometryStability()

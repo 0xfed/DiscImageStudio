@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Buffers.Binary;
 using System.Globalization;
 using System.Runtime.InteropServices;
@@ -30,13 +31,13 @@ internal static class IsoImageWriter
         long length = new FileInfo(templatePath).Length;
         if (length == 0 || length % LogicalSectorBytes != 0)
         {
-            throw new ArgumentException("ISO template size must be a non-zero multiple of 2048 bytes.");
+            throw new ArgumentException(L.T("ISO template size must be a non-zero multiple of 2048 bytes."));
         }
 
         long sectors = length / LogicalSectorBytes;
         if (sectors > uint.MaxValue)
         {
-            throw new ArgumentOutOfRangeException(nameof(templatePath), "ISO template has too many sectors.");
+            throw new ArgumentOutOfRangeException(nameof(templatePath), L.T("ISO template has too many sectors."));
         }
 
         return (uint)sectors;
@@ -53,7 +54,7 @@ internal static class IsoImageWriter
         string outputFullPath = Path.GetFullPath(outputPath);
         if (string.Equals(templateFullPath, outputFullPath, StringComparison.OrdinalIgnoreCase))
         {
-            throw new ArgumentException("--iso-template and --iso-output must be different files.");
+            throw new ArgumentException(L.T("--iso-template and --iso-output must be different files."));
         }
 
         uint volumeSectors = GetTemplateSectorCount(templateFullPath);
@@ -291,7 +292,7 @@ internal static class IsoImageWriter
     {
         if (sector.Length != LogicalSectorBytes)
         {
-            throw new ArgumentException("ISO logical sector must contain 2048 bytes.", nameof(sector));
+            throw new ArgumentException(L.T("ISO logical sector must contain 2048 bytes."), nameof(sector));
         }
 
         output.Position = checked((long)lba * LogicalSectorBytes);
@@ -373,7 +374,7 @@ internal static class IsoImageWriter
             }
         }
 
-        throw new ArgumentException("ISO volume is too small for filesystem metadata.");
+        throw new ArgumentException(L.T("ISO volume is too small for filesystem metadata."));
     }
 
     private static uint FindFreeExtent(uint volumeSectors, int sectorCount, HashSet<uint> reserved)
@@ -396,14 +397,14 @@ internal static class IsoImageWriter
             }
         }
 
-        throw new ArgumentException("ISO volume is too small for the visible SOLVED.BIN extent.");
+        throw new ArgumentException(L.T("ISO volume is too small for the visible SOLVED.BIN extent."));
     }
 
     private static void ValidatePayload(ReadOnlySpan<byte> payloads)
     {
         if (payloads.Length != PayloadSectorCount * LogicalSectorBytes)
         {
-            throw new ArgumentException("ISO output needs exactly 16 consecutive 2048-byte payloads.", nameof(payloads));
+            throw new ArgumentException(L.T("ISO output needs exactly 16 consecutive 2048-byte payloads."), nameof(payloads));
         }
     }
 
@@ -412,7 +413,7 @@ internal static class IsoImageWriter
         ulong end = (ulong)payloadLba + PayloadSectorCount;
         if (end > volumeSectors)
         {
-            throw new ArgumentOutOfRangeException(nameof(payloadLba), "Solved ECC Block exceeds the ISO volume size.");
+            throw new ArgumentOutOfRangeException(nameof(payloadLba), L.T("Solved ECC Block exceeds the ISO volume size."));
         }
 
         if (protectVolumeDescriptors
@@ -420,8 +421,7 @@ internal static class IsoImageWriter
             && end > PrimaryVolumeDescriptorLba)
         {
             throw new ArgumentException(
-                "The solved ECC Block overlaps ISO9660 volume descriptors in sectors 16 and 17. "
-                + "Use LBA 0, an LBA at or above 18, or an existing template whose structure you control.");
+                L.T("The solved ECC Block overlaps ISO9660 volume descriptors in sectors 16 and 17. Use LBA 0, an LBA at or above 18, or an existing template whose structure you control."));
         }
     }
 
@@ -430,7 +430,7 @@ internal static class IsoImageWriter
         string? directory = Path.GetDirectoryName(outputFullPath);
         if (directory is null)
         {
-            throw new ArgumentException("ISO output path has no parent directory.", nameof(outputFullPath));
+            throw new ArgumentException(L.T("ISO output path has no parent directory."), nameof(outputFullPath));
         }
 
         Directory.CreateDirectory(directory);

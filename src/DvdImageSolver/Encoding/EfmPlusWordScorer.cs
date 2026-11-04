@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DvdImageSolver.Encoding;
 
 internal readonly record struct EfmPlusWordScore(
@@ -58,7 +59,7 @@ internal sealed class EfmPlusWordScorer
             int combined = TrailingZeros + metric.LeadingZeros;
             if (combined is < 2 or > 10)
             {
-                throw new InvalidOperationException("EFMPlus code word would violate the RLL(2,10) boundary.");
+                throw new InvalidOperationException(L.T("EFMPlus code word would violate the RLL(2,10) boundary."));
             }
 
             Words[Length++] = word;
@@ -114,7 +115,7 @@ internal sealed class EfmPlusWordScorer
         if (bytes.Length != EfmPlusEncoder.BytesPerSyncFrame
             || desiredLandCounts.Length != EfmPlusEncoder.BytesPerSyncFrame)
         {
-            throw new ArgumentException("A word-scored Sync Frame needs 91 bytes and 91 gray targets.");
+            throw new ArgumentException(L.T("A word-scored Sync Frame needs 91 bytes and 91 gray targets."));
         }
 
         StreamCandidate stream1 = _stream1;
@@ -299,7 +300,7 @@ internal sealed class EfmPlusWordScorer
         var stateFour = EfmPlusTables.LookupMain(value, 4);
         if (!stream1.CanAppend(stateOne.Word) || !stream2.CanAppend(stateFour.Word))
         {
-            throw new InvalidOperationException("Invalid State 1/4 EFMPlus branch.");
+            throw new InvalidOperationException(L.T("Invalid State 1/4 EFMPlus branch."));
         }
 
         stream1.Append(stateOne.Word, stateOne.NextState, target);

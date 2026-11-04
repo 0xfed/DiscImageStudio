@@ -26,7 +26,7 @@ public partial class ShellViewModel : ObservableObject
     private readonly Dispatcher _dispatcher;
     private readonly StringBuilder _log = new();
     private readonly string? _presetLoadWarning;
-    private readonly RecentProjectStore _recentProjects = new();
+    private readonly RecentProjectStore _recentProjects;
     private bool _isBusy;
     private bool _isWindowLoaded;
     private string? _lastOutputPath;
@@ -40,10 +40,12 @@ public partial class ShellViewModel : ObservableObject
     {
     }
 
-    internal ShellViewModel(Dispatcher dispatcher, IOpticalDiscBurner opticalDiscBurner)
+    internal ShellViewModel(Dispatcher dispatcher, IOpticalDiscBurner opticalDiscBurner,
+        DiscParametersState? state = null, RecentProjectStore? recentProjects = null)
     {
         _dispatcher = dispatcher;
-        State = new DiscParametersState();
+        _recentProjects = recentProjects ?? new RecentProjectStore();
+        State = state ?? new DiscParametersState();
         State.PropertyChanged += State_PropertyChanged;
         _presetLoadWarning = State.TryLoadPresets();
         State.SelectDefaultPresets();

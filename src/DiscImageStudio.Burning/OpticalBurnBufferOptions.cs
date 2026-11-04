@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DiscImageStudio.Burning;
 
 /// <summary>Bounded host-side queue settings; these do not change the recorder's hardware buffer.</summary>
@@ -10,8 +11,8 @@ public sealed record OpticalBurnBufferOptions(int CapacityBytes, int PrebufferBy
     public void Validate()
     {
         if (CapacityBytes <= 0 || CapacityBytes % ChunkBytes != 0)
-            throw new ArgumentOutOfRangeException(nameof(CapacityBytes), "Buffer capacity must be a positive multiple of 256 KiB.");
+            throw new ArgumentOutOfRangeException(nameof(CapacityBytes), L.T("Buffer capacity must be a positive multiple of 256 KiB."));
         if (PrebufferBytes <= 0 || PrebufferBytes > CapacityBytes || PrebufferBytes % ChunkBytes != 0)
-            throw new ArgumentOutOfRangeException(nameof(PrebufferBytes), "Prebuffer must be a positive multiple of 256 KiB, no larger than capacity.");
+            throw new ArgumentOutOfRangeException(nameof(PrebufferBytes), L.T("Prebuffer must be a positive multiple of 256 KiB, no larger than capacity."));
     }
 }

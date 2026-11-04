@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Runtime.Intrinsics;
 
 namespace DiscImageStudio.Core;
@@ -84,7 +85,7 @@ public sealed class DvdTrackGeometry
         }
         RadialGrowthPerRadianMm = 1 / inverseGrowth;
         if (!double.IsFinite(RadialGrowthPerRadianMm) || RadialGrowthPerRadianMm <= 0)
-            throw new ArgumentException("The pitch coefficients cannot be resolved at this track length.");
+            throw new ArgumentException(L.T("The pitch coefficients cannot be resolved at this track length."));
 
         List<Segment> segments = [];
         BuildSegments(innerRadiusMm, outerRadiusMm, inverseGrowth, segments, 0);
@@ -114,12 +115,12 @@ public sealed class DvdTrackGeometry
         double trackLengthMm, double pitchLinear = 0, double pitchQuadratic = 0, double pitchCubic = 0)
     {
         if (!double.IsFinite(innerRadiusMm) || innerRadiusMm <= 0)
-            throw new ArgumentOutOfRangeException(nameof(innerRadiusMm), "Inner radius must be positive.");
+            throw new ArgumentOutOfRangeException(nameof(innerRadiusMm), L.T("Inner radius must be positive."));
         if (!double.IsFinite(outerRadiusMm) || outerRadiusMm <= innerRadiusMm)
-            throw new ArgumentOutOfRangeException(nameof(outerRadiusMm), "Outer radius must exceed inner radius.");
+            throw new ArgumentOutOfRangeException(nameof(outerRadiusMm), L.T("Outer radius must exceed inner radius."));
         if (!double.IsFinite(trackLengthMm) || trackLengthMm <= outerRadiusMm - innerRadiusMm)
             throw new ArgumentOutOfRangeException(nameof(trackLengthMm),
-                "Track length must exceed the radial distance between the two radii.");
+                L.T("Track length must exceed the radial distance between the two radii."));
         ValidatePitchCoefficients(pitchLinear, pitchQuadratic, pitchCubic);
         return new DvdTrackGeometry(innerRadiusMm, outerRadiusMm, trackLengthMm,
             pitchLinear, pitchQuadratic, pitchCubic);
@@ -131,7 +132,7 @@ public sealed class DvdTrackGeometry
         if (!double.IsFinite(linear) || !double.IsFinite(quadratic) || !double.IsFinite(cubic)
             || !PositiveOnInterval(linear, quadratic, cubic, 0, 1))
             throw new ArgumentOutOfRangeException(nameof(linear),
-                "DVD pitch coefficients must be finite and 1 + c1*x + c2*x² + c3*x³ must stay positive for 0 <= x <= 1.");
+                L.T("DVD pitch coefficients must be finite and 1 + c1*x + c2*x² + c3*x³ must stay positive for 0 <= x <= 1."));
     }
 
     public double RadiusAtArcLength(double arcLengthMm)
@@ -431,10 +432,10 @@ public sealed class DvdTrackGeometry
     {
         evaluations += 3;
         if (evaluations > 32768)
-            throw new PitchResolutionException("The DVD pitch integral exceeded its numerical resolution budget.");
+            throw new PitchResolutionException(L.T("The DVD pitch integral exceeded its numerical resolution budget."));
         Integral whole = Quadrature(first, last, inverseGrowth, thin);
         if (!double.IsFinite(whole.Length) || !double.IsFinite(whole.Angle))
-            throw new PitchResolutionException("The DVD pitch integral cannot be resolved numerically.");
+            throw new PitchResolutionException(L.T("The DVD pitch integral cannot be resolved numerically."));
         double middle = first + (last - first) / 2;
         Integral left = Quadrature(first, middle, inverseGrowth, thin);
         Integral right = Quadrature(middle, last, inverseGrowth, thin);
@@ -443,7 +444,7 @@ public sealed class DvdTrackGeometry
             && Math.Abs(split.Angle - whole.Angle) <= Math.Abs(split.Angle) * 8e-15)
             return split;
         if (depth >= 24 || middle == first || middle == last)
-            throw new PitchResolutionException("The DVD pitch integral did not converge at the requested accuracy.");
+            throw new PitchResolutionException(L.T("The DVD pitch integral did not converge at the requested accuracy."));
         return IntegrateAdaptive(first, middle, inverseGrowth, thin, depth + 1, ref evaluations)
             + IntegrateAdaptive(middle, last, inverseGrowth, thin, depth + 1, ref evaluations);
     }
@@ -473,7 +474,7 @@ public sealed class DvdTrackGeometry
     private void BuildSegments(double first, double last, double inverseGrowth, List<Segment> segments, int depth)
     {
         if (segments.Count >= 32768)
-            throw new PitchResolutionException("The DVD pitch curve is too close to zero to resolve numerically.");
+            throw new PitchResolutionException(L.T("The DVD pitch curve is too close to zero to resolve numerically."));
         double width = last - first;
         double middle = first + width / 2;
         Integral whole = Quadrature(first, last, inverseGrowth);
@@ -502,7 +503,7 @@ public sealed class DvdTrackGeometry
             return;
         }
         if (!accepted || !double.IsFinite(split.Length) || !double.IsFinite(split.Angle) || split.Length <= 0)
-            throw new PitchResolutionException("The DVD pitch curve cannot be resolved numerically.");
+            throw new PitchResolutionException(L.T("The DVD pitch curve cannot be resolved numerically."));
         segments.Add(new Segment(first, width, 0, 0, split.Length, split.Angle, s0, s1, a0, a1));
     }
 

@@ -1,0 +1,723 @@
+{
+  "Disc Image Studio - modular CD/DVD/Blu-ray optical-disc image generator": {
+    "en": "Disc Image Studio - modular CD/DVD/Blu-ray optical-disc image generator",
+    "zh-CN": "Disc Image Studio - 模块化 CD/DVD/蓝光光盘镜像生成器",
+    "zh-TW": "Disc Image Studio - 模組化 CD/DVD／藍光光碟映像產生器",
+    "ja": "Disc Image Studio - モジュール式 CD/DVD/Blu-ray ディスクイメージ生成ツール",
+    "tr": "Disc Image Studio - modüler CD/DVD/Blu-ray disk imajı oluşturucu"
+  },
+  "Start without arguments to open the graphical interface. Disc commands are provided by modules through DiscImageStudio.Core.": {
+    "en": "Start without arguments to open the graphical interface. Disc commands are provided by modules through DiscImageStudio.Core.",
+    "zh-CN": "不带参数启动以打开图形界面。光盘命令由模块通过 DiscImageStudio.Core 提供。",
+    "zh-TW": "不帶參數啟動以開啟圖形介面。光碟命令由模組透過 DiscImageStudio.Core 提供。",
+    "ja": "引数なしで起動すると GUI を開きます。ディスクコマンドは DiscImageStudio.Core を通じて各モジュールが提供します。",
+    "tr": "Grafik arayüzü açmak için bağımsız değişken olmadan başlatın. Disk komutları DiscImageStudio.Core üzerinden modüller tarafından sağlanır."
+  },
+  "Developer command:": {
+    "en": "Developer command:",
+    "zh-CN": "开发者命令：",
+    "zh-TW": "開發者命令：",
+    "ja": "開発者向けコマンド：",
+    "tr": "Geliştirici komutu:"
+  },
+  "Tabs: 0 home, 1 design, 2 preview, 3 export, 4 burn, 5 calibration. --dock expands the job dock (progress + run log) for the snapshot; --burn-source picks what the burn workspace shows as the material to write (calibration also creates the calibration target); --scroll N scrolls the page down N pixels so the part below the viewport can be captured; --project-update plays the applied-calibration header acknowledgement; --project-save paints the saved-project header trail at a fixed point in its lap; --tone-preview waits for the design page's tone module and switches the snapshot to that page; --theme picks the palette before the window is created; --settings-dialog captures the settings window at 760x600 by default and never touches the real settings file; --settings-view picks its category.": {
+    "en": "Tabs: 0 home, 1 design, 2 preview, 3 export, 4 burn, 5 calibration. --dock expands the job dock (progress + run log) for the snapshot; --burn-source picks what the burn workspace shows as the material to write (calibration also creates the calibration target); --scroll N scrolls the page down N pixels so the part below the viewport can be captured; --project-update plays the applied-calibration header acknowledgement; --project-save paints the saved-project header trail at a fixed point in its lap; --tone-preview waits for the design page's tone module and switches the snapshot to that page; --theme picks the palette before the window is created; --settings-dialog captures the settings window at 760x600 by default and never touches the real settings file; --settings-view picks its category.",
+    "zh-CN": "页面编号：0 主页、1 设计、2 预览、3 导出、4 刻录、5 标定。--dock 为截图展开任务坞（进度 + 运行日志）；--burn-source 选择刻录工作区显示的写入素材（calibration 也会创建标定图案）；--scroll N 将页面向下滚动 N 像素，以截取视口以下的内容；--project-update 播放应用标定后的页眉确认动画；--project-save 在保存工程页眉轨迹的一周中固定位置绘制；--tone-preview 等待设计页影调模块并切换至该页截图；--theme 在创建窗口前选择调色板；--settings-dialog 截取设置窗口，默认 760x600，绝不修改真实设置文件；--settings-view 选择设置类别。",
+    "zh-TW": "頁面編號：0 首頁、1 設計、2 預覽、3 匯出、4 燒錄、5 標定。--dock 為截圖展開工作塢（進度 + 執行記錄）；--burn-source 選擇燒錄工作區顯示的寫入素材（calibration 也會建立標定圖案）；--scroll N 將頁面向下捲動 N 像素，以擷取視口以下的內容；--project-update 播放套用標定後的頁首確認動畫；--project-save 在儲存專案頁首軌跡的一周中固定位置繪製；--tone-preview 等待設計頁影調模組並切換至該頁截圖；--theme 在建立視窗前選擇調色盤；--settings-dialog 擷取設定視窗，預設 760x600，絕不修改真實設定檔；--settings-view 選擇設定類別。",
+    "ja": "ページ番号：0 ホーム、1 デザイン、2 プレビュー、3 エクスポート、4 書き込み、5 キャリブレーション。--dock は撮影用にジョブドック（進行状況 + 実行ログ）を展開します。--burn-source は書き込み元の表示内容を選び、calibration はキャリブレーションパターンも作成します。--scroll N はページを N ピクセル下にスクロールして表示領域より下を撮影します。--project-update はキャリブレーション適用後のヘッダー確認アニメーションを再生します。--project-save は保存済みプロジェクトのヘッダー軌跡を周回の固定位置に描画します。--tone-preview はデザインページの階調モジュールを待ち、そのページを撮影します。--theme はウィンドウ作成前に配色を選択します。--settings-dialog は既定で 760x600 の設定ウィンドウを撮影し、実際の設定ファイルは変更しません。--settings-view は設定カテゴリを選びます。",
+    "tr": "Sayfalar: 0 ana sayfa, 1 tasarım, 2 önizleme, 3 dışa aktarma, 4 disk yazma, 5 kalibrasyon. --dock, ekran görüntüsü için görev panelini (ilerleme + çalışma günlüğü) açar; --burn-source yazma alanındaki kaynak içeriği seçer (calibration ayrıca kalibrasyon hedefini oluşturur); --scroll N, görünüm altını yakalamak için sayfayı N piksel aşağı kaydırır; --project-update kalibrasyon uygulandı başlık onayını oynatır; --project-save kaydedilen proje başlık izini turunun sabit bir noktasında çizer; --tone-preview tasarım sayfasının ton modülünü bekleyip o sayfayı yakalar; --theme pencere oluşturulmadan önce paleti seçer; --settings-dialog varsayılan 760x600 ayar penceresini yakalar ve gerçek ayar dosyasına dokunmaz; --settings-view ayar kategorisini seçer."
+  },
+  "Blu-ray: bd-info exports parameters; bd-probe exports raw payload tests; bd-encode exports one ECC cluster; bd-generate maps dark to 3T and light to 6T run-count bias.": {
+    "en": "Blu-ray: bd-info exports parameters; bd-probe exports raw payload tests; bd-encode exports one ECC cluster; bd-generate maps dark to 3T and light to 6T run-count bias.",
+    "zh-CN": "蓝光：bd-info 导出参数；bd-probe 导出原始负载测试；bd-encode 导出一个 ECC 簇；bd-generate 采用暗部偏向 3T、亮部偏向 6T 游程数量的映射。",
+    "zh-TW": "藍光：bd-info 匯出參數；bd-probe 匯出原始負載測試；bd-encode 匯出一個 ECC 叢集；bd-generate 採用暗部偏向 3T、亮部偏向 6T 遊程數量的映射。",
+    "ja": "Blu-ray：bd-info はパラメーター、bd-probe は生ペイロードテスト、bd-encode は単一 ECC クラスターを出力します。bd-generate は暗部を 3T、明部を 6T のラン数バイアスにマッピングします。",
+    "tr": "Blu-ray: bd-info parametreleri; bd-probe ham yük testlerini; bd-encode bir ECC kümesini dışa aktarır. bd-generate, koyuyu 3T ve açığı 6T geçiş aralığı sayısı ağırlığına eşler."
+  },
+  "Total sectors must align to 32. Without a data folder, output has no filesystem. With a data folder, output uses UDF 2.01 with inner- or outer-ring files. Press Ctrl+C to cancel. See docs/ADDING_BLURAY.md for options and physical-model limitations.": {
+    "en": "Total sectors must align to 32. Without a data folder, output has no filesystem. With a data folder, output uses UDF 2.01 with inner- or outer-ring files. Press Ctrl+C to cancel. See docs/ADDING_BLURAY.md for options and physical-model limitations.",
+    "zh-CN": "总扇区数必须按 32 对齐。未选数据文件夹时，输出不含文件系统。选定文件夹时，输出采用 UDF 2.01，文件可位于内圈或外圈。按 Ctrl+C 取消。选项及物理模型限制见 docs/ADDING_BLURAY.md。",
+    "zh-TW": "總磁區數必須按 32 對齊。未選資料夾時，輸出不含檔案系統。選定資料夾時，輸出採用 UDF 2.01，檔案可位於內圈或外圈。按 Ctrl+C 取消。選項及物理模型限制見 docs/ADDING_BLURAY.md。",
+    "ja": "総セクター数は 32 に整列する必要があります。データフォルダーなしでは出力にファイルシステムを含みません。フォルダーありでは UDF 2.01 を使い、ファイルを内周または外周に配置します。Ctrl+C でキャンセルします。オプションと物理モデルの制約は docs/ADDING_BLURAY.md を参照してください。",
+    "tr": "Toplam sektör sayısı 32'ye hizalanmalıdır. Veri klasörü yoksa çıktı dosya sistemi içermez. Klasör varsa iç veya dış halka dosyalarıyla UDF 2.01 kullanılır. İptal için Ctrl+C. Seçenekler ve fiziksel model sınırları için docs/ADDING_BLURAY.md belgesine bakın."
+  },
+  "DVD NRZI image constraint solver": {
+    "en": "DVD NRZI image constraint solver",
+    "zh-CN": "DVD NRZI 图像约束求解器",
+    "zh-TW": "DVD NRZI 影像約束求解器",
+    "ja": "DVD NRZI 画像制約ソルバー",
+    "tr": "DVD NRZI görsel kısıt çözücüsü"
+  },
+  "Solve one 16-sector ECC Block:": {
+    "en": "Solve one 16-sector ECC Block:",
+    "zh-CN": "求解一个 16 扇区 ECC 块：",
+    "zh-TW": "求解一個 16 磁區 ECC 區塊：",
+    "ja": "単一の 16 セクター ECC ブロックを解く：",
+    "tr": "Bir 16 sektörlük ECC bloğunu çöz:"
+  },
+  "Encode one 32768-byte payload block:": {
+    "en": "Encode one 32768-byte payload block:",
+    "zh-CN": "编码一个 32768 字节负载块：",
+    "zh-TW": "編碼一個 32768 位元組負載區塊：",
+    "ja": "単一の 32768 バイトペイロードブロックを符号化：",
+    "tr": "Bir 32768 baytlık yük bloğunu kodla:"
+  },
+  "Render a radius-calibration preview:": {
+    "en": "Render a radius-calibration preview:",
+    "zh-CN": "渲染半径标定预览：",
+    "zh-TW": "轉譯半徑標定預覽：",
+    "ja": "半径キャリブレーションのプレビューを描画：",
+    "tr": "Yarıçap kalibrasyonu önizlemesi oluştur:"
+  },
+  "Simulate the read-back of a generated ISO:": {
+    "en": "Simulate the read-back of a generated ISO:",
+    "zh-CN": "模拟生成 ISO 的读回：",
+    "zh-TW": "模擬產生 ISO 的讀回：",
+    "ja": "生成済み ISO の読み戻しをシミュレート：",
+    "tr": "Oluşturulmuş ISO'nun geri okumasını benzet:"
+  },
+  "Common options:": {
+    "en": "Common options:",
+    "zh-CN": "通用选项：",
+    "zh-TW": "通用選項：",
+    "ja": "共通オプション：",
+    "tr": "Ortak seçenekler:"
+  },
+  "Initial LBA only; following 15 sectors are consecutive (default 0)": {
+    "en": "Initial LBA only; following 15 sectors are consecutive (default 0)",
+    "zh-CN": "仅指定起始 LBA；后续 15 扇区连续（默认 0）",
+    "zh-TW": "僅指定起始 LBA；後續 15 磁區連續（預設 0）",
+    "ja": "初期 LBA のみ。後続 15 セクターは連続（既定 0）",
+    "tr": "Yalnızca ilk LBA; sonraki 15 sektör ardışıktır (varsayılan 0)"
+  },
+  "Decimal or 0x-prefixed PSN offset (default 0x30000)": {
+    "en": "Decimal or 0x-prefixed PSN offset (default 0x30000)",
+    "zh-CN": "十进制或带 0x 前缀的 PSN 偏移（默认 0x30000）",
+    "zh-TW": "十進位或帶 0x 前綴的 PSN 位移（預設 0x30000）",
+    "ja": "10 進または 0x 接頭辞付き PSN オフセット（既定 0x30000）",
+    "tr": "Ondalık veya 0x önekli PSN ofseti (varsayılan 0x30000)"
+  },
+  "Initial EFMPlus state (default 1)": {
+    "en": "Initial EFMPlus state (default 1)",
+    "zh-CN": "初始 EFMPlus 状态（默认 1）",
+    "zh-TW": "初始 EFMPlus 狀態（預設 1）",
+    "ja": "初期 EFMPlus 状態（既定 1）",
+    "tr": "İlk EFMPlus durumu (varsayılan 1)"
+  },
+  "Initial DSV (default 0)": {
+    "en": "Initial DSV (default 0)",
+    "zh-CN": "初始 DSV（默认 0）",
+    "zh-TW": "初始 DSV（預設 0）",
+    "ja": "初期 DSV（既定 0）",
+    "tr": "İlk DSV (varsayılan 0)"
+  },
+  "Initial physical NRZI level (default land)": {
+    "en": "Initial physical NRZI level (default land)",
+    "zh-CN": "初始物理 NRZI 电平（默认 land）",
+    "zh-TW": "初始實體 NRZI 準位（預設 land）",
+    "ja": "初期物理 NRZI レベル（既定 land）",
+    "tr": "İlk fiziksel NRZI düzeyi (varsayılan land)"
+  },
+  "Solve options:": {
+    "en": "Solve options:",
+    "zh-CN": "求解选项：",
+    "zh-TW": "求解選項：",
+    "ja": "求解オプション：",
+    "tr": "Çözüm seçenekleri:"
+  },
+  "Source image mapped onto the disc (e.g. PNG or JPEG)": {
+    "en": "Source image mapped onto the disc (e.g. PNG or JPEG)",
+    "zh-CN": "映射到盘面的源图（例如 PNG 或 JPEG）",
+    "zh-TW": "映射至碟面的來源影像（例如 PNG 或 JPEG）",
+    "ja": "ディスクにマッピングする元画像（PNG や JPEG など）",
+    "tr": "Diske eşlenen kaynak görsel (ör. PNG veya JPEG)"
+  },
+  "Reported count of 2048-byte sectors (required with --image)": {
+    "en": "Reported count of 2048-byte sectors (required with --image)",
+    "zh-CN": "声明的 2048 字节扇区数（--image 必填）",
+    "zh-TW": "宣告的 2048 位元組磁區數（--image 必填）",
+    "ja": "申告する 2048 バイトセクター数（--image で必須）",
+    "tr": "Bildirilen 2048 baytlık sektör sayısı (--image ile gerekli)"
+  },
+  "Alias for --total-sectors": {
+    "en": "Alias for --total-sectors",
+    "zh-CN": "--total-sectors 的别名",
+    "zh-TW": "--total-sectors 的別名",
+    "ja": "--total-sectors の別名",
+    "tr": "--total-sectors diğer adı"
+  },
+  "Track start radius (default 24.0)": {
+    "en": "Track start radius (default 24.0)",
+    "zh-CN": "轨道起始半径（默认 24.0）",
+    "zh-TW": "軌道起始半徑（預設 24.0）",
+    "ja": "トラック開始半径（既定 24.0）",
+    "tr": "İz başlangıç yarıçapı (varsayılan 24.0)"
+  },
+  "Track end radius (default 58.0)": {
+    "en": "Track end radius (default 58.0)",
+    "zh-CN": "轨道终止半径（默认 58.0）",
+    "zh-TW": "軌道結束半徑（預設 58.0）",
+    "ja": "トラック終了半径（既定 58.0）",
+    "tr": "İz bitiş yarıçapı (varsayılan 58.0)"
+  },
+  "Linear radial pitch coefficient (default 0)": {
+    "en": "Linear radial pitch coefficient (default 0)",
+    "zh-CN": "径向轨距一次系数（默认 0）",
+    "zh-TW": "徑向軌距一次係數（預設 0）",
+    "ja": "半径方向トラックピッチの 1 次係数（既定 0）",
+    "tr": "Radyal iz aralığı doğrusal katsayısı (varsayılan 0)"
+  },
+  "Quadratic radial pitch coefficient (default 0)": {
+    "en": "Quadratic radial pitch coefficient (default 0)",
+    "zh-CN": "径向轨距二次系数（默认 0）",
+    "zh-TW": "徑向軌距二次係數（預設 0）",
+    "ja": "半径方向トラックピッチの 2 次係数（既定 0）",
+    "tr": "Radyal iz aralığı ikinci derece katsayısı (varsayılan 0)"
+  },
+  "Cubic radial pitch coefficient (default 0)": {
+    "en": "Cubic radial pitch coefficient (default 0)",
+    "zh-CN": "径向轨距三次系数（默认 0）",
+    "zh-TW": "徑向軌距三次係數（預設 0）",
+    "ja": "半径方向トラックピッチの 3 次係数（既定 0）",
+    "tr": "Radyal iz aralığı kübik katsayısı (varsayılan 0)"
+  },
+  "p0 follows total track length": {
+    "en": "p0 follows total track length",
+    "zh-CN": "p0 由总轨长确定",
+    "zh-TW": "p0 由總軌長決定",
+    "ja": "p0 は総トラック長から決定",
+    "tr": "p0 toplam iz uzunluğuna göre belirlenir"
+  },
+  "Physical channel-bit length (default 133.3)": {
+    "en": "Physical channel-bit length (default 133.3)",
+    "zh-CN": "物理通道位长（默认 133.3）",
+    "zh-TW": "實體通道位元長度（預設 133.3）",
+    "ja": "物理チャネルビット長（既定 133.3）",
+    "tr": "Fiziksel kanal biti uzunluğu (varsayılan 133.3)"
+  },
+  "Track start angle (default 0)": {
+    "en": "Track start angle (default 0)",
+    "zh-CN": "轨道起始角（默认 0）",
+    "zh-TW": "軌道起始角（預設 0）",
+    "ja": "トラック開始角（既定 0）",
+    "tr": "İz başlangıç açısı (varsayılan 0)"
+  },
+  "Polar direction (default cw)": {
+    "en": "Polar direction (default cw)",
+    "zh-CN": "极坐标方向（默认 cw）",
+    "zh-TW": "極座標方向（預設 cw）",
+    "ja": "極座標の向き（既定 cw）",
+    "tr": "Kutupsal yön (varsayılan cw)"
+  },
+  "Binary full/state-control threshold (default 128)": {
+    "en": "Binary full/state-control threshold (default 128)",
+    "zh-CN": "full/state-control 的二值阈值（默认 128）",
+    "zh-TW": "full/state-control 的二值閾值（預設 128）",
+    "ja": "full/state-control の 2 値しきい値（既定 128）",
+    "tr": "full/state-control ikili eşiği (varsayılan 128)"
+  },
+  "Mix black/white textures per sample; 0 is the hard threshold": {
+    "en": "Mix black/white textures per sample; 0 is the hard threshold",
+    "zh-CN": "按每个采样混合黑白纹理；0 表示硬阈值",
+    "zh-TW": "依每個取樣混合黑白紋理；0 表示硬閾值",
+    "ja": "サンプルごとに白黒テクスチャを混合。0 は固定しきい値",
+    "tr": "Örnek başına siyah/beyaz dokuları karıştır; 0 sabit eşiktir"
+  },
+  "DVD dispersion has two textures; only 2 is accepted": {
+    "en": "DVD dispersion has two textures; only 2 is accepted",
+    "zh-CN": "DVD dispersion 仅有两种纹理；只接受 2",
+    "zh-TW": "DVD dispersion 僅有兩種紋理；僅接受 2",
+    "ja": "DVD dispersion は 2 テクスチャのみ。2 だけを受け付ける",
+    "tr": "DVD dispersion iki doku kullanır; yalnızca 2 kabul edilir"
+  },
+  "Shift the tone ramp by -64..64 (default 0)": {
+    "en": "Shift the tone ramp by -64..64 (default 0)",
+    "zh-CN": "将影调曲线偏移 -64..64（默认 0）",
+    "zh-TW": "將影調曲線位移 -64..64（預設 0）",
+    "ja": "階調を -64..64 シフト（既定 0）",
+    "tr": "Ton eğrisini -64..64 kaydır (varsayılan 0)"
+  },
+  "Decode sRGB before dithering (default false)": {
+    "en": "Decode sRGB before dithering (default false)",
+    "zh-CN": "抖动前解码 sRGB（默认 false）",
+    "zh-TW": "抖動前解碼 sRGB（預設 false）",
+    "ja": "ディザリング前に sRGB をデコード（既定 false）",
+    "tr": "Renk taklidinden önce sRGB çöz (varsayılan false)"
+  },
+  "Lower alpha is unconstrained (default 1)": {
+    "en": "Lower alpha is unconstrained (default 1)",
+    "zh-CN": "低于此 alpha 的像素不约束（默认 1）",
+    "zh-TW": "低於此 alpha 的像素不約束（預設 1）",
+    "ja": "これ未満の alpha は制約なし（既定 1）",
+    "tr": "Daha düşük alfa kısıtlanmaz (varsayılan 1)"
+  },
+  "Save the mapped 619008-symbol target": {
+    "en": "Save the mapped 619008-symbol target",
+    "zh-CN": "保存映射后的 619008 符号目标",
+    "zh-TW": "儲存映射後的 619008 符號目標",
+    "ja": "マッピング済みの 619008 シンボル目標を保存",
+    "tr": "Eşlenen 619008 simgeli hedefi kaydet"
+  },
+  "Constrain every Nth channel bit (single block default 1)": {
+    "en": "Constrain every Nth channel bit (single block default 1)",
+    "zh-CN": "每 N 个通道位约束一次（单块默认 1）",
+    "zh-TW": "每 N 個通道位元約束一次（單區塊預設 1）",
+    "ja": "N チャネルビットごとに制約（単一ブロックの既定 1）",
+    "tr": "Her N kanal bitinde kısıtla (tek blok varsayılanı 1)"
+  },
+  "Fill N consecutive sectors; N must be a multiple of 16": {
+    "en": "Fill N consecutive sectors; N must be a multiple of 16",
+    "zh-CN": "填充 N 个连续扇区；N 必须是 16 的倍数",
+    "zh-TW": "填入 N 個連續磁區；N 必須為 16 的倍數",
+    "ja": "連続する N セクターを埋める。N は 16 の倍数",
+    "tr": "Ardışık N sektörü doldur; N, 16'nın katı olmalıdır"
+  },
+  "Hybrid disc: store this directory together with the drawing": {
+    "en": "Hybrid disc: store this directory together with the drawing",
+    "zh-CN": "混合盘：将此目录与绘图一起存储",
+    "zh-TW": "混合光碟：將此目錄與繪圖一起儲存",
+    "ja": "ハイブリッドディスク：このディレクトリと描画を一緒に格納",
+    "tr": "Karma disk: bu dizini çizimle birlikte sakla"
+  },
+  "inner (default) or outer; outer requires --data-dir": {
+    "en": "inner (default) or outer; outer requires --data-dir",
+    "zh-CN": "inner（默认）或 outer；outer 需要 --data-dir",
+    "zh-TW": "inner（預設）或 outer；outer 需要 --data-dir",
+    "ja": "inner（既定）または outer。outer は --data-dir が必要",
+    "tr": "inner (varsayılan) veya outer; outer için --data-dir gerekir"
+  },
+  "Hybrid override; must follow all files and align to an ECC Block": {
+    "en": "Hybrid override; must follow all files and align to an ECC Block",
+    "zh-CN": "混合布局覆盖；必须在全部文件之后并按 ECC 块对齐",
+    "zh-TW": "混合配置覆寫；必須位於全部檔案之後並按 ECC 區塊對齊",
+    "ja": "ハイブリッド配置の上書き。全ファイルより後で ECC ブロックに整列",
+    "tr": "Karma yerleşimi geçersiz kıl; tüm dosyalardan sonra ve ECC bloğuna hizalı olmalıdır"
+  },
+  "Direct dispersion ISO output without ECC/EFM replay (default false; true in hybrid mode)": {
+    "en": "Direct dispersion ISO output without ECC/EFM replay (default false; true in hybrid mode)",
+    "zh-CN": "直接输出 dispersion ISO，不重放 ECC/EFM（默认 false；混合模式为 true）",
+    "zh-TW": "直接輸出 dispersion ISO，不重播 ECC/EFM（預設 false；混合模式為 true）",
+    "ja": "ECC/EFM 再生なしで dispersion ISO を直接出力（既定 false、ハイブリッド時 true）",
+    "tr": "ECC/EFM yeniden yürütmeden doğrudan dispersion ISO çıktısı (varsayılan false; karma modda true)"
+  },
+  "Fast-output workers; 0 selects processor count (default 0)": {
+    "en": "Fast-output workers; 0 selects processor count (default 0)",
+    "zh-CN": "快速输出工作线程数；0 选择处理器数量（默认 0）",
+    "zh-TW": "快速輸出工作執行緒數；0 選擇處理器數量（預設 0）",
+    "ja": "高速出力のワーカー数。0 はプロセッサー数を選択（既定 0）",
+    "tr": "Hızlı çıktı çalışanları; 0 işlemci sayısını seçer (varsayılan 0)"
+  },
+  "Full/state-control passes; dispersion ignores search (defaults 100/3/1)": {
+    "en": "Full/state-control passes; dispersion ignores search (defaults 100/3/1)",
+    "zh-CN": "full/state-control 轮数；dispersion 忽略搜索（默认 100/3/1）",
+    "zh-TW": "full/state-control 回合數；dispersion 忽略搜尋（預設 100/3/1）",
+    "ja": "full/state-control の反復数。dispersion は探索を無視（既定 100/3/1）",
+    "tr": "full/state-control geçişleri; dispersion aramayı yok sayar (varsayılanlar 100/3/1)"
+  },
+  "Write a directly burnable 2048-byte/sector ISO image": {
+    "en": "Write a directly burnable 2048-byte/sector ISO image",
+    "zh-CN": "写入可直接刻录的 2048 字节/扇区 ISO 镜像",
+    "zh-TW": "寫入可直接燒錄的 2048 位元組／磁區 ISO 映像",
+    "ja": "直接書き込み可能な 2048 バイト／セクター ISO イメージを出力",
+    "tr": "Doğrudan yazılabilir 2048 bayt/sektör ISO imajı yaz"
+  },
+  "Sector count for a new minimal ISO (image mode reuses total sectors)": {
+    "en": "Sector count for a new minimal ISO (image mode reuses total sectors)",
+    "zh-CN": "新建最小 ISO 的扇区数（图像模式复用总扇区数）",
+    "zh-TW": "新建最小 ISO 的磁區數（影像模式沿用總磁區數）",
+    "ja": "新規最小 ISO のセクター数（画像モードは総セクター数を使用）",
+    "tr": "Yeni asgari ISO sektör sayısı (görsel modu toplam sektör sayısını kullanır)"
+  },
+  "Copy an existing ISO and replace sectors LBA..LBA+15": {
+    "en": "Copy an existing ISO and replace sectors LBA..LBA+15",
+    "zh-CN": "复制现有 ISO 并替换 LBA..LBA+15 扇区",
+    "zh-TW": "複製既有 ISO 並替換 LBA..LBA+15 磁區",
+    "ja": "既存 ISO をコピーして LBA..LBA+15 セクターを置換",
+    "tr": "Mevcut ISO'yu kopyala ve LBA..LBA+15 sektörlerini değiştir"
+  },
+  "Label for a new minimal ISO (default DVD_IMAGE)": {
+    "en": "Label for a new minimal ISO (default DVD_IMAGE)",
+    "zh-CN": "新建最小 ISO 的卷标（默认 DVD_IMAGE）",
+    "zh-TW": "新建最小 ISO 的磁碟區標籤（預設 DVD_IMAGE）",
+    "ja": "新規最小 ISO のボリュームラベル（既定 DVD_IMAGE）",
+    "tr": "Yeni asgari ISO etiketi (varsayılan DVD_IMAGE)"
+  },
+  "Placement for a one-sector target (default 0)": {
+    "en": "Placement for a one-sector target (default 0)",
+    "zh-CN": "单扇区目标的放置位置（默认 0）",
+    "zh-TW": "單磁區目標的配置位置（預設 0）",
+    "ja": "単一セクター目標の配置（既定 0）",
+    "tr": "Tek sektörlük hedefin konumu (varsayılan 0)"
+  },
+  "Bit search, state control, or black/white dispersion texture pool": {
+    "en": "Bit search, state control, or black/white dispersion texture pool",
+    "zh-CN": "位搜索、状态控制或黑白离散纹理池",
+    "zh-TW": "位元搜尋、狀態控制或黑白分散紋理池",
+    "ja": "ビット探索、状態制御、白黒分散テクスチャプール",
+    "tr": "Bit araması, durum kontrolü veya siyah/beyaz dağılım doku havuzu"
+  },
+  "Full/state-control passes; dispersion ignores search (defaults 1000/3/1)": {
+    "en": "Full/state-control passes; dispersion ignores search (defaults 1000/3/1)",
+    "zh-CN": "full/state-control 轮数；dispersion 忽略搜索（默认 1000/3/1）",
+    "zh-TW": "full/state-control 回合數；dispersion 忽略搜尋（預設 1000/3/1）",
+    "ja": "full/state-control の反復数。dispersion は探索を無視（既定 1000/3/1）",
+    "tr": "full/state-control geçişleri; dispersion aramayı yok sayar (varsayılanlar 1000/3/1)"
+  },
+  "Bytes changed per full-mode proposal (default 4)": {
+    "en": "Bytes changed per full-mode proposal (default 4)",
+    "zh-CN": "full 模式每次候选提议修改的字节数（默认 4）",
+    "zh-TW": "full 模式每次候選提案修改的位元組數（預設 4）",
+    "ja": "full モードの候補ごとに変更するバイト数（既定 4）",
+    "tr": "full modu önerisi başına değişen baytlar (varsayılan 4)"
+  },
+  "Payload bridge bytes at each free-frame edge (default 2)": {
+    "en": "Payload bridge bytes at each free-frame edge (default 2)",
+    "zh-CN": "每个自由帧边缘的负载桥接字节数（默认 2）",
+    "zh-TW": "每個自由框架邊緣的負載橋接位元組數（預設 2）",
+    "ja": "各自由フレーム端のペイロードブリッジバイト数（既定 2）",
+    "tr": "Her serbest çerçeve kenarındaki yük köprü baytları (varsayılan 2)"
+  },
+  "Base EFMPlus prefix paths per Sync Frame (default 8)": {
+    "en": "Base EFMPlus prefix paths per Sync Frame (default 8)",
+    "zh-CN": "每同步帧的基础 EFMPlus 前缀路径数（默认 8）",
+    "zh-TW": "每同步框架的基礎 EFMPlus 前綴路徑數（預設 8）",
+    "ja": "同期フレームごとの基本 EFMPlus 接頭経路数（既定 8）",
+    "tr": "Eşzamanlama çerçevesi başına temel EFMPlus önek yolları (varsayılan 8)"
+  },
+  "Beam for failed single-frame retries (default 32; 0 disables)": {
+    "en": "Beam for failed single-frame retries (default 32; 0 disables)",
+    "zh-CN": "失败单帧重试的束宽（默认 32；0 禁用）",
+    "zh-TW": "失敗單框架重試的束寬（預設 32；0 停用）",
+    "ja": "失敗した単一フレーム再試行のビーム幅（既定 32、0 で無効）",
+    "tr": "Başarısız tek çerçeve yeniden denemesi ışın genişliği (varsayılan 32; 0 kapatır)"
+  },
+  "Worst-frame fraction attempted per pass; 0 means all (default 0.25)": {
+    "en": "Worst-frame fraction attempted per pass; 0 means all (default 0.25)",
+    "zh-CN": "每轮尝试的最差帧比例；0 表示全部（默认 0.25）",
+    "zh-TW": "每回合嘗試的最差框架比例；0 表示全部（預設 0.25）",
+    "ja": "反復ごとに試す最悪フレームの割合。0 は全件（既定 0.25）",
+    "tr": "Geçiş başına denenen en kötü çerçeve oranı; 0 tümü demektir (varsayılan 0.25)"
+  },
+  "Frames per ECC-closed candidate batch (default 8)": {
+    "en": "Frames per ECC-closed candidate batch (default 8)",
+    "zh-CN": "每个 ECC 闭合候选批次的帧数（默认 8）",
+    "zh-TW": "每個 ECC 閉合候選批次的框架數（預設 8）",
+    "ja": "ECC 完結候補バッチごとのフレーム数（既定 8）",
+    "tr": "ECC açısından kapalı aday toplu işi başına çerçeveler (varsayılan 8)"
+  },
+  "Fully rebuilt candidates per batch (default 4)": {
+    "en": "Fully rebuilt candidates per batch (default 4)",
+    "zh-CN": "每批完全重建的候选数（默认 4）",
+    "zh-TW": "每批完整重建的候選數（預設 4）",
+    "ja": "バッチごとの完全再構築候補数（既定 4）",
+    "tr": "Toplu iş başına tamamen yeniden oluşturulan adaylar (varsayılan 4)"
+  },
+  "Deterministic independent restarts; exact best wins (default 1)": {
+    "en": "Deterministic independent restarts; exact best wins (default 1)",
+    "zh-CN": "确定性独立重启；按精确评分选最佳（默认 1）",
+    "zh-TW": "確定性獨立重新開始；依精確評分選最佳（預設 1）",
+    "ja": "決定的な独立再開始。厳密な評価で最良を選択（既定 1）",
+    "tr": "Deterministik bağımsız yeniden başlatmalar; tam değerlendirmeyle en iyisi seçilir (varsayılan 1)"
+  },
+  "Deterministic random seed (default 1)": {
+    "en": "Deterministic random seed (default 1)",
+    "zh-CN": "确定性随机种子（默认 1）",
+    "zh-TW": "確定性隨機種子（預設 1）",
+    "ja": "決定的な乱数シード（既定 1）",
+    "tr": "Deterministik rastgele tohum (varsayılan 1)"
+  },
+  "Initial payload mode (default random)": {
+    "en": "Initial payload mode (default random)",
+    "zh-CN": "初始负载模式（默认 random）",
+    "zh-TW": "初始負載模式（預設 random）",
+    "ja": "初期ペイロードモード（既定 random）",
+    "tr": "İlk yük modu (varsayılan random)"
+  },
+  "Initial 32768-byte payload": {
+    "en": "Initial 32768-byte payload",
+    "zh-CN": "初始 32768 字节负载",
+    "zh-TW": "初始 32768 位元組負載",
+    "ja": "初期 32768 バイトペイロード",
+    "tr": "İlk 32768 baytlık yük"
+  },
+  "Also write packed final NRZI levels": {
+    "en": "Also write packed final NRZI levels",
+    "zh-CN": "同时写入打包后的最终 NRZI 电平",
+    "zh-TW": "同時寫入封裝後的最終 NRZI 準位",
+    "ja": "パック済みの最終 NRZI レベルも出力",
+    "tr": "Paketlenmiş son NRZI düzeylerini de yaz"
+  },
+  "Target format:": {
+    "en": "Target format:",
+    "zh-CN": "目标格式：",
+    "zh-TW": "目標格式：",
+    "ja": "目標形式：",
+    "tr": "Hedef biçimi:"
+  },
+  "38688 symbols for one sector or 619008 for a full ECC Block.": {
+    "en": "38688 symbols for one sector or 619008 for a full ECC Block.",
+    "zh-CN": "单扇区为 38688 个符号，完整 ECC 块为 619008 个符号。",
+    "zh-TW": "單磁區為 38688 個符號，完整 ECC 區塊為 619008 個符號。",
+    "ja": "単一セクターは 38688 シンボル、完全な ECC ブロックは 619008 シンボルです。",
+    "tr": "Bir sektör için 38688, tam ECC bloğu için 619008 simge."
+  },
+  "0/P = pit/black, 1/L = land/white, ? = unconstrained; whitespace is ignored.": {
+    "en": "0/P = pit/black, 1/L = land/white, ? = unconstrained; whitespace is ignored.",
+    "zh-CN": "0/P = pit/黑色，1/L = land/白色，? = 不约束；忽略空白字符。",
+    "zh-TW": "0/P = pit／黑色，1/L = land／白色，? = 不約束；忽略空白字元。",
+    "ja": "0/P = pit／黒、1/L = land／白、? = 制約なし。空白は無視します。",
+    "tr": "0/P = pit/siyah, 1/L = land/beyaz, ? = kısıtsız; boşluklar yok sayılır."
+  },
+  "State-control chooses payload bytes directly from image-ranked EFMPlus code words and keeps a beam of exact dual-stream prefix states. Search is driven by controllable payload words; the reported majority/gray scores cover every 16-bit channel word, including fixed/EDC/PI/PO and both SYNC words. Stream, DSV and final boundaries remain exact.": {
+    "en": "State-control chooses payload bytes directly from image-ranked EFMPlus code words and keeps a beam of exact dual-stream prefix states. Search is driven by controllable payload words; the reported majority/gray scores cover every 16-bit channel word, including fixed/EDC/PI/PO and both SYNC words. Stream, DSV and final boundaries remain exact.",
+    "zh-CN": "state-control 直接从按图像排序的 EFMPlus 码字中选择负载字节，并保留精确双流前缀状态束。搜索由可控负载码字驱动；报告的多数/灰度评分覆盖每个 16 位通道字，包括固定数据、EDC/PI/PO 及两个 SYNC 字。数据流、DSV 和最终边界保持精确。",
+    "zh-TW": "state-control 直接從依影像排序的 EFMPlus 碼字選擇負載位元組，並保留精確雙串流前綴狀態束。搜尋由可控負載碼字驅動；報告的多數／灰階評分涵蓋每個 16 位元通道字，包括固定資料、EDC/PI/PO 與兩個 SYNC 字。資料流、DSV 與最終邊界維持精確。",
+    "ja": "state-control は画像で順位付けした EFMPlus コードワードからペイロードバイトを直接選び、厳密な二重ストリーム接頭状態のビームを保持します。探索は制御可能なペイロードワードで進め、報告する多数決／階調スコアは固定データ、EDC/PI/PO、両方の SYNC ワードを含む全 16 ビットチャネルワードを評価します。ストリーム、DSV、最終境界は厳密に保持します。",
+    "tr": "state-control, görüntüye göre sıralanan EFMPlus kod sözcüklerinden yük baytlarını doğrudan seçer ve tam çift akış önek durumlarının ışınını korur. Arama denetlenebilir yük sözcükleriyle yürütülür; bildirilen çoğunluk/gri puanları sabit/EDC/PI/PO ve iki SYNC sözcüğü dahil her 16 bitlik kanal sözcüğünü kapsar. Akış, DSV ve son sınırlar tam kalır."
+  },
+  "Dispersion maps luminance bins 0..127 and 128..255 to scrambled EFMPlus input bytes 0xA5 and 0x92 (5 and 2 transitions), then reverses DVD payload scrambling for ISO output. Nominal preview levels are 0 and 255. It samples every payload code-word center regardless of --constraint-step and --image-threshold. These values are not calibrated optical luminance. Opaque black/white images use nearest-neighbor sampling to preserve their dither pattern. Other images retain alpha-weighted bilinear sampling. Q=0x66 and 0xB9 are not generated; old ISOs retain readback of 66 as black and B9 as nominal dark gray 85. With --fast-output true, payload selection is unchanged but final ECC/EFM boundary and DSV verification are skipped; the JSON finalBoundary is therefore null.": {
+    "en": "Dispersion maps luminance bins 0..127 and 128..255 to scrambled EFMPlus input bytes 0xA5 and 0x92 (5 and 2 transitions), then reverses DVD payload scrambling for ISO output. Nominal preview levels are 0 and 255. It samples every payload code-word center regardless of --constraint-step and --image-threshold. These values are not calibrated optical luminance. Opaque black/white images use nearest-neighbor sampling to preserve their dither pattern. Other images retain alpha-weighted bilinear sampling. Q=0x66 and 0xB9 are not generated; old ISOs retain readback of 66 as black and B9 as nominal dark gray 85. With --fast-output true, payload selection is unchanged but final ECC/EFM boundary and DSV verification are skipped; the JSON finalBoundary is therefore null.",
+    "zh-CN": "dispersion 将亮度区间 0..127 与 128..255 映射到扰码域 EFMPlus 输入字节 0xA5 与 0x92（5 与 2 次跳变），再反转 DVD 负载扰码以输出 ISO。名义预览灰度为 0 和 255。无论 --constraint-step 和 --image-threshold 如何设置，均采样每个负载码字中心。这些值不是经过标定的光学亮度。不透明黑白图采用最近邻采样以保留抖动图案；其他图采用 alpha 加权双线性采样。不生成 Q=0x66 或 0xB9；旧 ISO 仍将 66 读回为黑色、B9 为名义深灰 85。--fast-output true 时负载选择不变，但跳过最终 ECC/EFM 边界及 DSV 验证，因此 JSON finalBoundary 为 null。",
+    "zh-TW": "dispersion 將亮度區間 0..127 與 128..255 映射至擾碼域 EFMPlus 輸入位元組 0xA5 與 0x92（5 與 2 次轉換），再反轉 DVD 負載擾碼以輸出 ISO。名義預覽灰階為 0 與 255。無論 --constraint-step 與 --image-threshold 如何設定，皆取樣每個負載碼字中心。這些值不是經過標定的光學亮度。不透明黑白圖採用最近鄰取樣以保留抖動圖案；其他圖採用 alpha 加權雙線性取樣。不產生 Q=0x66 或 0xB9；舊 ISO 仍將 66 讀回為黑色、B9 為名義深灰 85。--fast-output true 時負載選擇不變，但略過最終 ECC/EFM 邊界及 DSV 驗證，因此 JSON finalBoundary 為 null。",
+    "ja": "dispersion は輝度区間 0..127 と 128..255 をスクランブル領域の EFMPlus 入力バイト 0xA5 と 0x92（遷移数 5 と 2）に対応させ、DVD ペイロードのスクランブルを逆転して ISO を出力します。公称プレビュー階調は 0 と 255 です。--constraint-step と --image-threshold に関係なく全ペイロードコードワードの中心をサンプリングします。これらは校正済みの光学輝度ではありません。不透明な白黒画像はディザパターンを保つ最近傍サンプリング、その他は alpha 加重バイリニアサンプリングを使います。Q=0x66 と 0xB9 は生成せず、旧 ISO の読み戻しでは 66 を黒、B9 を公称暗灰 85 として扱います。--fast-output true ではペイロード選択は変えず、最終 ECC/EFM 境界と DSV の検証を省略するため、JSON finalBoundary は null です。",
+    "tr": "dispersion, 0..127 ve 128..255 parlaklık aralıklarını karıştırılmış EFMPlus girdi baytları 0xA5 ve 0x92'ye (5 ve 2 geçiş) eşler, ardından ISO çıktısı için DVD yük karıştırmasını tersine çevirir. Nominal önizleme düzeyleri 0 ve 255'tir. --constraint-step ve --image-threshold değerlerinden bağımsız olarak her yük kod sözcüğü merkezini örnekler. Bu değerler kalibre edilmiş optik parlaklık değildir. Opak siyah/beyaz görseller renk taklidi desenini korumak için en yakın komşu, diğer görseller alfa ağırlıklı çift doğrusal örnekleme kullanır. Q=0x66 ve 0xB9 üretilmez; eski ISO'larda 66 siyah, B9 nominal koyu gri 85 olarak geri okunur. --fast-output true ile yük seçimi değişmez ancak son ECC/EFM sınırı ve DSV doğrulaması atlanır; bu nedenle JSON finalBoundary null olur."
+  },
+  "Hybrid --data-dir mode builds a mountable ISO9660/Joliet filesystem. Files default to the inner ring; --file-position outer reserves the outer ring for files and draws between front metadata and files. Drawing boundaries align to ECC Blocks and never overwrite the filesystem. It defaults to dispersion plus fast output. --lba and --fill-sectors are automatic in this mode; use --drawing-start-lba to leave additional inner-ring space.": {
+    "en": "Hybrid --data-dir mode builds a mountable ISO9660/Joliet filesystem. Files default to the inner ring; --file-position outer reserves the outer ring for files and draws between front metadata and files. Drawing boundaries align to ECC Blocks and never overwrite the filesystem. It defaults to dispersion plus fast output. --lba and --fill-sectors are automatic in this mode; use --drawing-start-lba to leave additional inner-ring space.",
+    "zh-CN": "混合 --data-dir 模式构建可挂载的 ISO9660/Joliet 文件系统。文件默认位于内圈；--file-position outer 将外圈留给文件，并在前部元数据与文件之间绘图。绘图边界按 ECC 块对齐，绝不覆盖文件系统。默认采用 dispersion 加快速输出。此模式自动确定 --lba 和 --fill-sectors；用 --drawing-start-lba 可留出额外内圈空间。",
+    "zh-TW": "混合 --data-dir 模式建立可掛載的 ISO9660/Joliet 檔案系統。檔案預設位於內圈；--file-position outer 將外圈保留給檔案，並在前部中繼資料與檔案之間繪圖。繪圖邊界按 ECC 區塊對齊，絕不覆寫檔案系統。預設採用 dispersion 加快速輸出。此模式自動決定 --lba 與 --fill-sectors；使用 --drawing-start-lba 可保留額外內圈空間。",
+    "ja": "ハイブリッド --data-dir モードはマウント可能な ISO9660/Joliet ファイルシステムを構築します。ファイルは既定で内周に置き、--file-position outer では外周をファイル用に予約し、先頭メタデータとファイルの間に描画します。描画境界は ECC ブロックに整列し、ファイルシステムを上書きしません。既定は dispersion と高速出力です。このモードの --lba と --fill-sectors は自動決定します。--drawing-start-lba で内周に追加の空間を残せます。",
+    "tr": "Karma --data-dir modu bağlanabilir ISO9660/Joliet dosya sistemi oluşturur. Dosyalar varsayılan olarak iç halkadadır; --file-position outer dış halkayı dosyalara ayırır ve ön meta verilerle dosyalar arasına çizer. Çizim sınırları ECC bloklarına hizalanır ve dosya sisteminin üzerine yazmaz. Varsayılan dispersion ve hızlı çıktıdır. Bu modda --lba ve --fill-sectors otomatiktir; ek iç halka boşluğu için --drawing-start-lba kullanın."
+  },
+  "Calibration options:": {
+    "en": "Calibration options:",
+    "zh-CN": "标定选项：",
+    "zh-TW": "標定選項：",
+    "ja": "キャリブレーションオプション：",
+    "tr": "Kalibrasyon seçenekleri:"
+  },
+  "Generated linear pitch coefficient (default 0)": {
+    "en": "Generated linear pitch coefficient (default 0)",
+    "zh-CN": "生成时轨距一次系数（默认 0）",
+    "zh-TW": "產生時軌距一次係數（預設 0）",
+    "ja": "生成時のピッチ 1 次係数（既定 0）",
+    "tr": "Oluşturma doğrusal iz aralığı katsayısı (varsayılan 0)"
+  },
+  "Generated quadratic pitch coefficient (default 0)": {
+    "en": "Generated quadratic pitch coefficient (default 0)",
+    "zh-CN": "生成时轨距二次系数（默认 0）",
+    "zh-TW": "產生時軌距二次係數（預設 0）",
+    "ja": "生成時のピッチ 2 次係数（既定 0）",
+    "tr": "Oluşturma ikinci derece iz aralığı katsayısı (varsayılan 0)"
+  },
+  "Generated cubic pitch coefficient (default 0) --generated-pitch-* aliases are also accepted": {
+    "en": "Generated cubic pitch coefficient (default 0) --generated-pitch-* aliases are also accepted",
+    "zh-CN": "生成时轨距三次系数（默认 0）；也接受 --generated-pitch-* 别名",
+    "zh-TW": "產生時軌距三次係數（預設 0）；也接受 --generated-pitch-* 別名",
+    "ja": "生成時のピッチ 3 次係数（既定 0）。--generated-pitch-* の別名も使用可能",
+    "tr": "Oluşturma kübik iz aralığı katsayısı (varsayılan 0); --generated-pitch-* diğer adları da kabul edilir"
+  },
+  "Actual linear pitch coefficient (default 0)": {
+    "en": "Actual linear pitch coefficient (default 0)",
+    "zh-CN": "实际轨距一次系数（默认 0）",
+    "zh-TW": "實際軌距一次係數（預設 0）",
+    "ja": "実際のピッチ 1 次係数（既定 0）",
+    "tr": "Gerçek doğrusal iz aralığı katsayısı (varsayılan 0)"
+  },
+  "Actual quadratic pitch coefficient (default 0)": {
+    "en": "Actual quadratic pitch coefficient (default 0)",
+    "zh-CN": "实际轨距二次系数（默认 0）",
+    "zh-TW": "實際軌距二次係數（預設 0）",
+    "ja": "実際のピッチ 2 次係数（既定 0）",
+    "tr": "Gerçek ikinci derece iz aralığı katsayısı (varsayılan 0)"
+  },
+  "Actual cubic pitch coefficient (default 0)": {
+    "en": "Actual cubic pitch coefficient (default 0)",
+    "zh-CN": "实际轨距三次系数（默认 0）",
+    "zh-TW": "實際軌距三次係數（預設 0）",
+    "ja": "実際のピッチ 3 次係数（既定 0）",
+    "tr": "Gerçek kübik iz aralığı katsayısı (varsayılan 0)"
+  },
+  "Default 133.3": {
+    "en": "Default 133.3",
+    "zh-CN": "默认 133.3",
+    "zh-TW": "預設 133.3",
+    "ja": "既定 133.3",
+    "tr": "Varsayılan 133.3"
+  },
+  "Default cw; no rotation-offset calibration": {
+    "en": "Default cw; no rotation-offset calibration",
+    "zh-CN": "默认 cw；不标定旋转偏移",
+    "zh-TW": "預設 cw；不標定旋轉位移",
+    "ja": "既定 cw。回転オフセットの校正なし",
+    "tr": "Varsayılan cw; dönüş ofseti kalibrasyonu yok"
+  },
+  "Accepted for compatibility; black/white preview uses 128": {
+    "en": "Accepted for compatibility; black/white preview uses 128",
+    "zh-CN": "兼容选项；黑白预览使用 128",
+    "zh-TW": "相容選項；黑白預覽使用 128",
+    "ja": "互換用。白黒プレビューは 128 を使用",
+    "tr": "Uyumluluk için kabul edilir; siyah/beyaz önizleme 128 kullanır"
+  },
+  "Default 1": {
+    "en": "Default 1",
+    "zh-CN": "默认 1",
+    "zh-TW": "預設 1",
+    "ja": "既定 1",
+    "tr": "Varsayılan 1"
+  },
+  "Square PNG size (default 1024)": {
+    "en": "Square PNG size (default 1024)",
+    "zh-CN": "方形 PNG 尺寸（默认 1024）",
+    "zh-TW": "正方形 PNG 尺寸（預設 1024）",
+    "ja": "正方形 PNG サイズ（既定 1024）",
+    "tr": "Kare PNG boyutu (varsayılan 1024)"
+  },
+  "Forward geometry samples per sector (default 16)": {
+    "en": "Forward geometry samples per sector (default 16)",
+    "zh-CN": "每扇区的前向几何采样数（默认 16）",
+    "zh-TW": "每磁區的前向幾何取樣數（預設 16）",
+    "ja": "セクターごとの前方ジオメトリサンプル数（既定 16）",
+    "tr": "Sektör başına ileri geometri örnekleri (varsayılan 16)"
+  },
+  "First visible sector (default 0)": {
+    "en": "First visible sector (default 0)",
+    "zh-CN": "首个可见扇区（默认 0）",
+    "zh-TW": "首個可見磁區（預設 0）",
+    "ja": "最初の可視セクター（既定 0）",
+    "tr": "İlk görünür sektör (varsayılan 0)"
+  },
+  "Visible sector count (default: remainder of disc)": {
+    "en": "Visible sector count (default: remainder of disc)",
+    "zh-CN": "可见扇区数（默认：盘片剩余部分）",
+    "zh-TW": "可見磁區數（預設：光碟剩餘部分）",
+    "ja": "可視セクター数（既定：ディスクの残り）",
+    "tr": "Görünür sektör sayısı (varsayılan: diskin kalanı)"
+  },
+  "Simulation options (source is the generated ISO, not an image):": {
+    "en": "Simulation options (source is the generated ISO, not an image):",
+    "zh-CN": "模拟选项（来源是生成的 ISO，而不是图片）：",
+    "zh-TW": "模擬選項（來源為產生的 ISO，而非圖片）：",
+    "ja": "シミュレーションオプション（入力元は生成済み ISO）：",
+    "tr": "Benzetim seçenekleri (kaynak görsel değil oluşturulan ISO'dur):"
+  },
+  "Generated ISO image (required)": {
+    "en": "Generated ISO image (required)",
+    "zh-CN": "生成的 ISO 镜像（必填）",
+    "zh-TW": "產生的 ISO 映像（必填）",
+    "ja": "生成済み ISO イメージ（必須）",
+    "tr": "Oluşturulan ISO imajı (gerekli)"
+  },
+  "Measured inner radius of the burned spiral": {
+    "en": "Measured inner radius of the burned spiral",
+    "zh-CN": "刻录螺旋的实测内半径",
+    "zh-TW": "燒錄螺旋的實測內半徑",
+    "ja": "書き込み済みスパイラルの実測内半径",
+    "tr": "Yazılan sarmalın ölçülen iç yarıçapı"
+  },
+  "Measured outer radius of the burned spiral": {
+    "en": "Measured outer radius of the burned spiral",
+    "zh-CN": "刻录螺旋的实测外半径",
+    "zh-TW": "燒錄螺旋的實測外半徑",
+    "ja": "書き込み済みスパイラルの実測外半径",
+    "tr": "Yazılan sarmalın ölçülen dış yarıçapı"
+  },
+  "Measured linear pitch coefficient (default 0)": {
+    "en": "Measured linear pitch coefficient (default 0)",
+    "zh-CN": "实测轨距一次系数（默认 0）",
+    "zh-TW": "實測軌距一次係數（預設 0）",
+    "ja": "実測ピッチ 1 次係数（既定 0）",
+    "tr": "Ölçülen doğrusal iz aralığı katsayısı (varsayılan 0)"
+  },
+  "Measured quadratic pitch coefficient (default 0)": {
+    "en": "Measured quadratic pitch coefficient (default 0)",
+    "zh-CN": "实测轨距二次系数（默认 0）",
+    "zh-TW": "實測軌距二次係數（預設 0）",
+    "ja": "実測ピッチ 2 次係数（既定 0）",
+    "tr": "Ölçülen ikinci derece iz aralığı katsayısı (varsayılan 0)"
+  },
+  "Measured cubic pitch coefficient (default 0)": {
+    "en": "Measured cubic pitch coefficient (default 0)",
+    "zh-CN": "实测轨距三次系数（默认 0）",
+    "zh-TW": "實測軌距三次係數（預設 0）",
+    "ja": "実測ピッチ 3 次係数（既定 0）",
+    "tr": "Ölçülen kübik iz aralığı katsayısı (varsayılan 0)"
+  },
+  "Disc sector count; defaults to the solve sidecar JSON (IMAGE.iso.json) or the ISO file size": {
+    "en": "Disc sector count; defaults to the solve sidecar JSON (IMAGE.iso.json) or the ISO file size",
+    "zh-CN": "盘片扇区数；默认采用求解 sidecar JSON（IMAGE.iso.json）或 ISO 文件大小",
+    "zh-TW": "光碟磁區數；預設採用求解 sidecar JSON（IMAGE.iso.json）或 ISO 檔案大小",
+    "ja": "ディスクのセクター数。既定は求解の sidecar JSON（IMAGE.iso.json）または ISO ファイルサイズ",
+    "tr": "Disk sektör sayısı; varsayılan çözüm sidecar JSON (IMAGE.iso.json) veya ISO dosya boyutu"
+  },
+  "First visible sector; defaults to the sidecar drawing start (0 when absent)": {
+    "en": "First visible sector; defaults to the sidecar drawing start (0 when absent)",
+    "zh-CN": "首个可见扇区；默认采用 sidecar 绘图起点（缺失时为 0）",
+    "zh-TW": "首個可見磁區；預設採用 sidecar 繪圖起點（缺少時為 0）",
+    "ja": "最初の可視セクター。既定は sidecar の描画開始（ない場合 0）",
+    "tr": "İlk görünür sektör; varsayılan sidecar çizim başlangıcıdır (yoksa 0)"
+  },
+  "Visible sector count; defaults to the sidecar drawing length (remainder of the ISO when absent)": {
+    "en": "Visible sector count; defaults to the sidecar drawing length (remainder of the ISO when absent)",
+    "zh-CN": "可见扇区数；默认采用 sidecar 绘图长度（缺失时为 ISO 剩余部分）",
+    "zh-TW": "可見磁區數；預設採用 sidecar 繪圖長度（缺少時為 ISO 剩餘部分）",
+    "ja": "可視セクター数。既定は sidecar の描画長（ない場合 ISO の残り）",
+    "tr": "Görünür sektör sayısı; varsayılan sidecar çizim uzunluğudur (yoksa ISO'nun kalanı)"
+  },
+  "Default cw": {
+    "en": "Default cw",
+    "zh-CN": "默认 cw",
+    "zh-TW": "預設 cw",
+    "ja": "既定 cw",
+    "tr": "Varsayılan cw"
+  },
+  "Payload bytes sampled per sector (default 16)": {
+    "en": "Payload bytes sampled per sector (default 16)",
+    "zh-CN": "每扇区采样的负载字节数（默认 16）",
+    "zh-TW": "每磁區取樣的負載位元組數（預設 16）",
+    "ja": "セクターごとにサンプリングするペイロードバイト数（既定 16）",
+    "tr": "Sektör başına örneklenen yük baytları (varsayılan 16)"
+  },
+  "Missing command.": {
+    "en": "Missing command.",
+    "zh-CN": "缺少命令。",
+    "zh-TW": "缺少命令。",
+    "ja": "コマンドがありません。",
+    "tr": "Komut eksik."
+  },
+  "Tabs: 0 home, 1 design, 2 preview, 3 export, 4 burn, 5 calibration.": {
+    "en": "Tabs: 0 home, 1 design, 2 preview, 3 export, 4 burn, 5 calibration.",
+    "zh-CN": "页面编号：0 主页、1 设计、2 预览、3 导出、4 刻录、5 标定。",
+    "zh-TW": "頁面編號：0 首頁、1 設計、2 預覽、3 匯出、4 燒錄、5 標定。",
+    "ja": "ページ番号：0 ホーム、1 デザイン、2 プレビュー、3 エクスポート、4 書き込み、5 キャリブレーション。",
+    "tr": "Sayfalar: 0 ana sayfa, 1 tasarım, 2 önizleme, 3 dışa aktarma, 4 disk yazma, 5 kalibrasyon."
+  },
+  "No IMAPI2 optical recorder was found.": {
+    "en": "No IMAPI2 optical recorder was found.",
+    "zh-CN": "未找到 IMAPI2 光盘刻录机。",
+    "zh-TW": "找不到 IMAPI2 光碟燒錄機。",
+    "ja": "IMAPI2 光ディスクレコーダーが見つかりませんでした。",
+    "tr": "IMAPI2 optik disk yazıcısı bulunamadı."
+  },
+  "Burning assembly MVID: {0}": {
+    "en": "Burning assembly MVID: {0}",
+    "zh-CN": "刻录程序集 MVID：{0}",
+    "zh-TW": "燒錄組件 MVID：{0}",
+    "ja": "書き込みアセンブリ MVID：{0}",
+    "tr": "Disk yazma derlemesi MVID: {0}"
+  },
+  "Legacy DoNotFinalizeMedia setter present: {0}": {
+    "en": "Legacy DoNotFinalizeMedia setter present: {0}",
+    "zh-CN": "存在旧版 DoNotFinalizeMedia setter：{0}",
+    "zh-TW": "存在舊版 DoNotFinalizeMedia setter：{0}",
+    "ja": "旧 DoNotFinalizeMedia setter の有無：{0}",
+    "tr": "Eski DoNotFinalizeMedia setter mevcut: {0}"
+  },
+  "Raw CD DAO writer present: {0}": {
+    "en": "Raw CD DAO writer present: {0}",
+    "zh-CN": "存在原始 CD DAO 写入器：{0}",
+    "zh-TW": "存在原始 CD DAO 寫入器：{0}",
+    "ja": "RAW CD DAO ライターの有無：{0}",
+    "tr": "Ham CD DAO yazıcısı mevcut: {0}"
+  }
+}

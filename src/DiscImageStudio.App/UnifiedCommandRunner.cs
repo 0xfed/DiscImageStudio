@@ -1,4 +1,5 @@
 using DiscImageStudio.Burning;
+using DiscImageStudio.Localization;
 using DiscImageStudio.Core;
 using DiscImageStudio.ViewModels;
 
@@ -6,6 +7,12 @@ namespace DiscImageStudio;
 
 internal static class UnifiedCommandRunner
 {
+    private static readonly string[] SnapshotSwitches =
+    [
+        "--settings-dialog", "--preset-dialog", "--dock", "--expand", "--home-hover",
+        "--project-update", "--project-save", "--tone-preview",
+    ];
+
     private static DiscModuleCatalog Modules => ConsoleModuleRunner.Catalog;
 
     internal static bool SupportsCancellation(string command)
@@ -18,7 +25,7 @@ internal static class UnifiedCommandRunner
     {
         if (arguments.Length == 0)
         {
-            throw new ArgumentException("Missing command.");
+            throw new ArgumentException(L.T("Missing command."));
         }
 
         DiscJobRequest request = new(arguments[0], arguments.Skip(1));
@@ -29,9 +36,10 @@ internal static class UnifiedCommandRunner
     {
         try
         {
+            arguments = CommandLineLanguage.Initialize(arguments, SnapshotSwitches);
             if (arguments.Length == 0)
             {
-                throw new ArgumentException("Missing command.");
+                throw new ArgumentException(L.T("Missing command."));
             }
 
             string command = arguments[0].ToLowerInvariant();
@@ -49,7 +57,7 @@ internal static class UnifiedCommandRunner
                 {
                     throw new ArgumentOutOfRangeException(
                         nameof(arguments),
-                        "Tabs: 0 home, 1 design, 2 preview, 3 export, 4 burn, 5 calibration.");
+                        L.T("Tabs: 0 home, 1 design, 2 preview, 3 export, 4 burn, 5 calibration."));
                 }
 
                 bool settingsDialog = HasOption(snapshotArguments, "settings-dialog");
@@ -79,7 +87,7 @@ internal static class UnifiedCommandRunner
                     FindOption(snapshotArguments, "theme"),
                     settingsDialog,
                     FindOption(snapshotArguments, "settings-view"),
-                    FindOption(snapshotArguments, "language"));
+                    L.PreferredLanguage);
             }
 
             if (command == "burn-devices")
@@ -96,25 +104,20 @@ internal static class UnifiedCommandRunner
         }
         catch (OperationCanceledException)
         {
-            Console.Error.WriteLine("Cancelled.");
+            Console.Error.WriteLine(L.T("Cli.Cancelled"));
             return 130;
         }
         catch (Exception exception)
         {
-            Console.Error.WriteLine($"error: {exception}");
+            Console.Error.WriteLine(L.Format("Cli.Error", exception));
             return 1;
         }
     }
 
     private static int PrintHelp()
     {
-        Console.WriteLine(
-            """
-            Disc Image Studio - modular CD/DVD/Blu-ray optical-disc image generator
-
-            Start without arguments to open the graphical interface.
-            Disc commands are provided by modules through DiscImageStudio.Core.
-            """);
+        Console.WriteLine(CommandHelp.WindowsIntro);
+        Console.WriteLine(L.T("Cli.LanguageHelp"));
         foreach (IOpticalDiscModule module in Modules.Modules)
         {
             Console.WriteLine($"\n{module.Descriptor.DisplayName} [{module.Descriptor.Id}]");
@@ -124,43 +127,7 @@ internal static class UnifiedCommandRunner
             }
         }
 
-        Console.WriteLine(
-            """
-
-            Developer command:
-              ui-snapshot --output SCREENSHOT.png [--tab N] [--width 1366] [--height 768]
-                          [--project FILE.discproj] [--live-input IMAGE --live-disc cd|dvd]
-                          [--dock] [--burn-source project|calibration]
-                          [--preset-dialog] [--settings-dialog]
-                          [--language zh-CN|zh-TW|en|ja|tr|system]
-                          [--settings-view general|storage|about] [--theme dark|light|system]
-                          [--expand] [--scroll N] [--home-hover]
-                          [--burn-progress write|buffer|finalize]
-                          [--project-update] [--project-save] [--tone-preview]
-              burn-devices
-              burn-build-info
-
-            Tabs: 0 home, 1 design, 2 preview, 3 export, 4 burn, 5 calibration.
-            --dock expands the job dock (progress + run log) for the snapshot; --burn-source
-            picks what the burn workspace shows as the material to write (calibration also
-            creates the calibration target); --scroll N scrolls the page down N pixels so the
-            part below the viewport can be captured; --project-update plays the applied-
-            calibration header acknowledgement; --project-save paints the saved-project
-            header trail at a fixed point in its lap; --tone-preview waits for the design
-            page's tone module and switches the snapshot to that page; --theme picks the
-            palette before the window is created; --settings-dialog captures the settings
-            window at 760x600 by default and never touches the real settings file;
-            --settings-view picks its category.
-
-            Blu-ray: bd-info exports parameters; bd-probe exports raw payload tests;
-            bd-encode exports one ECC cluster; bd-generate maps dark to 3T and light to 6T run-count bias.
-              bd-generate --input IMAGE.png --output PICTURE.iso [--invert true]
-                          [--total-sectors 12219392] [--data-dir FOLDER] [--volume-label BD_IMAGE]
-                          [--tone-dither 0..1] [--tone-brightness -64..64] [--tone-gamma true]
-            Total sectors must align to 32. Output is a complete ISO9660/Joliet image:
-            inner files first, followed by picture data. Press Ctrl+C to cancel.
-            See docs/ADDING_BLURAY.md for options and physical-model limitations.
-            """);
+        Console.WriteLine(CommandHelp.WindowsDetails);
         return 0;
     }
 
@@ -172,7 +139,7 @@ internal static class UnifiedCommandRunner
             .GetResult();
         if (devices.Count == 0)
         {
-            Console.WriteLine("No IMAPI2 optical recorder was found.");
+            Console.WriteLine(L.T("No IMAPI2 optical recorder was found."));
             return 0;
         }
 
@@ -198,16 +165,16 @@ internal static class UnifiedCommandRunner
         bool containsRawDaoWriter = rawSessionType?
             .GetMethod("WriteMedia") is not null;
         Console.WriteLine(
-            $"Burning assembly MVID: {burningAssemblyMarker.Module.ModuleVersionId}");
+            L.F($"Burning assembly MVID: {burningAssemblyMarker.Module.ModuleVersionId}"));
         Console.WriteLine(
-            $"Legacy DoNotFinalizeMedia setter present: {containsLegacyFinalizeSetter}");
-        Console.WriteLine($"Raw CD DAO writer present: {containsRawDaoWriter}");
+            L.F($"Legacy DoNotFinalizeMedia setter present: {containsLegacyFinalizeSetter}"));
+        Console.WriteLine(L.F($"Raw CD DAO writer present: {containsRawDaoWriter}"));
         return containsLegacyFinalizeSetter || !containsRawDaoWriter ? 1 : 0;
     }
 
     private static string RequireOption(ReadOnlySpan<string> arguments, string key)
         => FindOption(arguments, key)
-            ?? throw new ArgumentException($"Missing required option --{key}.");
+            ?? throw new ArgumentException(L.F($"Missing required option --{key}."));
 
     private static string? FindOption(ReadOnlySpan<string> arguments, string key)
     {

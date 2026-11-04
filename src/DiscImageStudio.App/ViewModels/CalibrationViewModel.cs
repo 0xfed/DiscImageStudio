@@ -419,7 +419,7 @@ public partial class CalibrationViewModel : ObservableObject
             token.ThrowIfCancellationRequested();
             UpdateFitAssessment();
             if (!result.Succeeded)
-                _statusMessage = L.F($"计算未通过，已保留全部 {pointCount} 点。\n{string.Join("\n", result.Warnings)}");
+                _statusMessage = L.F($"计算未通过，已保留全部 {pointCount} 点。\n{string.Join("\n", result.Warnings.Select(L.T))}");
             else if (SelectedCoarseCandidate is { } selected && !CandidateResidualAccepted(selected))
                 _statusMessage = L.F($"候选与实拍点偏差较大，暂不能应用；全部 {pointCount} 点已保留。请修正标红点或补充曲线点。");
             else if (_previewReady)
@@ -487,7 +487,7 @@ public partial class CalibrationViewModel : ObservableObject
         }
         if (!_fit.Succeeded)
         {
-            FitAssessment = _fit.Warnings.FirstOrDefault() ?? L.T("计算未通过，全部点已保留。");
+            FitAssessment = _fit.Warnings.Select(L.T).FirstOrDefault() ?? L.T("计算未通过，全部点已保留。");
             return;
         }
         if (SelectedCoarseCandidate is not { } candidate)

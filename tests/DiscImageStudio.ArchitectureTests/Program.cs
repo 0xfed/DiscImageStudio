@@ -1,4 +1,5 @@
 using DiscImageStudio.BluRay;
+using DiscImageStudio.Localization;
 using DiscImageStudio.Burning;
 using DiscImageStudio.Cd;
 using DiscImageStudio.Core;
@@ -9,6 +10,12 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+
+if (args.SequenceEqual(new[] { "--localization-layout" }))
+{
+    UiLocalizationLayoutTests.Run();
+    return;
+}
 
 DiscModuleCatalog catalog = new(
 [
@@ -32,7 +39,7 @@ True(
 DiscJobResult bluRayResult = await catalog.ExecuteAsync(
     new DiscJobRequest("bd-generate", ["--input", "source.png", "--output", "picture.iso", "--total-sectors", "1024"]));
 True(!bluRayResult.Succeeded && bluRayResult.ExitCode == 2, "Blu-ray module without a host image loader reports missing decoder");
-True(bluRayResult.Summary!.Contains("image loader", StringComparison.Ordinal), "Blu-ray reports image loading requirement");
+True(bluRayResult.Summary == L.T("BD picture generation requires an image loader. Run bd-generate through the application or provide a BluRayGray8Raster loader."), "Blu-ray reports image loading requirement");
 
 Throws<ArgumentException>(
     () => new DiscModuleCatalog([new BluRayDiscModule(), new ConflictingModule()]),
@@ -84,6 +91,7 @@ FourLevelPreviewTests.Run();
 FourLevelDitherTests.Run();
 ThreeLevelDitherTests.Run();
 BinaryDitherTests.Run();
+DitherToolLocalizationTests.Run();
 GammaDitherTests.Run();
 DvdScrambledPatternTests.Run();
 ToneTests.Run();

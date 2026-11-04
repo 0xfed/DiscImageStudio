@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Buffers.Binary;
 using System.Globalization;
 using System.Text;
@@ -78,15 +79,15 @@ public static class Iso9660ImageWriter
         {
             throw new ArgumentOutOfRangeException(
                 nameof(volumeSectors),
-                "Hybrid ISO volume is too small for filesystem metadata.");
+                L.T("Hybrid ISO volume is too small for filesystem metadata."));
         }
 
         ArgumentNullException.ThrowIfNull(volumeLabel);
         string sourceFullPath = sourceDirectory is null ? string.Empty : Path.GetFullPath(sourceDirectory);
         if (sourceDirectory is not null && !Directory.Exists(sourceFullPath))
-            throw new DirectoryNotFoundException($"Data directory does not exist: {sourceFullPath}");
+            throw new DirectoryNotFoundException(L.F($"Data directory does not exist: {sourceFullPath}"));
         if (sourceDirectory is not null && (File.GetAttributes(sourceFullPath) & FileAttributes.ReparsePoint) != 0)
-            throw new IOException($"Reparse points are not supported in --data-dir: {sourceFullPath}");
+            throw new IOException(L.F($"Reparse points are not supported in --data-dir: {sourceFullPath}"));
 
         IsoNode root = sourceDirectory is null
             ? new IsoNode(string.Empty, string.Empty, isDirectory: true, parent: null) { Timestamp = timestamp ?? DateTimeOffset.UtcNow }
@@ -115,14 +116,14 @@ public static class Iso9660ImageWriter
         ArgumentNullException.ThrowIfNull(output);
         if (!output.CanWrite)
         {
-            throw new ArgumentException("Hybrid ISO output stream must be writable.", nameof(output));
+            throw new ArgumentException(L.T("Hybrid ISO output stream must be writable."), nameof(output));
         }
 
         if (endLbaExclusive < plan.DataEndLbaExclusive || endLbaExclusive > plan.VolumeSectors)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(endLbaExclusive),
-                $"Sequential prefix must end between LBA {plan.DataEndLbaExclusive} and {plan.VolumeSectors}.");
+                L.F($"Sequential prefix must end between LBA {plan.DataEndLbaExclusive} and {plan.VolumeSectors}."));
         }
 
         cancellationToken.ThrowIfCancellationRequested();
@@ -168,9 +169,9 @@ public static class Iso9660ImageWriter
     {
         ArgumentNullException.ThrowIfNull(plan);
         ArgumentNullException.ThrowIfNull(output);
-        if (!output.CanWrite) throw new ArgumentException("ISO output must be writable.", nameof(output));
+        if (!output.CanWrite) throw new ArgumentException(L.T("ISO output must be writable."), nameof(output));
         if (!plan.FilesAtOuterRing || boundary < plan.MetadataEndLbaExclusive || boundary > plan.FileDataStartLba)
-            throw new ArgumentOutOfRangeException(nameof(boundary), "Outer-file drawing boundary overlaps metadata or files.");
+            throw new ArgumentOutOfRangeException(nameof(boundary), L.T("Outer-file drawing boundary overlaps metadata or files."));
     }
 
     private static void ValidateSources(LayoutPlan plan, CancellationToken cancellationToken)
@@ -265,7 +266,7 @@ public static class Iso9660ImageWriter
             if ((entry.Attributes & FileAttributes.ReparsePoint) != 0)
             {
                 throw new IOException(
-                    $"Reparse points are not supported in --data-dir: {entry.FullName}");
+                    L.F($"Reparse points are not supported in --data-dir: {entry.FullName}"));
             }
 
             if ((entry.Attributes & FileAttributes.Directory) != 0)
@@ -284,7 +285,7 @@ public static class Iso9660ImageWriter
                 {
                     throw new ArgumentOutOfRangeException(
                         nameof(directory),
-                        $"ISO9660 files larger than 4 GiB minus 1 byte are not supported: {file.FullName}");
+                        L.F($"ISO9660 files larger than 4 GiB minus 1 byte are not supported: {file.FullName}"));
                 }
 
                 directory.Children.Add(new IsoNode(
@@ -310,7 +311,7 @@ public static class Iso9660ImageWriter
             IsoNode directory = pending.Dequeue();
             if (directories.Count == ushort.MaxValue)
             {
-                throw new ArgumentException("ISO contains too many directories.");
+                throw new ArgumentException(L.T("ISO contains too many directories."));
             }
 
             directory.DirectoryNumber = checked((ushort)(directories.Count + 1));
@@ -386,7 +387,7 @@ public static class Iso9660ImageWriter
         ulong fileSectors = 0;
         foreach (IsoNode file in files) fileSectors = checked(fileSectors + SectorCount(file.DataLength));
         if ((ulong)metadataEnd + fileSectors > volumeSectors)
-            throw new ArgumentException("Data directory and filesystem metadata exceed the disc capacity.");
+            throw new ArgumentException(L.T("Data directory and filesystem metadata exceed the disc capacity."));
         if (filesAtOuterRing) cursor = checked(volumeSectors - (uint)fileSectors);
         uint fileDataStart = cursor;
         foreach (IsoNode file in files)
@@ -398,8 +399,7 @@ public static class Iso9660ImageWriter
         if (cursor > volumeSectors)
         {
             throw new ArgumentException(
-                $"Data directory needs {cursor} sectors including filesystem metadata, "
-                + $"but the disc has only {volumeSectors} sectors.");
+                L.F($"Data directory needs {cursor} sectors including filesystem metadata, but the disc has only {volumeSectors} sectors."));
         }
 
         return new Layout(
@@ -689,7 +689,7 @@ public static class Iso9660ImageWriter
             }
         }
 
-        throw new ArgumentException($"Too many colliding ISO identifiers derived from '{baseName}'.");
+        throw new ArgumentException(L.F($"Too many colliding ISO identifiers derived from '{baseName}'."));
     }
 
     private static void ValidateSourceFile(IsoNode file)
@@ -697,7 +697,7 @@ public static class Iso9660ImageWriter
         FileInfo current = new(file.SourcePath);
         if (!current.Exists || (current.Attributes & FileAttributes.ReparsePoint) != 0
             || current.Length != file.DataLength || current.LastWriteTimeUtc != file.Timestamp.UtcDateTime)
-            throw new IOException($"Source file changed after ISO planning: {file.SourcePath}");
+            throw new IOException(L.F($"Source file changed after ISO planning: {file.SourcePath}"));
     }
 
     private static string NormalizePrimaryIdentifier(
@@ -862,7 +862,7 @@ public static class Iso9660ImageWriter
                 FileOptions.SequentialScan);
             if (input.Length != file.DataLength)
             {
-                throw new IOException($"Source file size changed while streaming ISO: {file.SourcePath}");
+                throw new IOException(L.F($"Source file size changed while streaming ISO: {file.SourcePath}"));
             }
 
             byte[] buffer = new byte[CopyBufferBytes];
@@ -875,7 +875,7 @@ public static class Iso9660ImageWriter
                 if (read == 0)
                 {
                     throw new EndOfStreamException(
-                        $"Source file ended early while streaming ISO: {file.SourcePath}");
+                        L.F($"Source file ended early while streaming ISO: {file.SourcePath}"));
                 }
 
                 _output.Write(buffer, 0, read);
@@ -884,7 +884,7 @@ public static class Iso9660ImageWriter
             }
             ValidateSourceFile(file);
             if (input.Length != file.DataLength)
-                throw new IOException($"Source file size changed while streaming ISO: {file.SourcePath}");
+                throw new IOException(L.F($"Source file size changed while streaming ISO: {file.SourcePath}"));
         }
 
         internal void PadToLba(uint lba)
@@ -895,7 +895,7 @@ public static class Iso9660ImageWriter
             if (target < _position)
             {
                 throw new InvalidOperationException(
-                    $"Sequential ISO layout moved backwards from byte {_position} to {target}.");
+                    L.F($"Sequential ISO layout moved backwards from byte {_position} to {target}."));
             }
 
             long remaining = target - _position;

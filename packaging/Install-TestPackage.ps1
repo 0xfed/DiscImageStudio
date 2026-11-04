@@ -1,10 +1,13 @@
 [CmdletBinding()]
 param(
     [string]$PackagePath,
-    [string]$CertificatePath
+    [string]$CertificatePath,
+    [string]$Language
 )
 
 $ErrorActionPreference = "Stop"
+. (Join-Path $PSScriptRoot 'Localization.ps1')
+Initialize-ToolLanguage -Language $Language -Explicit ($PSBoundParameters.ContainsKey('Language'))
 
 $workspaceRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot ".."))
 if ([string]::IsNullOrWhiteSpace($PackagePath)) {
@@ -14,7 +17,7 @@ if ([string]::IsNullOrWhiteSpace($PackagePath)) {
             Sort-Object LastWriteTime -Descending
     )
     if ($packages.Count -ne 1) {
-        throw "Expected exactly one signed test MSIX in $packageDirectory, but found $($packages.Count)."
+        throw (Get-ToolText 'Packaging.PackageCount' @($packageDirectory, $packages.Count))
     }
 
     $PackagePath = $packages[0].FullName
@@ -27,10 +30,10 @@ $PackagePath = [IO.Path]::GetFullPath($PackagePath)
 $CertificatePath = [IO.Path]::GetFullPath($CertificatePath)
 
 if (-not (Test-Path -LiteralPath $PackagePath -PathType Leaf)) {
-    throw "Signed test package was not found: $PackagePath"
+    throw (Get-ToolText 'Packaging.TestPackageMissing' @($PackagePath))
 }
 if (-not (Test-Path -LiteralPath $CertificatePath -PathType Leaf)) {
-    throw "Test certificate was not found: $CertificatePath"
+    throw (Get-ToolText 'Packaging.CertificateMissing' @($CertificatePath))
 }
 
 $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -44,6 +47,7 @@ if (-not $isAdministrator) {
         "-File `"$PSCommandPath`""
         "-PackagePath `"$PackagePath`""
         "-CertificatePath `"$CertificatePath`""
+        "-Language $script:DiscToolLanguage"
     ) -join " "
 
     $process = Start-Process powershell.exe -Verb RunAs -ArgumentList $arguments -Wait -PassThru
@@ -63,11 +67,11 @@ Add-AppxPackage -Path $PackagePath
 
 $installedPackage = Get-AppxPackage -Name "12345.DiscImageStudioArchitectureTest"
 if ($null -eq $installedPackage) {
-    throw "Windows did not report the test package as installed."
+    throw (Get-ToolText 'Packaging.InstallUnreported')
 }
 
 Write-Host ""
-Write-Host "Disc Image Studio Test installed successfully." -ForegroundColor Green
-Write-Host "Open it from the Start menu by searching for: Disc Image Studio Test"
-Write-Host "Press Enter to close this window."
+Write-Host (Get-ToolText 'Packaging.Installed') -ForegroundColor Green
+Write-Host (Get-ToolText 'Packaging.StartMenu')
+Write-Host (Get-ToolText 'Packaging.CloseWindow')
 [void](Read-Host)

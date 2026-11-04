@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DiscImageStudio.Burning;
 
 public enum OpticalBurnMediaKind
@@ -18,7 +19,7 @@ internal static class OpticalBurnMedia
         {
             OpticalBurnMediaKind.CdAudio => 2352,
             OpticalBurnMediaKind.CdData or OpticalBurnMediaKind.DvdData or OpticalBurnMediaKind.BluRayData => 2048,
-            _ => throw new ArgumentOutOfRangeException(nameof(mediaKind), mediaKind, "Unknown optical media kind."),
+            _ => throw new ArgumentOutOfRangeException(nameof(mediaKind), mediaKind, L.T("Unknown optical media kind.")),
         };
 }
 
@@ -41,7 +42,7 @@ public sealed record OpticalWriteSpeed(
             OpticalBurnMediaKind.CdAudio or OpticalBurnMediaKind.CdData => SectorsPerSecond / CdSectorsPerSecondAtOneX,
             OpticalBurnMediaKind.DvdData => SectorsPerSecond * 2048.0 / DvdBytesPerSecondAtOneX,
             OpticalBurnMediaKind.BluRayData => SectorsPerSecond * 2048.0 / BluRayBytesPerSecondAtOneX,
-            _ => throw new ArgumentOutOfRangeException(nameof(mediaKind), mediaKind, "Unknown optical media kind."),
+            _ => throw new ArgumentOutOfRangeException(nameof(mediaKind), mediaKind, L.T("Unknown optical media kind.")),
         };
 
     public double GetMegabytesPerSecond(OpticalBurnMediaKind mediaKind)
@@ -56,7 +57,7 @@ public sealed record OpticalWriteSpeed(
         {
             throw new ArgumentOutOfRangeException(
                 nameof(SectorsPerSecond),
-                "Write speed must be greater than zero sectors per second.");
+                L.T("Write speed must be greater than zero sectors per second."));
         }
     }
 }
@@ -70,6 +71,9 @@ public sealed record OpticalBurnProgress(
 {
     public double Fraction => TotalBytes == 0 ? 0 : (double)CompletedBytes / TotalBytes;
 }
+
+// Workflow state is independent of the translated operation description.
+internal sealed record OpticalBurnOperation(string Message, bool IsFinalizing = false);
 
 /// <summary>
 /// CD audio producers supply headerless 44.1 kHz, 16-bit stereo little-endian PCM,
@@ -98,7 +102,7 @@ public sealed record OpticalBurnRequest(
         {
             throw new ArgumentOutOfRangeException(
                 nameof(ContentLength),
-                $"Stream length must be a positive multiple of {sectorBytes} bytes.");
+                L.F($"Stream length must be a positive multiple of {sectorBytes} bytes."));
         }
 
         WriteSpeed?.Validate();

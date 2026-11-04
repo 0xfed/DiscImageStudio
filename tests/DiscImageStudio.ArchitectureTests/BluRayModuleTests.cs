@@ -1,6 +1,7 @@
 using System.IO;
 using System.Text.Json;
 using DiscImageStudio.BluRay;
+using DiscImageStudio.Localization;
 using DiscImageStudio.BluRay.Encoding;
 using DiscImageStudio.Core;
 
@@ -293,7 +294,7 @@ internal static class BluRayModuleTests
             BluRayDiscModule module = new();
             DiscJobResult blocked = Run(module, "bd-generate", "--input", "source.png", "--output", file, "--total-sectors", "1024");
             Equal(2, blocked.ExitCode, "host image loader required");
-            True(blocked.Summary!.Contains("image loader", StringComparison.Ordinal), "missing loader is actionable");
+            True(blocked.Summary == L.T("BD picture generation requires an image loader. Run bd-generate through the application or provide a BluRayGray8Raster loader."), "missing loader is actionable");
             True(File.ReadAllBytes(file).SequenceEqual(original), "missing loader preserves file");
             Throws<ArgumentException>(() => Run(module, "bd-generate", "--output", file));
             Throws<ArgumentException>(() => Run(module, "bd-generate", "--input", file, "--output", file));

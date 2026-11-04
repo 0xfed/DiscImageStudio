@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.IO;
 using DiscImageStudio.Core;
+using DiscImageStudio.Localization;
 
 namespace DiscImageStudio.Cd;
 
@@ -108,7 +109,7 @@ public sealed class CdDiscModule : IOpticalDiscModule
             "cd-preview-warp" => PreviewWarp(request, options, progress, cancellationToken),
             "cd-preview-track" => PreviewTrack(request, options, progress, cancellationToken),
             _ => throw new ArgumentException(
-                $"CD module does not support command '{request.Command}'.",
+                L.F($"CD module does not support command '{request.Command}'."),
                 nameof(request)),
         };
         return Task.FromResult(result);
@@ -131,11 +132,10 @@ public sealed class CdDiscModule : IOpticalDiscModule
             CdGenerationSummary dataSummary = CdDataImageGenerator.Generate(options.Require("input"),
                 output, parameters, plan,
                 value => progress?.Report(new DiscJobProgress(ModuleId, "generate",
-                    $"CD data progress {value.Fraction:P1}", value.Fraction, value.CompletedBytes,
+                    L.F($"CD data progress {value.Fraction:P1}"), value.Fraction, value.CompletedBytes,
                     value.TotalBytes, value.Elapsed)), cancellationToken, ReadTone(options));
             return new DiscJobResult(ModuleId, request.Command, 0,
-                $"CD data image complete: {plan.FileCount} files, {plan.TotalSectors} sectors, "
-                + $"files={(outer ? "outer" : "inner")}, output={dataSummary.OutputTrack}", dataSummary.OutputTrack);
+                L.F($"CD data image complete: {plan.FileCount} files, {plan.TotalSectors} sectors, files={(outer ? L.T("Xaml.OuterRing") : L.T("Xaml.InnerRing"))}, output={dataSummary.OutputTrack}"), dataSummary.OutputTrack);
         }
         CdGenerationSummary summary = CdTrackGenerator.Generate(
             options.Require("input"),
@@ -146,7 +146,7 @@ public sealed class CdDiscModule : IOpticalDiscModule
             value => progress?.Report(new DiscJobProgress(
                 ModuleId,
                 "generate",
-                $"CD progress {value.Fraction:P1}",
+                L.F($"CD progress {value.Fraction:P1}"),
                 value.Fraction,
                 value.CompletedBytes,
                 value.TotalBytes,
@@ -154,10 +154,8 @@ public sealed class CdDiscModule : IOpticalDiscModule
             cancellationToken,
             ReadTone(options));
         string message =
-            $"CD track complete: {summary.Sectors} sectors, {summary.BytesWritten} bytes, "
-            + $"interleave={summary.Interleaved}, elapsed={summary.Elapsed.TotalSeconds:F1}s, "
-            + $"output={summary.OutputTrack}"
-            + (summary.CueSheetPath is null ? string.Empty : $", cue={summary.CueSheetPath}");
+            L.F($"CD track complete: {summary.Sectors} sectors, {summary.BytesWritten} bytes, interleave={summary.Interleaved}, elapsed={summary.Elapsed.TotalSeconds:F1}s, output={summary.OutputTrack}")
+            + (summary.CueSheetPath is null ? string.Empty : L.F($", cue={summary.CueSheetPath}"));
         return new DiscJobResult(ModuleId, request.Command, 0, message, summary.OutputTrack);
     }
 
@@ -168,7 +166,7 @@ public sealed class CdDiscModule : IOpticalDiscModule
         CancellationToken cancellationToken)
     {
         string output = Path.GetFullPath(options.Require("output"));
-        progress?.Report(new DiscJobProgress(ModuleId, "preview", "Rendering CD geometry preview…"));
+        progress?.Report(new DiscJobProgress(ModuleId, "preview", L.T("Rendering CD geometry preview…")));
         CdDiscParameters generated = ReadParameters(options);
         string dataDirectory = options.GetString("data-dir", string.Empty).Trim();
         bool outer = ReadFilePosition(options);
@@ -180,7 +178,7 @@ public sealed class CdDiscModule : IOpticalDiscModule
                 ReadMeasuredParameters(options, generated), options.GetInt("size", 1600),
                 options.GetInt("samples-per-sector", 16), ReadTone(options), plan, cancellationToken);
             return new DiscJobResult(ModuleId, request.Command, 0,
-                $"CD data geometry preview complete: output={output}", output);
+                L.F($"CD data geometry preview complete: output={output}"), output);
         }
         CdTrackGenerator.PreviewWarp(
             options.Require("input"),
@@ -195,7 +193,7 @@ public sealed class CdDiscModule : IOpticalDiscModule
             ModuleId,
             request.Command,
             0,
-            $"CD geometry preview complete: output={output}",
+            L.F($"CD geometry preview complete: output={output}"),
             output);
     }
 
@@ -206,7 +204,7 @@ public sealed class CdDiscModule : IOpticalDiscModule
         CancellationToken cancellationToken)
     {
         string output = Path.GetFullPath(options.Require("output"));
-        progress?.Report(new DiscJobProgress(ModuleId, "preview", "Rendering CD track preview…"));
+        progress?.Report(new DiscJobProgress(ModuleId, "preview", L.T("Rendering CD track preview…")));
         string track = options.Require("track");
         if (Path.GetExtension(track).Equals(".iso", StringComparison.OrdinalIgnoreCase))
         {
@@ -215,7 +213,7 @@ public sealed class CdDiscModule : IOpticalDiscModule
             CdDataImageGenerator.PreviewTrack(track, output, parameters,
                 options.GetInt("size", 1600), options.GetInt("byte-step", 48), cancellationToken);
             return new DiscJobResult(ModuleId, request.Command, 0,
-                $"CD data readback preview complete: output={output}", output);
+                L.F($"CD data readback preview complete: output={output}"), output);
         }
         CdTrackGenerator.PreviewTrack(
             options.Require("track"),
@@ -229,7 +227,7 @@ public sealed class CdDiscModule : IOpticalDiscModule
             ModuleId,
             request.Command,
             0,
-            $"CD track preview complete: output={output}",
+            L.F($"CD track preview complete: output={output}"),
             output);
     }
 
@@ -250,7 +248,7 @@ public sealed class CdDiscModule : IOpticalDiscModule
         {
             "inner" => false,
             "outer" => true,
-            _ => throw new ArgumentException("--file-position must be inner or outer."),
+            _ => throw new ArgumentException(L.T("--file-position must be inner or outer.")),
         };
 
     private static ToneProfile ReadTone(CdCommandOptions options)
@@ -289,7 +287,7 @@ public sealed class CdDiscModule : IOpticalDiscModule
                 string argument = arguments[index];
                 if (!argument.StartsWith("--", StringComparison.Ordinal))
                 {
-                    throw new ArgumentException($"Unexpected argument '{argument}'.");
+                    throw new ArgumentException(L.F($"Unexpected argument '{argument}'."));
                 }
 
                 int equals = argument.IndexOf('=');
@@ -305,7 +303,7 @@ public sealed class CdDiscModule : IOpticalDiscModule
                     key = argument[2..];
                     if (++index >= arguments.Count)
                     {
-                        throw new ArgumentException($"Missing value for --{key}.");
+                        throw new ArgumentException(L.F($"Missing value for --{key}."));
                     }
 
                     value = arguments[index];
@@ -313,7 +311,7 @@ public sealed class CdDiscModule : IOpticalDiscModule
 
                 if (!values.TryAdd(key, value))
                 {
-                    throw new ArgumentException($"Option --{key} was specified more than once.");
+                    throw new ArgumentException(L.F($"Option --{key} was specified more than once."));
                 }
             }
 
@@ -323,7 +321,7 @@ public sealed class CdDiscModule : IOpticalDiscModule
         internal string Require(string key)
             => _values.TryGetValue(key, out string? value)
                 ? value
-                : throw new ArgumentException($"Missing required option --{key}.");
+                : throw new ArgumentException(L.F($"Missing required option --{key}."));
 
         internal string GetString(string key, string fallback)
             => _values.TryGetValue(key, out string? value) ? value : fallback;

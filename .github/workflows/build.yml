@@ -46,6 +46,33 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      - name: Validate localization catalogs and source coverage
+        run: dotnet run --project tests/DiscImageStudio.LocalizationTests --configuration Release
+
+      - name: Validate translated burning workflows with fake recorders
+        run: dotnet run --project tests/DiscImageStudio.Burning.LocalizationTests --configuration Release
+
+      - name: Validate documentation translation rules
+        run: python3 -m unittest discover -s tests -p test_documentation_translation_rules.py
+
+      - name: Validate complete documentation translations
+        run: python3 tests/test_documentation_translations.py --require-complete
+
+      - name: Validate Python translation resources and parser behavior
+        run: python3 -m unittest discover -s tests -p test_python_localization.py
+
+      - name: Validate translated Python tools and synthetic figure layouts
+        shell: bash
+        run: |
+          python3 -m venv "$RUNNER_TEMP/python-localization"
+          "$RUNNER_TEMP/python-localization/bin/python" -m pip install numpy matplotlib
+          "$RUNNER_TEMP/python-localization/bin/python" tests/test_python_tool_localization.py
+
+      - name: Validate translated Blu-ray probe against independent reference vectors
+        run: |
+          dotnet build tools/BluRayByteProbe --configuration Release
+          python3 tests/test_probe_localization.py tools/BluRayByteProbe/bin/Release/net10.0/BluRayByteProbe.dll
+
       - name: Publish and archive the self-contained CLI
         shell: bash
         run: |
@@ -97,8 +124,54 @@ jobs:
       - name: Validate release tooling
         run: ./tests/Test-ReleaseTooling.ps1
 
+      - name: Validate translated packaging preflight
+        run: ./tests/Test-PackagingLocalization.ps1
+
+      - name: Validate translated packaging preflight on Windows PowerShell
+        shell: powershell
+        run: ./tests/Test-PackagingLocalization.ps1
+
       - name: Build
         run: dotnet build DiscImageStudio.slnx --configuration Release --no-restore
+
+      - name: Validate localization catalogs and source coverage
+        run: dotnet run --project tests/DiscImageStudio.LocalizationTests --configuration Release --no-build
+
+      - name: Validate translated burning workflows with fake recorders
+        run: dotnet run --project tests/DiscImageStudio.Burning.LocalizationTests --configuration Release --no-build
+
+      - name: Validate documentation translation rules
+        run: python -m unittest discover -s tests -p test_documentation_translation_rules.py
+
+      - name: Validate complete documentation translations
+        run: python tests/test_documentation_translations.py --require-complete
+
+      - name: Validate Python translation resources and parser behavior
+        run: python -m unittest discover -s tests -p test_python_localization.py
+
+      - name: Validate translated Python tools and synthetic figure layouts
+        run: |
+          python -m venv "$env:RUNNER_TEMP/python-localization"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $pythonLocalization = "$env:RUNNER_TEMP/python-localization/Scripts/python.exe"
+          & $pythonLocalization -m pip install numpy matplotlib
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & $pythonLocalization tests/test_python_tool_localization.py
+
+      - name: Validate translated Blu-ray probe against independent reference vectors
+        run: python tests/test_probe_localization.py tools/BluRayByteProbe/bin/Release/net10.0/BluRayByteProbe.dll
+
+      - name: Validate translated dithering CLI and render five-language windows
+        run: python tests/test_dither_tool_localization.py tools/FourLevelDither/bin/Release/net10.0-windows/FourLevelDither.dll
+
+      - name: Validate translated DVD probe and experiment byte consistency
+        run: python tests/test_dvd_probe_localization.py tools/DvdGrayProbe/bin/Release/net10.0-windows/DvdGrayProbe.dll
+
+      - name: Validate translated desktop text bounds and capture workspace layouts
+        timeout-minutes: 10
+        env:
+          DISC_IMAGE_STUDIO_UI_SNAPSHOTS: artifacts/ci/localization-layout
+        run: dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release --no-build -- --localization-layout
 
       - name: Test module architecture
         run: dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release --no-build
@@ -123,8 +196,13 @@ jobs:
         run: dotnet run --project src/DiscImageStudio.App --configuration Release --no-build -- ui-snapshot --output artifacts/store/home-screen.png
 
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: validation-artifacts
           path: |
             artifacts/ci/cd-smoke.raw
             artifacts/store/home-screen.png
+            artifacts/ci/dither-languages/*.png
+            artifacts/ci/python-localization-fixtures/*/*.png
+            artifacts/ci/python-localization-fixtures/FIXTURES.txt
+            artifacts/ci/localization-layout/

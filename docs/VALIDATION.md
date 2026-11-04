@@ -1,5 +1,7 @@
 # 验证说明
 
+[简体中文](VALIDATION.md) | [繁體中文](VALIDATION.zh-TW.md) | [English](VALIDATION.en.md) | [日本語](VALIDATION.ja.md) | [Türkçe](VALIDATION.tr.md)
+
 本页列出当前源码的可复现检查。自动化回归验证算法、文件布局和应用工作流；实际刻录效果仍取决于刻录机、固件与盘片。
 
 ## 本地验证
@@ -56,6 +58,15 @@ dotnet run --project src/DiscImageStudio.App --configuration Release --no-build 
 v1.3.0 另通过 `Build-Release.ps1` 的 .NET 10 自包含单文件验证：隔离目录仅放 EXE，刻录接口构建信息、DVD 自检、两扇区 RAW/WAV/CUE、关闭 CUE 及 WPF 界面渲染均通过。最终内置 .NET / Windows Desktop 10.0.11，并同步保留其完整上游许可声明。
 
 v1.3.2 通过完整架构回归、DVD 引擎及应用模块自检、发布工具 45 项检查。新增回归验证蓝光切换预设后另存与工程确认的极性一致，以及删除最近预设后跨盘型选择与几何同步；画布缩放覆盖 25%–1200% 边界、加减按钮和适应窗口重置。另核对新建 CD、蓝光、DVD 工程设置及 18 图层设计页共 4 张离屏截图。
+
+## 翻译预检
+
+打包翻译回归在不构建、签名、安装或提权的情况下检查元数据、诊断、语言优先级、Unicode 路径及子检查语言传递，数值文化保持不变。共享运行时还验证资源加载失败的五语说明、异常类型与流释放。Windows PowerShell 可将下列 pwsh 换为 powershell；实际 Windows 安装与打包仍须在 Windows 上验证。
+
+```powershell
+pwsh -NoProfile -File tests/Test-ReleaseTooling.ps1
+pwsh -NoProfile -File tests/Test-PackagingLocalization.ps1
+```
 
 ## 实盘验证边界
 

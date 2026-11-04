@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Diagnostics;
 using DvdImageSolver.Encoding;
 
@@ -224,18 +225,18 @@ internal static class MultiBlockImageSolver
         {
             throw new ArgumentOutOfRangeException(
                 nameof(options),
-                "Range fill sector count must be a positive multiple of 16.");
+                L.T("Range fill sector count must be a positive multiple of 16."));
         }
 
         if ((ulong)options.StartLba + options.FillSectors > options.ImageMapping.TotalSectors)
         {
-            throw new ArgumentOutOfRangeException(nameof(options), "Filled range exceeds the reported disc size.");
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Filled range exceeds the reported disc size."));
         }
 
         uint firstPsn = checked(options.StartLba + options.PsnOffset);
         if ((firstPsn & 0xF) != 0)
         {
-            throw new ArgumentException("The first PSN must be aligned to a 16-sector ECC Block.");
+            throw new ArgumentException(L.T("The first PSN must be aligned to a 16-sector ECC Block."));
         }
 
         if (options.IterationsPerBlock < 0
@@ -249,7 +250,7 @@ internal static class MultiBlockImageSolver
             || options.BatchCandidates is < 1 or > 64
             || options.SearchLanes is < 1 or > 8)
         {
-            throw new ArgumentOutOfRangeException(nameof(options), "Invalid solver iteration, mutation, bridge, beam, or adaptive retry option.");
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Invalid solver iteration, mutation, bridge, beam, or adaptive retry option."));
         }
     }
 }

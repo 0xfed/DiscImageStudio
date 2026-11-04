@@ -1,3 +1,5 @@
+using DiscImageStudio.Localization;
+
 namespace DiscImageStudio.BluRay;
 
 /// <summary>Calibration pattern confined to one drawing range; every other payload byte
@@ -27,7 +29,7 @@ public sealed class BluRayPatternRangeMapping : IBluRayBatchPayloadMapping
         {
             throw new ArgumentOutOfRangeException(
                 nameof(endSectorExclusive),
-                "The calibration drawing range must be 32-sector aligned and lie inside the disc.");
+                L.T("The calibration drawing range must be 32-sector aligned and lie inside the disc."));
         }
 
         _disc = disc;
@@ -46,7 +48,7 @@ public sealed class BluRayPatternRangeMapping : IBluRayBatchPayloadMapping
         if (disc != _disc || firstSector % BluRayDiscParameters.SectorsPerCluster != 0
             || firstSector >= disc.TotalSectors
             || destination.Length != BluRayDiscParameters.PayloadBytesPerCluster)
-            throw new ArgumentException("A complete aligned pattern cluster must match the source disc.");
+            throw new ArgumentException(L.T("A complete aligned pattern cluster must match the source disc."));
         cancellationToken.ThrowIfCancellationRequested();
         // Both range edges are cluster-aligned. Outside clusters remain zero in
         // the scrambled domain without invoking the pattern sampler at all.

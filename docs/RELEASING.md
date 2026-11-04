@@ -1,5 +1,16 @@
 # 发布指南
 
+[简体中文](RELEASING.md) | [繁體中文](RELEASING.zh-TW.md) | [English](RELEASING.en.md) | [日本語](RELEASING.ja.md) | [Türkçe](RELEASING.tr.md)
+
+四个 PowerShell 打包与安装脚本支持 `-Language zh-CN|zh-TW|en|ja|tr|system`；未指定时采用 `DISC_IMAGE_STUDIO_LANGUAGE` 或系统界面语言，显式参数优先。状态和本项目诊断使用共享翻译资源，版本、身份、路径、日志正文与校验值保持原样；第三方工具和 Windows 返回的详情保留原文。选定语言会传给子检查和提权后的安装进程。
+
+以下检查只验证元数据及预检失败路径，不构建、签名或安装包，也不请求提权。Windows PowerShell 可将命令中的 pwsh 换为 powershell：
+
+```powershell
+pwsh -NoProfile -File tests/Test-ReleaseTooling.ps1
+pwsh -NoProfile -File tests/Test-PackagingLocalization.ps1
+```
+
 ## 分支与版本政策
 
 日常开发使用 `main` 加短期功能分支，通过 Pull Request 合并。修复版本也从 `main` 发布；暂不维护长期发布分支。
@@ -37,7 +48,7 @@ GitHub Actions 从配置读取完整版本，自动创建对应的 `vA.B.C` 或 
 
 ### 双语发布日志
 
-后续发布在同一个带日期的 `## [版本] - 日期` 段内依次使用 `### 中文` 和 `### English`。两组条目描述相同的改动事实、限制及验证情况；英文应完整翻译对应中文内容，不省略警告，也不增加未经验证的能力声明。整理发布内容后保留顶部的 `## Unreleased`，供下一轮开发使用。
+后续发布在同一个带日期的 `## [VERSION] - DATE` 段内依次使用 `### 中文` 和 `### English`。两组条目描述相同的改动事实、限制及验证情况；英文应完整翻译对应中文内容，不省略警告，也不增加未经验证的能力声明。整理发布内容后保留顶部的 `## Unreleased`，供下一轮开发使用。
 
 例如，发布准备中的结构如下；版本、日期和条目都应替换为本次发布的实际内容：
 

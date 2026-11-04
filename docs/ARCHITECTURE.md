@@ -1,5 +1,7 @@
 # 架构说明
 
+[简体中文](ARCHITECTURE.md) | [繁體中文](ARCHITECTURE.zh-TW.md) | [English](ARCHITECTURE.en.md) | [日本語](ARCHITECTURE.ja.md) | [Türkçe](ARCHITECTURE.tr.md)
+
 ## 目标
 
 核心目标是让应用外壳不依赖某一种光盘编码。CD、DVD、蓝光的物理调制、纠错、扇区组织和文件系统不同，因此共享的是任务生命周期和产品能力，不共享错误的“万能编码器”基类。
@@ -16,12 +18,14 @@ flowchart LR
     Contract --> DVD[DiscImageStudio.Dvd]
     Contract --> BD[DiscImageStudio.BluRay]
     DVD --> Engine[DvdImageSolver]
-    CD --> CdEngine[CD-DA core]
-    BD --> BdEngine[BD encoder / 17PP / ECC]
+    CD --> CdEngine[CD-DA 核心]
+    BD --> BdEngine[BD 编码器 / 17PP / ECC]
     BD --> Iso[DiscImageStudio.Iso / UDF 2.01]
 ```
 
 `DiscImageStudio.Cli` 和 Windows 桌面程序从同一份模块目录执行离线命令。`DiscImageStudio.ImageIO` 在 Windows 桌面目标使用 WIC，在通用 `net10.0` 目标使用 StbImageSharp 读图、StbImageWriteSharp 写 PNG。两个后端都向生成器提供相同顺序的 BGRA 像素。蓝光共用透明度合成和灰度转换代码，CD 和 DVD 也分别共用各自原有的采样算法。
+
+`DiscImageStudio.Localization` 是桌面、CLI、Core 与介质模块共用的跨平台文字基础层，提供五种语言的嵌入式资源、语言选择与格式化。WPF 文字扩展留在 App，命令与选项标识、序列化字段及用户内容不随界面语言变化；只切换 UI culture，不改变数值解析或工程参数。动态界面文字跟随语言切换，分类用的原始标定警告在显示时翻译。维护流程见 [LOCALIZATION.md](LOCALIZATION.md)。
 
 ## Core 契约
 
@@ -50,7 +54,7 @@ flowchart LR
 
 工作流的可见性由两件外壳设施承载：页眉（`PageHeader`）标题行下方的**阶段条**（`StageBar`，设计 → 预览 → 导出 → 刻录 │ 标定，当前阶段品牌蓝高亮、已过阶段打勾弱化、任意阶段可点击直达）与页眉右槽的「下一步」按钮。二者都由窗口接线到 `NavigateTo`：窗口持有全部页面实例，在工作区变化时把 `CurrentWorkspace` 推给各页的阶段条，因此工作流在每一页都可见、可达，而不依赖侧边栏。
 
-工作区页面的骨架与面板语言是共享的：`MonitorCard`（监视器卡：头部图标 + 标题 + 副标题 + 动作槽，主体内容，可选状态底栏）承载预览结果与标定照片舞台；`StepCard`（编号步骤卡：状态徽章 待开始/进行中/已完成 + 可折叠主体）承载标定页的三步检查器，活动步骤展开、其余收起；`VisibilityGate`（按一个布尔显隐内容）统一各页的盘型/模式分支，替代了各视图私有的 DataTrigger 样式；`PathField`、`SourceChip` 把反复出现的路径行、来源条收敛成单一实现；`EmptyStateCard`（图标 + 一句话 + 跳转动作）统一各页的空态引导。卡片头分两档：监视/列表容器用 `CardHeaderBandStyle` 色带头（MonitorCard、设计页图层卡），表单卡保持平铺标题；两者图标同为 15px。`SourceChip` 的 `Actions` 槽承载「转到拥有者」的按钮，因此「只读摘要 + 跳转」这一行在所有页面是同一份外观。密度规则：侧栏/检查器面板一律用 Compact 家族（36 px），主舞台与主操作按钮用标准高度（44 px），两侧面板宽度统一 `SidePanelWidth`（280）令牌。
+工作区页面的骨架与面板语言是共享的：`MonitorCard`（监视器卡：头部图标 + 标题 + 副标题 + 动作槽，主体内容，可选状态底栏）承载预览结果与标定照片舞台；`StepCard`（编号步骤卡：状态徽章 待开始/进行中/已完成 + 可折叠主体）承载标定页的三步检查器，活动步骤展开、其余收起；`VisibilityGate`（按一个布尔显隐内容）统一各页的盘型/模式分支，替代了各视图私有的 DataTrigger 样式；`PathField`、`SourceChip` 把反复出现的路径行、来源条收敛成单一实现；`EmptyStateCard`（图标 + 一句话 + 跳转动作）统一各页的空态引导。卡片头分两档：监视/列表容器用 `CardHeaderBandStyle` 色带头（MonitorCard、设计页图层卡），表单卡保持平铺标题；两者图标同为 15px。`SourceChip` 的 `Actions` 槽承载「转到拥有者」的按钮，因此「只读摘要 + 跳转」这一行在所有页面是同一份外观。密度规则：侧栏/检查器面板一律用 Compact 家族（36 px），主舞台与主操作按钮用标准高度（44 px），两侧面板宽度统一 `SidePanelWidth`（280）令牌。长翻译的标题、字段标签和校准操作按钮可换行并按内容增高，操作按钮保留 Compact 的最小高度。
 
 侧边栏在每个工作区条目上都带图标，收起成 72 px 时即成为图标栏（组头在收窄态隐藏、子项直接列出）；不再有需要二次点击才展开的折叠图标列表。标题栏右侧提供常驻「齿轮 + 设置」按钮（`TitleBar.ShowSettingsButton` + `SettingsRequested`），主页和所有工作区都能一键打开设置；标题栏分配独立的按钮列，长工程名自动省略。最小化按钮左侧的「…」应用菜单仅提供「关于…」（`TitleBar.ShowAppMenu` + `AppMenuRequested`），Ctrl+, 也可直达设置；对话框不显示应用入口，侧边栏底部不再保留「关于」入口。
 
@@ -74,11 +78,11 @@ flowchart LR
 
 主题切换是即时的：`Themes/Palette.Light.xaml` 覆盖 `Tokens.xaml` 的全部颜色与画刷键，`Services/ThemeResolver` 在合并字典的第 1 位插入或移除浅色层，窗口无需重建。因此视图对调色板键必须使用 `DynamicResource`（`StaticResource` 会把深色值固化在加载时刻，`ThemePaletteTests` 会拦截）；代码侧取色的控件（`SideNavItem`、`SegmentedControl`、`DiscDesignCanvas`、`CalibrationPhotoCanvas`、`JobDock`、`HelpHint`）订阅 `ThemeResolver.Changed` 并重新读取令牌。系统主题取 `HKCU\...\Themes\Personalize\AppsUseLightTheme`。
 
-应用设置由 `Services/AppSettingsStore` 持久化到 `%LOCALAPPDATA%\DiscImageStudio\settings.json`（camelCase、字符串枚举、临时文件原子替换）：主题、默认工程位置和缓存位置。缺失、损坏或 schemaVersion 高于当前版本的文件回落到默认值，手工改坏的路径在 `AppSettings.Normalize` 中被丢弃；设置从不写入 `.discproj`。默认工程位置只影响新建工程对话框的初始目录，不存在时回落到系统文档目录。`Services/TempFiles` 持有可配置的缓存目录（`LivePreviewDirectory`），设计合成图、缩略图与预览图都写到这里；切换只影响新任务，清空缓存按文件名白名单（`design-composite-*`、`design-tone-*`、`design-thumbnail.png`、`cd/dvd/bd-live-*` 及其 `.png.json` sidecar）删除，绝不删除目录、工程或导出文件。设置窗口在保存前只改副本，取消或 Esc 丢弃全部编辑。
+应用设置由 `Services/AppSettingsStore` 持久化到 `%LOCALAPPDATA%\DiscImageStudio\settings.json`（camelCase、字符串枚举、临时文件原子替换）：语言、主题、默认工程位置和缓存位置。缺失、损坏或 schemaVersion 高于当前版本的文件回落到默认值，手工改坏的路径在 `AppSettings.Normalize` 中被丢弃；设置从不写入 `.discproj`。默认工程位置只影响新建工程对话框的初始目录，不存在时回落到系统文档目录。`Services/TempFiles` 持有可配置的缓存目录（`LivePreviewDirectory`），设计合成图、缩略图与预览图都写到这里；切换只影响新任务，清空缓存按文件名白名单（`design-composite-*`、`design-tone-*`、`design-thumbnail.png`、`cd/dvd/bd-live-*` 及其 `.png.json` sidecar）删除，绝不删除目录、工程或导出文件。设置窗口在保存前只改副本，取消或 Esc 丢弃全部编辑。
 
 ## 图片预处理层
 
-`DiscImageStudio.Imaging` 位于界面与介质编码模块之间，当前只承载 `RingImageQuality`：设计页合成图的正式生成尺寸（8192 px）常量，供设计合成、导出与刻读共用。图片到盘面的布局（缩放、居中、裁剪到内容环）由设计页的 `DesignComposer` 在 mm 画布上完成，导出/刻录/预览直接消费合成结果，不再有独立的预处理步骤。
+`DiscImageStudio.Imaging` 位于界面与介质编码模块之间，承载 `RingImageQuality`：设计页合成图的正式生成尺寸（8192 px）常量，供设计合成、导出与流式刻录共用；也提供独立抖动工具使用的 `GrayscaleDither`，按名义灰阶调色板处理图片，可选 sRGB 线性化并保留尺寸与 DPI。图片到盘面的布局（缩放、居中、裁剪到内容环）由设计页的 `DesignComposer` 在 mm 画布上完成，导出/刻录/预览直接消费合成结果，常规盘面生成不再另设预处理步骤。
 
 ## 流式刻录层
 

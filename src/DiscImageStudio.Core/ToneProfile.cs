@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Text.Json.Serialization;
 
 namespace DiscImageStudio.Core;
@@ -73,14 +74,14 @@ public readonly record struct ToneProfile(
         {
             throw new ArgumentOutOfRangeException(
                 fieldName,
-                $"{fieldName}.ditherStrength must be a finite number between 0 and 1.");
+                L.F($"{fieldName}.ditherStrength must be a finite number between 0 and 1."));
         }
 
         if (Levels is not (TwoLevels or FourLevels))
         {
             throw new ArgumentOutOfRangeException(
                 fieldName,
-                $"{fieldName}.levels must be {TwoLevels} or {FourLevels}.");
+                L.F($"{fieldName}.levels must be {TwoLevels} or {FourLevels}."));
         }
 
         if (!double.IsFinite(Brightness)
@@ -88,7 +89,7 @@ public readonly record struct ToneProfile(
         {
             throw new ArgumentOutOfRangeException(
                 fieldName,
-                $"{fieldName}.brightness must be between {MinimumBrightness} and {MaximumBrightness}.");
+                L.F($"{fieldName}.brightness must be between {MinimumBrightness} and {MaximumBrightness}."));
         }
     }
 

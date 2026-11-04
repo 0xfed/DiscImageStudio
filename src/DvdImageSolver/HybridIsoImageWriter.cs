@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using DiscImageStudio.Iso;
 
 namespace DvdImageSolver;
@@ -69,9 +70,9 @@ public static class HybridIsoImageWriter
         uint volumeSectors = plan.VolumeSectors;
         string outputFullPath = Path.GetFullPath(outputPath);
         if (Iso9660ImageWriter.IsWithinDirectory(outputFullPath, sourceFullPath))
-            throw new ArgumentException("--iso-output must be outside --data-dir so the generated image cannot include itself.");
+            throw new ArgumentException(L.T("--iso-output must be outside --data-dir so the generated image cannot include itself."));
         string outputDirectory = Path.GetDirectoryName(outputFullPath)
-            ?? throw new ArgumentException("ISO output path has no parent directory.", nameof(outputPath));
+            ?? throw new ArgumentException(L.T("ISO output path has no parent directory."), nameof(outputPath));
         Directory.CreateDirectory(outputDirectory);
         string temporaryPath = Path.Combine(outputDirectory, $".{Path.GetFileName(outputFullPath)}.{Guid.NewGuid():N}.tmp");
         bool sparse = false;

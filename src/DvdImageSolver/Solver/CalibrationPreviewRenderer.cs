@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using DiscImageStudio.ImageIO;
 using DiscImageStudio.Core;
 using DvdImageSolver.Encoding;
@@ -259,35 +260,35 @@ public static class CalibrationPreviewRenderer
     {
         if (options.TotalSectors == 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(options), "Total sector count must be positive.");
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Total sector count must be positive."));
         }
 
         if (options.FillSectors == 0
             || (ulong)options.StartLba + options.FillSectors > options.TotalSectors)
         {
-            throw new ArgumentOutOfRangeException(nameof(options), "Preview sector range exceeds the disc size.");
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Preview sector range exceeds the disc size."));
         }
 
         if (!double.IsFinite(options.ChannelBitLengthNm) || options.ChannelBitLengthNm <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(options), "Channel-bit length must be positive.");
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Channel-bit length must be positive."));
         }
 
         if (options.PreviewSize is < 64 or > 8192)
         {
-            throw new ArgumentOutOfRangeException(nameof(options), "Preview size must be 64..8192 pixels.");
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Preview size must be 64..8192 pixels."));
         }
 
         if (options.SamplesPerSector is < 1 or > 4096)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(options),
-                "Preview samples per sector must be 1..4096.");
+                L.T("Preview samples per sector must be 1..4096."));
         }
 
         if (options.AlphaThreshold == 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(options), "Alpha threshold must be 1..255.");
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Alpha threshold must be 1..255."));
         }
     }
 }

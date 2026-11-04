@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DiscImageStudio.Core;
 
 /// <summary>Shared black/white image quantization, independent of disc encoding.</summary>
@@ -11,7 +12,7 @@ public static class BinaryGrayscale
     {
         0 => 0,
         1 => 255,
-        _ => throw new ArgumentOutOfRangeException(nameof(levelIndex), "Grayscale level must be 0..1."),
+        _ => throw new ArgumentOutOfRangeException(nameof(levelIndex), L.T("Grayscale level must be 0..1.")),
     };
 
     public static byte Quantize(byte luminance) => GetLuminance(GetLevelIndex(luminance));

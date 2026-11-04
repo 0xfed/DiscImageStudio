@@ -1,3 +1,5 @@
+using DiscImageStudio.Localization;
+
 namespace DiscImageStudio.BluRay.Encoding;
 
 public sealed record BluRay17PpResult(byte[] ModulationBits, bool UsedTermination)
@@ -16,10 +18,10 @@ public static class BluRay17PpEncoder
     public static BluRay17PpResult Encode(ReadOnlySpan<byte> dataBits, byte previousModulationBit = 0)
     {
         if ((dataBits.Length & 1) != 0)
-            throw new ArgumentException("17PP consumes complete pairs of data bits.", nameof(dataBits));
+            throw new ArgumentException(L.T("17PP consumes complete pairs of data bits."), nameof(dataBits));
         if (previousModulationBit > 1) throw new ArgumentOutOfRangeException(nameof(previousModulationBit));
         foreach (byte bit in dataBits)
-            if (bit > 1) throw new ArgumentException("Data bits must be represented as 0 or 1.", nameof(dataBits));
+            if (bit > 1) throw new ArgumentException(L.T("Data bits must be represented as 0 or 1."), nameof(dataBits));
 
         byte[] result = new byte[checked(dataBits.Length / 2 * 3)];
         int source = 0;
@@ -56,7 +58,7 @@ public static class BluRay17PpEncoder
         for (int i = 0; i < result.Length; i++)
         {
             if (modulationBits[i] > 1)
-                throw new ArgumentException("Modulation bits must be represented as 0 or 1.", nameof(modulationBits));
+                throw new ArgumentException(L.T("Modulation bits must be represented as 0 or 1."), nameof(modulationBits));
             level ^= modulationBits[i];
             result[i] = level;
         }

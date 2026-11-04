@@ -1,0 +1,408 @@
+{
+  "Synthetic post-ECC 155-byte frames; these are not user payload byte encodings. Full user-data pipeline results must be used for actual burn plans.": {
+    "zh-CN": "合成的 ECC 后 155 字节帧；这些不是用户负载字节编码。实际刻录方案必须采用完整用户数据链路的结果。",
+    "zh-TW": "合成的 ECC 後 155 位元組框架；這些不是使用者負載位元組編碼。實際燒錄方案必須採用完整使用者資料鏈路的結果。",
+    "en": "Synthetic post-ECC 155-byte frames; these are not user payload byte encodings. Full user-data pipeline results must be used for actual burn plans.",
+    "ja": "合成した ECC 後の 155 バイトフレームです。ユーザーペイロードのバイト符号化ではありません。実際の書き込み計画にはユーザーデータの全処理経路の結果を使う必要があります。",
+    "tr": "Sentetik ECC sonrası 155 baytlık çerçeveler; bunlar kullanıcı yükü bayt kodlamaları değildir. Gerçek disk yazma planlarında tam kullanıcı verisi zincirinin sonuçları kullanılmalıdır."
+  },
+  "Number of modulation ONEs divided by inspected channel bits; a modulation ONE is one NRZI level transition. All metrics exclude the 30-bit frame sync.": {
+    "zh-CN": "调制 ONE 数量除以检查的通道位数；一个调制 ONE 对应一次 NRZI 电平跳变。所有指标均排除 30 位帧同步。",
+    "zh-TW": "調變 ONE 數量除以檢查的通道位元數；一個調變 ONE 對應一次 NRZI 準位轉換。所有指標皆排除 30 位元框架同步。",
+    "en": "Number of modulation ONEs divided by inspected channel bits; a modulation ONE is one NRZI level transition. All metrics exclude the 30-bit frame sync.",
+    "ja": "調べたチャネルビット数に対する変調 ONE の数です。変調 ONE 1 個は NRZI レベルの遷移 1 回に対応します。すべての指標から 30 ビットのフレーム同期を除外します。",
+    "tr": "Modülasyon ONE sayısının incelenen kanal biti sayısına oranı; her modülasyon ONE bir NRZI düzey geçişidir. Tüm ölçütler 30 bitlik çerçeve eşzamanlamasını dışlar."
+  },
+  "256 bytes; 31 sync indices x 2 previous-termination values x 8 deterministic DC masks = 496 frames per byte. 155 identical bytes per frame; 1902 inspected channel bits per sample.": {
+    "zh-CN": "256 种字节；31 个同步索引 x 2 个前序终止值 x 8 个确定性 DC 掩码 = 每字节 496 帧。每帧包含 155 个相同字节；每样本检查 1902 个通道位。",
+    "zh-TW": "256 種位元組；31 個同步索引 x 2 個前序終止值 x 8 個確定性 DC 遮罩 = 每位元組 496 個框架。每框架包含 155 個相同位元組；每樣本檢查 1902 個通道位元。",
+    "en": "256 bytes; 31 sync indices x 2 previous-termination values x 8 deterministic DC masks = 496 frames per byte. 155 identical bytes per frame; 1902 inspected channel bits per sample.",
+    "ja": "256 種のバイト。31 同期インデックス x 2 前終端値 x 8 決定的 DC マスク = 各バイト 496 フレームです。各フレームは 155 個の同一バイトで、各サンプルの 1902 チャネルビットを調べます。",
+    "tr": "256 bayt değeri; 31 eşzamanlama indeksi x 2 önceki sonlandırma değeri x 8 deterministik DC maskesi = bayt başına 496 çerçeve. Her çerçevede 155 aynı bayt; örnek başına 1902 kanal biti incelenir."
+  },
+  "Each candidate: 512 matched pseudorandom frames, 64-byte central repeated block at offsets 8..83, random neighbors, random DC mask, sync index and previous termination. Inspect inner 60 bytes using nominal 2:3 rate positions after DC insertion, with two-byte guards. This is a local stable-block metric, not an independently encoded per-byte metric.": {
+    "zh-CN": "每个候选：512 个配对伪随机帧，偏移 8..83 内的中央 64 字节重复块，随机相邻字节、随机 DC 掩码、同步索引和前序终止值。按插入 DC 后的名义 2:3 码率位置检查内部 60 字节，并保留双字节保护区。这是局部稳定块指标，不是独立编码的逐字节指标。",
+    "zh-TW": "每個候選：512 個配對虛擬隨機框架，偏移 8..83 內的中央 64 位元組重複區塊，隨機相鄰位元組、隨機 DC 遮罩、同步索引與前序終止值。依插入 DC 後的名義 2:3 碼率位置檢查內部 60 位元組，並保留雙位元組保護區。這是局部穩定區塊指標，不是獨立編碼的逐位元組指標。",
+    "en": "Each candidate: 512 matched pseudorandom frames, 64-byte central repeated block at offsets 8..83, random neighbors, random DC mask, sync index and previous termination. Inspect inner 60 bytes using nominal 2:3 rate positions after DC insertion, with two-byte guards. This is a local stable-block metric, not an independently encoded per-byte metric.",
+    "ja": "各候補は、オフセット 8..83 内の中央 64 バイト反復ブロック、ランダムな隣接バイト、DC マスク、同期インデックス、前終端値を持つ 512 個の対応する疑似乱数フレームです。DC 挿入後の公称 2:3 レート位置で、両側に 2 バイトのガードを置き内側 60 バイトを調べます。これは局所的な安定ブロックの指標であり、バイトごとに独立符号化した指標ではありません。",
+    "tr": "Her aday: 512 eşleştirilmiş sözde rastgele çerçeve, 8..83 ofsetlerinde merkezi 64 baytlık yinelenen blok, rastgele komşular, DC maskesi, eşzamanlama indeksi ve önceki sonlandırma. DC eklemesinden sonraki nominal 2:3 oran konumları ve iki baytlık korumalarla içteki 60 bayt incelenir. Bu, bağımsız kodlanan bayt başına bir ölçüt değil, yerel kararlı blok ölçütüdür."
+  },
+  "Unordered candidate pairs, block lengths 1/8/32 bytes, 128 frames each with cycling phase and matched pseudorandom DC masks/sync contexts. Statistics measures the nominal channel window for raw bytes16..143: 128 bytes, exactly64 of each candidate at any cyclic phase before the nominal pair-boundary trim. WholeFrameDataStatistics additionally measures all155bytes, whose A/B proportion varies by phase for longer blocks. Short patterns may interact nonlinearly.": {
+    "zh-CN": "无序候选对，块长 1/8/32 字节，每种 128 帧，循环相位与配对的伪随机 DC 掩码/同步上下文。Statistics 测量原始字节 16..143 的名义通道窗口：128 字节，在名义候选对边界裁剪前，任意循环相位都恰有每个候选各 64 字节。WholeFrameDataStatistics 另测量全部 155 字节，较长块的 A/B 比例随相位变化。短周期图案可能存在非线性相互作用。",
+    "zh-TW": "無序候選對，區塊長度 1/8/32 位元組，每種 128 個框架，循環相位與配對的虛擬隨機 DC 遮罩／同步上下文。Statistics 測量原始位元組 16..143 的名義通道視窗：128 位元組，在名義候選對邊界裁切前，任意循環相位皆恰有每個候選各 64 位元組。WholeFrameDataStatistics 另測量全部 155 位元組，較長區塊的 A/B 比例隨相位變化。短週期圖案可能存在非線性交互作用。",
+    "en": "Unordered candidate pairs, block lengths 1/8/32 bytes, 128 frames each with cycling phase and matched pseudorandom DC masks/sync contexts. Statistics measures the nominal channel window for raw bytes16..143: 128 bytes, exactly64 of each candidate at any cyclic phase before the nominal pair-boundary trim. WholeFrameDataStatistics additionally measures all155bytes, whose A/B proportion varies by phase for longer blocks. Short patterns may interact nonlinearly.",
+    "ja": "順序のない候補ペアでブロック長は 1/8/32 バイト、各 128 フレームです。位相を循環させ、対応する疑似乱数 DC マスクと同期コンテキストを使います。Statistics は生バイト 16..143 の公称チャネル窓を測定します。128 バイトで、公称ペア境界のトリミング前はどの循環位相でも各候補が正確に 64 バイトあります。WholeFrameDataStatistics は全 155 バイトも測定し、長いブロックでは A/B 比率が位相で変わります。短いパターンは非線形に相互作用する場合があります。",
+    "tr": "Sırasız aday çiftleri; 1/8/32 baytlık bloklar, her biri için döngüsel fazlı ve eşleştirilmiş sözde rastgele DC maskesi/eşzamanlama bağlamlı 128 çerçeve. Statistics, ham 16..143 baytları için nominal kanal penceresini ölçer: 128 bayt; nominal çift sınırı kırpılmadan önce her döngüsel fazda her adaydan tam 64 bayt bulunur. WholeFrameDataStatistics ayrıca 155 baytın tamamını ölçer; uzun bloklarda A/B oranı faza göre değişir. Kısa desenler doğrusal olmayan biçimde etkileşebilir."
+  },
+  "Distances between successive modulation ONEs fully inside the inspected window. Counts exclude incomplete boundary runs, sync-crossing runs and sync. Fractions normalize by all complete runs; mean run length uses these complete intervals.": {
+    "zh-CN": "完全位于检查窗口内的相邻调制 ONE 之间的距离。计数排除边界处不完整的游程、跨同步的游程和同步。比例以全部完整游程归一化；平均游程长度也使用这些完整间隔。",
+    "zh-TW": "完全位於檢查視窗內的相鄰調變 ONE 之間的距離。計數排除邊界處不完整的遊程、跨同步的遊程與同步。比例以全部完整遊程正規化；平均遊程長度也使用這些完整間隔。",
+    "en": "Distances between successive modulation ONEs fully inside the inspected window. Counts exclude incomplete boundary runs, sync-crossing runs and sync. Fractions normalize by all complete runs; mean run length uses these complete intervals.",
+    "ja": "検査窓の完全に内側にある連続した変調 ONE 間の距離です。境界で不完全なラン、同期をまたぐラン、同期自体は数えません。比率は完全なランの総数で正規化し、平均ラン長もこれらの完全な区間を使います。",
+    "tr": "Tamamen incelenen pencere içindeki ardışık modülasyon ONE değerleri arasındaki mesafeler. Sayımlar sınırda eksik kalan geçiş aralıklarını, eşzamanlamayı aşan aralıkları ve eşzamanlamayı dışlar. Oranlar tüm tam geçiş aralıklarıyla normalleştirilir; ortalama aralık uzunluğu da bu tam aralıkları kullanır."
+  },
+  "Overall mean density is total transitions/total channel bits; minimum/maximum and standard deviation are per-sample densities. DC masks and sync contexts are deliberately sampled diagnostics, not an estimate of real-drive probabilities.": {
+    "zh-CN": "整体平均密度为总跳变数/总通道位数；最小值、最大值和标准差采用各样本的密度。DC 掩码与同步上下文是刻意采样的诊断，不是实际驱动器概率的估计。",
+    "zh-TW": "整體平均密度為總轉換數／總通道位元數；最小值、最大值與標準差採用各樣本的密度。DC 遮罩與同步上下文是刻意取樣的診斷，不是實際光碟機機率的估計。",
+    "en": "Overall mean density is total transitions/total channel bits; minimum/maximum and standard deviation are per-sample densities. DC masks and sync contexts are deliberately sampled diagnostics, not an estimate of real-drive probabilities.",
+    "ja": "全体の平均密度は総遷移数／総チャネルビット数です。最小値、最大値、標準偏差はサンプルごとの密度を使います。DC マスクと同期コンテキストは意図的にサンプリングした診断で、実際のドライブにおける確率の推定ではありません。",
+    "tr": "Genel ortalama yoğunluk toplam geçiş/toplam kanal biti oranıdır; minimum, maksimum ve standart sapma örnek başına yoğunluklardır. DC maskeleri ve eşzamanlama bağlamları bilinçli örneklenen tanılardır; gerçek sürücü olasılıklarının tahmini değildir."
+  },
+  "Initial channel level fixed at zero; NRZI complement changes mark/space polarity but cannot change transition density.": {
+    "zh-CN": "初始通道电平固定为零；NRZI 取反改变 mark/space 极性，但不会改变跳变密度。",
+    "zh-TW": "初始通道準位固定為零；NRZI 取反改變 mark/space 極性，但不會改變轉換密度。",
+    "en": "Initial channel level fixed at zero; NRZI complement changes mark/space polarity but cannot change transition density.",
+    "ja": "初期チャネルレベルはゼロに固定します。NRZI の反転は mark/space 極性を変えますが、遷移密度は変えません。",
+    "tr": "İlk kanal düzeyi sıfıra sabittir; NRZI tümleyeni mark/space kutupluluğunu değiştirir ancak geçiş yoğunluğunu değiştiremez."
+  },
+  "Neither density nor NRZI level occupancy establishes reflectance or black/white polarity. Actual recorder DC selection and write strategy may differ. Repeated ECC-frame and mixture diagnostics bypass scrambling/ECC/BIS.": {
+    "zh-CN": "密度和 NRZI 电平占比均不能确定反射率或黑白极性。实际刻录机的 DC 选择与写入策略可能不同。重复 ECC 帧和混合诊断绕过扰码/ECC/BIS。",
+    "zh-TW": "密度與 NRZI 準位占比皆不能確定反射率或黑白極性。實際燒錄機的 DC 選擇與寫入策略可能不同。重複 ECC 框架與混合診斷略過擾碼／ECC／BIS。",
+    "en": "Neither density nor NRZI level occupancy establishes reflectance or black/white polarity. Actual recorder DC selection and write strategy may differ. Repeated ECC-frame and mixture diagnostics bypass scrambling/ECC/BIS.",
+    "ja": "密度も NRZI レベルの占有率も、反射率や白黒極性を確定するものではありません。実際のレコーダーの DC 選択と書き込み戦略は異なる場合があります。ECC フレーム反復と混合の診断はスクランブル／ECC／BIS を迂回します。",
+    "tr": "Yoğunluk da NRZI düzey doluluğu da yansıtıcılığı veya siyah/beyaz kutupluluğunu belirlemez. Gerçek yazıcının DC seçimi ve yazma stratejisi farklı olabilir. Yinelenen ECC çerçevesi ve karışım tanıları karıştırma/ECC/BIS aşamalarını atlar."
+  },
+  "Synthetic post-ECC frames only, 155bytes/1240 raw bits plus28 DC bits, 1902 measured channel bits excluding sync. All cyclic phases are tested. continuous_raw_bits uses pattern[(rawIndex+phase)%period]. reserve_dc_pattern_slots uses pattern[(rawIndex+precedingDcCount+phase)%period], so the 28 actual DC bits overwrite reserved pattern positions. restart_each_raw_segment starts the pattern again after each raw segment (25 then45bits). Fixed-mask experiment uses8 masks x31sync indices; random-mask experiment uses64 matched masks/sync choices; greedy uses6sync indices x initialDSV(-64,0,+64), initialNRZI level0, next identical ECCframe for lookahead. All-phases means are phase-sensitivity summaries, not a recommended recipe. These results bypass parity, scrambling, BIS and full-cluster context.": {
+    "zh-CN": "仅合成的 ECC 后帧，155 字节/1240 个原始位加 28 个 DC 位，排除同步后测量 1902 个通道位。测试所有循环相位。continuous_raw_bits 使用 pattern[(rawIndex+phase)%period]。reserve_dc_pattern_slots 使用 pattern[(rawIndex+precedingDcCount+phase)%period]，因此 28 个实际 DC 位覆盖保留的图案位置。restart_each_raw_segment 在每个原始片段后重新开始图案（先 25 位，再 45 位）。固定掩码实验使用 8 个掩码 x 31 个同步索引；随机掩码实验使用 64 组配对掩码/同步选择；贪心使用 6 个同步索引 x initialDSV(-64,0,+64)，初始 NRZI 电平 0，并以前视的下一相同 ECC 帧 辅助判断。全相位均值是相位敏感性摘要，不是推荐方案。这些结果绕过校验、扰码、BIS 和完整簇上下文。",
+    "zh-TW": "僅合成的 ECC 後框架，155 位元組／1240 個原始位元加 28 個 DC 位元，排除同步後測量 1902 個通道位元。測試所有循環相位。continuous_raw_bits 使用 pattern[(rawIndex+phase)%period]。reserve_dc_pattern_slots 使用 pattern[(rawIndex+precedingDcCount+phase)%period]，因此 28 個實際 DC 位元覆蓋保留的圖案位置。restart_each_raw_segment 在每個原始片段後重新開始圖案（先 25 位元，再 45 位元）。固定遮罩實驗使用 8 個遮罩 x 31 個同步索引；隨機遮罩實驗使用 64 組配對遮罩／同步選擇；貪心使用 6 個同步索引 x initialDSV(-64,0,+64)，初始 NRZI 準位 0，並以前視的下一相同 ECC 框架 輔助判斷。全相位平均值是相位敏感性摘要，不是推薦方案。這些結果略過同位檢查、擾碼、BIS 與完整叢集上下文。",
+    "en": "Synthetic post-ECC frames only, 155bytes/1240 raw bits plus28 DC bits, 1902 measured channel bits excluding sync. All cyclic phases are tested. continuous_raw_bits uses pattern[(rawIndex+phase)%period]. reserve_dc_pattern_slots uses pattern[(rawIndex+precedingDcCount+phase)%period], so the 28 actual DC bits overwrite reserved pattern positions. restart_each_raw_segment starts the pattern again after each raw segment (25 then45bits). Fixed-mask experiment uses8 masks x31sync indices; random-mask experiment uses64 matched masks/sync choices; greedy uses6sync indices x initialDSV(-64,0,+64), initialNRZI level0, next identical ECCframe for lookahead. All-phases means are phase-sensitivity summaries, not a recommended recipe. These results bypass parity, scrambling, BIS and full-cluster context.",
+    "ja": "ECC 後の合成フレームのみです。155 バイト／1240 生ビットに 28 DC ビットを加え、同期を除く 1902 チャネルビットを測定します。すべての循環位相を試します。continuous_raw_bits は pattern[(rawIndex+phase)%period] を使います。reserve_dc_pattern_slots は pattern[(rawIndex+precedingDcCount+phase)%period] を使うため、実際の 28 DC ビットが予約されたパターン位置を上書きします。restart_each_raw_segment は各生セグメント（最初は 25 ビット、以降は 45 ビット）の後でパターンを再開始します。固定マスク実験は 8 マスク x 31 同期インデックス、ランダムマスク実験は 64 個の対応するマスク／同期選択を使います。貪欲方式は 6 同期インデックス x initialDSV(-64,0,+64)、初期 NRZI レベル 0、先読み用の次の同一 ECC フレーム を使います。全位相平均は位相感度の概要で、推奨手順ではありません。これらの結果はパリティ、スクランブル、BIS、全クラスターのコンテキストを迂回します。",
+    "tr": "Yalnızca sentetik ECC sonrası çerçeveler: 155 bayt/1240 ham bit artı 28 DC biti, eşzamanlama hariç 1902 ölçülen kanal biti. Tüm döngüsel fazlar test edilir. continuous_raw_bits, pattern[(rawIndex+phase)%period] kullanır. reserve_dc_pattern_slots, pattern[(rawIndex+precedingDcCount+phase)%period] kullanır; bu nedenle 28 gerçek DC biti ayrılmış desen konumlarının üzerine yazar. restart_each_raw_segment her ham parçadan sonra deseni yeniden başlatır (önce 25, sonra 45 bit). Sabit maske deneyi 8 maske x 31 eşzamanlama indeksi; rastgele maske deneyi 64 eşleştirilmiş maske/eşzamanlama seçimi kullanır. Açgözlü yöntem 6 eşzamanlama indeksi x initialDSV(-64,0,+64), ilk NRZI düzeyi 0 ve ileri bakış için sonraki aynı ECC çerçevesi kullanır. Tüm fazların ortalamaları faz duyarlılığı özetleridir, önerilen bir tarif değildir. Bu sonuçlar eşlik, karıştırma, BIS ve tam küme bağlamını atlar."
+  },
+  "Supply binary patterns of 2..64 bits.": {
+    "zh-CN": "请提供 2..64 位的二进制图案。",
+    "zh-TW": "請提供 2..64 位元的二進位圖案。",
+    "en": "Supply binary patterns of 2..64 bits.",
+    "ja": "2..64 ビットの 2 値パターンを指定してください。",
+    "tr": "2..64 bitlik ikili desenler sağlayın."
+  },
+  "Fine-pattern scanner disagrees with the full RUB path.": {
+    "zh-CN": "细粒度图案扫描器与完整 RUB 路径的结果不一致。",
+    "zh-TW": "細粒度圖案掃描器與完整 RUB 路徑的結果不一致。",
+    "en": "Fine-pattern scanner disagrees with the full RUB path.",
+    "ja": "細粒度パターンスキャナーと完全な RUB 経路の結果が一致しません。",
+    "tr": "İnce desen tarayıcısı tam RUB yoluyla uyuşmuyor."
+  },
+  "Unknown pattern placement.": {
+    "zh-CN": "未知的图案放置方式。",
+    "zh-TW": "未知的圖案配置方式。",
+    "en": "Unknown pattern placement.",
+    "ja": "不明なパターン配置方式です。",
+    "tr": "Bilinmeyen desen yerleşimi."
+  },
+  "Inverse interleaving failed to preserve a target payload byte.": {
+    "zh-CN": "逆交织未能保留目标负载字节。",
+    "zh-TW": "解交錯未能保留目標負載位元組。",
+    "en": "Inverse interleaving failed to preserve a target payload byte.",
+    "ja": "逆インターリーブで対象ペイロードバイトを保持できませんでした。",
+    "tr": "Ters iç içe geçirme hedef yük baytını koruyamadı."
+  },
+  "Invalid/duplicate physical payload position.": {
+    "zh-CN": "物理负载位置无效或重复。",
+    "zh-TW": "實體負載位置無效或重複。",
+    "en": "Invalid/duplicate physical payload position.",
+    "ja": "物理ペイロード位置が無効か重複しています。",
+    "tr": "Fiziksel yük konumu geçersiz veya yinelenmiş."
+  },
+  "Unknown DC policy.": {
+    "zh-CN": "未知的 DC 策略。",
+    "zh-TW": "未知的 DC 策略。",
+    "en": "Unknown DC policy.",
+    "ja": "不明な DC 方針です。",
+    "tr": "Bilinmeyen DC ilkesi."
+  },
+  "Invalid full-cluster RLL interval.": {
+    "zh-CN": "完整簇的 RLL 间隔无效。",
+    "zh-TW": "完整叢集的 RLL 間隔無效。",
+    "en": "Invalid full-cluster RLL interval.",
+    "ja": "全クラスターの RLL 間隔が無効です。",
+    "tr": "Tam küme RLL aralığı geçersiz."
+  },
+  "Incorrect physical-cluster length.": {
+    "zh-CN": "物理簇长度不正确。",
+    "zh-TW": "實體叢集長度不正確。",
+    "en": "Incorrect physical-cluster length.",
+    "ja": "物理クラスター長が正しくありません。",
+    "tr": "Fiziksel küme uzunluğu yanlış."
+  },
+  "Fine pattern phases {0}/{1}; {2:F1}s.": {
+    "zh-CN": "细粒度图案相位 {0}/{1}；{2:F1} 秒。",
+    "zh-TW": "細粒度圖案相位 {0}/{1}；{2:F1} 秒。",
+    "en": "Fine pattern phases {0}/{1}; {2:F1}s.",
+    "ja": "細粒度パターン位相 {0}/{1}、{2:F1} 秒。",
+    "tr": "İnce desen fazları {0}/{1}; {2:F1} saniye."
+  },
+  "Fine pattern addresses {0}/{1}; {2:F1}s.": {
+    "zh-CN": "细粒度图案地址 {0}/{1}；{2:F1} 秒。",
+    "zh-TW": "細粒度圖案位址 {0}/{1}；{2:F1} 秒。",
+    "en": "Fine pattern addresses {0}/{1}; {2:F1}s.",
+    "ja": "細粒度パターンアドレス {0}/{1}、{2:F1} 秒。",
+    "tr": "İnce desen adresleri {0}/{1}; {2:F1} saniye."
+  },
+  "Single-layer BD-R. All patterns specify post-scrambler user-data bits Q, MSB first. Each cluster restarts the coordinate origin.": {
+    "zh-CN": "单层 BD-R。所有图案指定扰码后的用户数据位 Q，最高有效位在前。每个簇重新设定坐标原点。",
+    "zh-TW": "單層 BD-R。所有圖案指定擾碼後的使用者資料位元 Q，最高有效位元在前。每個叢集重新設定座標原點。",
+    "en": "Single-layer BD-R. All patterns specify post-scrambler user-data bits Q, MSB first. Each cluster restarts the coordinate origin.",
+    "ja": "単層 BD-R です。すべてのパターンはスクランブル後のユーザーデータビット Q を MSB 順で指定します。各クラスターで座標原点をリセットします。",
+    "tr": "Tek katmanlı BD-R. Tüm desenler karıştırma sonrası kullanıcı verisi bitleri Q'yu, en anlamlı bit önce olacak şekilde belirtir. Her küme koordinat başlangıcını sıfırlar."
+  },
+  "Pattern index = (sectorWithinCluster*2048+payloadByteOffset)*8 + bitWithinByte. LDC reorders this stream.": {
+    "zh-CN": "图案索引 = (sectorWithinCluster*2048+payloadByteOffset)*8 + bitWithinByte。LDC 会重排此数据流。",
+    "zh-TW": "圖案索引 = (sectorWithinCluster*2048+payloadByteOffset)*8 + bitWithinByte。LDC 會重新排列此資料流。",
+    "en": "Pattern index = (sectorWithinCluster*2048+payloadByteOffset)*8 + bitWithinByte. LDC reorders this stream.",
+    "ja": "パターンインデックス = (sectorWithinCluster*2048+payloadByteOffset)*8 + bitWithinByte。LDC がこのストリームを並べ替えます。",
+    "tr": "Desen indeksi = (sectorWithinCluster*2048+payloadByteOffset)*8 + bitWithinByte. LDC bu akışı yeniden sıralar."
+  },
+  "Pattern index = (recordingFrame*155+eccColumn)*8 + bitWithinByte. EDC, BIS and parity holes advance the phase without being controlled.": {
+    "zh-CN": "图案索引 = (recordingFrame*155+eccColumn)*8 + bitWithinByte。EDC、BIS 和校验空位会推进相位，但不受控制。",
+    "zh-TW": "圖案索引 = (recordingFrame*155+eccColumn)*8 + bitWithinByte。EDC、BIS 與同位檢查空位會推進相位，但不受控制。",
+    "en": "Pattern index = (recordingFrame*155+eccColumn)*8 + bitWithinByte. EDC, BIS and parity holes advance the phase without being controlled.",
+    "ja": "パターンインデックス = (recordingFrame*155+eccColumn)*8 + bitWithinByte。EDC、BIS、パリティの穴は制御されませんが、位相を進めます。",
+    "tr": "Desen indeksi = (recordingFrame*155+eccColumn)*8 + bitWithinByte. EDC, BIS ve eşlik boşlukları denetlenmeden fazı ilerletir."
+  },
+  "Pattern index = recordingFrame*1268 + rawFrameBit + DCbefore(rawFrameBit). DCbefore(j)=0 for j<25, else 1+(j-25)/45. Unknown DC bits occupy their slots; sync is not 17PP input.": {
+    "zh-CN": "图案索引 = recordingFrame*1268 + rawFrameBit + DCbefore(rawFrameBit)。j<25 时 DCbefore(j)=0，否则为 1+(j-25)/45。未知 DC 位占用其位置；同步不是 17PP 输入。",
+    "zh-TW": "圖案索引 = recordingFrame*1268 + rawFrameBit + DCbefore(rawFrameBit)。j<25 時 DCbefore(j)=0，否則為 1+(j-25)/45。未知 DC 位元占用其位置；同步不是 17PP 輸入。",
+    "en": "Pattern index = recordingFrame*1268 + rawFrameBit + DCbefore(rawFrameBit). DCbefore(j)=0 for j<25, else 1+(j-25)/45. Unknown DC bits occupy their slots; sync is not 17PP input.",
+    "ja": "パターンインデックス = recordingFrame*1268 + rawFrameBit + DCbefore(rawFrameBit)。j<25 のとき DCbefore(j)=0、それ以外は 1+(j-25)/45 です。未知の DC ビットはそのスロットを占め、同期は 17PP 入力ではありません。",
+    "tr": "Desen indeksi = recordingFrame*1268 + rawFrameBit + DCbefore(rawFrameBit). j<25 için DCbefore(j)=0, aksi durumda 1+(j-25)/45. Bilinmeyen DC bitleri yuvalarını kaplar; eşzamanlama 17PP girdisi değildir."
+  },
+  "Pattern index = rawFrameBit for the first 25 data bits, else (rawFrameBit-25)%45. Every 25/45-bit data segment starts at the selected phase; DC bits remain drive-selected. EDC/BIS holes retain their within-segment positions.": {
+    "zh-CN": "前 25 个数据位的图案索引 = rawFrameBit，其余为 (rawFrameBit-25)%45。每个 25/45 位数据片段从所选相位开始；DC 位仍由驱动器选择。EDC/BIS 空位保留其在片段内的位置。",
+    "zh-TW": "前 25 個資料位元的圖案索引 = rawFrameBit，其餘為 (rawFrameBit-25)%45。每個 25/45 位元資料片段從所選相位開始；DC 位元仍由光碟機選擇。EDC/BIS 空位保留其在片段內的位置。",
+    "en": "Pattern index = rawFrameBit for the first 25 data bits, else (rawFrameBit-25)%45. Every 25/45-bit data segment starts at the selected phase; DC bits remain drive-selected. EDC/BIS holes retain their within-segment positions.",
+    "ja": "最初の 25 データビットはパターンインデックス = rawFrameBit、それ以外は (rawFrameBit-25)%45 です。各 25/45 ビットのデータセグメントを選択した位相から開始し、DC ビットは引き続きドライブが選択します。EDC/BIS の穴はセグメント内の位置を保持します。",
+    "tr": "İlk 25 veri biti için desen indeksi = rawFrameBit, diğerleri için (rawFrameBit-25)%45. Her 25/45 bitlik veri parçası seçili fazda başlar; DC bitleri sürücü tarafından seçilmeye devam eder. EDC/BIS boşlukları parça içindeki konumlarını korur."
+  },
+  "Pattern[(coordinate+phase)%period]; every phase tested at PSN 0x00100000. Lowest/highest greedy-density phases per layout rechecked at three additional PSNs.": {
+    "zh-CN": "Pattern[(coordinate+phase)%period]；每个相位均在 PSN 0x00100000 下测试。每种布局中贪心密度最低/最高的相位在另外三个 PSN 下复核。",
+    "zh-TW": "Pattern[(coordinate+phase)%period]；每個相位皆在 PSN 0x00100000 下測試。每種配置中貪心密度最低／最高的相位在另外三個 PSN 下複核。",
+    "en": "Pattern[(coordinate+phase)%period]; every phase tested at PSN 0x00100000. Lowest/highest greedy-density phases per layout rechecked at three additional PSNs.",
+    "ja": "Pattern[(coordinate+phase)%period]。各位相を PSN 0x00100000 でテストします。各配置で貪欲密度が最低／最高の位相を、さらに 3 つの PSN で再確認します。",
+    "tr": "Pattern[(coordinate+phase)%period]; her faz PSN 0x00100000 konumunda test edilir. Her yerleşimin en düşük/en yüksek açgözlü yoğunluk fazları üç ek PSN konumunda yeniden kontrol edilir."
+  },
+  "All 65536 controllable Q bytes are compared byte-for-byte against their actual post-LDC/BIS ECC locations for every generated cluster. Placement must be a one-to-one scatter.": {
+    "zh-CN": "每个生成簇的全部 65536 个可控 Q 字节，都与其实际经过 LDC/BIS 后的 ECC 位置逐字节比较。放置必须为一一对应的散布。",
+    "zh-TW": "每個產生叢集的全部 65536 個可控 Q 位元組，都與其實際經過 LDC/BIS 後的 ECC 位置逐位元組比較。配置必須為一對一的散布。",
+    "en": "All 65536 controllable Q bytes are compared byte-for-byte against their actual post-LDC/BIS ECC locations for every generated cluster. Placement must be a one-to-one scatter.",
+    "ja": "生成した各クラスターで、制御可能な全 65536 Q バイトを、LDC/BIS 後の実際の ECC 位置とバイト単位で比較します。配置は一対一の分散である必要があります。",
+    "tr": "Oluşturulan her kümede denetlenebilir 65536 Q baytının tamamı LDC/BIS sonrası gerçek ECC konumlarıyla bayt bayt karşılaştırılır. Yerleşim bire bir dağılım olmalıdır."
+  },
+  "Transitions/channel bits over all 496*1932 bits including sync, EDC, LDC parity and BIS. Run-in/out/Guard3 excluded; run-in level/DSV retained.": {
+    "zh-CN": "包含同步、EDC、LDC 校验和 BIS 的全部 496*1932 位上的跳变数/通道位数。排除 Run-in/out/Guard3；保留 run-in 电平/DSV。",
+    "zh-TW": "包含同步、EDC、LDC 同位檢查與 BIS 的全部 496*1932 位元上的轉換數／通道位元數。排除 Run-in/out/Guard3；保留 run-in 準位／DSV。",
+    "en": "Transitions/channel bits over all 496*1932 bits including sync, EDC, LDC parity and BIS. Run-in/out/Guard3 excluded; run-in level/DSV retained.",
+    "ja": "同期、EDC、LDC パリティ、BIS を含む全 496*1932 ビットでの遷移数／チャネルビット数です。Run-in/out/Guard3 は除外し、run-in レベル／DSV は保持します。",
+    "tr": "Eşzamanlama, EDC, LDC eşlik ve BIS dahil tüm 496*1932 bit üzerinde geçiş/kanal biti oranı. Run-in/out/Guard3 dışlanır; run-in düzeyi/DSV korunur."
+  },
+  "First 432 frames contain payload plus EDC/BIS/DC/sync. Their density is not a payload-only attribution. Last 64 frames are LDC parity plus BIS/DC/sync.": {
+    "zh-CN": "前 432 帧包含负载及 EDC/BIS/DC/同步。其密度不能仅归因于负载。后 64 帧为 LDC 校验及 BIS/DC/同步。",
+    "zh-TW": "前 432 個框架包含負載及 EDC/BIS/DC／同步。其密度不能僅歸因於負載。後 64 個框架為 LDC 同位檢查及 BIS/DC／同步。",
+    "en": "First 432 frames contain payload plus EDC/BIS/DC/sync. Their density is not a payload-only attribution. Last 64 frames are LDC parity plus BIS/DC/sync.",
+    "ja": "最初の 432 フレームはペイロードと EDC/BIS/DC／同期を含みます。その密度をペイロードだけに帰属させることはできません。最後の 64 フレームは LDC パリティと BIS/DC／同期です。",
+    "tr": "İlk 432 çerçeve yük ile EDC/BIS/DC/eşzamanlama içerir. Yoğunlukları yalnızca yüke atfedilemez. Son 64 çerçeve LDC eşlik ile BIS/DC/eşzamanlamadan oluşur."
+  },
+  "Greedy diagnostic, future bits provisionally zero; all-zero/all-one/random policies are sensitivity probes, not driver predictions or DC-balanced prescriptions.": {
+    "zh-CN": "贪心诊断，未来位暂设为零；全零/全一/随机策略是敏感性探针，不是驱动器预测或 DC 平衡录制方案。",
+    "zh-TW": "貪心診斷，未來位元暫設為零；全零／全一／隨機策略是敏感度探針，不是光碟機預測或 DC 平衡錄製方案。",
+    "en": "Greedy diagnostic, future bits provisionally zero; all-zero/all-one/random policies are sensitivity probes, not driver predictions or DC-balanced prescriptions.",
+    "ja": "将来ビットを暫定ゼロとする貪欲診断です。全ゼロ／全 1／ランダム方針は感度の調査であり、ドライブの予測や DC 平衡記録の処方ではありません。",
+    "tr": "Açgözlü tanı, gelecek bitler geçici olarak sıfır; tümü sıfır/tümü bir/rastgele ilkeleri duyarlılık deneyleridir, sürücü tahminleri veya DC dengeli kayıt tarifleri değildir."
+  },
+  "Independent reference mismatch: {0}.": {
+    "zh-CN": "独立参考不匹配：{0}。",
+    "zh-TW": "獨立參考不符：{0}。",
+    "en": "Independent reference mismatch: {0}.",
+    "ja": "独立参照と一致しません：{0}。",
+    "tr": "Bağımsız başvuru uyuşmazlığı: {0}."
+  },
+  "Independent pattern reference mismatch: {0}.": {
+    "zh-CN": "独立图案参考不匹配：{0}。",
+    "zh-TW": "獨立圖案參考不符：{0}。",
+    "en": "Independent pattern reference mismatch: {0}.",
+    "ja": "独立パターン参照と一致しません：{0}。",
+    "tr": "Bağımsız desen başvurusu uyuşmazlığı: {0}."
+  },
+  "Scanner disagrees with full diagnostic RUB.": {
+    "zh-CN": "扫描器与完整诊断 RUB 的结果不一致。",
+    "zh-TW": "掃描器與完整診斷 RUB 的結果不一致。",
+    "en": "Scanner disagrees with full diagnostic RUB.",
+    "ja": "スキャナーと完全な診断 RUB の結果が一致しません。",
+    "tr": "Tarayıcı tam tanısal RUB ile uyuşmuyor."
+  },
+  "Physical-cluster length or RLL boundaries invalid.": {
+    "zh-CN": "物理簇长度或 RLL 边界无效。",
+    "zh-TW": "實體叢集長度或 RLL 邊界無效。",
+    "en": "Physical-cluster length or RLL boundaries invalid.",
+    "ja": "物理クラスター長または RLL 境界が無効です。",
+    "tr": "Fiziksel küme uzunluğu veya RLL sınırları geçersiz."
+  },
+  "Non-binary modulation value.": {
+    "zh-CN": "调制值不是二进制。",
+    "zh-TW": "調變值不是二進位。",
+    "en": "Non-binary modulation value.",
+    "ja": "変調値が 2 値ではありません。",
+    "tr": "Modülasyon değeri ikili değil."
+  },
+  "Run exceeds histogram range.": {
+    "zh-CN": "游程超出直方图范围。",
+    "zh-TW": "遊程超出直方圖範圍。",
+    "en": "Run exceeds histogram range.",
+    "ja": "ランがヒストグラムの範囲を超えています。",
+    "tr": "Geçiş aralığı histogramın desteklediği uzunluğu aşıyor."
+  },
+  "Independent Figure 41 reference: {0} finite vectors matched bit for bit.": {
+    "zh-CN": "独立图 41 参考：{0} 个有限向量逐位匹配。",
+    "zh-TW": "獨立圖 41 參考：{0} 個有限向量逐位元相符。",
+    "en": "Independent Figure 41 reference: {0} finite vectors matched bit for bit.",
+    "ja": "独立した図 41 参照：{0} 個の有限ベクトルがビット単位で一致しました。",
+    "tr": "Bağımsız Şekil 41 başvurusu: {0} sonlu vektör bit bit eşleşti."
+  },
+  "Independent periodic-pattern reference: {0} finite vectors matched bit for bit.": {
+    "zh-CN": "独立周期图案参考：{0} 个有限向量逐位匹配。",
+    "zh-TW": "獨立週期圖案參考：{0} 個有限向量逐位元相符。",
+    "en": "Independent periodic-pattern reference: {0} finite vectors matched bit for bit.",
+    "ja": "独立周期パターン参照：{0} 個の有限ベクトルがビット単位で一致しました。",
+    "tr": "Bağımsız periyodik desen başvurusu: {0} sonlu vektör bit bit eşleşti."
+  },
+  "Fine-pattern analysis written to {0}.": {
+    "zh-CN": "细粒度图案分析已写入 {0}。",
+    "zh-TW": "細粒度圖案分析已寫入 {0}。",
+    "en": "Fine-pattern analysis written to {0}.",
+    "ja": "細粒度パターン解析を {0} に書き込みました。",
+    "tr": "İnce desen analizi {0} konumuna yazıldı."
+  },
+  "Reference cross-check passed; {0:F1}s.": {
+    "zh-CN": "参考交叉检查通过；{0:F1} 秒。",
+    "zh-TW": "參考交叉檢查通過；{0:F1} 秒。",
+    "en": "Reference cross-check passed; {0:F1}s.",
+    "ja": "参照の相互確認に合格しました。{0:F1} 秒。",
+    "tr": "Başvuru çapraz kontrolü geçti; {0:F1} saniye."
+  },
+  "Full-cluster scan {0}/256; {1:F1}s.": {
+    "zh-CN": "完整簇扫描 {0}/256；{1:F1} 秒。",
+    "zh-TW": "完整叢集掃描 {0}/256；{1:F1} 秒。",
+    "en": "Full-cluster scan {0}/256; {1:F1}s.",
+    "ja": "全クラスター走査 {0}/256、{1:F1} 秒。",
+    "tr": "Tam küme taraması {0}/256; {1:F1} saniye."
+  },
+  "Address confirmation {0:X2}; {1:F1}s.": {
+    "zh-CN": "地址复核 {0:X2}；{1:F1} 秒。",
+    "zh-TW": "位址複核 {0:X2}；{1:F1} 秒。",
+    "en": "Address confirmation {0:X2}; {1:F1}s.",
+    "ja": "アドレス確認 {0:X2}、{1:F1} 秒。",
+    "tr": "Adres doğrulaması {0:X2}; {1:F1} saniye."
+  },
+  "Complete: {0}; {1:F1}s.": {
+    "zh-CN": "完成：{0}；{1:F1} 秒。",
+    "zh-TW": "完成：{0}；{1:F1} 秒。",
+    "en": "Complete: {0}; {1:F1}s.",
+    "ja": "完了：{0}、{1:F1} 秒。",
+    "tr": "Tamamlandı: {0}; {1:F1} saniye."
+  },
+  "Post-scramble user byte Q. Host sectors contain Q XOR PSN-derived scrambling mask.": {
+    "zh-CN": "扰码后的用户字节 Q。主机扇区包含 Q XOR 由 PSN 派生的扰码掩码。",
+    "zh-TW": "擾碼後的使用者位元組 Q。主機磁區包含 Q XOR 由 PSN 衍生的擾碼遮罩。",
+    "en": "Post-scramble user byte Q. Host sectors contain Q XOR PSN-derived scrambling mask.",
+    "ja": "スクランブル後のユーザーバイト Q。ホストセクターは Q XOR PSN 由来のスクランブルマスクを含みます。",
+    "tr": "Karıştırma sonrası kullanıcı baytı Q. Ana makine sektörleri Q XOR PSN'den türetilen karıştırma maskesi içerir."
+  },
+  "65536 host bytes -> EDC/scramble -> LDC/BIS/ECC -> DC bits -> 17PP/sync; 496*1932=958272 channel bits.": {
+    "zh-CN": "65536 个主机字节 -> EDC/扰码 -> LDC/BIS/ECC -> DC 位 -> 17PP/同步；496*1932=958272 通道位。",
+    "zh-TW": "65536 個主機位元組 -> EDC／擾碼 -> LDC/BIS/ECC -> DC 位元 -> 17PP／同步；496*1932=958272 通道位元。",
+    "en": "65536 host bytes -> EDC/scramble -> LDC/BIS/ECC -> DC bits -> 17PP/sync; 496*1932=958272 channel bits.",
+    "ja": "65536 ホストバイト -> EDC／スクランブル -> LDC/BIS/ECC -> DC ビット -> 17PP／同期。496*1932=958272 チャネルビットです。",
+    "tr": "65536 ana makine baytı -> EDC/karıştırma -> LDC/BIS/ECC -> DC bitleri -> 17PP/eşzamanlama; 496*1932=958272 kanal biti."
+  },
+  "Number of modulation ONEs / number of channel bits; each ONE is one NRZI transition.": {
+    "zh-CN": "调制 ONE 数量 / 通道位数；每个 ONE 为一次 NRZI 跳变。",
+    "zh-TW": "調變 ONE 數量／通道位元數；每個 ONE 為一次 NRZI 轉換。",
+    "en": "Number of modulation ONEs / number of channel bits; each ONE is one NRZI transition.",
+    "ja": "変調 ONE の数／チャネルビット数です。各 ONE は NRZI 遷移 1 回に対応します。",
+    "tr": "Modülasyon ONE sayısı / kanal biti sayısı; her ONE bir NRZI geçişidir."
+  },
+  "16384 repeated bytes, no DC/ECC/sync; discard first and last 2048 channel bits; approximate periodic reference.": {
+    "zh-CN": "16384 个重复字节，无 DC/ECC/同步；丢弃最前和最后各 2048 个通道位；近似周期参考。",
+    "zh-TW": "16384 個重複位元組，無 DC/ECC／同步；捨棄最前與最後各 2048 個通道位元；近似週期參考。",
+    "en": "16384 repeated bytes, no DC/ECC/sync; discard first and last 2048 channel bits; approximate periodic reference.",
+    "ja": "16384 個の反復バイトで DC/ECC／同期を含みません。先頭と末尾の各 2048 チャネルビットを除外した近似周期参照です。",
+    "tr": "16384 yinelenen bayt, DC/ECC/eşzamanlama yok; ilk ve son 2048 kanal biti atılır; yaklaşık periyodik başvuru."
+  },
+  "Greedy diagnostic policy with future control bits provisionally zero; not a drive-identical or fully optimal policy.": {
+    "zh-CN": "未来控制位暂设为零的贪心诊断策略；不等同于驱动器策略，也不是完全最优策略。",
+    "zh-TW": "未來控制位元暫設為零的貪心診斷策略；不等同於光碟機策略，也不是完全最佳策略。",
+    "en": "Greedy diagnostic policy with future control bits provisionally zero; not a drive-identical or fully optimal policy.",
+    "ja": "将来の制御ビットを暫定ゼロとする貪欲診断方針です。ドライブと同一でも完全な最適方針でもありません。",
+    "tr": "Gelecek kontrol bitlerini geçici sıfır kabul eden açgözlü tanı ilkesi; sürücüyle aynı veya tamamen en iyi ilke değildir."
+  },
+  "All-zero/all-one/seeded-random controls are sensitivity probes, not DC-balanced recording prescriptions.": {
+    "zh-CN": "全零/全一/种子随机控制是敏感性探针，不是 DC 平衡录制方案。",
+    "zh-TW": "全零／全一／種子隨機控制是敏感度探針，不是 DC 平衡錄製方案。",
+    "en": "All-zero/all-one/seeded-random controls are sensitivity probes, not DC-balanced recording prescriptions.",
+    "ja": "全ゼロ／全 1／シード付き乱数制御は感度の調査であり、DC 平衡記録の処方ではありません。",
+    "tr": "Tümü sıfır/tümü bir/tohumlu rastgele kontroller duyarlılık deneyleridir; DC dengeli kayıt tarifleri değildir."
+  },
+  "0x00100000 for all 256; shortlisted bytes rechecked at 0x00234560, 0x006D3A00, 0x00CA73E0.": {
+    "zh-CN": "全部 256 种在 0x00100000 测试；入选字节在 0x00234560、0x006D3A00、0x00CA73E0 复核。",
+    "zh-TW": "全部 256 種在 0x00100000 測試；入選位元組在 0x00234560、0x006D3A00、0x00CA73E0 複核。",
+    "en": "0x00100000 for all 256; shortlisted bytes rechecked at 0x00234560, 0x006D3A00, 0x00CA73E0.",
+    "ja": "全 256 種は 0x00100000 でテストし、候補バイトは 0x00234560、0x006D3A00、0x00CA73E0 で再確認します。",
+    "tr": "256 değerin tamamı için 0x00100000; seçilen baytlar 0x00234560, 0x006D3A00, 0x00CA73E0 konumlarında yeniden kontrol edilir."
+  },
+  "16 address flags and 576 user-control bytes zero; nominal single-layer BD-R model.": {
+    "zh-CN": "16 个地址标志和 576 个用户控制字节为零；名义单层 BD-R 模型。",
+    "zh-TW": "16 個位址旗標與 576 個使用者控制位元組為零；名義單層 BD-R 模型。",
+    "en": "16 address flags and 576 user-control bytes zero; nominal single-layer BD-R model.",
+    "ja": "16 個のアドレスフラグと 576 個のユーザー制御バイトはゼロです。公称の単層 BD-R モデルです。",
+    "tr": "16 adres bayrağı ve 576 kullanıcı kontrol baytı sıfır; nominal tek katmanlı BD-R modeli."
+  },
+  "Run-in/out/Guard3 excluded from ranked physical-cluster densities. Run-in state retained for greedy policy.": {
+    "zh-CN": "排名所用的物理簇密度排除 Run-in/out/Guard3。贪心策略保留 run-in 状态。",
+    "zh-TW": "排名使用的實體叢集密度排除 Run-in/out/Guard3。貪心策略保留 run-in 狀態。",
+    "en": "Run-in/out/Guard3 excluded from ranked physical-cluster densities. Run-in state retained for greedy policy.",
+    "ja": "順位付けに使う物理クラスター密度から Run-in/out/Guard3 を除外します。貪欲方針には run-in 状態を保持します。",
+    "tr": "Sıralanan fiziksel küme yoğunluklarında Run-in/out/Guard3 dışlanır. Açgözlü ilke için run-in durumu korunur."
+  },
+  "Initial NRZI polarity changes level occupancy but never transition positions; density does not determine visual black/white.": {
+    "zh-CN": "初始 NRZI 极性会改变电平占比，但不会改变跳变位置；密度不能确定视觉黑白。",
+    "zh-TW": "初始 NRZI 極性會改變準位占比，但不會改變轉換位置；密度不能確定視覺黑白。",
+    "en": "Initial NRZI polarity changes level occupancy but never transition positions; density does not determine visual black/white.",
+    "ja": "初期 NRZI 極性はレベル占有率を変えますが、遷移位置は変えません。密度から見た目の白黒は決定できません。",
+    "tr": "İlk NRZI kutupluluğu düzey doluluğunu değiştirir, geçiş konumlarını asla değiştirmez; yoğunluk görsel siyah/beyazı belirlemez."
+  },
+  "Lowest: {0}": {
+    "zh-CN": "最低：{0}",
+    "zh-TW": "最低：{0}",
+    "en": "Lowest: {0}",
+    "ja": "最低：{0}",
+    "tr": "En düşük: {0}"
+  },
+  "Highest: {0}": {
+    "zh-CN": "最高：{0}",
+    "zh-TW": "最高：{0}",
+    "en": "Highest: {0}",
+    "ja": "最高：{0}",
+    "tr": "En yüksek: {0}"
+  },
+  "Missing reference file for {0}.": {
+    "en": "Missing reference file for {0}.",
+    "zh-CN": "{0} 缺少参考文件。",
+    "zh-TW": "{0} 缺少參考檔案。",
+    "ja": "{0} の参照ファイルがありません。",
+    "tr": "{0} için başvuru dosyası eksik."
+  },
+  "Parallelism must be 1..16.": {
+    "en": "Parallelism must be 1..16.",
+    "zh-CN": "并行度必须为 1..16。",
+    "zh-TW": "平行度必須為 1..16。",
+    "ja": "並列度は 1..16 である必要があります。",
+    "tr": "Paralellik 1..16 olmalıdır."
+  },
+  "ByteProbe.Help": {
+    "en": "BluRayByteProbe [OUTPUT_DIR] [PARALLELISM]\nBluRayByteProbe --fine [OUTPUT_DIR]\nBluRayByteProbe --verify-reference FILE\nBluRayByteProbe --verify-patterns FILE\nScan all 256 repeated bytes, analyze fine periodic patterns, or verify independent 17PP reference vectors.\nDefault output: artifacts/bluray-byte-density. Parallelism: 1..16; default is the smaller of 4 and the processor count.\nJSON/CSV identifiers and numeric results are language-independent; explanatory text follows the selected language.",
+    "zh-CN": "BluRayByteProbe [OUTPUT_DIR] [PARALLELISM]\nBluRayByteProbe --fine [OUTPUT_DIR]\nBluRayByteProbe --verify-reference FILE\nBluRayByteProbe --verify-patterns FILE\n扫描全部 256 种重复字节、分析细粒度周期图案，或验证独立 17PP 参考向量。\n默认输出：artifacts/bluray-byte-density。并行度：1..16；默认为 4 与处理器数量中的较小值。\nJSON/CSV 标识与数值结果不受语言影响；说明文案使用所选语言。",
+    "zh-TW": "BluRayByteProbe [OUTPUT_DIR] [PARALLELISM]\nBluRayByteProbe --fine [OUTPUT_DIR]\nBluRayByteProbe --verify-reference FILE\nBluRayByteProbe --verify-patterns FILE\n掃描全部 256 種重複位元組、分析細粒度週期圖案，或驗證獨立 17PP 參考向量。\n預設輸出：artifacts/bluray-byte-density。平行度：1..16；預設為 4 與處理器數量中的較小值。\nJSON/CSV 識別碼與數值結果不受語言影響；說明文案使用所選語言。",
+    "ja": "BluRayByteProbe [OUTPUT_DIR] [PARALLELISM]\nBluRayByteProbe --fine [OUTPUT_DIR]\nBluRayByteProbe --verify-reference FILE\nBluRayByteProbe --verify-patterns FILE\n全 256 種の反復バイトの走査、細粒度周期パターンの解析、独立 17PP 参照ベクトルの検証を行います。\n既定の出力：artifacts/bluray-byte-density。並列度：1..16。既定値は 4 とプロセッサー数の小さい方です。\nJSON/CSV の識別子と数値結果は言語に依存せず、説明テキストは選択した言語を使います。",
+    "tr": "BluRayByteProbe [OUTPUT_DIR] [PARALLELISM]\nBluRayByteProbe --fine [OUTPUT_DIR]\nBluRayByteProbe --verify-reference FILE\nBluRayByteProbe --verify-patterns FILE\n256 yinelenen bayt değerinin tamamını tarar, ince periyodik desenleri analiz eder veya bağımsız 17PP başvuru vektörlerini doğrular.\nVarsayılan çıktı: artifacts/bluray-byte-density. Paralellik: 1..16; varsayılan 4 ile işlemci sayısından küçük olanıdır.\nJSON/CSV tanımlayıcıları ve sayısal sonuçlar dilden bağımsızdır; açıklayıcı metin seçili dili izler."
+  }
+}

@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DiscImageStudio.Cd;
 
 public sealed record CdDiscParameters(
@@ -27,7 +28,7 @@ public sealed record CdDiscParameters(
     {
         if (Sectors <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(Sectors), "CD sector count must be positive.");
+            throw new ArgumentOutOfRangeException(nameof(Sectors), L.T("CD sector count must be positive."));
         }
 
         if (!double.IsFinite(InnerRadiusMm)
@@ -37,14 +38,14 @@ public sealed record CdDiscParameters(
         {
             throw new ArgumentOutOfRangeException(
                 nameof(OuterRadiusMm),
-                "CD outer radius must be greater than its positive inner radius.");
+                L.T("CD outer radius must be greater than its positive inner radius."));
         }
 
         if (!double.IsFinite(LinearVelocityMmPerSecond) || LinearVelocityMmPerSecond <= 0)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(LinearVelocityMmPerSecond),
-                "CD linear velocity must be positive.");
+                L.T("CD linear velocity must be positive."));
         }
 
         if (!double.IsFinite(StartAngleRadians))
@@ -56,7 +57,7 @@ public sealed record CdDiscParameters(
         {
             throw new ArgumentOutOfRangeException(
                 nameof(ImageOuterRadiusMm),
-                "Image outer radius must be positive.");
+                L.T("Image outer radius must be positive."));
         }
 
         _ = TotalBytes;

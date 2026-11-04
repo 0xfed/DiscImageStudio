@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using DvdImageSolver.Encoding;
 
 namespace DvdImageSolver.Solver;
@@ -24,7 +25,7 @@ public sealed class ImageConstraint
         if (_channelWordTargets.Length != DvdEccBlockEncoder.ChannelBitsPerBlock / 16)
         {
             throw new ArgumentException(
-                "Unexpected channel-word target count.",
+                L.T("Unexpected channel-word target count."),
                 nameof(channelWordTargets));
         }
 
@@ -36,7 +37,7 @@ public sealed class ImageConstraint
                 || _channelWordGrayscaleTargets.Any(value => value is < -1 or > 1)))
         {
             throw new ArgumentException(
-                "Grayscale targets must contain one level (-1 or 0..1) per channel word.",
+                L.T("Grayscale targets must contain one level (-1 or 0..1) per channel word."),
                 nameof(channelWordGrayscaleTargets));
         }
 
@@ -78,7 +79,7 @@ public sealed class ImageConstraint
                 default:
                     if (!char.IsWhiteSpace(character) && character != '_')
                     {
-                        throw new FormatException($"Unsupported target character '{character}'. Use 0/P, 1/L, or ?.");
+                        throw new FormatException(L.F($"Unsupported target character '{character}'. Use 0/P, 1/L, or ?."));
                     }
 
                     break;
@@ -95,7 +96,7 @@ public sealed class ImageConstraint
         {
             if (targetSector is < 0 or >= DvdEccBlockEncoder.SectorCount)
             {
-                throw new ArgumentOutOfRangeException(nameof(targetSector), "Target sector must be 0..15.");
+                throw new ArgumentOutOfRangeException(nameof(targetSector), L.T("Target sector must be 0..15."));
             }
 
             symbols.CopyTo(targets, targetSector * DvdEccBlockEncoder.ChannelBitsPerSector);
@@ -103,15 +104,13 @@ public sealed class ImageConstraint
         else
         {
             throw new FormatException(
-                $"Target contains {symbols.Count} symbols; expected either "
-                + $"{DvdEccBlockEncoder.ChannelBitsPerSector} (one sector) or "
-                + $"{DvdEccBlockEncoder.ChannelBitsPerBlock} (one ECC Block).");
+                L.F($"Target contains {symbols.Count} symbols; expected either {DvdEccBlockEncoder.ChannelBitsPerSector} (one sector) or {DvdEccBlockEncoder.ChannelBitsPerBlock} (one ECC Block)."));
         }
 
         int constrained = targets.Count(value => value != Unconstrained);
         if (constrained == 0)
         {
-            throw new FormatException("Target does not constrain any channel level.");
+            throw new FormatException(L.T("Target does not constrain any channel level."));
         }
 
         return new ImageConstraint(targets, constrained, imageMapping: null);
@@ -143,7 +142,7 @@ public sealed class ImageConstraint
     {
         if (channelLevels.Length != _targets.Length)
         {
-            throw new ArgumentException("Unexpected channel-level count.", nameof(channelLevels));
+            throw new ArgumentException(L.T("Unexpected channel-level count."), nameof(channelLevels));
         }
 
         int mismatches = 0;
@@ -185,7 +184,7 @@ public sealed class ImageConstraint
     {
         if (targets.Length != DvdEccBlockEncoder.ChannelBitsPerBlock)
         {
-            throw new ArgumentException("Unexpected image target size.", nameof(targets));
+            throw new ArgumentException(L.T("Unexpected image target size."), nameof(targets));
         }
 
         int constrained = targets.Count(value => value != Unconstrained);

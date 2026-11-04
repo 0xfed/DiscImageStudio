@@ -1,0 +1,401 @@
+{
+  "黑白抖动": {
+    "zh-CN": "黑白抖动",
+    "zh-TW": "黑白抖動",
+    "en": "Black-and-white dithering",
+    "ja": "白黒ディザリング",
+    "tr": "Siyah beyaz renk taklidi"
+  },
+  "用黑白像素混合保留明暗，保持原图尺寸并导出无损 PNG。": {
+    "zh-CN": "用黑白像素混合保留明暗，保持原图尺寸并导出无损 PNG。",
+    "zh-TW": "以黑白像素混合保留明暗，維持原圖尺寸並匯出無損 PNG。",
+    "en": "Preserve tones with a mix of black and white pixels, keep the original dimensions, and export lossless PNG.",
+    "ja": "白黒画素の混合で階調を保ち、元のサイズで可逆 PNG に書き出します。",
+    "tr": "Siyah ve beyaz pikselleri karıştırarak tonları koruyun, özgün boyutları saklayın ve kayıpsız PNG dışa aktarın."
+  },
+  "打开图片": {
+    "zh-CN": "打开图片",
+    "zh-TW": "開啟圖片",
+    "en": "Open image",
+    "ja": "画像を開く",
+    "tr": "Görsel aç"
+  },
+  "保存黑白 PNG": {
+    "zh-CN": "保存黑白 PNG",
+    "zh-TW": "儲存黑白 PNG",
+    "en": "Save black-and-white PNG",
+    "ja": "白黒 PNG を保存",
+    "tr": "Siyah beyaz PNG kaydet"
+  },
+  "光盘类型": {
+    "zh-CN": "光盘类型",
+    "zh-TW": "光碟類型",
+    "en": "Disc type",
+    "ja": "ディスク種別",
+    "tr": "Disk türü"
+  },
+  "DVD 二阶": {
+    "zh-CN": "DVD 二阶",
+    "zh-TW": "DVD 二階",
+    "en": "DVD two-level",
+    "ja": "DVD 2 階調",
+    "tr": "DVD iki düzey"
+  },
+  "CD 二阶": {
+    "zh-CN": "CD 二阶",
+    "zh-TW": "CD 二階",
+    "en": "CD two-level",
+    "ja": "CD 2 階調",
+    "tr": "CD iki düzey"
+  },
+  "DVD 二阶 · 0 / 255": {
+    "zh-CN": "DVD 二阶 · 0 / 255",
+    "zh-TW": "DVD 二階 · 0 / 255",
+    "en": "DVD two-level · 0 / 255",
+    "ja": "DVD 2 階調 · 0 / 255",
+    "tr": "DVD iki düzey · 0 / 255"
+  },
+  "CD 二阶 · 0 / 255": {
+    "zh-CN": "CD 二阶 · 0 / 255",
+    "zh-TW": "CD 二階 · 0 / 255",
+    "en": "CD two-level · 0 / 255",
+    "ja": "CD 2 階調 · 0 / 255",
+    "tr": "CD iki düzey · 0 / 255"
+  },
+  "A5 → 黑色 0 · 92 → 白色 255": {
+    "zh-CN": "A5 → 黑色 0 · 92 → 白色 255",
+    "zh-TW": "A5 → 黑色 0 · 92 → 白色 255",
+    "en": "A5 → black 0 · 92 → white 255",
+    "ja": "A5 → 黒 0 · 92 → 白 255",
+    "tr": "A5 → siyah 0 · 92 → beyaz 255"
+  },
+  "0D → 黑色 0 · AA → 白色 255": {
+    "zh-CN": "0D → 黑色 0 · AA → 白色 255",
+    "zh-TW": "0D → 黑色 0 · AA → 白色 255",
+    "en": "0D → black 0 · AA → white 255",
+    "ja": "0D → 黒 0 · AA → 白 255",
+    "tr": "0D → siyah 0 · AA → beyaz 255"
+  },
+  "sRGB 伽马校正": {
+    "zh-CN": "sRGB 伽马校正",
+    "zh-TW": "sRGB 伽瑪校正",
+    "en": "sRGB gamma correction",
+    "ja": "sRGB ガンマ補正",
+    "tr": "sRGB gama düzeltmesi"
+  },
+  "已关闭：保持现有明暗分配": {
+    "zh-CN": "已关闭：保持现有明暗分配",
+    "zh-TW": "已關閉：維持既有明暗分布",
+    "en": "Off: keep the existing tonal distribution",
+    "ja": "オフ：従来の明暗分布を維持",
+    "tr": "Kapalı: mevcut ton dağılımı korunur"
+  },
+  "已开启：按线性亮度分配黑白像素，中间调通常更深": {
+    "zh-CN": "已开启：按线性亮度分配黑白像素，中间调通常更深",
+    "zh-TW": "已開啟：依線性亮度分配黑白像素，中間調通常較深",
+    "en": "On: distribute black/white pixels by linear luminance; midtones are usually darker",
+    "ja": "オン：線形輝度で白黒画素を配分し、中間調は通常暗くなります",
+    "tr": "Açık: siyah/beyaz pikseller doğrusal parlaklığa göre dağıtılır; orta tonlar genellikle daha koyudur"
+  },
+  "打开图片，或将文件拖入窗口": {
+    "zh-CN": "打开图片，或将文件拖入窗口",
+    "zh-TW": "開啟圖片，或將檔案拖入視窗",
+    "en": "Open an image or drag a file into the window",
+    "ja": "画像を開くか、ファイルをウィンドウにドロップ",
+    "tr": "Görsel açın veya dosyayı pencereye sürükleyin"
+  },
+  "100% 像素查看": {
+    "zh-CN": "100% 像素查看",
+    "zh-TW": "100% 像素檢視",
+    "en": "View pixels at 100%",
+    "ja": "100% ピクセル表示",
+    "tr": "Pikselleri %100 görüntüle"
+  },
+  "原图": {
+    "zh-CN": "原图",
+    "zh-TW": "原圖",
+    "en": "Original image",
+    "ja": "元の画像",
+    "tr": "Özgün görsel"
+  },
+  "保留原始尺寸": {
+    "zh-CN": "保留原始尺寸",
+    "zh-TW": "保留原始尺寸",
+    "en": "Keep original dimensions",
+    "ja": "元のサイズを維持",
+    "tr": "Özgün boyutları koru"
+  },
+  "拖入 PNG / JPG / BMP / TIFF / GIF": {
+    "zh-CN": "拖入 PNG / JPG / BMP / TIFF / GIF",
+    "zh-TW": "拖入 PNG / JPG / BMP / TIFF / GIF",
+    "en": "Drop PNG / JPG / BMP / TIFF / GIF",
+    "ja": "PNG / JPG / BMP / TIFF / GIF をドロップ",
+    "tr": "PNG / JPG / BMP / TIFF / GIF sürükleyin"
+  },
+  "DVD 二阶抖动结果": {
+    "zh-CN": "DVD 二阶抖动结果",
+    "zh-TW": "DVD 二階抖動結果",
+    "en": "DVD two-level dithering result",
+    "ja": "DVD 2 階調ディザリング結果",
+    "tr": "DVD iki düzey renk taklidi sonucu"
+  },
+  "蛇形 Floyd–Steinberg · sRGB 伽马：关 · 无损 PNG": {
+    "zh-CN": "蛇形 Floyd–Steinberg · sRGB 伽马：关 · 无损 PNG",
+    "zh-TW": "蛇形 Floyd–Steinberg · sRGB 伽瑪：關 · 無損 PNG",
+    "en": "Serpentine Floyd–Steinberg · sRGB gamma: off · Lossless PNG",
+    "ja": "蛇行 Floyd–Steinberg · sRGB ガンマ：オフ · 可逆 PNG",
+    "tr": "Yılanvari Floyd–Steinberg · sRGB gama: kapalı · Kayıpsız PNG"
+  },
+  "选择图片后自动处理": {
+    "zh-CN": "选择图片后自动处理",
+    "zh-TW": "選擇圖片後自動處理",
+    "en": "Processed automatically after selecting an image",
+    "ja": "画像を選択すると自動処理",
+    "tr": "Görsel seçildikten sonra otomatik işlenir"
+  },
+  "保持原图尺寸 · 透明区域合成白底 · 保存时不覆盖原图": {
+    "zh-CN": "保持原图尺寸 · 透明区域合成白底 · 保存时不覆盖原图",
+    "zh-TW": "維持原圖尺寸 · 透明區域合成白底 · 儲存時不覆寫原圖",
+    "en": "Original dimensions · Transparency composited over white · Save without overwriting the original",
+    "ja": "元のサイズを維持 · 透明部分は白背景に合成 · 元の画像を上書きせず保存",
+    "tr": "Özgün boyutlar · Saydamlık beyazla birleştirilir · Özgün görselin üzerine yazılmaz"
+  },
+  "正在完成 PNG 保存，保存后将关闭…": {
+    "zh-CN": "正在完成 PNG 保存，保存后将关闭…",
+    "zh-TW": "正在完成 PNG 儲存，完成後將關閉…",
+    "en": "Finishing PNG save; the window will close afterwards…",
+    "ja": "PNG の保存を完了しています。保存後に閉じます…",
+    "tr": "PNG kaydı tamamlanıyor; ardından pencere kapanacak…"
+  },
+  "正在处理 {0}抖动（{1}）· {2}…": {
+    "zh-CN": "正在处理 {0}抖动（{1}）· {2}…",
+    "zh-TW": "正在處理 {0}抖動（{1}）· {2}…",
+    "en": "Processing {0} dithering ({1}) · {2}…",
+    "ja": "{0} ディザリング（{1}）を処理中 · {2}…",
+    "tr": "{0} renk taklidi ({1}) işleniyor · {2}…"
+  },
+  "{0:N0} × {1:N0} 像素": {
+    "zh-CN": "{0:N0} × {1:N0} 像素",
+    "zh-TW": "{0:N0} × {1:N0} 像素",
+    "en": "{0:N0} × {1:N0} pixels",
+    "ja": "{0:N0} × {1:N0} ピクセル",
+    "tr": "{0:N0} × {1:N0} piksel"
+  },
+  "{0}处理完成 · {1} · {2:N0} × {3:N0} · {4:F2} 秒": {
+    "zh-CN": "{0}处理完成 · {1} · {2:N0} × {3:N0} · {4:F2} 秒",
+    "zh-TW": "{0}處理完成 · {1} · {2:N0} × {3:N0} · {4:F2} 秒",
+    "en": "{0} processing complete · {1} · {2:N0} × {3:N0} · {4:F2} seconds",
+    "ja": "{0} 処理完了 · {1} · {2:N0} × {3:N0} · {4:F2} 秒",
+    "tr": "{0} işleme tamamlandı · {1} · {2:N0} × {3:N0} · {4:F2} saniye"
+  },
+  "处理失败：{0}": {
+    "zh-CN": "处理失败：{0}",
+    "zh-TW": "處理失敗：{0}",
+    "en": "Processing failed: {0}",
+    "ja": "処理に失敗しました：{0}",
+    "tr": "İşleme başarısız: {0}"
+  },
+  "{0}抖动结果": {
+    "zh-CN": "{0}抖动结果",
+    "zh-TW": "{0}抖動結果",
+    "en": "{0} dithering result",
+    "ja": "{0} ディザリング結果",
+    "tr": "{0} renk taklidi sonucu"
+  },
+  "蛇形 Floyd–Steinberg · {0} · 无损 PNG": {
+    "zh-CN": "蛇形 Floyd–Steinberg · {0} · 无损 PNG",
+    "zh-TW": "蛇形 Floyd–Steinberg · {0} · 無損 PNG",
+    "en": "Serpentine Floyd–Steinberg · {0} · Lossless PNG",
+    "ja": "蛇行 Floyd–Steinberg · {0} · 可逆 PNG",
+    "tr": "Yılanvari Floyd–Steinberg · {0} · Kayıpsız PNG"
+  },
+  "就绪 · {0}": {
+    "zh-CN": "就绪 · {0}",
+    "zh-TW": "就緒 · {0}",
+    "en": "Ready · {0}",
+    "ja": "準備完了 · {0}",
+    "tr": "Hazır · {0}"
+  },
+  "sRGB 伽马：开": {
+    "zh-CN": "sRGB 伽马：开",
+    "zh-TW": "sRGB 伽瑪：開",
+    "en": "sRGB gamma: on",
+    "ja": "sRGB ガンマ：オン",
+    "tr": "sRGB gama: açık"
+  },
+  "sRGB 伽马：关": {
+    "zh-CN": "sRGB 伽马：关",
+    "zh-TW": "sRGB 伽瑪：關",
+    "en": "sRGB gamma: off",
+    "ja": "sRGB ガンマ：オフ",
+    "tr": "sRGB gama: kapalı"
+  },
+  "选择原图": {
+    "zh-CN": "选择原图",
+    "zh-TW": "選擇原圖",
+    "en": "Select original image",
+    "ja": "元の画像を選択",
+    "tr": "Özgün görseli seç"
+  },
+  "图片|*.png;*.jpg;*.jpeg;*.bmp;*.tif;*.tiff;*.gif|所有文件|*.*": {
+    "zh-CN": "图片|*.png;*.jpg;*.jpeg;*.bmp;*.tif;*.tiff;*.gif|所有文件|*.*",
+    "zh-TW": "圖片|*.png;*.jpg;*.jpeg;*.bmp;*.tif;*.tiff;*.gif|所有檔案|*.*",
+    "en": "Images|*.png;*.jpg;*.jpeg;*.bmp;*.tif;*.tiff;*.gif|All files|*.*",
+    "ja": "画像|*.png;*.jpg;*.jpeg;*.bmp;*.tif;*.tiff;*.gif|すべてのファイル|*.*",
+    "tr": "Görseller|*.png;*.jpg;*.jpeg;*.bmp;*.tif;*.tiff;*.gif|Tüm dosyalar|*.*"
+  },
+  "PNG 图片|*.png": {
+    "zh-CN": "PNG 图片|*.png",
+    "zh-TW": "PNG 圖片|*.png",
+    "en": "PNG images|*.png",
+    "ja": "PNG 画像|*.png",
+    "tr": "PNG görselleri|*.png"
+  },
+  "正在保存 PNG · {0}…": {
+    "zh-CN": "正在保存 PNG · {0}…",
+    "zh-TW": "正在儲存 PNG · {0}…",
+    "en": "Saving PNG · {0}…",
+    "ja": "PNG を保存中 · {0}…",
+    "tr": "PNG kaydediliyor · {0}…"
+  },
+  "已保存 · {0}：{1}": {
+    "zh-CN": "已保存 · {0}：{1}",
+    "zh-TW": "已儲存 · {0}：{1}",
+    "en": "Saved · {0}: {1}",
+    "ja": "保存しました · {0}：{1}",
+    "tr": "Kaydedildi · {0}: {1}"
+  },
+  "保存失败：{0}": {
+    "zh-CN": "保存失败：{0}",
+    "zh-TW": "儲存失敗：{0}",
+    "en": "Save failed: {0}",
+    "ja": "保存に失敗しました：{0}",
+    "tr": "Kaydetme başarısız: {0}"
+  },
+  "--mode 请选择 dvd 或 cd，均输出黑白二阶。": {
+    "zh-CN": "--mode 请选择 dvd 或 cd，均输出黑白二阶。",
+    "zh-TW": "--mode 請選擇 dvd 或 cd，皆輸出黑白二階。",
+    "en": "--mode must be dvd or cd; both output black and white in two levels.",
+    "ja": "--mode は dvd または cd を選択してください。どちらも白黒 2 階調で出力します。",
+    "tr": "--mode için dvd veya cd seçin; ikisi de iki düzeyli siyah beyaz çıktı üretir."
+  },
+  "Choose --snapshot or --output.": {
+    "zh-CN": "请选择 --snapshot 或 --output。",
+    "zh-TW": "請選擇 --snapshot 或 --output。",
+    "en": "Choose --snapshot or --output.",
+    "ja": "--snapshot または --output を選択してください。",
+    "tr": "--snapshot veya --output seçin."
+  },
+  "输出文件已存在，请选择另一个文件名。": {
+    "zh-CN": "输出文件已存在，请选择另一个文件名。",
+    "zh-TW": "輸出檔案已存在，請選擇另一個檔名。",
+    "en": "The output file already exists; choose another filename.",
+    "ja": "出力ファイルが既に存在します。別のファイル名を選んでください。",
+    "tr": "Çıktı dosyası zaten var; başka bir dosya adı seçin."
+  },
+  "Saved {0} × {1}, {2} ({3}), gamma={4}: {5}": {
+    "zh-CN": "已保存 {0} × {1}，{2}（{3}），gamma={4}：{5}",
+    "zh-TW": "已儲存 {0} × {1}，{2}（{3}），gamma={4}：{5}",
+    "en": "Saved {0} × {1}, {2} ({3}), gamma={4}: {5}",
+    "ja": "保存しました {0} × {1}、{2}（{3}）、gamma={4}：{5}",
+    "tr": "Kaydedildi {0} × {1}, {2} ({3}), gamma={4}: {5}"
+  },
+  "请另存为新文件，不能覆盖原图。": {
+    "zh-CN": "请另存为新文件，不能覆盖原图。",
+    "zh-TW": "請另存為新檔，不能覆寫原圖。",
+    "en": "Save to a new file; the original image cannot be overwritten.",
+    "ja": "新しいファイルとして保存してください。元の画像は上書きできません。",
+    "tr": "Yeni bir dosyaya kaydedin; özgün görselin üzerine yazılamaz."
+  },
+  "请保存为 PNG，以保留准确的灰阶。": {
+    "zh-CN": "请保存为 PNG，以保留准确的灰阶。",
+    "zh-TW": "請儲存為 PNG，以保留精確的灰階。",
+    "en": "Save as PNG to preserve the exact gray levels.",
+    "ja": "正確な階調を保つため PNG で保存してください。",
+    "tr": "Tam gri düzeylerini korumak için PNG olarak kaydedin."
+  },
+  "用法：FourLevelDither --input 原图 --output 结果.png [--mode dvd|cd] [--gamma none|srgb]": {
+    "zh-CN": "用法：FourLevelDither --input 原图 --output 结果.png [--mode dvd|cd] [--gamma none|srgb]",
+    "zh-TW": "用法：FourLevelDither --input 原圖 --output 結果.png [--mode dvd|cd] [--gamma none|srgb]",
+    "en": "Usage: FourLevelDither --input IMAGE --output RESULT.png [--mode dvd|cd] [--gamma none|srgb]",
+    "ja": "使い方：FourLevelDither --input IMAGE --output RESULT.png [--mode dvd|cd] [--gamma none|srgb]",
+    "tr": "Kullanım: FourLevelDither --input IMAGE --output RESULT.png [--mode dvd|cd] [--gamma none|srgb]"
+  },
+  "Missing {0}.": {
+    "zh-CN": "缺少 {0}。",
+    "zh-TW": "缺少 {0}。",
+    "en": "Missing {0}.",
+    "ja": "{0} がありません。",
+    "tr": "{0} eksik."
+  },
+  "--gamma 请选择 none（关闭）或 srgb（sRGB 伽马校正）。": {
+    "zh-CN": "--gamma 请选择 none（关闭）或 srgb（sRGB 伽马校正）。",
+    "zh-TW": "--gamma 請選擇 none（關閉）或 srgb（sRGB 伽瑪校正）。",
+    "en": "--gamma must be none (off) or srgb (sRGB gamma correction).",
+    "ja": "--gamma は none（オフ）または srgb（sRGB ガンマ補正）を選択してください。",
+    "tr": "--gamma için none (kapalı) veya srgb (sRGB gama düzeltmesi) seçin."
+  },
+  "Snapshot input could not be processed.": {
+    "zh-CN": "无法处理截图输入。",
+    "zh-TW": "無法處理截圖輸入。",
+    "en": "Snapshot input could not be processed.",
+    "ja": "スクリーンショットの入力を処理できませんでした。",
+    "tr": "Ekran görüntüsü girdisi işlenemedi."
+  },
+  "Snapshot: {0}": {
+    "zh-CN": "截图：{0}",
+    "zh-TW": "截圖：{0}",
+    "en": "Snapshot: {0}",
+    "ja": "スクリーンショット：{0}",
+    "tr": "Ekran görüntüsü: {0}"
+  },
+  "The BGRA buffer must contain exactly width × height × 4 bytes.": {
+    "zh-CN": "BGRA 缓冲区必须恰好包含 width × height × 4 字节。",
+    "zh-TW": "BGRA 緩衝區必須恰好包含 width × height × 4 位元組。",
+    "en": "The BGRA buffer must contain exactly width × height × 4 bytes.",
+    "ja": "BGRA バッファーには正確に width × height × 4 バイトが必要です。",
+    "tr": "BGRA arabelleği tam olarak width × height × 4 bayt içermelidir."
+  },
+  "Dithered images must be saved as lossless PNG files (.png).": {
+    "zh-CN": "抖动图像必须保存为无损 PNG 文件（.png）。",
+    "zh-TW": "抖動影像必須儲存為無損 PNG 檔案（.png）。",
+    "en": "Dithered images must be saved as lossless PNG files (.png).",
+    "ja": "ディザリング画像は可逆 PNG ファイル（.png）で保存する必要があります。",
+    "tr": "Renk taklitli görseller kayıpsız PNG dosyası (.png) olarak kaydedilmelidir."
+  },
+  "The output must be a Gray8 bitmap.": {
+    "zh-CN": "输出必须为 Gray8 位图。",
+    "zh-TW": "輸出必須為 Gray8 點陣圖。",
+    "en": "The output must be a Gray8 bitmap.",
+    "ja": "出力は Gray8 ビットマップである必要があります。",
+    "tr": "Çıktı Gray8 bit eşlemi olmalıdır."
+  },
+  "The output may contain only the selected gray levels.": {
+    "zh-CN": "输出只能包含所选灰度级。",
+    "zh-TW": "輸出僅能包含所選灰階級。",
+    "en": "The output may contain only the selected gray levels.",
+    "ja": "出力には選択された階調のみを含められます。",
+    "tr": "Çıktı yalnızca seçilen gri düzeylerini içerebilir."
+  },
+  "At least two gray levels are required.": {
+    "zh-CN": "至少需要两个灰度级。",
+    "zh-TW": "至少需要兩個灰階級。",
+    "en": "At least two gray levels are required.",
+    "ja": "最低 2 つの階調が必要です。",
+    "tr": "En az iki gri düzeyi gereklidir."
+  },
+  "Gray levels must be distinct and sorted from dark to light.": {
+    "zh-CN": "灰度级必须互不相同，并按从暗到亮排序。",
+    "zh-TW": "灰階級必須互異，並依由暗至亮排序。",
+    "en": "Gray levels must be distinct and sorted from dark to light.",
+    "ja": "階調は重複せず、暗い順から明るい順に並べる必要があります。",
+    "tr": "Gri düzeyleri farklı olmalı ve koyudan açığa sıralanmalıdır."
+  },
+  "Dither.Help": {
+    "zh-CN": "FourLevelDither [IMAGE] — 打开独立图片工具。\nFourLevelDither --input IMAGE --output RESULT.png [--mode dvd|cd] [--gamma none|srgb] — 无窗口转换。\n两种模式均输出黑白 0/255。默认 dvd：A5/92；cd：0D/AA。\n伽马默认 none（保持已有输出）；srgb 在抖动前将 RGB 解码为线性亮度。\n输出：蛇形 Floyd–Steinberg，保留原始尺寸，透明区域合成白底。",
+    "zh-TW": "FourLevelDither [IMAGE] — 開啟獨立圖片工具。\nFourLevelDither --input IMAGE --output RESULT.png [--mode dvd|cd] [--gamma none|srgb] — 無視窗轉換。\n兩種模式皆輸出黑白 0/255。預設 dvd：A5/92；cd：0D/AA。\n伽瑪預設 none（維持既有輸出）；srgb 在抖動前將 RGB 解碼為線性亮度。\n輸出：蛇形 Floyd–Steinberg，保留原始尺寸，透明區域合成白底。",
+    "en": "FourLevelDither [IMAGE] — open the independent image tool.\nFourLevelDither --input IMAGE --output RESULT.png [--mode dvd|cd] [--gamma none|srgb] — convert without a window.\nBoth modes output black/white 0/255. Default dvd: A5/92; cd: 0D/AA.\nGamma defaults to none (existing output); srgb decodes RGB to linear light before dithering.\nOutput: serpentine Floyd–Steinberg, original size, alpha over white.",
+    "ja": "FourLevelDither [IMAGE] — 独立した画像ツールを開きます。\nFourLevelDither --input IMAGE --output RESULT.png [--mode dvd|cd] [--gamma none|srgb] — ウィンドウなしで変換します。\n両モードとも白黒 0/255 を出力します。既定の dvd は A5/92、cd は 0D/AA です。\nガンマの既定値は none（従来の出力）です。srgb はディザリング前に RGB を線形光へデコードします。\n出力：蛇行 Floyd–Steinberg、元のサイズを維持、透明部分は白背景に合成。",
+    "tr": "FourLevelDither [IMAGE] — bağımsız görsel aracını açar.\nFourLevelDither --input IMAGE --output RESULT.png [--mode dvd|cd] [--gamma none|srgb] — pencere açmadan dönüştürür.\nİki mod da siyah/beyaz 0/255 üretir. Varsayılan dvd: A5/92; cd: 0D/AA.\nGama varsayılanı none (mevcut çıktı); srgb renk taklidinden önce RGB değerlerini doğrusal ışığa dönüştürür.\nÇıktı: yılanvari Floyd–Steinberg, özgün boyutlar, saydamlık beyazla birleştirilir."
+  }
+}

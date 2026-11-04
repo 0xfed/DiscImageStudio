@@ -1,5 +1,7 @@
 # DVD NRZI 图像约束求解器
 
+[简体中文](DVD_ENGINE.md) | [繁體中文](DVD_ENGINE.zh-TW.md) | [English](DVD_ENGINE.en.md) | [日本語](DVD_ENGINE.ja.md) | [Türkçe](DVD_ENGINE.tr.md)
+
 本项目把连续 16 个 DVD 数据扇区作为一个 ECC Block，根据二维图片或指定的 NRZI pit/land 约束搜索可读的用户数据。
 
 固定约定：
@@ -9,7 +11,7 @@
 - 只输入 ECC Block 的初始 LBA，后续扇区自动使用 `LBA + 1 ... LBA + 15`；
 - `PSN = PSN offset + LBA`，默认 offset 为 `0x30000`；
 - DSV 绝对值相等时选择 Stream 1；
-- `pit = 0 = 黑色`，`land = 1 = 白色`；
+- `pit = 0`（黑色），`land = 1`（白色）；
 - 每次输出 32768 字节，即 16 个连续的 2048-byte payload。
 
 编码链包括 ID、IED、全零 RSV、EDC、数据扰码、RS-PC PO/PI、PO 行交织、EFMPlus 主表/替代表、SYNC/DSV 控制和 NRZI 转换。
@@ -18,10 +20,10 @@
 
 ## 构建和自检
 
-构建需要 Windows 和 .NET 10 SDK；直接运行非自包含产物需要 .NET 10 Windows 桌面运行时：
+下列命令使用 Windows 独立入口，需要 .NET 10 SDK；直接运行其非自包含产物需要 .NET 10 Windows 桌面运行时。Linux/macOS 可通过共用 CLI 执行 DVD 命令，见 [README.md](../README.md)：
 
 ```powershell
-dotnet build DvdImageSolver.slnx --configuration Release
+dotnet build DiscImageStudio.slnx --configuration Release
 dotnet run --project src/DvdImageSolver --configuration Release -- selftest
 ```
 
@@ -45,11 +47,11 @@ dotnet run --project src/DvdImageSolver --configuration Release -- selftest
 
 目标文件使用字符表示物理 NRZI 电平：
 
-```text
-0 或 P    pit，黑色
-1 或 L    land，白色
-?         不约束
-```
+| 符号 | 含义 |
+| --- | --- |
+| `0` 或 `P` | pit，黑色 |
+| `1` 或 `L` | land，白色 |
+| `?` | 不约束 |
 
 空白和下划线会被忽略。文件必须包含以下二者之一：
 
@@ -60,7 +62,7 @@ SYNC、RLL、EDC 和 ECC 会限制可实现的图案，因此任意逐 bit 图�
 
 `dispersion`模式不控制绝对pit/land多数，而用EFMPlus跳变密度形成黑白二阶纹理。采用扰码后字节`Q=0xA5/0x92`，所有状态表示分别固定为5/2次transition。图片亮度0–127映射A5、128–255映射92，预览亮度为0/255。新生成的图片不再使用66或B9作为独立灰阶。NRZI整体反色不改变transition位置。
 
-已抖动的全不透明灰度图片若只含`0/255`（允许全黑或全白），生成与标定预览使用最近像素采样，保留像素的原始档位；普通连续灰度、彩色或带透明度的图片仍采用双线性采样。主程序的CD/DVD环形复制对黑白离散输入先进行高质量缩放和旋转，再重新二阶抖动，避免缩放后的连续灰度直接分档而损失混合层次。`full`和`state-control`的二值目标保持原来的采样规则。
+已抖动的全不透明灰度图片若只含`0/255`（允许全黑或全白），生成与标定预览使用最近像素采样，保留像素的原始档位；普通连续灰度、彩色或带透明度的图片仍采用双线性采样。主程序在设计页完成缩放、旋转与图层合成，生成、流式刻录和预览共享该合成图及 `ToneProfile`，不再额外进行环形复制或预处理。`full`和`state-control`的二值目标保持原来的采样规则。
 
 ## 图片映射
 
@@ -166,7 +168,7 @@ dotnet run --project src/DvdImageSolver --configuration Release -- solve `
   --iterations 3
 ```
 
-state-control把每个91-byte Sync Frame作为一个求解段。EDC、PI、PO、固定字段和SYNC仍然精确生成并参与State、DSV和pit/land边界传播；它们不参与自由字节搜索目标，但会参与最终整盘可见度评分。程序按`EFMPlus state × 输入电平 × 当前累计DSV`计算最优黑/白字节对。目标位置对每条活跃Stream只尝试其当前精确状态对应的黑或白字节；每个前缀只保留评分最好的`--beam-width`条路径。每个包含图像目标的自由段还会把首尾各`--bridge-bytes`个payload字节作为控制位置，但控制位置也只在当前DSV字节对中选择，不再枚举全部256个值。
+state-control把每个91-byte Sync Frame作为一个求解段。EDC、PI、PO、固定字段和SYNC仍然精确生成并参与State、DSV和pit/land边界传播；它们不参与自由字节搜索目标，但会参与最终整盘可见度评分。程序按 `EFMPlus state × initialLevel × currentDsv`（EFMPlus 状态、输入电平与当前累计 DSV）计算最优黑/白字节对。目标位置对每条活跃Stream只尝试其当前精确状态对应的黑或白字节；每个前缀只保留评分最好的`--beam-width`条路径。每个包含图像目标的自由段还会把首尾各`--bridge-bytes`个payload字节作为控制位置，但控制位置也只在当前DSV字节对中选择，不再枚举全部256个值。
 
 程序启动时预处理全部65536个16-bit码字在初始pit和land时的：
 
@@ -175,7 +177,7 @@ state-control把每个91-byte Sync Frame作为一个求解段。EDC、PI、PO、
 - 精确DSV增量；
 - 前导和尾随零数，用于RLL边界检查。
 
-字节对对每种可能的EFMPlus表示同时计算灰度误差和写入该码字后的`|DSV|`，联合代价为`最坏灰度误差 × 16 + 最坏输出|DSV|`。因此一个灰度级仍比15个DSV单位更重要，但当前DSV的方向和大小可以在灰度相近的字节之间改变选择。常用的DSV -256..256字节对会预计算；若传入或运行中超出此范围则按精确DSV即时计算，不截断。这里的字节是扰码之后、进入EFMPlus的recording-frame字节；写入ISO的原始payload会经过扰码异或逆映射，因此其数值不一定只有这几种。
+字节对对每种可能的EFMPlus表示同时计算灰度误差和写入该码字后的`|DSV|`，联合代价为 `worstGrayError * 16 + worstOutputAbsDsv`，即最坏灰度误差乘以 16，再加最坏输出 DSV 的绝对值。因此一个灰度级仍比15个DSV单位更重要，但当前DSV的方向和大小可以在灰度相近的字节之间改变选择。常用的DSV -256..256字节对会预计算；若传入或运行中超出此范围则按精确DSV即时计算，不截断。这里的字节是扰码之后、进入EFMPlus的recording-frame字节；写入ISO的原始payload会经过扰码异或逆映射，因此其数值不一定只有这几种。
 
 内层候选以一个EFMPlus码字为单位评分，不展开16个channel levels。每条beam路径同时保存Stream 1和Stream 2，不会提前把其中一条错误丢弃。SYNC主/副码、Stream 1平局选择、累计DSV和最终边界仍按原编码器的整数规则逐码字精确复放；每个Sync Frame的幸存序列还会用完整91字节字级编码器重算，以处理DSV越界时的备用SYNC。最终结果只做码字级多数、灰度与边界复核；只有显式要求`--channel-output`时才展开逐bit数据。
 
@@ -193,11 +195,12 @@ state-control搜索时使用严格字典序目标：先最小化自由payload的
 
 `--algorithm dispersion`（别名`byte-pool`）直接在扰码域生成payload，不执行随机搜索：
 
-```text
-图片亮度   0..127 -> Q = 0xA5 -> 固定5次transition -> 预览0
-图片亮度 128..255 -> Q = 0x92 -> 固定2次transition -> 预览255
-ISO payload P = Q XOR sector scrambler byte
-```
+| 图片亮度 | 扰码后字节 Q | 固定跳变数 | 名义预览亮度 |
+| --- | --- | --- | --- |
+| 0..127 | `0xA5` | 5 | 0 |
+| 128..255 | `0x92` | 2 | 255 |
+
+ISO payload 按 `P = Q XOR sector scrambler byte` 计算。
 
 每个payload码字都按其16个channel bits的盘面中心采样图片，再按上述固定区间分档，因此该模式不受`--constraint-step`或`--image-threshold`影响；`--image-threshold`仅控制`full/state-control`的二值目标。ID、IED、全零RSV、EDC、PI、PO和SYNC仍按标准生成；程序不展开619008个NRZI bits，但会用完整recording frames逐码字重放，精确传递最终EFMPlus state、DSV和pit/land到下一ECC Block。
 

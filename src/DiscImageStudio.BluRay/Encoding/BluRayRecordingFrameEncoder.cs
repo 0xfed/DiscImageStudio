@@ -1,3 +1,5 @@
+using DiscImageStudio.Localization;
+
 namespace DiscImageStudio.BluRay.Encoding;
 
 public sealed record BluRayRecordingFrameResult(
@@ -37,11 +39,11 @@ public static class BluRayRecordingFrameEncoder
     public static byte[] CreateDataBits(ReadOnlySpan<byte> eccFrame, ReadOnlySpan<byte> dcControlBits)
     {
         if (eccFrame.Length != BluRayEccEncoder.EccBytesPerFrame)
-            throw new ArgumentException("A recording frame starts with 155 ECC bytes.", nameof(eccFrame));
+            throw new ArgumentException(L.T("A recording frame starts with 155 ECC bytes."), nameof(eccFrame));
         if (dcControlBits.Length != DcControlBitsPerFrame)
-            throw new ArgumentException("Supply exactly 28 dc-control bits.", nameof(dcControlBits));
+            throw new ArgumentException(L.T("Supply exactly 28 dc-control bits."), nameof(dcControlBits));
         foreach (byte bit in dcControlBits)
-            if (bit > 1) throw new ArgumentException("dc-control bits must be 0 or 1.", nameof(dcControlBits));
+            if (bit > 1) throw new ArgumentException(L.T("dc-control bits must be 0 or 1."), nameof(dcControlBits));
         byte[] result = new byte[ModulatedDataBitsPerFrame];
         int input = 0;
         int output = 0;

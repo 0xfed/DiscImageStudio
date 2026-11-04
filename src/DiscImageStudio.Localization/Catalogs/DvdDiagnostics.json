@@ -1,0 +1,849 @@
+{
+  "The existing hybrid ISO size does not match the reported disc size.": {
+    "en": "The existing hybrid ISO size does not match the reported disc size.",
+    "zh-CN": "现有混合 ISO 大小与声明的盘片大小不一致。",
+    "zh-TW": "既有混合 ISO 大小與宣告的光碟大小不一致。",
+    "ja": "既存のハイブリッド ISO サイズが申告ディスクサイズと一致しません。",
+    "tr": "Mevcut karma ISO boyutu bildirilen disk boyutuyla eşleşmiyor."
+  },
+  "Raw ISO payload must contain complete 2048-byte sectors.": {
+    "en": "Raw ISO payload must contain complete 2048-byte sectors.",
+    "zh-CN": "原始 ISO 负载必须包含完整的 2048 字节扇区。",
+    "zh-TW": "原始 ISO 負載必須包含完整的 2048 位元組磁區。",
+    "ja": "生 ISO ペイロードには完全な 2048 バイトセクターが必要です。",
+    "tr": "Ham ISO yükü tam 2048 baytlık sektörler içermelidir."
+  },
+  "Payload exceeds raw ISO size.": {
+    "en": "Payload exceeds raw ISO size.",
+    "zh-CN": "负载超出原始 ISO 大小。",
+    "zh-TW": "負載超出原始 ISO 大小。",
+    "ja": "ペイロードが生 ISO サイズを超えています。",
+    "tr": "Yük ham ISO boyutunu aşıyor."
+  },
+  "Missing controlled majority score.": {
+    "en": "Missing controlled majority score.",
+    "zh-CN": "缺少受控多数评分。",
+    "zh-TW": "缺少受控多數評分。",
+    "ja": "制御対象の多数決スコアがありません。",
+    "tr": "Denetlenen çoğunluk puanı eksik."
+  },
+  "Missing controlled gray score.": {
+    "en": "Missing controlled gray score.",
+    "zh-CN": "缺少受控灰度评分。",
+    "zh-TW": "缺少受控灰階評分。",
+    "ja": "制御対象の階調スコアがありません。",
+    "tr": "Denetlenen gri puanı eksik."
+  },
+  "Missing controlled majority maximum.": {
+    "en": "Missing controlled majority maximum.",
+    "zh-CN": "缺少受控多数最大值。",
+    "zh-TW": "缺少受控多數最大值。",
+    "ja": "制御対象の多数決最大値がありません。",
+    "tr": "Denetlenen çoğunluk maksimumu eksik."
+  },
+  "Missing state-control gray score.": {
+    "en": "Missing state-control gray score.",
+    "zh-CN": "缺少 state-control 灰度评分。",
+    "zh-TW": "缺少 state-control 灰階評分。",
+    "ja": "state-control の階調スコアがありません。",
+    "tr": "state-control gri puanı eksik."
+  },
+  "ISO directory entry '{0}' was not found.": {
+    "en": "ISO directory entry '{0}' was not found.",
+    "zh-CN": "未找到 ISO 目录条目 '{0}'。",
+    "zh-TW": "找不到 ISO 目錄項目 '{0}'。",
+    "ja": "ISO ディレクトリエントリー '{0}' が見つかりません。",
+    "tr": "ISO dizin girdisi '{0}' bulunamadı."
+  },
+  "selftest failed: {0}": {
+    "en": "selftest failed: {0}",
+    "zh-CN": "自检失败：{0}",
+    "zh-TW": "自我測試失敗：{0}",
+    "ja": "セルフテスト失敗：{0}",
+    "tr": "Öz test başarısız: {0}"
+  },
+  "Unexpected argument '{0}'. Options must start with --.": {
+    "en": "Unexpected argument '{0}'. Options must start with --.",
+    "zh-CN": "意外参数 '{0}'。选项必须以 -- 开头。",
+    "zh-TW": "非預期引數 '{0}'。選項必須以 -- 開頭。",
+    "ja": "予期しない引数 '{0}'。オプションは -- で始める必要があります。",
+    "tr": "Beklenmeyen bağımsız değişken '{0}'. Seçenekler -- ile başlamalıdır."
+  },
+  "Unknown command '{0}'.": {
+    "en": "Unknown command '{0}'.",
+    "zh-CN": "未知命令 '{0}'。",
+    "zh-TW": "未知命令 '{0}'。",
+    "ja": "不明なコマンド '{0}'。",
+    "tr": "Bilinmeyen komut '{0}'."
+  },
+  "Specify --output, --iso-output, or both.": {
+    "en": "Specify --output, --iso-output, or both.",
+    "zh-CN": "请指定 --output、--iso-output 或两者。",
+    "zh-TW": "請指定 --output、--iso-output 或兩者。",
+    "ja": "--output、--iso-output、または両方を指定してください。",
+    "tr": "--output, --iso-output veya ikisini de belirtin."
+  },
+  "--output and --iso-output must be different files.": {
+    "en": "--output and --iso-output must be different files.",
+    "zh-CN": "--output 和 --iso-output 必须为不同文件。",
+    "zh-TW": "--output 與 --iso-output 必須為不同檔案。",
+    "ja": "--output と --iso-output は異なるファイルである必要があります。",
+    "tr": "--output ve --iso-output farklı dosyalar olmalıdır."
+  },
+  "Range or fast output requires --image and does not accept --target.": {
+    "en": "Range or fast output requires --image and does not accept --target.",
+    "zh-CN": "范围或快速输出需要 --image，且不接受 --target。",
+    "zh-TW": "範圍或快速輸出需要 --image，且不接受 --target。",
+    "ja": "範囲出力または高速出力には --image が必要で、--target は使えません。",
+    "tr": "Aralık veya hızlı çıktı için --image gerekir ve --target kabul edilmez."
+  },
+  "--{0} is not supported with multi-block --fill-sectors.": {
+    "en": "--{0} is not supported with multi-block --fill-sectors.",
+    "zh-CN": "多块 --fill-sectors 不支持 --{0}。",
+    "zh-TW": "多區塊 --fill-sectors 不支援 --{0}。",
+    "ja": "複数ブロックの --fill-sectors では --{0} は未対応です。",
+    "tr": "Çok bloklu --fill-sectors ile --{0} desteklenmiyor."
+  },
+  "Hybrid --data-dir mode calculates --lba and --fill-sectors automatically; use --drawing-start-lba only when extra inner-ring space is required.": {
+    "en": "Hybrid --data-dir mode calculates --lba and --fill-sectors automatically; use --drawing-start-lba only when extra inner-ring space is required.",
+    "zh-CN": "混合 --data-dir 模式自动计算 --lba 和 --fill-sectors；仅在需要额外内圈空间时使用 --drawing-start-lba。",
+    "zh-TW": "混合 --data-dir 模式自動計算 --lba 與 --fill-sectors；僅在需要額外內圈空間時使用 --drawing-start-lba。",
+    "ja": "ハイブリッド --data-dir モードは --lba と --fill-sectors を自動計算します。--drawing-start-lba は追加の内周空間が必要な場合のみ使ってください。",
+    "tr": "Karma --data-dir modu --lba ve --fill-sectors değerlerini otomatik hesaplar; --drawing-start-lba yalnızca ek iç halka boşluğu gerektiğinde kullanılmalıdır."
+  },
+  "--drawing-start-lba requires --data-dir.": {
+    "en": "--drawing-start-lba requires --data-dir.",
+    "zh-CN": "--drawing-start-lba 需要 --data-dir。",
+    "zh-TW": "--drawing-start-lba 需要 --data-dir。",
+    "ja": "--drawing-start-lba には --data-dir が必要です。",
+    "tr": "--drawing-start-lba için --data-dir gerekir."
+  },
+  "--initial must be 'random' or 'zero'.": {
+    "en": "--initial must be 'random' or 'zero'.",
+    "zh-CN": "--initial 必须为 'random' 或 'zero'。",
+    "zh-TW": "--initial 必須為 'random' 或 'zero'。",
+    "ja": "--initial は 'random' または 'zero' である必要があります。",
+    "tr": "--initial, 'random' veya 'zero' olmalıdır."
+  },
+  "--fast-output true requires --algorithm dispersion.": {
+    "en": "--fast-output true requires --algorithm dispersion.",
+    "zh-CN": "--fast-output true 需要 --algorithm dispersion。",
+    "zh-TW": "--fast-output true 需要 --algorithm dispersion。",
+    "ja": "--fast-output true には --algorithm dispersion が必要です。",
+    "tr": "--fast-output true için --algorithm dispersion gerekir."
+  },
+  "Hybrid mode requires --psn-offset to be aligned to a 16-sector ECC Block.": {
+    "en": "Hybrid mode requires --psn-offset to be aligned to a 16-sector ECC Block.",
+    "zh-CN": "混合模式要求 --psn-offset 按 16 扇区 ECC 块对齐。",
+    "zh-TW": "混合模式要求 --psn-offset 按 16 磁區 ECC 區塊對齊。",
+    "ja": "ハイブリッドモードでは --psn-offset を 16 セクター ECC ブロックに整列させる必要があります。",
+    "tr": "Karma mod, --psn-offset değerinin 16 sektörlük ECC bloğuna hizalanmasını gerektirir."
+  },
+  "--drawing-start-lba must be at least {0} so it does not overwrite files.": {
+    "en": "--drawing-start-lba must be at least {0} so it does not overwrite files.",
+    "zh-CN": "--drawing-start-lba 必须至少为 {0}，以免覆盖文件。",
+    "zh-TW": "--drawing-start-lba 必須至少為 {0}，以免覆寫檔案。",
+    "ja": "ファイルを上書きしないよう、--drawing-start-lba は最低 {0} である必要があります。",
+    "tr": "Dosyaların üzerine yazmamak için --drawing-start-lba en az {0} olmalıdır."
+  },
+  "--drawing-start-lba plus --psn-offset must be aligned to 16 sectors.": {
+    "en": "--drawing-start-lba plus --psn-offset must be aligned to 16 sectors.",
+    "zh-CN": "--drawing-start-lba 加 --psn-offset 必须按 16 扇区对齐。",
+    "zh-TW": "--drawing-start-lba 加 --psn-offset 必須按 16 磁區對齊。",
+    "ja": "--drawing-start-lba と --psn-offset の和は 16 セクターに整列する必要があります。",
+    "tr": "--drawing-start-lba ile --psn-offset toplamı 16 sektöre hizalanmalıdır."
+  },
+  "--drawing-start-lba exceeds the reported disc size.": {
+    "en": "--drawing-start-lba exceeds the reported disc size.",
+    "zh-CN": "--drawing-start-lba 超出声明的盘片大小。",
+    "zh-TW": "--drawing-start-lba 超出宣告的光碟大小。",
+    "ja": "--drawing-start-lba が申告ディスクサイズを超えています。",
+    "tr": "--drawing-start-lba bildirilen disk boyutunu aşıyor."
+  },
+  "The selected drawing range overlaps the outer-ring files.": {
+    "en": "The selected drawing range overlaps the outer-ring files.",
+    "zh-CN": "所选绘图范围与外圈文件重叠。",
+    "zh-TW": "所選繪圖範圍與外圈檔案重疊。",
+    "ja": "選択した描画範囲が外周ファイルと重なっています。",
+    "tr": "Seçilen çizim aralığı dış halka dosyalarıyla örtüşüyor."
+  },
+  "The filesystem leaves no complete ECC Block for drawing in the selected file layout.": {
+    "en": "The filesystem leaves no complete ECC Block for drawing in the selected file layout.",
+    "zh-CN": "所选文件布局的文件系统未留下完整 ECC 块用于绘图。",
+    "zh-TW": "所選檔案配置的檔案系統未留下完整 ECC 區塊供繪圖。",
+    "ja": "選択したファイル配置のファイルシステムに、描画用の完全な ECC ブロックが残っていません。",
+    "tr": "Seçili dosya yerleşiminde dosya sistemi çizim için tam ECC bloğu bırakmıyor."
+  },
+  "--file-position must be 'inner' or 'outer'.": {
+    "en": "--file-position must be 'inner' or 'outer'.",
+    "zh-CN": "--file-position 必须为 'inner' 或 'outer'。",
+    "zh-TW": "--file-position 必須為 'inner' 或 'outer'。",
+    "ja": "--file-position は 'inner' または 'outer' である必要があります。",
+    "tr": "--file-position, 'inner' veya 'outer' olmalıdır."
+  },
+  "--file-position outer requires --data-dir.": {
+    "en": "--file-position outer requires --data-dir.",
+    "zh-CN": "--file-position outer 需要 --data-dir。",
+    "zh-TW": "--file-position outer 需要 --data-dir。",
+    "ja": "--file-position outer には --data-dir が必要です。",
+    "tr": "--file-position outer için --data-dir gerekir."
+  },
+  "Seed payload must contain exactly {0} bytes.": {
+    "en": "Seed payload must contain exactly {0} bytes.",
+    "zh-CN": "种子负载必须恰好包含 {0} 字节。",
+    "zh-TW": "種子負載必須恰好包含 {0} 位元組。",
+    "ja": "シードペイロードは正確に {0} バイトである必要があります。",
+    "tr": "Tohum yükü tam olarak {0} bayt içermelidir."
+  },
+  "Specify exactly one of --target or --image.": {
+    "en": "Specify exactly one of --target or --image.",
+    "zh-CN": "--target 和 --image 必须且只能指定一个。",
+    "zh-TW": "--target 與 --image 必須且僅能指定一個。",
+    "ja": "--target と --image のどちらか一方だけを指定してください。",
+    "tr": "--target veya --image seçeneklerinden tam birini belirtin."
+  },
+  "DVD dispersion uses two textures; --tone-levels must be 2.": {
+    "en": "DVD dispersion uses two textures; --tone-levels must be 2.",
+    "zh-CN": "DVD dispersion 使用两种纹理；--tone-levels 必须为 2。",
+    "zh-TW": "DVD dispersion 使用兩種紋理；--tone-levels 必須為 2。",
+    "ja": "DVD dispersion は 2 テクスチャを使うため、--tone-levels は 2 である必要があります。",
+    "tr": "DVD dispersion iki doku kullanır; --tone-levels 2 olmalıdır."
+  },
+  "Use only one of --{0} and --{1}.": {
+    "en": "Use only one of --{0} and --{1}.",
+    "zh-CN": "--{0} 和 --{1} 只能使用一个。",
+    "zh-TW": "--{0} 與 --{1} 僅能使用一個。",
+    "ja": "--{0} と --{1} は一方だけを使ってください。",
+    "tr": "--{0} ve --{1} seçeneklerinden yalnızca birini kullanın."
+  },
+  "Use only one of --total-sectors and --total-blocks.": {
+    "en": "Use only one of --total-sectors and --total-blocks.",
+    "zh-CN": "--total-sectors 和 --total-blocks 只能使用一个。",
+    "zh-TW": "--total-sectors 與 --total-blocks 僅能使用一個。",
+    "ja": "--total-sectors と --total-blocks は一方だけを使ってください。",
+    "tr": "--total-sectors ve --total-blocks seçeneklerinden yalnızca birini kullanın."
+  },
+  "Image mapping requires --total-sectors (or its alias --total-blocks).": {
+    "en": "Image mapping requires --total-sectors (or its alias --total-blocks).",
+    "zh-CN": "图像映射需要 --total-sectors（或其别名 --total-blocks）。",
+    "zh-TW": "影像映射需要 --total-sectors（或其別名 --total-blocks）。",
+    "ja": "画像マッピングには --total-sectors（または別名 --total-blocks）が必要です。",
+    "tr": "Görsel eşleme için --total-sectors (veya diğer adı --total-blocks) gerekir."
+  },
+  "Boundary replay sector count must be aligned to 16 sectors.": {
+    "en": "Boundary replay sector count must be aligned to 16 sectors.",
+    "zh-CN": "边界重放扇区数必须按 16 扇区对齐。",
+    "zh-TW": "邊界重播磁區數必須按 16 磁區對齊。",
+    "ja": "境界再生のセクター数は 16 セクターに整列する必要があります。",
+    "tr": "Sınır yeniden yürütme sektör sayısı 16 sektöre hizalanmalıdır."
+  },
+  "--iso-template and --iso-sectors require --iso-output.": {
+    "en": "--iso-template and --iso-sectors require --iso-output.",
+    "zh-CN": "--iso-template 和 --iso-sectors 需要 --iso-output。",
+    "zh-TW": "--iso-template 與 --iso-sectors 需要 --iso-output。",
+    "ja": "--iso-template と --iso-sectors には --iso-output が必要です。",
+    "tr": "--iso-template ve --iso-sectors için --iso-output gerekir."
+  },
+  "--iso-sectors cannot be combined with --iso-template.": {
+    "en": "--iso-sectors cannot be combined with --iso-template.",
+    "zh-CN": "--iso-sectors 不能与 --iso-template 组合使用。",
+    "zh-TW": "--iso-sectors 不能與 --iso-template 合併使用。",
+    "ja": "--iso-sectors と --iso-template は併用できません。",
+    "tr": "--iso-sectors ile --iso-template birlikte kullanılamaz."
+  },
+  "ISO template has {0} sectors, but image mapping used {1} sectors.": {
+    "en": "ISO template has {0} sectors, but image mapping used {1} sectors.",
+    "zh-CN": "ISO 模板有 {0} 扇区，但图像映射使用了 {1} 扇区。",
+    "zh-TW": "ISO 範本有 {0} 磁區，但影像映射使用了 {1} 磁區。",
+    "ja": "ISO テンプレートは {0} セクターですが、画像マッピングには {1} セクターを使っています。",
+    "tr": "ISO şablonunda {0} sektör var, ancak görsel eşleme {1} sektör kullandı."
+  },
+  "--iso-sectors is {0}, but image mapping used {1} sectors.": {
+    "en": "--iso-sectors is {0}, but image mapping used {1} sectors.",
+    "zh-CN": "--iso-sectors 为 {0}，但图像映射使用了 {1} 扇区。",
+    "zh-TW": "--iso-sectors 為 {0}，但影像映射使用了 {1} 磁區。",
+    "ja": "--iso-sectors は {0} ですが、画像マッピングには {1} セクターを使っています。",
+    "tr": "--iso-sectors {0}, ancak görsel eşleme {1} sektör kullandı."
+  },
+  "Minimal ISO output requires --iso-sectors when the constraint does not come from an image.": {
+    "en": "Minimal ISO output requires --iso-sectors when the constraint does not come from an image.",
+    "zh-CN": "约束不是来自图像时，最小 ISO 输出需要 --iso-sectors。",
+    "zh-TW": "約束不是來自影像時，最小 ISO 輸出需要 --iso-sectors。",
+    "ja": "画像由来でない制約から最小 ISO を出力する場合、--iso-sectors が必要です。",
+    "tr": "Kısıt bir görselden gelmiyorsa asgari ISO çıktısı için --iso-sectors gerekir."
+  },
+  "--initial-level must be 'pit' or 'land'.": {
+    "en": "--initial-level must be 'pit' or 'land'.",
+    "zh-CN": "--initial-level 必须为 'pit' 或 'land'。",
+    "zh-TW": "--initial-level 必須為 'pit' 或 'land'。",
+    "ja": "--initial-level は 'pit' または 'land' である必要があります。",
+    "tr": "--initial-level, 'pit' veya 'land' olmalıdır."
+  },
+  "--spiral-direction must be 'ccw' or 'cw'.": {
+    "en": "--spiral-direction must be 'ccw' or 'cw'.",
+    "zh-CN": "--spiral-direction 必须为 'ccw' 或 'cw'。",
+    "zh-TW": "--spiral-direction 必須為 'ccw' 或 'cw'。",
+    "ja": "--spiral-direction は 'ccw' または 'cw' である必要があります。",
+    "tr": "--spiral-direction, 'ccw' veya 'cw' olmalıdır."
+  },
+  "--algorithm must be 'full' (alias 'exact'), 'state-control' (alias 'control'), or 'dispersion' (alias 'byte-pool').": {
+    "en": "--algorithm must be 'full' (alias 'exact'), 'state-control' (alias 'control'), or 'dispersion' (alias 'byte-pool').",
+    "zh-CN": "--algorithm 必须为 'full'（别名 'exact'）、'state-control'（别名 'control'）或 'dispersion'（别名 'byte-pool'）。",
+    "zh-TW": "--algorithm 必須為 'full'（別名 'exact'）、'state-control'（別名 'control'）或 'dispersion'（別名 'byte-pool'）。",
+    "ja": "--algorithm は 'full'（別名 'exact'）、'state-control'（別名 'control'）、'dispersion'（別名 'byte-pool'）のいずれかです。",
+    "tr": "--algorithm, 'full' ('exact' diğer adı), 'state-control' ('control' diğer adı) veya 'dispersion' ('byte-pool' diğer adı) olmalıdır."
+  },
+  "--frame-candidates, --parallel-candidates, --parallelism and --word-candidates belonged to removed search modes; state-control now uses state/level/current-DSV binary byte pairs and --beam-width.": {
+    "en": "--frame-candidates, --parallel-candidates, --parallelism and --word-candidates belonged to removed search modes; state-control now uses state/level/current-DSV binary byte pairs and --beam-width.",
+    "zh-CN": "--frame-candidates、--parallel-candidates、--parallelism 和 --word-candidates 属于已移除的搜索模式；state-control 现采用状态/电平/当前 DSV 二进制字节对和 --beam-width。",
+    "zh-TW": "--frame-candidates、--parallel-candidates、--parallelism 與 --word-candidates 屬於已移除的搜尋模式；state-control 現採用狀態／準位／目前 DSV 二進位位元組對與 --beam-width。",
+    "ja": "--frame-candidates、--parallel-candidates、--parallelism、--word-candidates は削除済み探索モード用です。state-control は現在、状態／レベル／現在 DSV の 2 値バイトペアと --beam-width を使います。",
+    "tr": "--frame-candidates, --parallel-candidates, --parallelism ve --word-candidates kaldırılan arama modlarına aitti; state-control artık durum/düzey/geçerli DSV ikili bayt çiftleri ve --beam-width kullanır."
+  },
+  "--control-bytes belonged to the removed control-pool algorithm; use --bridge-bytes.": {
+    "en": "--control-bytes belonged to the removed control-pool algorithm; use --bridge-bytes.",
+    "zh-CN": "--control-bytes 属于已移除的 control-pool 算法；请使用 --bridge-bytes。",
+    "zh-TW": "--control-bytes 屬於已移除的 control-pool 演算法；請使用 --bridge-bytes。",
+    "ja": "--control-bytes は削除済み control-pool アルゴリズム用です。--bridge-bytes を使ってください。",
+    "tr": "--control-bytes kaldırılan control-pool algoritmasına aitti; --bridge-bytes kullanın."
+  },
+  "--mutation-bytes is only used by --algorithm full; state-control uses deterministic codeword selection.": {
+    "en": "--mutation-bytes is only used by --algorithm full; state-control uses deterministic codeword selection.",
+    "zh-CN": "--mutation-bytes 仅用于 --algorithm full；state-control 使用确定性码字选择。",
+    "zh-TW": "--mutation-bytes 僅用於 --algorithm full；state-control 使用確定性碼字選擇。",
+    "ja": "--mutation-bytes は --algorithm full 専用です。state-control は決定的なコードワード選択を使います。",
+    "tr": "--mutation-bytes yalnızca --algorithm full için kullanılır; state-control deterministik kod sözcüğü seçimi kullanır."
+  },
+  "--{0} must be {1}..255.": {
+    "en": "--{0} must be {1}..255.",
+    "zh-CN": "--{0} 必须为 {1}..255。",
+    "zh-TW": "--{0} 必須為 {1}..255。",
+    "ja": "--{0} は {1}..255 である必要があります。",
+    "tr": "--{0}, {1}..255 olmalıdır."
+  },
+  "--{0} must be true/false, yes/no, or 1/0.": {
+    "en": "--{0} must be true/false, yes/no, or 1/0.",
+    "zh-CN": "--{0} 必须为 true/false、yes/no 或 1/0。",
+    "zh-TW": "--{0} 必須為 true/false、yes/no 或 1/0。",
+    "ja": "--{0} は true/false、yes/no、1/0 のいずれかです。",
+    "tr": "--{0}, true/false, yes/no veya 1/0 olmalıdır."
+  },
+  "--iso-output must be outside --data-dir so the generated image cannot include itself.": {
+    "en": "--iso-output must be outside --data-dir so the generated image cannot include itself.",
+    "zh-CN": "--iso-output 必须位于 --data-dir 之外，以免生成的镜像包含自身。",
+    "zh-TW": "--iso-output 必須位於 --data-dir 之外，以免產生的映像包含自身。",
+    "ja": "生成イメージが自分自身を含まないよう、--iso-output は --data-dir の外に置く必要があります。",
+    "tr": "Oluşturulan imajın kendisini içermemesi için --iso-output, --data-dir dışında olmalıdır."
+  },
+  "ISO output path has no parent directory.": {
+    "en": "ISO output path has no parent directory.",
+    "zh-CN": "ISO 输出路径没有父目录。",
+    "zh-TW": "ISO 輸出路徑沒有父目錄。",
+    "ja": "ISO 出力パスに親ディレクトリがありません。",
+    "tr": "ISO çıktı yolunun üst dizini yok."
+  },
+  "ISO template size must be a non-zero multiple of 2048 bytes.": {
+    "en": "ISO template size must be a non-zero multiple of 2048 bytes.",
+    "zh-CN": "ISO 模板大小必须为 2048 字节的非零倍数。",
+    "zh-TW": "ISO 範本大小必須為 2048 位元組的非零倍數。",
+    "ja": "ISO テンプレートサイズは 2048 バイトの正の倍数である必要があります。",
+    "tr": "ISO şablonu boyutu 2048 baytın sıfırdan farklı bir katı olmalıdır."
+  },
+  "ISO template has too many sectors.": {
+    "en": "ISO template has too many sectors.",
+    "zh-CN": "ISO 模板的扇区数过多。",
+    "zh-TW": "ISO 範本的磁區數過多。",
+    "ja": "ISO テンプレートのセクター数が多すぎます。",
+    "tr": "ISO şablonunda çok fazla sektör var."
+  },
+  "--iso-template and --iso-output must be different files.": {
+    "en": "--iso-template and --iso-output must be different files.",
+    "zh-CN": "--iso-template 和 --iso-output 必须为不同文件。",
+    "zh-TW": "--iso-template 與 --iso-output 必須為不同檔案。",
+    "ja": "--iso-template と --iso-output は異なるファイルである必要があります。",
+    "tr": "--iso-template ve --iso-output farklı dosyalar olmalıdır."
+  },
+  "ISO logical sector must contain 2048 bytes.": {
+    "en": "ISO logical sector must contain 2048 bytes.",
+    "zh-CN": "ISO 逻辑扇区必须包含 2048 字节。",
+    "zh-TW": "ISO 邏輯磁區必須包含 2048 位元組。",
+    "ja": "ISO 論理セクターには 2048 バイトが必要です。",
+    "tr": "ISO mantıksal sektörü 2048 bayt içermelidir."
+  },
+  "ISO volume is too small for filesystem metadata.": {
+    "en": "ISO volume is too small for filesystem metadata.",
+    "zh-CN": "ISO 卷太小，无法容纳文件系统元数据。",
+    "zh-TW": "ISO 磁碟區太小，無法容納檔案系統中繼資料。",
+    "ja": "ISO ボリュームが小さすぎてファイルシステムメタデータを格納できません。",
+    "tr": "ISO birimi dosya sistemi meta verileri için çok küçük."
+  },
+  "ISO volume is too small for the visible SOLVED.BIN extent.": {
+    "en": "ISO volume is too small for the visible SOLVED.BIN extent.",
+    "zh-CN": "ISO 卷太小，无法容纳可见的 SOLVED.BIN 区段。",
+    "zh-TW": "ISO 磁碟區太小，無法容納可見的 SOLVED.BIN 區段。",
+    "ja": "ISO ボリュームが小さすぎて表示対象の SOLVED.BIN エクステントを格納できません。",
+    "tr": "ISO birimi görünür SOLVED.BIN alanı için çok küçük."
+  },
+  "ISO output needs exactly 16 consecutive 2048-byte payloads.": {
+    "en": "ISO output needs exactly 16 consecutive 2048-byte payloads.",
+    "zh-CN": "ISO 输出需要恰好 16 个连续的 2048 字节负载。",
+    "zh-TW": "ISO 輸出需要恰好 16 個連續的 2048 位元組負載。",
+    "ja": "ISO 出力には連続する 2048 バイトペイロードが正確に 16 個必要です。",
+    "tr": "ISO çıktısı tam olarak 16 ardışık 2048 baytlık yük gerektirir."
+  },
+  "Solved ECC Block exceeds the ISO volume size.": {
+    "en": "Solved ECC Block exceeds the ISO volume size.",
+    "zh-CN": "求解的 ECC 块超出 ISO 卷大小。",
+    "zh-TW": "求解的 ECC 區塊超出 ISO 磁碟區大小。",
+    "ja": "求解済み ECC ブロックが ISO ボリュームサイズを超えています。",
+    "tr": "Çözülen ECC bloğu ISO birim boyutunu aşıyor."
+  },
+  "The solved ECC Block overlaps ISO9660 volume descriptors in sectors 16 and 17. Use LBA 0, an LBA at or above 18, or an existing template whose structure you control.": {
+    "en": "The solved ECC Block overlaps ISO9660 volume descriptors in sectors 16 and 17. Use LBA 0, an LBA at or above 18, or an existing template whose structure you control.",
+    "zh-CN": "求解的 ECC 块与扇区 16 和 17 的 ISO9660 卷描述符重叠。请使用 LBA 0、不小于 18 的 LBA，或结构由你掌控的现有模板。",
+    "zh-TW": "求解的 ECC 區塊與磁區 16 與 17 的 ISO9660 磁碟區描述元重疊。請使用 LBA 0、不小於 18 的 LBA，或結構由你掌握的既有範本。",
+    "ja": "求解済み ECC ブロックがセクター 16 と 17 の ISO9660 ボリューム記述子と重なっています。LBA 0、18 以上の LBA、または構造を把握している既存テンプレートを使ってください。",
+    "tr": "Çözülen ECC bloğu sektör 16 ve 17'deki ISO9660 birim tanımlayıcılarıyla örtüşüyor. LBA 0, en az 18 olan bir LBA veya yapısını denetlediğiniz mevcut bir şablon kullanın."
+  },
+  "The first PSN must be aligned to a 16-sector ECC Block.": {
+    "en": "The first PSN must be aligned to a 16-sector ECC Block.",
+    "zh-CN": "首个 PSN 必须按 16 扇区 ECC 块对齐。",
+    "zh-TW": "首個 PSN 必須按 16 磁區 ECC 區塊對齊。",
+    "ja": "最初の PSN は 16 セクター ECC ブロックに整列する必要があります。",
+    "tr": "İlk PSN, 16 sektörlük ECC bloğuna hizalanmalıdır."
+  },
+  "Initial payload must contain one complete 16-sector ECC Block.": {
+    "en": "Initial payload must contain one complete 16-sector ECC Block.",
+    "zh-CN": "初始负载必须包含一个完整的 16 扇区 ECC 块。",
+    "zh-TW": "初始負載必須包含一個完整的 16 磁區 ECC 區塊。",
+    "ja": "初期ペイロードには完全な 16 セクター ECC ブロックが必要です。",
+    "tr": "İlk yük tam bir 16 sektörlük ECC bloğu içermelidir."
+  },
+  "Invalid state-control pass, bridge, beam, or adaptive retry option.": {
+    "en": "Invalid state-control pass, bridge, beam, or adaptive retry option.",
+    "zh-CN": "state-control 轮数、桥接、束宽或自适应重试选项无效。",
+    "zh-TW": "state-control 回合數、橋接、束寬或自適應重試選項無效。",
+    "ja": "state-control の反復、ブリッジ、ビーム、適応再試行オプションが無効です。",
+    "tr": "state-control geçiş, köprü, ışın veya uyarlanabilir yeniden deneme seçeneği geçersiz."
+  },
+  "Iterations must be non-negative; mutation bytes and temperatures must be positive.": {
+    "en": "Iterations must be non-negative; mutation bytes and temperatures must be positive.",
+    "zh-CN": "迭代数必须非负；变异字节数和温度必须为正。",
+    "zh-TW": "迭代數必須非負；變異位元組數與溫度必須為正。",
+    "ja": "反復数は非負、変更バイト数と温度は正である必要があります。",
+    "tr": "Yineleme sayısı negatif olmamalı; değişim baytları ve sıcaklıklar pozitif olmalıdır."
+  },
+  "Total sector count must be positive.": {
+    "en": "Total sector count must be positive.",
+    "zh-CN": "总扇区数必须为正。",
+    "zh-TW": "總磁區數必須為正。",
+    "ja": "総セクター数は正である必要があります。",
+    "tr": "Toplam sektör sayısı pozitif olmalıdır."
+  },
+  "Preview sector range exceeds the disc size.": {
+    "en": "Preview sector range exceeds the disc size.",
+    "zh-CN": "预览扇区范围超出盘片大小。",
+    "zh-TW": "預覽磁區範圍超出光碟大小。",
+    "ja": "プレビューのセクター範囲がディスクサイズを超えています。",
+    "tr": "Önizleme sektör aralığı disk boyutunu aşıyor."
+  },
+  "Channel-bit length must be positive.": {
+    "en": "Channel-bit length must be positive.",
+    "zh-CN": "通道位长必须为正。",
+    "zh-TW": "通道位元長度必須為正。",
+    "ja": "チャネルビット長は正である必要があります。",
+    "tr": "Kanal biti uzunluğu pozitif olmalıdır."
+  },
+  "Preview size must be 64..8192 pixels.": {
+    "en": "Preview size must be 64..8192 pixels.",
+    "zh-CN": "预览尺寸必须为 64..8192 像素。",
+    "zh-TW": "預覽尺寸必須為 64..8192 像素。",
+    "ja": "プレビューサイズは 64..8192 ピクセルである必要があります。",
+    "tr": "Önizleme boyutu 64..8192 piksel olmalıdır."
+  },
+  "Preview samples per sector must be 1..4096.": {
+    "en": "Preview samples per sector must be 1..4096.",
+    "zh-CN": "预览每扇区采样数必须为 1..4096。",
+    "zh-TW": "預覽每磁區取樣數必須為 1..4096。",
+    "ja": "プレビューのセクターあたりサンプル数は 1..4096 である必要があります。",
+    "tr": "Önizleme sektör başına örnek sayısı 1..4096 olmalıdır."
+  },
+  "Alpha threshold must be 1..255.": {
+    "en": "Alpha threshold must be 1..255.",
+    "zh-CN": "Alpha 阈值必须为 1..255。",
+    "zh-TW": "Alpha 閾值必須為 1..255。",
+    "ja": "alpha しきい値は 1..255 である必要があります。",
+    "tr": "Alfa eşiği 1..255 olmalıdır."
+  },
+  "The selected 16-sector ECC Block must fit inside the reported total sector count.": {
+    "en": "The selected 16-sector ECC Block must fit inside the reported total sector count.",
+    "zh-CN": "所选 16 扇区 ECC 块必须位于声明的总扇区数内。",
+    "zh-TW": "所選 16 磁區 ECC 區塊必須位於宣告的總磁區數內。",
+    "ja": "選択した 16 セクター ECC ブロックは申告総セクター数内に収まる必要があります。",
+    "tr": "Seçilen 16 sektörlük ECC bloğu bildirilen toplam sektör sayısı içine sığmalıdır."
+  },
+  "Start angle must be finite.": {
+    "en": "Start angle must be finite.",
+    "zh-CN": "起始角必须为有限数值。",
+    "zh-TW": "起始角必須為有限數值。",
+    "ja": "開始角は有限値である必要があります。",
+    "tr": "Başlangıç açısı sonlu olmalıdır."
+  },
+  "Alpha threshold must be between 1 and 255.": {
+    "en": "Alpha threshold must be between 1 and 255.",
+    "zh-CN": "Alpha 阈值必须在 1 到 255 之间。",
+    "zh-TW": "Alpha 閾值必須在 1 到 255 之間。",
+    "ja": "alpha しきい値は 1 から 255 の範囲である必要があります。",
+    "tr": "Alfa eşiği 1 ile 255 arasında olmalıdır."
+  },
+  "Image constraint step must be positive.": {
+    "en": "Image constraint step must be positive.",
+    "zh-CN": "图像约束步长必须为正。",
+    "zh-TW": "影像約束步長必須為正。",
+    "ja": "画像制約のステップは正である必要があります。",
+    "tr": "Görsel kısıt adımı pozitif olmalıdır."
+  },
+  "The visible sector range exceeds the ISO image contents.": {
+    "en": "The visible sector range exceeds the ISO image contents.",
+    "zh-CN": "可见扇区范围超出 ISO 镜像内容。",
+    "zh-TW": "可見磁區範圍超出 ISO 映像內容。",
+    "ja": "可視セクター範囲が ISO イメージの内容を超えています。",
+    "tr": "Görünür sektör aralığı ISO imajı içeriğini aşıyor."
+  },
+  "Total sector count must cover at least one ECC Block.": {
+    "en": "Total sector count must cover at least one ECC Block.",
+    "zh-CN": "总扇区数必须至少容纳一个 ECC 块。",
+    "zh-TW": "總磁區數必須至少容納一個 ECC 區塊。",
+    "ja": "総セクター数は最低 1 ECC ブロックを含む必要があります。",
+    "tr": "Toplam sektör sayısı en az bir ECC bloğunu kapsamalıdır."
+  },
+  "The visible range must be ECC-Block aligned and fit inside the disc.": {
+    "en": "The visible range must be ECC-Block aligned and fit inside the disc.",
+    "zh-CN": "可见范围必须按 ECC 块对齐且位于盘片内。",
+    "zh-TW": "可見範圍必須按 ECC 區塊對齊且位於光碟內。",
+    "ja": "可視範囲は ECC ブロックに整列し、ディスク内に収まる必要があります。",
+    "tr": "Görünür aralık ECC bloğuna hizalı olmalı ve diske sığmalıdır."
+  },
+  "Preview samples per sector must be 1..{0}.": {
+    "en": "Preview samples per sector must be 1..{0}.",
+    "zh-CN": "预览每扇区采样数必须为 1..{0}。",
+    "zh-TW": "預覽每磁區取樣數必須為 1..{0}。",
+    "ja": "プレビューのセクターあたりサンプル数は 1..{0} である必要があります。",
+    "tr": "Önizleme sektör başına örnek sayısı 1..{0} olmalıdır."
+  },
+  "Initial payload must contain {0} bytes.": {
+    "en": "Initial payload must contain {0} bytes.",
+    "zh-CN": "初始负载必须包含 {0} 字节。",
+    "zh-TW": "初始負載必須包含 {0} 位元組。",
+    "ja": "初期ペイロードには {0} バイトが必要です。",
+    "tr": "İlk yük {0} bayt içermelidir."
+  },
+  "The first PSN 0x{0:X6} is not aligned to a 16-sector ECC Block.": {
+    "en": "The first PSN 0x{0:X6} is not aligned to a 16-sector ECC Block.",
+    "zh-CN": "首个 PSN 0x{0:X6} 未按 16 扇区 ECC 块对齐。",
+    "zh-TW": "首個 PSN 0x{0:X6} 未按 16 磁區 ECC 區塊對齊。",
+    "ja": "最初の PSN 0x{0:X6} が 16 セクター ECC ブロックに整列していません。",
+    "tr": "İlk PSN 0x{0:X6}, 16 sektörlük ECC bloğuna hizalı değil."
+  },
+  "Unexpected recording-frame byte count.": {
+    "en": "Unexpected recording-frame byte count.",
+    "zh-CN": "记录帧字节数与预期不符。",
+    "zh-TW": "記錄框架位元組數與預期不符。",
+    "ja": "記録フレームのバイト数が想定外です。",
+    "tr": "Beklenmeyen kayıt çerçevesi bayt sayısı."
+  },
+  "Unexpected Sync Frame trace length.": {
+    "en": "Unexpected Sync Frame trace length.",
+    "zh-CN": "同步帧跟踪长度与预期不符。",
+    "zh-TW": "同步框架追蹤長度與預期不符。",
+    "ja": "同期フレームのトレース長が想定外です。",
+    "tr": "Beklenmeyen eşzamanlama çerçevesi izleme uzunluğu."
+  },
+  "Unexpected Sync Frame evaluation length.": {
+    "en": "Unexpected Sync Frame evaluation length.",
+    "zh-CN": "同步帧评估长度与预期不符。",
+    "zh-TW": "同步框架評估長度與預期不符。",
+    "ja": "同期フレームの評価長が想定外です。",
+    "tr": "Beklenmeyen eşzamanlama çerçevesi değerlendirme uzunluğu."
+  },
+  "Unexpected channel-word target count.": {
+    "en": "Unexpected channel-word target count.",
+    "zh-CN": "通道字目标数量与预期不符。",
+    "zh-TW": "通道字目標數量與預期不符。",
+    "ja": "チャネルワードの目標数が想定外です。",
+    "tr": "Beklenmeyen kanal sözcüğü hedef sayısı."
+  },
+  "Grayscale targets must contain one level (-1 or 0..1) per channel word.": {
+    "en": "Grayscale targets must contain one level (-1 or 0..1) per channel word.",
+    "zh-CN": "灰度目标必须为每个通道字提供一个级别（-1 或 0..1）。",
+    "zh-TW": "灰階目標必須為每個通道字提供一個級別（-1 或 0..1）。",
+    "ja": "階調目標にはチャネルワードごとに 1 レベル（-1 または 0..1）が必要です。",
+    "tr": "Gri ton hedefleri kanal sözcüğü başına bir düzey (-1 veya 0..1) içermelidir."
+  },
+  "Unsupported target character '{0}'. Use 0/P, 1/L, or ?.": {
+    "en": "Unsupported target character '{0}'. Use 0/P, 1/L, or ?.",
+    "zh-CN": "不支持的目标字符 '{0}'。请使用 0/P、1/L 或 ?。",
+    "zh-TW": "不支援的目標字元 '{0}'。請使用 0/P、1/L 或 ?。",
+    "ja": "未対応の目標文字 '{0}'。0/P、1/L、? を使ってください。",
+    "tr": "Desteklenmeyen hedef karakteri '{0}'. 0/P, 1/L veya ? kullanın."
+  },
+  "Target sector must be 0..15.": {
+    "en": "Target sector must be 0..15.",
+    "zh-CN": "目标扇区必须为 0..15。",
+    "zh-TW": "目標磁區必須為 0..15。",
+    "ja": "目標セクターは 0..15 である必要があります。",
+    "tr": "Hedef sektör 0..15 olmalıdır."
+  },
+  "Target contains {0} symbols; expected either {1} (one sector) or {2} (one ECC Block).": {
+    "en": "Target contains {0} symbols; expected either {1} (one sector) or {2} (one ECC Block).",
+    "zh-CN": "目标包含 {0} 个符号；应为 {1}（单扇区）或 {2}（单 ECC 块）。",
+    "zh-TW": "目標包含 {0} 個符號；應為 {1}（單磁區）或 {2}（單 ECC 區塊）。",
+    "ja": "目標は {0} シンボルです。{1}（単一セクター）または {2}（単一 ECC ブロック）が必要です。",
+    "tr": "Hedef {0} simge içeriyor; {1} (bir sektör) veya {2} (bir ECC bloğu) bekleniyor."
+  },
+  "Target does not constrain any channel level.": {
+    "en": "Target does not constrain any channel level.",
+    "zh-CN": "目标未约束任何通道电平。",
+    "zh-TW": "目標未約束任何通道準位。",
+    "ja": "目標にチャネルレベルの制約がありません。",
+    "tr": "Hedef hiçbir kanal düzeyini kısıtlamıyor."
+  },
+  "Unexpected channel-level count.": {
+    "en": "Unexpected channel-level count.",
+    "zh-CN": "通道电平数量与预期不符。",
+    "zh-TW": "通道準位數量與預期不符。",
+    "ja": "チャネルレベル数が想定外です。",
+    "tr": "Beklenmeyen kanal düzeyi sayısı."
+  },
+  "Unexpected image target size.": {
+    "en": "Unexpected image target size.",
+    "zh-CN": "图像目标大小与预期不符。",
+    "zh-TW": "影像目標大小與預期不符。",
+    "ja": "画像目標サイズが想定外です。",
+    "tr": "Beklenmeyen görsel hedef boyutu."
+  },
+  "DVD output stream must be writable.": {
+    "en": "DVD output stream must be writable.",
+    "zh-CN": "DVD 输出流必须可写。",
+    "zh-TW": "DVD 輸出串流必須可寫入。",
+    "ja": "DVD 出力ストリームは書き込み可能である必要があります。",
+    "tr": "DVD çıktı akışı yazılabilir olmalıdır."
+  },
+  "Direct DVD streaming cannot preserve or seek within an existing ISO.": {
+    "en": "Direct DVD streaming cannot preserve or seek within an existing ISO.",
+    "zh-CN": "直接 DVD 流式输出不能保留或在现有 ISO 内定位。",
+    "zh-TW": "直接 DVD 串流輸出無法保留或在既有 ISO 內定位。",
+    "ja": "DVD の直接ストリーミングでは既存 ISO を保持したり、その内部をシークしたりできません。",
+    "tr": "Doğrudan DVD akışı mevcut ISO'yu koruyamaz veya içinde konumlanamaz."
+  },
+  "Fast output requires --algorithm dispersion.": {
+    "en": "Fast output requires --algorithm dispersion.",
+    "zh-CN": "快速输出需要 --algorithm dispersion。",
+    "zh-TW": "快速輸出需要 --algorithm dispersion。",
+    "ja": "高速出力には --algorithm dispersion が必要です。",
+    "tr": "Hızlı çıktı için --algorithm dispersion gerekir."
+  },
+  "Fast parallelism must be 0 (automatic) or 1..64.": {
+    "en": "Fast parallelism must be 0 (automatic) or 1..64.",
+    "zh-CN": "快速并行度必须为 0（自动）或 1..64。",
+    "zh-TW": "快速平行度必須為 0（自動）或 1..64。",
+    "ja": "高速出力の並列度は 0（自動）または 1..64 である必要があります。",
+    "tr": "Hızlı paralellik 0 (otomatik) veya 1..64 olmalıdır."
+  },
+  "Fast output sector count must be a positive multiple of 16.": {
+    "en": "Fast output sector count must be a positive multiple of 16.",
+    "zh-CN": "快速输出扇区数必须为 16 的正倍数。",
+    "zh-TW": "快速輸出磁區數必須為 16 的正倍數。",
+    "ja": "高速出力のセクター数は 16 の正の倍数である必要があります。",
+    "tr": "Hızlı çıktı sektör sayısı 16'nın pozitif katı olmalıdır."
+  },
+  "Filled range exceeds the disc size.": {
+    "en": "Filled range exceeds the disc size.",
+    "zh-CN": "填充范围超出盘片大小。",
+    "zh-TW": "填入範圍超出光碟大小。",
+    "ja": "埋める範囲がディスクサイズを超えています。",
+    "tr": "Doldurulan aralık disk boyutunu aşıyor."
+  },
+  "The output exceeds the 24-bit PSN range.": {
+    "en": "The output exceeds the 24-bit PSN range.",
+    "zh-CN": "输出超出 24 位 PSN 范围。",
+    "zh-TW": "輸出超出 24 位元 PSN 範圍。",
+    "ja": "出力が 24 ビット PSN の範囲を超えています。",
+    "tr": "Çıktı 24 bit PSN aralığını aşıyor."
+  },
+  "Unknown solver algorithm.": {
+    "en": "Unknown solver algorithm.",
+    "zh-CN": "未知求解算法。",
+    "zh-TW": "未知求解演算法。",
+    "ja": "不明な求解アルゴリズムです。",
+    "tr": "Bilinmeyen çözüm algoritması."
+  },
+  "Range fill sector count must be a positive multiple of 16.": {
+    "en": "Range fill sector count must be a positive multiple of 16.",
+    "zh-CN": "范围填充扇区数必须为 16 的正倍数。",
+    "zh-TW": "範圍填入磁區數必須為 16 的正倍數。",
+    "ja": "範囲埋め込みのセクター数は 16 の正の倍数である必要があります。",
+    "tr": "Aralık doldurma sektör sayısı 16'nın pozitif katı olmalıdır."
+  },
+  "Filled range exceeds the reported disc size.": {
+    "en": "Filled range exceeds the reported disc size.",
+    "zh-CN": "填充范围超出声明的盘片大小。",
+    "zh-TW": "填入範圍超出宣告的光碟大小。",
+    "ja": "埋める範囲が申告ディスクサイズを超えています。",
+    "tr": "Doldurulan aralık bildirilen disk boyutunu aşıyor."
+  },
+  "Invalid solver iteration, mutation, bridge, beam, or adaptive retry option.": {
+    "en": "Invalid solver iteration, mutation, bridge, beam, or adaptive retry option.",
+    "zh-CN": "求解器迭代、变异、桥接、束宽或自适应重试选项无效。",
+    "zh-TW": "求解器迭代、變異、橋接、束寬或自適應重試選項無效。",
+    "ja": "ソルバーの反復、変更、ブリッジ、ビーム、適応再試行オプションが無効です。",
+    "tr": "Çözücü yineleme, değişim, köprü, ışın veya uyarlanabilir yeniden deneme seçeneği geçersiz."
+  },
+  "EFMPlus code word would violate the RLL(2,10) boundary.": {
+    "en": "EFMPlus code word would violate the RLL(2,10) boundary.",
+    "zh-CN": "EFMPlus 码字会违反 RLL(2,10) 边界。",
+    "zh-TW": "EFMPlus 碼字會違反 RLL(2,10) 邊界。",
+    "ja": "EFMPlus コードワードが RLL(2,10) 境界に違反します。",
+    "tr": "EFMPlus kod sözcüğü RLL(2,10) sınırını ihlal eder."
+  },
+  "A word-scored Sync Frame needs 91 bytes and 91 gray targets.": {
+    "en": "A word-scored Sync Frame needs 91 bytes and 91 gray targets.",
+    "zh-CN": "按码字评分的同步帧需要 91 字节和 91 个灰度目标。",
+    "zh-TW": "依碼字評分的同步框架需要 91 位元組與 91 個灰階目標。",
+    "ja": "ワード評価の同期フレームには 91 バイトと 91 個の階調目標が必要です。",
+    "tr": "Sözcük puanlı eşzamanlama çerçevesi 91 bayt ve 91 gri hedef gerektirir."
+  },
+  "Invalid State 1/4 EFMPlus branch.": {
+    "en": "Invalid State 1/4 EFMPlus branch.",
+    "zh-CN": "EFMPlus 状态 1/4 分支无效。",
+    "zh-TW": "EFMPlus 狀態 1/4 分支無效。",
+    "ja": "EFMPlus 状態 1/4 の分岐が無効です。",
+    "tr": "EFMPlus durum 1/4 dalı geçersiz."
+  },
+  "A Sync Frame contains {0} bytes.": {
+    "en": "A Sync Frame contains {0} bytes.",
+    "zh-CN": "一个同步帧包含 {0} 字节。",
+    "zh-TW": "一個同步框架包含 {0} 位元組。",
+    "ja": "同期フレームには {0} バイトが含まれます。",
+    "tr": "Bir eşzamanlama çerçevesi {0} bayt içerir."
+  },
+  "Output needs {0} level entries.": {
+    "en": "Output needs {0} level entries.",
+    "zh-CN": "输出需要 {0} 个电平条目。",
+    "zh-TW": "輸出需要 {0} 個準位項目。",
+    "ja": "出力には {0} 個のレベル要素が必要です。",
+    "tr": "Çıktı {0} düzey girdisi gerektirir."
+  },
+  "Parity and generator sizes do not match.": {
+    "en": "Parity and generator sizes do not match.",
+    "zh-CN": "校验与生成多项式大小不一致。",
+    "zh-TW": "同位檢查與生成多項式大小不一致。",
+    "ja": "パリティと生成多項式のサイズが一致しません。",
+    "tr": "Eşlik ve üreteç boyutları eşleşmiyor."
+  },
+  "The substitution table only covers bytes 0..87.": {
+    "en": "The substitution table only covers bytes 0..87.",
+    "zh-CN": "替代表仅覆盖 0..87 字节值。",
+    "zh-TW": "替代表僅涵蓋 0..87 位元組值。",
+    "ja": "置換表はバイト値 0..87 のみを対象とします。",
+    "tr": "Yerine koyma tablosu yalnızca 0..87 bayt değerlerini kapsar."
+  },
+  "EFMPlus state must be 1..4.": {
+    "en": "EFMPlus state must be 1..4.",
+    "zh-CN": "EFMPlus 状态必须为 1..4。",
+    "zh-TW": "EFMPlus 狀態必須為 1..4。",
+    "ja": "EFMPlus 状態は 1..4 である必要があります。",
+    "tr": "EFMPlus durumu 1..4 olmalıdır."
+  },
+  "Could not construct a distinct EFMPlus binary byte pair.": {
+    "en": "Could not construct a distinct EFMPlus binary byte pair.",
+    "zh-CN": "无法构造互异的 EFMPlus 二进制字节对。",
+    "zh-TW": "無法建立互異的 EFMPlus 二進位位元組對。",
+    "ja": "異なる EFMPlus 2 値バイトペアを構築できませんでした。",
+    "tr": "Farklı bir EFMPlus ikili bayt çifti oluşturulamadı."
+  },
+  "An ECC Block needs exactly {0} payload bytes.": {
+    "en": "An ECC Block needs exactly {0} payload bytes.",
+    "zh-CN": "一个 ECC 块需要恰好 {0} 个负载字节。",
+    "zh-TW": "一個 ECC 區塊需要恰好 {0} 個負載位元組。",
+    "ja": "ECC ブロックには正確に {0} ペイロードバイトが必要です。",
+    "tr": "Bir ECC bloğu tam olarak {0} yük baytı gerektirir."
+  },
+  "The ECC Block exceeds the 24-bit PSN range.": {
+    "en": "The ECC Block exceeds the 24-bit PSN range.",
+    "zh-CN": "ECC 块超出 24 位 PSN 范围。",
+    "zh-TW": "ECC 區塊超出 24 位元 PSN 範圍。",
+    "ja": "ECC ブロックが 24 ビット PSN の範囲を超えています。",
+    "tr": "ECC bloğu 24 bit PSN aralığını aşıyor."
+  },
+  "Unexpected ECC Block size.": {
+    "en": "Unexpected ECC Block size.",
+    "zh-CN": "ECC 块大小与预期不符。",
+    "zh-TW": "ECC 區塊大小與預期不符。",
+    "ja": "ECC ブロックサイズが想定外です。",
+    "tr": "Beklenmeyen ECC bloğu boyutu."
+  },
+  "Payload must contain exactly {0} bytes.": {
+    "en": "Payload must contain exactly {0} bytes.",
+    "zh-CN": "负载必须恰好包含 {0} 字节。",
+    "zh-TW": "負載必須恰好包含 {0} 位元組。",
+    "ja": "ペイロードは正確に {0} バイトである必要があります。",
+    "tr": "Yük tam olarak {0} bayt içermelidir."
+  },
+  "DVD PSN is a 24-bit value.": {
+    "en": "DVD PSN is a 24-bit value.",
+    "zh-CN": "DVD PSN 是 24 位值。",
+    "zh-TW": "DVD PSN 是 24 位元值。",
+    "ja": "DVD PSN は 24 ビット値です。",
+    "tr": "DVD PSN, 24 bitlik bir değerdir."
+  },
+  "Frame must contain exactly {0} bytes.": {
+    "en": "Frame must contain exactly {0} bytes.",
+    "zh-CN": "帧必须恰好包含 {0} 字节。",
+    "zh-TW": "框架必須恰好包含 {0} 位元組。",
+    "ja": "フレームは正確に {0} バイトである必要があります。",
+    "tr": "Çerçeve tam olarak {0} bayt içermelidir."
+  },
+  "DVD dispersion uses two textures; tone levels must be 2.": {
+    "en": "DVD dispersion uses two textures; tone levels must be 2.",
+    "zh-CN": "DVD 色散使用两种纹理；灰阶数必须为 2。",
+    "zh-TW": "DVD 色散使用兩種紋理；灰階數必須為 2。",
+    "ja": "DVD の分散法は 2 種類のテクスチャを使うため、階調数は 2 にする必要があります。",
+    "tr": "DVD dağılım yöntemi iki doku kullanır; gri seviye sayısı 2 olmalıdır."
+  },
+  "DVD streaming sector count must be a positive multiple of 16.": {
+    "en": "DVD streaming sector count must be a positive multiple of 16.",
+    "zh-CN": "DVD 流式生成的扇区数必须为 16 的正整数倍。",
+    "zh-TW": "DVD 串流產生的磁區數必須為 16 的正整數倍。",
+    "ja": "DVD ストリーミング生成のセクター数は 16 の正の整数倍にする必要があります。",
+    "tr": "DVD akış üretiminde sektör sayısı 16’nın pozitif bir tam katı olmalıdır."
+  },
+  "DVD outer radius must be greater than its positive inner radius.": {
+    "en": "DVD outer radius must be greater than its positive inner radius.",
+    "zh-CN": "DVD 内半径必须为正数，外半径必须大于内半径。",
+    "zh-TW": "DVD 內半徑必須為正數，外半徑必須大於內半徑。",
+    "ja": "DVD の内半径は正の値、外半径は内半径より大きい値にする必要があります。",
+    "tr": "DVD iç yarıçapı pozitif, dış yarıçapı iç yarıçaptan büyük olmalıdır."
+  },
+  "DVD channel-bit length must be positive.": {
+    "en": "DVD channel-bit length must be positive.",
+    "zh-CN": "DVD 通道位长度必须为正数。",
+    "zh-TW": "DVD 通道位元長度必須為正數。",
+    "ja": "DVD のチャネルビット長は正の値にする必要があります。",
+    "tr": "DVD kanal biti uzunluğu pozitif olmalıdır."
+  },
+  "DVD streaming parallelism must be automatic (0) or 1..64.": {
+    "en": "DVD streaming parallelism must be automatic (0) or 1..64.",
+    "zh-CN": "DVD 流式生成的并行度必须为自动 (0) 或 1..64。",
+    "zh-TW": "DVD 串流產生的平行度必須為自動 (0) 或 1..64。",
+    "ja": "DVD ストリーミング生成の並列度は自動 (0) または 1..64 にする必要があります。",
+    "tr": "DVD akış üretiminin paralellik değeri otomatik (0) veya 1..64 olmalıdır."
+  },
+  "Hybrid layout and DVD streaming options describe different disc sizes.": {
+    "en": "Hybrid layout and DVD streaming options describe different disc sizes.",
+    "zh-CN": "混合布局与 DVD 流式生成选项指定的光盘容量不同。",
+    "zh-TW": "混合配置與 DVD 串流產生選項指定的光碟容量不同。",
+    "ja": "混合配置と DVD ストリーミング生成オプションで指定したディスクサイズが異なります。",
+    "tr": "Karma yerleşim ve DVD akış üretimi seçenekleri farklı disk boyutları tanımlıyor."
+  }
+}

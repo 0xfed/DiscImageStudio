@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Buffers.Binary;
 
 namespace DvdImageSolver.Encoding;
@@ -29,12 +30,12 @@ internal static class DvdDataFrameBuilder
     {
         if (payload.Length != PayloadBytes)
         {
-            throw new ArgumentException($"Payload must contain exactly {PayloadBytes} bytes.", nameof(payload));
+            throw new ArgumentException(L.F($"Payload must contain exactly {PayloadBytes} bytes."), nameof(payload));
         }
 
         if (physicalSectorNumber > 0x00FF_FFFF)
         {
-            throw new ArgumentOutOfRangeException(nameof(physicalSectorNumber), "DVD PSN is a 24-bit value.");
+            throw new ArgumentOutOfRangeException(nameof(physicalSectorNumber), L.T("DVD PSN is a 24-bit value."));
         }
 
         byte[] frame = new byte[FrameBytes];
@@ -56,7 +57,7 @@ internal static class DvdDataFrameBuilder
     {
         if (frame.Length != FrameBytes)
         {
-            throw new ArgumentException($"Frame must contain exactly {FrameBytes} bytes.", nameof(frame));
+            throw new ArgumentException(L.F($"Frame must contain exactly {FrameBytes} bytes."), nameof(frame));
         }
 
         TransformPayloadScrambling(frame.Slice(12, PayloadBytes), physicalSectorNumber);
@@ -69,7 +70,7 @@ internal static class DvdDataFrameBuilder
         if (payload.Length != PayloadBytes)
         {
             throw new ArgumentException(
-                $"Payload must contain exactly {PayloadBytes} bytes.",
+                L.F($"Payload must contain exactly {PayloadBytes} bytes."),
                 nameof(payload));
         }
 

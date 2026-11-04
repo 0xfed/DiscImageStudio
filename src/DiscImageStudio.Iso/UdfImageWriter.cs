@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Buffers.Binary;
 using System.Globalization;
 using System.Text;
@@ -63,12 +64,12 @@ public static class UdfImageWriter
     {
         if (volumeSectors < MinimumVolumeSectors || volumeSectors % 32 != 0)
             throw new ArgumentOutOfRangeException(nameof(volumeSectors),
-                $"UDF drawing volumes need at least {MinimumVolumeSectors} sectors and a multiple of 32 sectors.");
+                L.F($"UDF drawing volumes need at least {MinimumVolumeSectors} sectors and a multiple of 32 sectors."));
         ArgumentNullException.ThrowIfNull(volumeLabel);
         DateTimeOffset recorded = timestamp ?? DateTimeOffset.UtcNow;
         string sourcePath = sourceDirectory is null ? string.Empty : Path.GetFullPath(sourceDirectory);
         if (sourceDirectory is not null && !Directory.Exists(sourcePath))
-            throw new DirectoryNotFoundException($"Data directory does not exist: {sourcePath}");
+            throw new DirectoryNotFoundException(L.F($"Data directory does not exist: {sourcePath}"));
         if (sourceDirectory is not null)
             RejectReparsePoint(sourcePath);
 
@@ -115,9 +116,9 @@ public static class UdfImageWriter
             // generic writer is ever used beyond one FE's capacity instead of truncating it.
             if ((node.DataLength + MaximumExtentBytes - 1) / MaximumExtentBytes
                 > (LogicalSectorBytes - 176) / 8)
-                throw new ArgumentException($"File needs more allocation descriptors than one UDF file entry supports: {node.SourcePath}");
+                throw new ArgumentException(L.F($"File needs more allocation descriptors than one UDF file entry supports: {node.SourcePath}"));
             if (node.Children.Count(child => child.IsDirectory) >= ushort.MaxValue)
-                throw new ArgumentException($"Too many child directories for a UDF link count: {node.SourcePath}");
+                throw new ArgumentException(L.F($"Too many child directories for a UDF link count: {node.SourcePath}"));
         }
         foreach (Node node in nodes.Where(node => node.IsDirectory))
         {
@@ -132,7 +133,7 @@ public static class UdfImageWriter
         uint drawingEnd = (volumeSectors - 257) / 32 * 32;
         uint drawingStart = checked((cursor + 31) / 32 * 32);
         if (drawingStart >= drawingEnd)
-            throw new ArgumentException($"Files and UDF metadata need {cursor} sectors, leaving no complete drawing cluster before the backup metadata at sector {drawingEnd}.");
+            throw new ArgumentException(L.F($"Files and UDF metadata need {cursor} sectors, leaving no complete drawing cluster before the backup metadata at sector {drawingEnd}."));
         uint partitionStart = FirstPartitionLba;
         if (filesAtOuterRing)
         {
@@ -213,7 +214,7 @@ public static class UdfImageWriter
     {
         ValidateOutput(plan, output);
         if (startLba != plan.DrawingEndLbaExclusive)
-            throw new ArgumentOutOfRangeException(nameof(startLba), "The UDF suffix must start at DrawingEndLbaExclusive.");
+            throw new ArgumentOutOfRangeException(nameof(startLba), L.T("The UDF suffix must start at DrawingEndLbaExclusive."));
         cancellationToken.ThrowIfCancellationRequested();
         SequentialWriter writer = new(output, startLba, cancellationToken);
         if (plan.FilesAtOuterRing)
@@ -437,11 +438,11 @@ public static class UdfImageWriter
     private static byte[] EncodeIdentifier(string text)
     {
         if (text.Any(IsUnsupportedCharacter))
-            throw new ArgumentException($"UDF 2.01 filenames must use CS0 Unicode BMP characters without byte-order marks: {text}");
+            throw new ArgumentException(L.F($"UDF 2.01 filenames must use CS0 Unicode BMP characters without byte-order marks: {text}"));
         bool narrow = text.All(character => character <= byte.MaxValue);
         int length = checked(1 + text.Length * (narrow ? 1 : 2));
         if (length > byte.MaxValue)
-            throw new ArgumentException($"Filename exceeds the UDF CS0 identifier limit (254 single-byte or 127 two-byte characters): {text}");
+            throw new ArgumentException(L.F($"Filename exceeds the UDF CS0 identifier limit (254 single-byte or 127 two-byte characters): {text}"));
         byte[] bytes = new byte[length];
         bytes[0] = narrow ? (byte)8 : (byte)16;
         if (narrow)
@@ -457,7 +458,7 @@ public static class UdfImageWriter
     private static string FitDstring(string text, int fieldBytes)
     {
         if (text.Any(IsUnsupportedCharacter))
-            throw new ArgumentException("UDF volume labels must use CS0 Unicode BMP characters without byte-order marks.");
+            throw new ArgumentException(L.T("UDF volume labels must use CS0 Unicode BMP characters without byte-order marks."));
         int characters = text.All(character => character <= byte.MaxValue)
             ? fieldBytes - 2 : (fieldBytes - 2) / 2;
         return text.Length <= characters ? text : text[..characters];
@@ -469,7 +470,7 @@ public static class UdfImageWriter
             return;
         byte[] bytes = EncodeIdentifier(text);
         if (bytes.Length >= field.Length)
-            throw new ArgumentException("UDF dstring does not fit its descriptor field.");
+            throw new ArgumentException(L.T("UDF dstring does not fit its descriptor field."));
         bytes.CopyTo(field);
         field[^1] = checked((byte)bytes.Length);
     }
@@ -549,13 +550,13 @@ public static class UdfImageWriter
         ArgumentNullException.ThrowIfNull(plan);
         ArgumentNullException.ThrowIfNull(output);
         if (!output.CanWrite)
-            throw new ArgumentException("UDF output stream must be writable.", nameof(output));
+            throw new ArgumentException(L.T("UDF output stream must be writable."), nameof(output));
     }
 
     private static void RejectReparsePoint(string path)
     {
         if ((File.GetAttributes(path) & FileAttributes.ReparsePoint) != 0)
-            throw new IOException($"Reparse points are not supported in the UDF data directory: {path}");
+            throw new IOException(L.F($"Reparse points are not supported in the UDF data directory: {path}"));
     }
 
     private static void ValidateSources(LayoutPlan plan, CancellationToken cancellationToken)
@@ -569,7 +570,7 @@ public static class UdfImageWriter
             {
                 RejectReparsePoint(node.SourcePath);
                 if (!Directory.Exists(node.SourcePath))
-                    throw new IOException($"Source directory changed after UDF planning: {node.SourcePath}");
+                    throw new IOException(L.F($"Source directory changed after UDF planning: {node.SourcePath}"));
                 // NTFS can return a stale last-write timestamp from parent enumeration.
                 // Check the actual children instead, which also catches additions and removals.
                 Dictionary<string, Node> expected = node.Children.ToDictionary(child => child.Name, StringComparer.Ordinal);
@@ -580,11 +581,11 @@ public static class UdfImageWriter
                     if ((entry.Attributes & FileAttributes.ReparsePoint) != 0
                         || !expected.TryGetValue(entry.Name, out Node? child)
                         || ((entry.Attributes & FileAttributes.Directory) != 0) != child.IsDirectory)
-                        throw new IOException($"Source directory changed after UDF planning: {node.SourcePath}");
+                        throw new IOException(L.F($"Source directory changed after UDF planning: {node.SourcePath}"));
                     count++;
                 }
                 if (count != expected.Count)
-                    throw new IOException($"Source directory changed after UDF planning: {node.SourcePath}");
+                    throw new IOException(L.F($"Source directory changed after UDF planning: {node.SourcePath}"));
             }
             else
                 ValidateFile(node);
@@ -598,7 +599,7 @@ public static class UdfImageWriter
         FileInfo current = new(file.SourcePath);
         if (!current.Exists || (current.Attributes & FileAttributes.ReparsePoint) != 0
             || current.Length != file.DataLength || current.LastWriteTimeUtc != file.Timestamp.UtcDateTime)
-            throw new IOException($"Source file changed after UDF planning: {file.SourcePath}");
+            throw new IOException(L.F($"Source file changed after UDF planning: {file.SourcePath}"));
     }
 
     private sealed class SequentialWriter(Stream output, uint startLba, CancellationToken cancellationToken)
@@ -627,19 +628,19 @@ public static class UdfImageWriter
             using FileStream input = new(file.SourcePath, FileMode.Open, FileAccess.Read,
                 FileShare.Read, _buffer.Length, FileOptions.SequentialScan);
             if (input.Length != file.DataLength)
-                throw new IOException($"Source file size changed while streaming UDF: {file.SourcePath}");
+                throw new IOException(L.F($"Source file size changed while streaming UDF: {file.SourcePath}"));
             long remaining = file.DataLength;
             while (remaining > 0)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 int count = input.Read(_buffer, 0, (int)Math.Min(remaining, _buffer.Length));
                 if (count == 0)
-                    throw new EndOfStreamException($"Source file ended early while streaming UDF: {file.SourcePath}");
+                    throw new EndOfStreamException(L.F($"Source file ended early while streaming UDF: {file.SourcePath}"));
                 Write(_buffer.AsSpan(0, count));
                 remaining -= count;
             }
             if (input.Length != file.DataLength)
-                throw new IOException($"Source file size changed while streaming UDF: {file.SourcePath}");
+                throw new IOException(L.F($"Source file size changed while streaming UDF: {file.SourcePath}"));
             ValidateFile(file);
         }
 
@@ -647,7 +648,7 @@ public static class UdfImageWriter
         {
             long target = checked((long)lba * LogicalSectorBytes);
             if (target < _position)
-                throw new InvalidOperationException($"Sequential UDF layout moved backwards from {_position} to {target}.");
+                throw new InvalidOperationException(L.F($"Sequential UDF layout moved backwards from {_position} to {target}."));
             while (_position < target)
                 Write(_zeroBuffer.AsSpan(0, (int)Math.Min(target - _position, _zeroBuffer.Length)));
         }

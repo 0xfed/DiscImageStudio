@@ -1,5 +1,7 @@
 # Independent 17PP reference
 
+[简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [English](README.md) | [日本語](README.ja.md) | [Türkçe](README.tr.md)
+
 Python standard-library tools transcribed from the user-supplied ISO/IEC 30190:2021, §13.17 and Figure 41. This implementation does not import the production C# encoder. The finite reference was cross-checked against C# for all 256 four-byte repeated inputs and 298 finite bit-pattern vectors; all matched. The expected vectors are included in the output artifacts.
 
 From the repository root:
@@ -11,6 +13,12 @@ python tools/BluRayByteProbe/reference/robust_pattern_search.py --output-dir art
 ```
 
 `--output-dir` defaults to the current directory. Both pattern searches accept `--max-period` (default 16). No external Python packages are required.
+
+Help, progress, errors, and explanatory JSON text in all three Python tools support five languages, using `--language zh-CN|zh-TW|en|ja|tr|system` and `DISC_IMAGE_STUDIO_LANGUAGE`. An explicit option takes precedence; otherwise the system UI language is used. Language selection preserves field names, CSV columns, exact ratios, bit sequences, and numeric parsing. The reference algorithm remains independent of the C# encoder.
+
+```powershell
+python tools/BluRayByteProbe/reference/analyze.py --language ja --help
+```
 
 ## Measurement domain
 

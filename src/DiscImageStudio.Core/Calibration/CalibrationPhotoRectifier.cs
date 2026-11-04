@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Text.Json.Serialization;
 
 namespace DiscImageStudio.Core.Calibration;
@@ -13,10 +14,10 @@ public sealed class CalibrationPhotoTransform
     {
         ArgumentNullException.ThrowIfNull(discToSourceMatrix9);
         if (discToSourceMatrix9.Length != 9 || discToSourceMatrix9.Any(value => !double.IsFinite(value)))
-            throw new ArgumentException("照片变换必须包含 9 个有限数值。", nameof(discToSourceMatrix9));
+            throw new ArgumentException(L.T("照片变换必须包含 9 个有限数值。"), nameof(discToSourceMatrix9));
         _discToSource = (double[])discToSourceMatrix9.Clone();
         double scale = _discToSource.Max(Math.Abs);
-        if (scale <= 0) throw new ArgumentException("照片变换不可逆。");
+        if (scale <= 0) throw new ArgumentException(L.T("照片变换不可逆。"));
         for (int i = 0; i < 9; i++) _discToSource[i] /= scale;
         _sourceToDisc = Invert(_discToSource);
     }
@@ -39,13 +40,13 @@ public sealed class CalibrationPhotoTransform
     internal static CalibrationPoint Map(double[] matrix, CalibrationPoint point)
     {
         ArgumentNullException.ThrowIfNull(point);
-        if (!double.IsFinite(point.X) || !double.IsFinite(point.Y)) throw new ArgumentException("照片坐标必须为有限数值。");
+        if (!double.IsFinite(point.X) || !double.IsFinite(point.Y)) throw new ArgumentException(L.T("照片坐标必须为有限数值。"));
         double divisor = matrix[6] * point.X + matrix[7] * point.Y + matrix[8];
         double scale = Math.Abs(matrix[6] * point.X) + Math.Abs(matrix[7] * point.Y) + Math.Abs(matrix[8]);
-        if (Math.Abs(divisor) <= Math.Max(1e-15, scale * 1e-12)) throw new ArgumentException("该位置接近照片投影地平线，无法矫正。");
+        if (Math.Abs(divisor) <= Math.Max(1e-15, scale * 1e-12)) throw new ArgumentException(L.T("该位置接近照片投影地平线，无法矫正。"));
         double x = (matrix[0] * point.X + matrix[1] * point.Y + matrix[2]) / divisor;
         double y = (matrix[3] * point.X + matrix[4] * point.Y + matrix[5]) / divisor;
-        if (!double.IsFinite(x) || !double.IsFinite(y)) throw new ArgumentException("照片变换产生了无效坐标。");
+        if (!double.IsFinite(x) || !double.IsFinite(y)) throw new ArgumentException(L.T("照片变换产生了无效坐标。"));
         return new(x, y);
     }
 
@@ -60,7 +61,7 @@ public sealed class CalibrationPhotoTransform
         double determinant = m[0] * result[0] + m[1] * result[3] + m[2] * result[6];
         double determinantScale = Math.Abs(m[0] * result[0]) + Math.Abs(m[1] * result[3]) + Math.Abs(m[2] * result[6]);
         if (!double.IsFinite(determinant) || Math.Abs(determinant) <= Math.Max(1e-20, determinantScale * 1e-12))
-            throw new ArgumentException("照片变换退化，无法恢复盘面坐标。");
+            throw new ArgumentException(L.T("照片变换退化，无法恢复盘面坐标。"));
         for (int i = 0; i < 9; i++) result[i] /= determinant;
         return result;
     }
@@ -158,14 +159,14 @@ public static class CalibrationPhotoRectifier
             double tolerance = Math.Max(2, sourceScale * 0.006);
             if (outerRms > tolerance || holeRms > tolerance || Math.Max(outerMaximum, holeMaximum) > tolerance * 3)
                 return new(false, null, outerRms, holeRms,
-                    $"两条实体轮廓无法同时吻合：外缘误差 {outerRms:0.##} px，内缘误差 {holeRms:0.##} px。请检查内缘、外缘与盘片尺寸。");
+                    L.F($"两条实体轮廓无法同时吻合：外缘误差 {outerRms:0.##} px，内缘误差 {holeRms:0.##} px。请检查内缘、外缘与盘片尺寸。"));
             return new(true, transform, outerRms, holeRms,
-                $"已联合校正外缘与内缘。轮廓误差：外缘 {outerRms:0.##} px，内缘 {holeRms:0.##} px。请继续核对两条轮廓。");
+                L.F($"已联合校正外缘与内缘。轮廓误差：外缘 {outerRms:0.##} px，内缘 {holeRms:0.##} px。请继续核对两条轮廓。"));
         }
         catch (ArgumentException error) { return Failed(error.Message); }
     }
 
-    private static CalibrationPhotoFitResult Failed(string message) => new(false, null, double.NaN, double.NaN, message);
+    private static CalibrationPhotoFitResult Failed(string message) => new(false, null, double.NaN, double.NaN, L.T(message));
 
     private static bool IsSpread(IReadOnlyList<CalibrationPoint> points)
     {

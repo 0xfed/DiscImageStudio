@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DvdImageSolver.Encoding;
 
 public sealed class DvdEccBlockEncoder
@@ -25,18 +26,18 @@ public sealed class DvdEccBlockEncoder
     {
         if (payloads.Length != PayloadBytesPerBlock)
         {
-            throw new ArgumentException($"An ECC Block needs exactly {PayloadBytesPerBlock} payload bytes.", nameof(payloads));
+            throw new ArgumentException(L.F($"An ECC Block needs exactly {PayloadBytesPerBlock} payload bytes."), nameof(payloads));
         }
 
         uint firstPsn = checked(initialLba + psnOffset);
         if ((firstPsn & 0xF) != 0)
         {
-            throw new ArgumentException($"The first PSN 0x{firstPsn:X6} is not aligned to a 16-sector ECC Block.");
+            throw new ArgumentException(L.F($"The first PSN 0x{firstPsn:X6} is not aligned to a 16-sector ECC Block."));
         }
 
         if (firstPsn > 0x00FF_FFF0)
         {
-            throw new ArgumentOutOfRangeException(nameof(initialLba), "The ECC Block exceeds the 24-bit PSN range.");
+            throw new ArgumentOutOfRangeException(nameof(initialLba), L.T("The ECC Block exceeds the 24-bit PSN range."));
         }
 
         byte[] recordingFrames = BuildRecordingFrames(payloads, firstPsn);
@@ -50,7 +51,7 @@ public sealed class DvdEccBlockEncoder
     {
         if (recordingFrames.Length != EccRows * EccColumns)
         {
-            throw new ArgumentException("Unexpected recording-frame byte count.", nameof(recordingFrames));
+            throw new ArgumentException(L.T("Unexpected recording-frame byte count."), nameof(recordingFrames));
         }
 
         byte[] channelLevels = new byte[ChannelBitsPerBlock];
@@ -88,7 +89,7 @@ public sealed class DvdEccBlockEncoder
         if (recordingFrames.Length != EccRows * EccColumns)
         {
             throw new ArgumentException(
-                "Unexpected recording-frame byte count.",
+                L.T("Unexpected recording-frame byte count."),
                 nameof(recordingFrames));
         }
 
@@ -124,13 +125,13 @@ public sealed class DvdEccBlockEncoder
         if (currentPayloads.Length != PayloadBytesPerBlock
             || updatedPayloads.Length != PayloadBytesPerBlock)
         {
-            throw new ArgumentException($"An ECC Block needs exactly {PayloadBytesPerBlock} payload bytes.");
+            throw new ArgumentException(L.F($"An ECC Block needs exactly {PayloadBytesPerBlock} payload bytes."));
         }
 
         if (currentRecordingFrames.Length != EccRows * EccColumns)
         {
             throw new ArgumentException(
-                "Unexpected recording-frame byte count.",
+                L.T("Unexpected recording-frame byte count."),
                 nameof(currentRecordingFrames));
         }
 
@@ -265,7 +266,7 @@ public sealed class DvdEccBlockEncoder
     {
         if (ecc.Length != EccRows * EccColumns)
         {
-            throw new ArgumentException("Unexpected ECC Block size.", nameof(ecc));
+            throw new ArgumentException(L.T("Unexpected ECC Block size."), nameof(ecc));
         }
 
         byte[] frames = new byte[ecc.Length];

@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Runtime.Intrinsics;
 
 namespace DiscImageStudio.BluRay;
@@ -34,9 +35,9 @@ public sealed class BluRayGray8Raster
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(width);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(height);
         long length = (long)width * height;
-        if (length > int.MaxValue) throw new ArgumentOutOfRangeException(nameof(width), "Raster dimensions are too large.");
+        if (length > int.MaxValue) throw new ArgumentOutOfRangeException(nameof(width), L.T("Raster dimensions are too large."));
         if (pixels.Length != length)
-            throw new ArgumentException("A Gray8 raster needs exactly width × height bytes.", nameof(pixels));
+            throw new ArgumentException(L.T("A Gray8 raster needs exactly width × height bytes."), nameof(pixels));
         Width = width;
         Height = height;
         _pixels = pixels.ToArray();
@@ -160,7 +161,7 @@ public sealed class BluRayImagePayloadMapping : IBluRayBatchPayloadMapping
             return false;
         if (firstSector % 32 != 0 || firstSector >= disc.TotalSectors
             || destination.Length != BluRayDiscParameters.PayloadBytesPerCluster)
-            throw new ArgumentException("A complete aligned image cluster is required.");
+            throw new ArgumentException(L.T("A complete aligned image cluster is required."));
 
         double clusterBase = (long)(firstSector / 32) * BluRayDiscParameters.ChannelBitsPerRecordingUnit;
         double margin = _geometry.PixelReuseSafetyMarginMm;
@@ -257,10 +258,10 @@ public sealed class BluRayImagePayloadMapping : IBluRayBatchPayloadMapping
     public void FillScrambledPayload(BluRaySectorContext context, Span<byte> destination)
     {
         if (destination.Length != BluRayDiscParameters.BytesPerSector)
-            throw new ArgumentException("A Blu-ray payload contains exactly 2048 bytes.", nameof(destination));
+            throw new ArgumentException(L.T("A Blu-ray payload contains exactly 2048 bytes."), nameof(destination));
         if (context.Disc != _disc || context.Sector >= _disc.TotalSectors
             || context.PhysicalSectorNumber != _disc.GetPhysicalSectorNumber(context.Sector))
-            throw new ArgumentException("Sector context does not match the image mapping's disc and address.", nameof(context));
+            throw new ArgumentException(L.T("Sector context does not match the image mapping's disc and address."), nameof(context));
         if (_mapping is BluRayRunLengthMapping runLength)
         {
             // Layout repeats every cluster. Its half-bit offsets and the cluster

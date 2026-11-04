@@ -6,6 +6,8 @@ $fixtureRoot = [IO.Path]::GetFullPath((Join-Path $fixtureParent ([guid]::NewGuid
 $fixturePackaging = Join-Path $fixtureRoot "packaging"
 $fixtureHelper = Join-Path $fixturePackaging "Get-ReleaseMetadata.ps1"
 $testCount = 0
+$originalLanguage = $env:DISC_IMAGE_STUDIO_LANGUAGE
+$env:DISC_IMAGE_STUDIO_LANGUAGE = 'en'
 
 function Assert-ChildPath([string]$Path, [string]$Parent) {
     $resolvedPath = [IO.Path]::GetFullPath($Path)
@@ -86,6 +88,10 @@ Assert-NoReparsePoint $fixtureRoot
 try {
     New-Item -ItemType Directory -Path $fixturePackaging -Force | Out-Null
     Copy-Item -LiteralPath (Join-Path $workspaceRoot "packaging\Get-ReleaseMetadata.ps1") -Destination $fixtureHelper
+    Copy-Item -LiteralPath (Join-Path $workspaceRoot "packaging\Localization.ps1") -Destination $fixturePackaging
+    $fixtureCatalogs = Join-Path $fixtureRoot 'src/DiscImageStudio.Localization/Catalogs'
+    New-Item -ItemType Directory -Path $fixtureCatalogs -Force | Out-Null
+    Copy-Item -Path (Join-Path $workspaceRoot 'src/DiscImageStudio.Localization/Catalogs/*.json') -Destination $fixtureCatalogs
 
     Invoke-Test "default version metadata without VersionSuffix remains supported" {
         Set-Fixture
@@ -222,6 +228,7 @@ try {
     Write-Host "release-tooling: all $testCount tests passed"
 }
 finally {
+    $env:DISC_IMAGE_STUDIO_LANGUAGE = $originalLanguage
     if (Test-Path -LiteralPath $fixtureRoot) {
         Assert-ChildPath $fixtureParent (Join-Path $workspaceRoot "artifacts")
         Assert-ChildPath $fixtureRoot $fixtureParent

@@ -1,0 +1,44 @@
+{
+  "自定义 CD 参数": {
+    "zh-CN": "自定义 CD 参数",
+    "zh-TW": "自訂 CD 參數",
+    "en": "Custom CD parameters",
+    "ja": "カスタム CD パラメーター",
+    "tr": "Özel CD parametreleri"
+  },
+  "自定义 DVD 参数": {
+    "zh-CN": "自定义 DVD 参数",
+    "zh-TW": "自訂 DVD 參數",
+    "en": "Custom DVD parameters",
+    "ja": "カスタム DVD パラメーター",
+    "tr": "Özel DVD parametreleri"
+  },
+  "自定义蓝光参数": {
+    "zh-CN": "自定义蓝光参数",
+    "zh-TW": "自訂藍光參數",
+    "en": "Custom Blu-ray parameters",
+    "ja": "カスタム Blu-ray パラメーター",
+    "tr": "Özel Blu-ray parametreleri"
+  },
+  "用户预设，可直接修改或复制后添加更多 CD 参数。": {
+    "zh-CN": "用户预设，可直接修改或复制后添加更多 CD 参数。",
+    "zh-TW": "使用者預設，可直接修改或複製後新增更多 CD 參數。",
+    "en": "User preset. Edit it directly or copy it to add more CD parameter sets.",
+    "ja": "ユーザープリセットです。直接編集するか、コピーして CD パラメーターの組を追加できます。",
+    "tr": "Kullanıcı önayarı. Doğrudan düzenleyin veya daha fazla CD parametre kümesi eklemek için kopyalayın."
+  },
+  "用户预设，可直接修改或复制后添加更多 DVD 参数。": {
+    "zh-CN": "用户预设，可直接修改或复制后添加更多 DVD 参数。",
+    "zh-TW": "使用者預設，可直接修改或複製後新增更多 DVD 參數。",
+    "en": "User preset. Edit it directly or copy it to add more DVD parameter sets.",
+    "ja": "ユーザープリセットです。直接編集するか、コピーして DVD パラメーターの組を追加できます。",
+    "tr": "Kullanıcı önayarı. Doğrudan düzenleyin veya daha fazla DVD parametre kümesi eklemek için kopyalayın."
+  },
+  "用户预设，可直接修改或复制后添加更多蓝光参数。": {
+    "zh-CN": "用户预设，可直接修改或复制后添加更多蓝光参数。",
+    "zh-TW": "使用者預設，可直接修改或複製後新增更多藍光參數。",
+    "en": "User preset. Edit it directly or copy it to add more Blu-ray parameter sets.",
+    "ja": "ユーザープリセットです。直接編集するか、コピーして Blu-ray パラメーターの組を追加できます。",
+    "tr": "Kullanıcı önayarı. Doğrudan düzenleyin veya daha fazla Blu-ray parametre kümesi eklemek için kopyalayın."
+  }
+}

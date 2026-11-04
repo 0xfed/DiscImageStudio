@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -52,7 +53,7 @@ internal static class FileRegionPreviewOverlay
     private static void ValidateRange(uint total, uint start, uint end)
     {
         if (start >= end || end > total)
-            throw new ArgumentOutOfRangeException(nameof(start), "Preview drawing range must lie inside the disc.");
+            throw new ArgumentOutOfRangeException(nameof(start), L.T("预览绘图范围必须位于光盘范围内。"));
     }
 
     private static void Apply(string path, double inner, double outer,
@@ -68,7 +69,7 @@ internal static class FileRegionPreviewOverlay
             source = decoder.Frames[0];
         }
         if (source.PixelWidth != source.PixelHeight)
-            throw new ArgumentException("Disc previews must be square.", nameof(path));
+            throw new ArgumentException(L.T("光盘预览图必须为正方形。"), nameof(path));
         if (source.Format != PixelFormats.Bgra32)
             source = new FormatConvertedBitmap(source, PixelFormats.Bgra32, null, 0);
         int size = source.PixelWidth;

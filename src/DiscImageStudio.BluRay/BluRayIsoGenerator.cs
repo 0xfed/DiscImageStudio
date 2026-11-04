@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Diagnostics;
 using DiscImageStudio.Iso;
 
@@ -34,7 +35,7 @@ public sealed class BluRayIsoPlan
             || drawingEndSectorExclusive > disc.TotalSectors)
         {
             throw new ArgumentOutOfRangeException(
-                nameof(drawingEndSectorExclusive), "The drawing range must lie inside the disc.");
+                nameof(drawingEndSectorExclusive), L.T("The drawing range must lie inside the disc."));
         }
 
         Disc = disc;
@@ -45,7 +46,7 @@ public sealed class BluRayIsoPlan
     }
 
     internal UdfImageWriter.LayoutPlan Filesystem => _filesystem
-        ?? throw new InvalidOperationException("This drawing plan has no filesystem.");
+        ?? throw new InvalidOperationException(L.T("This drawing plan has no filesystem."));
     public bool HasFileSystem => _filesystem is not null;
     public bool FilesAtOuterRing => _filesystem?.FilesAtOuterRing ?? false;
     public BluRayDiscParameters Disc { get; }
@@ -81,7 +82,7 @@ public static class BluRayIsoGenerator
         ArgumentNullException.ThrowIfNull(disc);
         disc.Validate();
         if (filesAtOuterRing && string.IsNullOrWhiteSpace(dataDirectory))
-            throw new ArgumentException("Outer-ring files require a data directory.", nameof(dataDirectory));
+            throw new ArgumentException(L.T("Outer-ring files require a data directory."), nameof(dataDirectory));
         return string.IsNullOrWhiteSpace(dataDirectory)
             ? new BluRayIsoPlan(disc)
             : Prepare(disc, dataDirectory, volumeLabel, timestamp, filesAtOuterRing);
@@ -99,7 +100,7 @@ public static class BluRayIsoGenerator
             volumeLabel, timestamp, filesAtOuterRing);
         uint drawingStart = filesystem.DrawingStartLba;
         if (drawingStart >= filesystem.DrawingEndLbaExclusive)
-            throw new ArgumentException("UDF metadata and files must leave at least 32 sectors for drawing.", nameof(dataDirectory));
+            throw new ArgumentException(L.T("UDF metadata and files must leave at least 32 sectors for drawing."), nameof(dataDirectory));
         return new(disc, filesystem, drawingStart);
     }
 
@@ -112,7 +113,7 @@ public static class BluRayIsoGenerator
         ArgumentNullException.ThrowIfNull(output);
         ArgumentNullException.ThrowIfNull(plan);
         ArgumentNullException.ThrowIfNull(mapping);
-        if (!output.CanWrite) throw new ArgumentException("A writable output stream is required.", nameof(output));
+        if (!output.CanWrite) throw new ArgumentException(L.T("A writable output stream is required."), nameof(output));
         cancellationToken.ThrowIfCancellationRequested();
         if (!plan.HasFileSystem)
             return BluRayStreamingGenerator.GenerateToStream(output,
@@ -127,7 +128,7 @@ public static class BluRayIsoGenerator
         UdfImageWriter.WriteSequentialSuffix(plan.Filesystem, destination, plan.DrawingEndSectorExclusive, cancellationToken);
         cancellationToken.ThrowIfCancellationRequested();
         if (destination.BytesWritten != plan.ContentLength)
-            throw new IOException("Blu-ray ISO generation did not produce the planned byte length.");
+            throw new IOException(L.T("Blu-ray ISO generation did not produce the planned byte length."));
         return new(0, plan.TotalSectors, destination.BytesWritten, stopwatch.Elapsed);
     }
 
@@ -155,7 +156,7 @@ public static class BluRayIsoGenerator
         string destination = Path.GetFullPath(outputPath);
         if (Iso9660ImageWriter.IsWithinDirectory(destination, source)
             || Iso9660ImageWriter.IsWithinDirectory(ResolveDirectoryLinks(destination), ResolveDirectoryLinks(source)))
-            throw new ArgumentException("ISO output must be outside the source directory to preserve source files.", nameof(outputPath));
+            throw new ArgumentException(L.T("ISO output must be outside the source directory to preserve source files."), nameof(outputPath));
     }
 
     private static string ResolveDirectoryLinks(string path)

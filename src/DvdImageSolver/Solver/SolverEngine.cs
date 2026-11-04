@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using DvdImageSolver.Encoding;
 
 namespace DvdImageSolver.Solver;
@@ -38,6 +39,6 @@ internal static class SolverEngine
                 initialBoundary,
                 options,
                 progress),
-            _ => throw new ArgumentOutOfRangeException(nameof(options), "Unknown solver algorithm."),
+            _ => throw new ArgumentOutOfRangeException(nameof(options), L.T("Unknown solver algorithm.")),
         };
 }

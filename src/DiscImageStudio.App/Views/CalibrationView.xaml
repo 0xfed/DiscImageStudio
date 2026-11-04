@@ -171,9 +171,11 @@
                                 <!-- The target follows the project family (no manual disc-type
                                      switch): the line under the button names the parameters a
                                      new target is built from. -->
-                                <Button Content="{loc:Text Xaml.CreateTargetFromParameters}" Command="{Binding CreateTargetCommand}"
+                                <Button Command="{Binding CreateTargetCommand}"
                                         Style="{StaticResource CompactPrimaryButton}" HorizontalAlignment="Stretch"
-                                        Margin="0,0,0,10" />
+                                        Height="Auto" MinHeight="{StaticResource CompactHeight}" Padding="12,6" Margin="0,0,0,10">
+                                    <TextBlock Text="{loc:Text Xaml.CreateTargetFromParameters}" TextWrapping="Wrap" TextAlignment="Center" />
+                                </Button>
                                 <TextBlock Text="{Binding CurrentParametersSummary}" Style="{StaticResource CompactHint}"
                                            Margin="0,0,0,10" />
 
@@ -191,8 +193,10 @@
                                                     Text="{Binding OutputPath}" ButtonLabel="{loc:Text Xaml.ChooseLocation}"
                                                     Command="{Binding BrowseOutputCommand}" />
                                 <WrapPanel Margin="0,0,0,12">
-                                    <Button Content="{loc:Text Xaml.GenerateImageTrack}" Command="{Binding GenerateImageCommand}"
-                                            Style="{StaticResource CompactButton}" Margin="0,0,8,0" />
+                                    <Button Command="{Binding GenerateImageCommand}" Style="{StaticResource CompactButton}"
+                                            Height="Auto" MinHeight="{StaticResource CompactHeight}" Padding="12,6" Margin="0,0,8,0">
+                                        <TextBlock Text="{loc:Text Xaml.GenerateImageTrack}" TextWrapping="Wrap" TextAlignment="Center" />
+                                    </Button>
                                     <Button Content="{loc:Text Xaml.ExportPatternPNG}" Command="{Binding ExportPngCommand}"
                                             Style="{StaticResource CompactButton}" />
                                 </WrapPanel>
@@ -276,8 +280,10 @@
                                 <CheckBox IsChecked="{Binding ContourConfirmed, Mode=TwoWay}" Style="{StaticResource CompactCheckBox}" Margin="0,0,0,10">
                                     <TextBlock Text="{loc:Text Xaml.ICheckedTheFullCurveItsShapeAndTurns}" TextWrapping="Wrap" />
                                 </CheckBox>
-                                <Button Content="{loc:Text Xaml.ApplyCalibration}" Command="{Binding ApplyParametersCommand}"
-                                        Style="{StaticResource CompactPrimaryButton}" HorizontalAlignment="Stretch" />
+                                <Button Command="{Binding ApplyParametersCommand}" Style="{StaticResource CompactPrimaryButton}"
+                                        HorizontalAlignment="Stretch" Height="Auto" MinHeight="{StaticResource CompactHeight}" Padding="12,6">
+                                    <TextBlock Text="{loc:Text Xaml.ApplyCalibration}" TextWrapping="Wrap" TextAlignment="Center" />
+                                </Button>
                             </StackPanel>
                         </controls:StepCard>
                 </Grid>

@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.IO;
 
 namespace DiscImageStudio.Cd;
@@ -22,7 +23,7 @@ internal static class CdAudioSamples
     {
         if ((samples.Length & 1) != 0)
         {
-            throw new InvalidDataException("CD audio must contain complete 16-bit samples.");
+            throw new InvalidDataException(L.T("CD audio must contain complete 16-bit samples."));
         }
 
         for (int index = 0; index < samples.Length; index += 2)

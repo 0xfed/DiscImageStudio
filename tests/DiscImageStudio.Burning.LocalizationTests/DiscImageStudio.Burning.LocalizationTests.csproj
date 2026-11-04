@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- This executable needs only Microsoft.NETCore.App. Fake transports and
+         sessions exercise the actual Windows-targeted library on every CI host. -->
+    <ProjectReference Include="../../src/DiscImageStudio.Burning/DiscImageStudio.Burning.csproj" />
+    <ProjectReference Include="../../src/DiscImageStudio.BluRay/DiscImageStudio.BluRay.csproj" />
+    <Compile Include="../DiscImageStudio.ArchitectureTests/BluRaySequentialWriterTests.cs" Link="BluRaySequentialWriterTests.cs" />
+    <Compile Include="../DiscImageStudio.ArchitectureTests/BluRaySequentialBurnTests.cs" Link="BluRaySequentialBurnTests.cs" />
+    <Compile Include="../DiscImageStudio.ArchitectureTests/UdfFilesystemTests.cs" Link="UdfFilesystemTests.cs" />
+    <Compile Include="../DiscImageStudio.ArchitectureTests/BluRaySessionCleanupTests.cs" Link="BluRaySessionCleanupTests.cs" />
+    <Compile Include="../DiscImageStudio.ArchitectureTests/BluRayFlushDiagnosticsTests.cs" Link="BluRayFlushDiagnosticsTests.cs" />
+  </ItemGroup>
+</Project>

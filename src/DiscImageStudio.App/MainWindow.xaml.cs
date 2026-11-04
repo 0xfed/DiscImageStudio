@@ -38,16 +38,14 @@ public partial class MainWindow : Window
     {
     }
 
-    internal MainWindow(AppSettings settings, AppSettingsStore settingsStore)
+    internal MainWindow(AppSettings settings, AppSettingsStore settingsStore, ShellViewModel? shell = null)
     {
         _settings = settings;
         _settingsStore = settingsStore;
         InitializeComponent();
         _workArea = new WindowWorkArea(this);
-        _shell = new ShellViewModel(Dispatcher)
-        {
-            Dialogs = new FileDialogService(() => this),
-        };
+        _shell = shell ?? new ShellViewModel(Dispatcher);
+        _shell.Dialogs = new FileDialogService(() => this);
         _shell.ConfirmHandler = (title, message, confirmLabel)
             => BurnConfirmModal.ShowAsync(title, message, confirmLabel);
         _shell.SaveConfirmationHandler = (title, message, confirmLabel, neutralLabel)
@@ -228,7 +226,7 @@ public partial class MainWindow : Window
     internal void ShowBurnProgressForSnapshot(string phase)
     {
         if (phase is not ("write" or "buffer" or "finalize"))
-            throw new ArgumentException("Burn progress snapshot must be write, buffer or finalize.");
+            throw new ArgumentException(L.T("Burn progress snapshot must be write, buffer or finalize."));
         var kind = _shell.Burn.IsBluRayBurn ? DiscImageStudio.Burning.OpticalBurnMediaKind.BluRayData
             : _shell.Burn.IsDvdBurn ? DiscImageStudio.Burning.OpticalBurnMediaKind.DvdData
             : DiscImageStudio.Burning.OpticalBurnMediaKind.CdAudio;
@@ -286,7 +284,7 @@ public partial class MainWindow : Window
     internal void ConfigureCalibrationSnapshotView(string mode)
     {
         if (mode is not ("pattern" or "closeup" or "target"))
-            throw new ArgumentException("Calibration snapshot view must be pattern, closeup or target.");
+            throw new ArgumentException(L.T("Calibration snapshot view must be pattern, closeup or target."));
         _shell.SelectWorkspace(Workspace.Calibration);
         if (mode == "target")
         {
@@ -304,7 +302,7 @@ public partial class MainWindow : Window
         canvas.ResetView();
         if (mode != "closeup") return;
         var points = _shell.Calibration.TracePoints;
-        if (points.Count < 2) throw new InvalidOperationException("Closeup needs a loaded calibration trace.");
+        if (points.Count < 2) throw new InvalidOperationException(L.T("Closeup needs a loaded calibration trace."));
         var minimum = new Point(points.Min(p => p.XMm), points.Min(p => p.YMm));
         var maximum = new Point(points.Max(p => p.XMm), points.Max(p => p.YMm));
         Point a = canvas.WorldToView(minimum), b = canvas.WorldToView(maximum);

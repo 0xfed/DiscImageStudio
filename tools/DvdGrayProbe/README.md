@@ -1,8 +1,18 @@
 # DVD 64 / E4 灰阶与混合测试
 
+[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md) | [日本語](README.ja.md) | [Türkçe](README.tr.md)
+
 本工具为 **Verbatim DVD-R AZO 43533** 制作一张对比测试盘：以已测试的 `A5 / 66 / B9 / 92` 为对照，比较 `64`、`E4` 替换 `66` 后的纯色、抖动混合和实际图片效果，并单独测试 `64` 与 `E4` 混在一起的效果。工具负责生成和验证镜像，不执行刻录。
 
 所有 byte 均指 **DVD 扰码后的目标 Q 字节**。图集直接指定 Q；生成时用最近邻读取，不进行双线性插值或重新灰度分档。
+
+帮助、进度、项目自身的错误和 JSON 中的说明文字支持五种语言。命令可附加 `--language zh-CN|zh-TW|en|ja|tr|system`；默认使用 `DISC_IMAGE_STUDIO_LANGUAGE`，未设置时跟随系统。语言选择保留命令名、JSON 字段及技术标识、参数、图集和镜像数据。
+
+独立像素占比复核脚本 `verify_mixtures.py` 需要 Python 3 和 NumPy，可在准备文件所在的 Windows、Linux 或 macOS 环境运行，也支持 `--language`。它只读取图集，写出测量 JSON/CSV，保留字段、面板与行标识；只翻译帮助、错误及测量含义。结果描述像素占比，并非光学亮度或 ISO 编码采样。
+
+```powershell
+python tools/DvdGrayProbe/verify_mixtures.py --prepared "artifacts/dvd-gray-probe-64-e4" --language en
+```
 
 ## 生成与验证
 
@@ -41,7 +51,7 @@ dotnet run --project tools/DvdGrayProbe --configuration Release -- verify --prep
 1-66  2-64  3-E4  |  4-64  5-E4  6-66  |  7-E4  8-66  9-64  |  10-66  11-E4  12-64
 ```
 
-每组三个面板使用同样的输入，调色板分别为 `A5 / 候选 / B9 / 92`。候选在不同角度重复出现并调换顺序，以减少盘面位置对比较的影响。以下半径从光盘中心量起：
+每组三个面板使用同样的输入，调色板分别为 `A5 / candidate / B9 / 92`。候选在不同角度重复出现并调换顺序，以减少盘面位置对比较的影响。以下半径从光盘中心量起：
 
 | 半径 | 测试内容 |
 |---|---|
@@ -68,7 +78,7 @@ dotnet run --project tools/DvdGrayProbe --configuration Release -- verify --prep
 
 重点看：候选是否能同时与 `A5`、`B9` 分开；混合比例增加时是否呈现有序变化；图片暗部是否恢复细节；`64 / E4` 的混合是否产生比两种纯色更有用、且角度稳定的层次。对照中 `B9` 应仍能与 `A5`、`92` 明显区分。
 
-可用 `0 = 难区分，1 = 特定角度可分，2 = 正常角度稳定可分` 简单记录：
+可用 0 = 难区分，1 = 特定角度可分，2 = 正常角度稳定可分 简单记录：
 
 | 候选 | 与 A5 区分 | 与 B9 区分 | 混合三档有序、可辨 | 图片暗部细节 | 备注 |
 |---|---|---|---|---|---|

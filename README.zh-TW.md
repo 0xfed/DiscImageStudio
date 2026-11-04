@@ -1,6 +1,6 @@
 <div align="center">
 
-[简体中文](README.md) | **繁體中文** | [English](README.en.md) | [日本語](README.ja.md)
+[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md) | [日本語](README.ja.md) | [Türkçe](README.tr.md)
 
 ![Banner](docs/images/DiscImageStudio_Banner_2.png)
 
@@ -63,14 +63,14 @@ Windows 下載 `win-x64.exe` 後可直接執行。Linux 或 macOS 請下載與 C
 
 ### 光碟資料產生
 
-- **CD 支援**：支援任何 CD。您可匯出含格式標頭的 WAV 音軌與配套 CUE，相容於 cdrecord、ImgBurn 等燒錄軟體；也可匯出 RAW 音軌。詳見 [CD 燒錄相容性說明](docs/CD_AUDIO_COMPATIBILITY.md)。
+- **CD 支援**：支援任何 CD。您可匯出含格式標頭的 WAV 音軌與配套 CUE，相容於 cdrecord、ImgBurn 等燒錄軟體；也可匯出 RAW 音軌。詳見 [CD 燒錄相容性說明](docs/CD_AUDIO_COMPATIBILITY.zh-TW.md)。
 - **DVD 支援**：支援任何 DVD。您可匯出 ISO 映像。
-- **藍光支援**：支援任何單層 BD-R 25 GB，可純繪圖或附帶 UDF 2.01 檔案。詳見 [ADDING_BLURAY.md](docs/ADDING_BLURAY.md)。
+- **藍光支援**：支援任何單層 BD-R 25 GB，可純繪圖或附帶 UDF 2.01 檔案。詳見 [ADDING_BLURAY.md](docs/ADDING_BLURAY.zh-TW.md)。
 - **隨碟檔案**：CD／DVD／藍光可在設計頁直接選擇要儲存的資料夾及內圈／外圈位置，也可在匯出頁調整；設定會隨專案儲存。
 - **檔案區域預覽**：混合光碟的設計投影與成品讀回會以黃色標示檔案區（含檔案系統）。
-- **媒體灰階方案**：CD 與 DVD 均使用黑白二階；CD 使用 `0D / AA`，DVD 擾碼域使用 `A5 / 92`。詳見 [PHYSICAL_MODEL_AUDIT.md](docs/PHYSICAL_MODEL_AUDIT.md)。
-- **灰階抖動工具**：獨立程式也可將原圖處理為 `0/255` 黑白二階 PNG；支援開啟或拖入原圖、並排預覽及無損 PNG 匯出。詳見[使用與建置說明](tools/FourLevelDither/README.md)。
-- **光碟預設**：內建數個品牌的光碟參數，涵蓋 CD／DVD／BD。您也可將自行校準的資料貢獻給我們，詳見[預設維護說明](docs/DISC_PRESETS.md)。
+- **媒體灰階方案**：CD 與 DVD 均使用黑白二階；CD 使用 `0D / AA`，DVD 擾碼域使用 `A5 / 92`。詳見 [PHYSICAL_MODEL_AUDIT.md](docs/PHYSICAL_MODEL_AUDIT.zh-TW.md)。
+- **灰階抖動工具**：獨立程式也可將原圖處理為 `0/255` 黑白二階 PNG；支援開啟或拖入原圖、並排預覽及無損 PNG 匯出。詳見[使用與建置說明](tools/FourLevelDither/README.zh-TW.md)。
+- **光碟預設**：內建數個品牌的光碟參數，涵蓋 CD／DVD／BD。您也可將自行校準的資料貢獻給我們，詳見[預設維護說明](docs/DISC_PRESETS.zh-TW.md)。
 
 ### 輔助校準
 
@@ -82,7 +82,7 @@ Disc Image Studio 提供一套智慧且精準的輔助校準流程。相較於�
 | `P20261004-133519.jpg` | `P20261004-135416.jpg` |
 
 
-流程與參數說明請見[輔助校準說明](docs/CALIBRATION.md)。
+流程與參數說明請見[輔助校準說明](docs/CALIBRATION.zh-TW.md)。
 
 ### 燒錄
 
@@ -95,6 +95,12 @@ Disc Image Studio 提供一套智慧且精準的輔助校準流程。相較於�
 - 桌面版需要 Windows 10 2004（2004/20H1，19041）以上版本，或 Windows 11。
 - 建置：.NET 10 SDK（`global.json` 鎖定 10.0.x）；自行建置的非獨立部署 GUI 需要 .NET 10 Windows 桌面執行階段。Release EXE 已包含執行階段，無須另外安裝 .NET。
 - 「即時燒錄」功能需要 Windows 可辨識的 CD / DVD / BD 燒錄機與空白光碟；BD-R 需要支援循序寫入的單層空白光碟。
+
+## 介面語言
+
+Windows 桌面版支援简体中文、繁體中文、English、日本語與 Türkçe。點選右上角「設定 → 一般 → 語言」選擇語言或跟隨系統，儲存後立即生效，無須重新啟動；取消不修改偏好。語言與主題預設皆跟隨系統。
+
+切換語言不改變專案名、圖層名、使用者預設、路徑、幾何參數或數值解析。系統語言對應、命令列語言與維護方式見 [LOCALIZATION.md](docs/LOCALIZATION.zh-TW.md)。
 
 ## 建置與執行
 
@@ -110,11 +116,13 @@ dotnet run --project src/DvdImageSolver --configuration Release -- selftest
 dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release
 ```
 
-版本規則、CI 產生 EXE、Release 草稿檢查、MSIX 封裝與簽署流程，請見[發布指南](docs/RELEASING.md)。
+版本規則、CI 產生 EXE、Release 草稿檢查、MSIX 封裝與簽署流程，請見[發布指南](docs/RELEASING.zh-TW.md)。
 
 ## 命令列
 
 Linux（glibc）可選 `linux-x64` 或 `linux-arm64`。Apple Silicon Mac 選 `osx-arm64`，Intel Mac 選 `osx-x64`。CLI 在本機產生映像檔，如要寫入光碟，請使用支援相應映像或音軌的燒錄軟體。
+
+CLI 支援全域 `--language zh-CN|zh-TW|en|ja|tr|system`（亦可寫成 `--language=ja`）；明確選項優先於環境變數 `DISC_IMAGE_STUDIO_LANGUAGE`，否則跟隨系統介面語言。命令、選項名稱、路徑與數值解析不隨語言改變。
 
 使用 .NET 10 SDK 從原始碼執行 CLI
 
@@ -145,39 +153,40 @@ CLI 可讀取 PNG、JPEG、BMP 和 GIF，動畫圖片使用第一幀。以下範
 
 ## 原始碼結構
 
-```text
-src/DiscImageStudio.Cli/     Linux 與 macOS 離線命令列入口
-src/DiscImageStudio.ImageIO/ WIC 與跨平台影像編解碼
-src/DiscImageStudio.Core/    與媒體無關的模組契約、專案／預設模型、任務與命令目錄
-src/DiscImageStudio.Imaging/ CD/DVD/BD 共用的圖片前置處理與抖動輔助
-src/DiscImageStudio.Burning/ Windows IMAPI2 裝置列舉、串流緩衝與安全燒錄層
-src/DiscImageStudio.Cd/      CD-DA 產生核心與 CD 模組
-src/DiscImageStudio.Dvd/     DVD 引擎介接模組
-src/DiscImageStudio.BluRay/  BD-R 幾何、17PP/ECC、3T/6T 映射、串流產生與 ISO
-src/DiscImageStudio.Iso/     UDF 2.01 / ISO9660 寫入器
-src/DiscImageStudio.App/     WPF GUI、統一命令列與商店資源
-src/DvdImageSolver/          維持獨立的 DVD 編碼／求解引擎
-tests/                       不使用第三方測試框架的架構迴歸測試
-packaging/                   MSIX 資訊清單與封裝指令碼
-tools/                       獨立輔助工具與素材產生指令碼
-docs/                        架構、引擎、預設、發布等文件
-```
+| 路徑 | 職責 |
+| --- | --- |
+| `src/DiscImageStudio.Cli/` | Linux 與 macOS 離線命令列入口 |
+| `src/DiscImageStudio.ImageIO/` | WIC 與跨平台影像編解碼 |
+| `src/DiscImageStudio.Localization/` | 介面、CLI 與模組共用的五語資源、語言選擇與格式化 |
+| `src/DiscImageStudio.Core/` | 與媒體無關的模組契約、專案／預設模型、任務與命令目錄 |
+| `src/DiscImageStudio.Imaging/` | CD/DVD/BD 共用的圖片前置處理與抖動輔助 |
+| `src/DiscImageStudio.Burning/` | Windows IMAPI2 裝置列舉、串流緩衝與安全燒錄層 |
+| `src/DiscImageStudio.Cd/` | CD-DA 產生核心與 CD 模組 |
+| `src/DiscImageStudio.Dvd/` | DVD 引擎介接模組 |
+| `src/DiscImageStudio.BluRay/` | BD-R 幾何、17PP/ECC、3T/6T 映射、串流產生與 ISO |
+| `src/DiscImageStudio.Iso/` | UDF 2.01 / ISO9660 寫入器 |
+| `src/DiscImageStudio.App/` | WPF GUI、統一命令列與商店資源 |
+| `src/DvdImageSolver/` | 維持獨立的 DVD 編碼／求解引擎 |
+| `tests/` | 不使用第三方測試框架的架構迴歸測試 |
+| `packaging/` | MSIX 資訊清單與封裝指令碼 |
+| `tools/` | 獨立輔助工具與素材產生指令碼 |
+| `docs/` | 架構、引擎、預設、發布等文件 |
 
 ## 文件
 
 | 文件 | 內容 |
 | --- | --- |
-| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | 模組抽象、層間邊界與擴充規則 |
-| [DVD_ENGINE.md](docs/DVD_ENGINE.md) | DVD NRZI 圖像限制求解器的慣例、編碼流程與自我檢查涵蓋範圍 |
-| [CD_AUDIO_COMPATIBILITY.md](docs/CD_AUDIO_COMPATIBILITY.md) | CD 音軌格式、位元組順序與重影問題排查 |
-| [ADDING_BLURAY.md](docs/ADDING_BLURAY.md) | 藍光模組的物理模型、產生／燒錄流程與擴充點 |
-| [DISC_PRESETS.md](docs/DISC_PRESETS.md) | 可編輯光碟預設的分層 JSON 格式與合併規則 |
-| [CALIBRATION.md](docs/CALIBRATION.md) | 相片校正（框選光碟實體最外緣與中心孔邊緣）、曲線校準與 DVD 三次軌距擬合 |
-| [PHYSICAL_MODEL_AUDIT.md](docs/PHYSICAL_MODEL_AUDIT.md) | CD / DVD 資料產生物理模型複核 |
-| [VALIDATION.md](docs/VALIDATION.md) | 各輪建置、迴歸與實際光碟測試的本機驗證記錄 |
-| [RELEASING.md](docs/RELEASING.md) | GitHub Release、MSIX 封裝、簽署測試與商店提交流程 |
-| [LOCALIZATION.md](docs/LOCALIZATION.md) | 語言設定、系統語言對應與翻譯資源維護 |
-| [CHANGELOG.md](CHANGELOG.md) | 版本變更記錄 |
+| [ARCHITECTURE.md](docs/ARCHITECTURE.zh-TW.md) | 模組抽象、層間邊界與擴充規則 |
+| [LOCALIZATION.md](docs/LOCALIZATION.zh-TW.md) | 語言設定、系統語言對應與翻譯資源維護 |
+| [DVD_ENGINE.md](docs/DVD_ENGINE.zh-TW.md) | DVD NRZI 圖像限制求解器的慣例、編碼流程與自我檢查涵蓋範圍 |
+| [CD_AUDIO_COMPATIBILITY.md](docs/CD_AUDIO_COMPATIBILITY.zh-TW.md) | CD 音軌格式、位元組順序與重影問題排查 |
+| [ADDING_BLURAY.md](docs/ADDING_BLURAY.zh-TW.md) | 藍光模組的物理模型、產生／燒錄流程與擴充點 |
+| [DISC_PRESETS.md](docs/DISC_PRESETS.zh-TW.md) | 可編輯光碟預設的分層 JSON 格式與合併規則 |
+| [CALIBRATION.md](docs/CALIBRATION.zh-TW.md) | 相片校正（框選光碟實體最外緣與中心孔邊緣）、曲線校準與 DVD 三次軌距擬合 |
+| [PHYSICAL_MODEL_AUDIT.md](docs/PHYSICAL_MODEL_AUDIT.zh-TW.md) | CD / DVD 資料產生物理模型複核 |
+| [VALIDATION.md](docs/VALIDATION.zh-TW.md) | 各輪建置、迴歸與實際光碟測試的本機驗證記錄 |
+| [RELEASING.md](docs/RELEASING.zh-TW.md) | GitHub Release、MSIX 封裝、簽署測試與商店提交流程 |
+| [CHANGELOG.md](CHANGELOG.zh-TW.md) | 版本變更記錄 |
 
 ## 參考標準
 
@@ -202,16 +211,16 @@ CD 共通編碼部分也參考了 [ECMA-130，第 2 版（CD-ROM，1996）](http
 
 ## 隱私與安全
 
-- Disc Image Studio 不連網、不上傳檔案，也不收集遙測資料，詳見[隱私權政策](PRIVACY.md)。
-- 發現安全問題時，請勿在公開 Issue 中揭露；請依[安全政策](SECURITY.md)使用 GitHub 私密回報。
+- Disc Image Studio 不連網、不上傳檔案，也不收集遙測資料，詳見[隱私權政策](PRIVACY.zh-TW.md)。
+- 發現安全問題時，請勿在公開 Issue 中揭露；請依[安全政策](SECURITY.zh-TW.md)使用 GitHub 私密回報。
 
 ## 貢獻
 
-歡迎回報問題與提交程式碼。開發環境建置、模組邊界規則、測試需求與 Pull Request 流程，請見[貢獻指南](CONTRIBUTING.md)。
+歡迎回報問題與提交程式碼。開發環境建置、模組邊界規則、測試需求與 Pull Request 流程，請見[貢獻指南](CONTRIBUTING.zh-TW.md)。
 
 ## 授權條款
 
-本專案採用 [GNU GPL v3.0 or later](LICENSE)（`GPL-3.0-or-later`）。CD 交錯實作包含從 CDImage 移植並修改的程式碼，整體散佈沿用相容的 GPL 授權；散佈二進位檔或修改版本時，須遵守提供對應原始碼等要求。第三方字型與元件依循各自的授權條款，詳見[授權說明](LICENSE-NOTICE.md)與[第三方聲明](THIRD-PARTY-NOTICES.txt)；也可在應用程式的「關於」頁離線檢視完整文字。
+本專案採用 [GNU GPL v3.0 or later](LICENSE)（`GPL-3.0-or-later`）。CD 交錯實作包含從 CDImage 移植並修改的程式碼，整體散佈沿用相容的 GPL 授權；散佈二進位檔或修改版本時，須遵守提供對應原始碼等要求。第三方字型與元件依循各自的授權條款，詳見[授權說明](LICENSE-NOTICE.zh-TW.md)與[第三方聲明](THIRD-PARTY-NOTICES.txt)；也可在應用程式的「關於」頁離線檢視完整文字。
 
 ## 致謝
 

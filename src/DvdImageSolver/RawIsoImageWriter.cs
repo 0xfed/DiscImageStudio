@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DvdImageSolver;
 
 internal sealed class RawIsoImageWriter : IDisposable
@@ -25,7 +26,7 @@ internal sealed class RawIsoImageWriter : IDisposable
             if (!File.Exists(fullPath) || new FileInfo(fullPath).Length != expectedLength)
             {
                 throw new ArgumentException(
-                    "The existing hybrid ISO size does not match the reported disc size.",
+                    L.T("The existing hybrid ISO size does not match the reported disc size."),
                     nameof(path));
             }
         }
@@ -53,13 +54,13 @@ internal sealed class RawIsoImageWriter : IDisposable
     {
         if (payloads.Length == 0 || payloads.Length % IsoImageWriter.LogicalSectorBytes != 0)
         {
-            throw new ArgumentException("Raw ISO payload must contain complete 2048-byte sectors.", nameof(payloads));
+            throw new ArgumentException(L.T("Raw ISO payload must contain complete 2048-byte sectors."), nameof(payloads));
         }
 
         ulong sectorCount = (uint)(payloads.Length / IsoImageWriter.LogicalSectorBytes);
         if ((ulong)lba + sectorCount > VolumeSectors)
         {
-            throw new ArgumentOutOfRangeException(nameof(lba), "Payload exceeds raw ISO size.");
+            throw new ArgumentOutOfRangeException(nameof(lba), L.T("Payload exceeds raw ISO size."));
         }
 
         _output.Position = checked((long)lba * IsoImageWriter.LogicalSectorBytes);

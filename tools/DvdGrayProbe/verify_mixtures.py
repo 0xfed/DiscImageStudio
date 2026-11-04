@@ -7,12 +7,15 @@ Reads the emitted atlas independently of the C# mask generator. Measurements
 describe atlas pixels, not the optical brightness or the ISO's encoded samples.
 """
 
-import argparse
 import csv
 import hashlib
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from localization import ArgumentParser, initialize, run, t as text
 
 import numpy as np
 
@@ -37,21 +40,21 @@ def sha256_file(path):
 def measure(prepared, chunk_rows, tolerance_pp):
     metadata = json.loads((prepared / "probe.json").read_text(encoding="utf-8-sig"))
     if metadata["schema"] != "dvd-gray-probe-v1":
-        raise ValueError("Unsupported prepared probe schema")
+        raise ValueError(text("Unsupported prepared probe schema"))
     width, height = metadata["atlasWidth"], metadata["atlasHeight"]
     cell_mm, canvas_mm = metadata["cellMm"], metadata["canvasMm"]
     if (width, height, cell_mm, canvas_mm) != (6000, 6000, 0.02, 120):
-        raise ValueError("This verifier expects the documented 6000-square 20-um probe")
+        raise ValueError(text("This verifier expects the documented 6000-square 20-um probe"))
     panels = sorted(metadata["panelsClockwiseFromTwelve"], key=lambda item: item["panel"])
     if [item["panel"] for item in panels] != list(range(1, 13)):
-        raise ValueError("Expected 12 unique numbered panels")
+        raise ValueError(text("Expected 12 unique numbered panels"))
     candidates = [int(item["darkQ"], 16) for item in panels]
     atlas_path = prepared / "atlas.q8"
     if atlas_path.stat().st_size != width * height:
-        raise ValueError("Atlas length does not match its declared dimensions")
+        raise ValueError(text("Atlas length does not match its declared dimensions"))
     atlas_hash = sha256_file(atlas_path)
     if atlas_hash != metadata["atlasSha256"]:
-        raise ValueError("Atlas SHA-256 differs from probe.json")
+        raise ValueError(text("Atlas SHA-256 differs from probe.json"))
 
     atlas = np.memmap(atlas_path, dtype=np.uint8, mode="r", shape=(height, width))
     counts = np.zeros((4, 12, 3, 256), dtype=np.int64)
@@ -87,7 +90,7 @@ def measure(prepared, chunk_rows, tolerance_pp):
                 histogram = counts[row_index, panel, column]
                 total = int(histogram.sum())
                 if not total:
-                    raise ValueError(f"Empty cell: {row_name}, panel {panel + 1}, column {column + 1}")
+                    raise ValueError(text("Empty cell: {0}, panel {1}, column {2}",row_name,panel + 1,column + 1))
                 selected_count, other_count = int(histogram[selected]), int(histogram[other])
                 unexpected = {
                     f"0x{code:02X}": int(count)
@@ -148,7 +151,7 @@ def measure(prepared, chunk_rows, tolerance_pp):
         "measured_utc": datetime.now(timezone.utc).isoformat(),
         "atlas_sha256": atlas_hash,
         "atlas_matches_probe_metadata": True,
-        "measurement": "actual atlas pixel occupancy; excludes panel margins and column gutters; not optical brightness or ISO channel-sample occupancy",
+        "measurement": text("actual atlas pixel occupancy; excludes panel margins and column gutters; not optical brightness or ISO channel-sample occupancy"),
         "panel_interior_t": "[0.04, 0.96)",
         "column_interior_fraction": "[0.025, 0.975)",
         "tolerance_percentage_points_exclusive": tolerance_pp,
@@ -171,12 +174,17 @@ def measure(prepared, chunk_rows, tolerance_pp):
     return 0 if summary["all_passed"] else 1
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--prepared", required=True, type=Path)
-    parser.add_argument("--chunk-rows", default=128, type=int)
-    parser.add_argument("--tolerance-pp", default=1.0, type=float)
-    args = parser.parse_args()
+def main():
+    arguments = initialize()
+    parser = ArgumentParser(description=text("Python.MixtureHelp"))
+    parser.add_argument("--prepared", required=True, type=Path,help=text("Python.PreparedDirectory"))
+    parser.add_argument("--chunk-rows", default=128, type=int,help=text("Python.ChunkRows"))
+    parser.add_argument("--tolerance-pp", default=1.0, type=float,help=text("Python.Tolerance"))
+    args = parser.parse_args(arguments)
     if args.chunk_rows <= 0 or args.tolerance_pp <= 0:
-        parser.error("chunk rows and tolerance must be positive")
-    raise SystemExit(measure(args.prepared, args.chunk_rows, args.tolerance_pp))
+        parser.error(text("chunk rows and tolerance must be positive"))
+    return measure(args.prepared, args.chunk_rows, args.tolerance_pp)
+
+
+if __name__ == "__main__":
+    raise SystemExit(run(main))

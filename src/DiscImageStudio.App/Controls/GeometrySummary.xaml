@@ -18,15 +18,18 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <Grid Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
                     <iconPacks:PackIconLucide Kind="Ruler" Width="15" Height="15" VerticalAlignment="Center"
                                               Foreground="{DynamicResource TextSecondaryBrush}" />
                     <!-- Centered on the row: the row's height is the edit button's, and a
                          stretched TextBlock would ride the top edge while the icon centers. -->
-                    <TextBlock x:Name="TitleText" Style="{StaticResource FieldLabel}" Margin="8,0,0,0"
-                               VerticalAlignment="Center"
-                               TextTrimming="CharacterEllipsis" />
-                </StackPanel>
+                    <TextBlock x:Name="TitleText" Grid.Column="1" Style="{StaticResource FieldLabel}" Margin="8,0,0,0"
+                               VerticalAlignment="Center" TextWrapping="Wrap" />
+                </Grid>
                 <Button x:Name="EditButton" Grid.Column="1" Style="{StaticResource CompactButton}"
                         VerticalAlignment="Center" Margin="12,0,0,0" />
             </Grid>

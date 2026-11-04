@@ -1,5 +1,7 @@
 # License notice
 
+[简体中文](LICENSE-NOTICE.md) | [繁體中文](LICENSE-NOTICE.zh-TW.md) | [English](LICENSE-NOTICE.en.md) | [日本語](LICENSE-NOTICE.ja.md) | [Türkçe](LICENSE-NOTICE.tr.md)
+
 Disc Image Studio 采用 **GNU General Public License v3.0 or later（GPL-3.0-or-later）**，许可证全文见 [LICENSE](LICENSE)。本项目可按 GPL 第 3 版或任何后续版本使用、修改和分发；软件不提供担保。
 
 Copyright (c) 2026 Disc Image Studio contributors。

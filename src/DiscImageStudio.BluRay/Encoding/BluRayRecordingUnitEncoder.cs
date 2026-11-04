@@ -1,3 +1,5 @@
+using DiscImageStudio.Localization;
+
 namespace DiscImageStudio.BluRay.Encoding;
 
 public sealed record BluRayRecordingUnitResult(
@@ -38,7 +40,7 @@ public static class BluRayRecordingUnitEncoder
         CancellationToken cancellationToken = default)
     {
         if (eccCluster.Length != BluRayEccEncoder.EccClusterBytes)
-            throw new ArgumentException("An ECC cluster contains 496 rows of 155 bytes.", nameof(eccCluster));
+            throw new ArgumentException(L.T("An ECC cluster contains 496 rows of 155 bytes."), nameof(eccCluster));
         if ((firstPhysicalSectorNumber & 31) != 0 || firstPhysicalSectorNumber > 0x07ffffe0)
             throw new ArgumentOutOfRangeException(nameof(firstPhysicalSectorNumber));
         if (initialChannelLevel > 1) throw new ArgumentOutOfRangeException(nameof(initialChannelLevel));
@@ -80,7 +82,7 @@ public static class BluRayRecordingUnitEncoder
         AppendGuard(24); // PoA remainder
         AppendGuard(27); // Guard_2
         if (appendGuard3) AppendGuard(27);
-        if (cursor != modulation.Length) throw new InvalidOperationException("Incorrect recording-unit length.");
+        if (cursor != modulation.Length) throw new InvalidOperationException(L.T("Incorrect recording-unit length."));
         int suboptimalDecisions = 0;
         for (int frame = 0; frame < 496; frame++)
         {

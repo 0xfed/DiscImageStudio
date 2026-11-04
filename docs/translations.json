@@ -1,0 +1,305 @@
+{
+  "languages": [
+    "zh-CN",
+    "zh-TW",
+    "en",
+    "ja",
+    "tr"
+  ],
+  "documents": [
+    {
+      "source": "PRIVACY.md",
+      "source_language": "zh-CN",
+      "source_sha256": "69c3e7f1319ef7abc66b4ec2a628d082ea1a40008a94055630aa6d5a06d91c89",
+      "translations": {
+        "zh-CN": "PRIVACY.md",
+        "zh-TW": "PRIVACY.zh-TW.md",
+        "en": "PRIVACY.en.md",
+        "ja": "PRIVACY.ja.md",
+        "tr": "PRIVACY.tr.md"
+      }
+    },
+    {
+      "source": "SECURITY.md",
+      "source_language": "zh-CN",
+      "source_sha256": "49999ad8d478c1095016a1b14d522465f541a5a73ff9a990a9a2a073e98e1de1",
+      "translations": {
+        "zh-CN": "SECURITY.md",
+        "zh-TW": "SECURITY.zh-TW.md",
+        "en": "SECURITY.en.md",
+        "ja": "SECURITY.ja.md",
+        "tr": "SECURITY.tr.md"
+      }
+    },
+    {
+      "source": "LICENSE-NOTICE.md",
+      "source_language": "zh-CN",
+      "source_sha256": "80df9afbf56f7149659d51c30f1226c4c2bed897736d0d21befb38733a6938a9",
+      "translations": {
+        "zh-CN": "LICENSE-NOTICE.md",
+        "zh-TW": "LICENSE-NOTICE.zh-TW.md",
+        "en": "LICENSE-NOTICE.en.md",
+        "ja": "LICENSE-NOTICE.ja.md",
+        "tr": "LICENSE-NOTICE.tr.md"
+      }
+    },
+    {
+      "source": "CONTRIBUTING.md",
+      "source_language": "zh-CN",
+      "source_sha256": "c38462d4b9007aaf16a4773e98053d61af6a2ab5230fd1adb984504edfb96edd",
+      "translations": {
+        "zh-CN": "CONTRIBUTING.md",
+        "zh-TW": "CONTRIBUTING.zh-TW.md",
+        "en": "CONTRIBUTING.en.md",
+        "ja": "CONTRIBUTING.ja.md",
+        "tr": "CONTRIBUTING.tr.md"
+      }
+    },
+    {
+      "source": "src/DiscImageStudio.Core/Calibration/Patterns/README.md",
+      "source_language": "zh-CN",
+      "source_sha256": "1fdcbb8f40bb40d3ba0cb2ea4df58efcc536f29dbe7c7f726207ed3e30b0eda1",
+      "translations": {
+        "zh-CN": "src/DiscImageStudio.Core/Calibration/Patterns/README.md",
+        "zh-TW": "src/DiscImageStudio.Core/Calibration/Patterns/README.zh-TW.md",
+        "en": "src/DiscImageStudio.Core/Calibration/Patterns/README.en.md",
+        "ja": "src/DiscImageStudio.Core/Calibration/Patterns/README.ja.md",
+        "tr": "src/DiscImageStudio.Core/Calibration/Patterns/README.tr.md"
+      }
+    },
+    {
+      "source": "tools/BluRayByteProbe/reference/README.md",
+      "source_language": "en",
+      "source_sha256": "c74d445c1806b62c889a4e565f4ec1333020f24776a65e10390f1efd472ce982",
+      "translations": {
+        "zh-CN": "tools/BluRayByteProbe/reference/README.zh-CN.md",
+        "zh-TW": "tools/BluRayByteProbe/reference/README.zh-TW.md",
+        "en": "tools/BluRayByteProbe/reference/README.md",
+        "ja": "tools/BluRayByteProbe/reference/README.ja.md",
+        "tr": "tools/BluRayByteProbe/reference/README.tr.md"
+      }
+    },
+    {
+      "source": "tools/BluRayByteProbe/README.md",
+      "source_language": "zh-CN",
+      "source_sha256": "e58dd23b163f442923c091201e93b665dc692b38c60c03529d8c992ac98a0ba7",
+      "translations": {
+        "zh-CN": "tools/BluRayByteProbe/README.md",
+        "zh-TW": "tools/BluRayByteProbe/README.zh-TW.md",
+        "en": "tools/BluRayByteProbe/README.en.md",
+        "ja": "tools/BluRayByteProbe/README.ja.md",
+        "tr": "tools/BluRayByteProbe/README.tr.md"
+      }
+    },
+    {
+      "source": "docs/CALIBRATION.md",
+      "source_language": "zh-CN",
+      "source_sha256": "6d73b50c3f383d286edfc764ee1aab292135787c868be1ec32cee4beea164625",
+      "translations": {
+        "zh-CN": "docs/CALIBRATION.md",
+        "zh-TW": "docs/CALIBRATION.zh-TW.md",
+        "en": "docs/CALIBRATION.en.md",
+        "ja": "docs/CALIBRATION.ja.md",
+        "tr": "docs/CALIBRATION.tr.md"
+      }
+    },
+    {
+      "source": "tools/FourLevelDither/README.md",
+      "source_language": "zh-CN",
+      "source_sha256": "dd730cf4efad6df2944edf15e7c0cd45eef75a251bb79018be3f085f6f750daa",
+      "translations": {
+        "zh-CN": "tools/FourLevelDither/README.md",
+        "zh-TW": "tools/FourLevelDither/README.zh-TW.md",
+        "en": "tools/FourLevelDither/README.en.md",
+        "ja": "tools/FourLevelDither/README.ja.md",
+        "tr": "tools/FourLevelDither/README.tr.md"
+      }
+    },
+    {
+      "source": "tools/DvdGrayProbe/README.md",
+      "source_language": "zh-CN",
+      "source_sha256": "544181b6f5a0fe418d6767227189000993fe7d17ddc4b28d7ec669e4d5e25231",
+      "translations": {
+        "zh-CN": "tools/DvdGrayProbe/README.md",
+        "zh-TW": "tools/DvdGrayProbe/README.zh-TW.md",
+        "en": "tools/DvdGrayProbe/README.en.md",
+        "ja": "tools/DvdGrayProbe/README.ja.md",
+        "tr": "tools/DvdGrayProbe/README.tr.md"
+      }
+    },
+    {
+      "source": "docs/LOCALIZATION.md",
+      "source_language": "zh-CN",
+      "source_sha256": "2e7aca1fcb0f7189b41b202c63bd8a823ebbba3a6832555dd0000f5bcae404be",
+      "translations": {
+        "zh-CN": "docs/LOCALIZATION.md",
+        "en": "docs/LOCALIZATION.en.md",
+        "zh-TW": "docs/LOCALIZATION.zh-TW.md",
+        "ja": "docs/LOCALIZATION.ja.md",
+        "tr": "docs/LOCALIZATION.tr.md"
+      }
+    },
+    {
+      "source": "docs/VALIDATION.md",
+      "source_language": "zh-CN",
+      "source_sha256": "a3c9ede8b3147d06c586b33d215ab25a8f461d97df85645ae1370c243553044f",
+      "translations": {
+        "zh-CN": "docs/VALIDATION.md",
+        "en": "docs/VALIDATION.en.md",
+        "zh-TW": "docs/VALIDATION.zh-TW.md",
+        "ja": "docs/VALIDATION.ja.md",
+        "tr": "docs/VALIDATION.tr.md"
+      }
+    },
+    {
+      "source": "docs/PHYSICAL_MODEL_AUDIT.md",
+      "source_language": "zh-CN",
+      "source_sha256": "722f702a77bf1efed50d14e20c806b16a25db3026f5e52c50794abbc9ee0913d",
+      "translations": {
+        "zh-CN": "docs/PHYSICAL_MODEL_AUDIT.md",
+        "zh-TW": "docs/PHYSICAL_MODEL_AUDIT.zh-TW.md",
+        "en": "docs/PHYSICAL_MODEL_AUDIT.en.md",
+        "ja": "docs/PHYSICAL_MODEL_AUDIT.ja.md",
+        "tr": "docs/PHYSICAL_MODEL_AUDIT.tr.md"
+      }
+    },
+    {
+      "source": "docs/DISC_PRESETS.md",
+      "source_language": "zh-CN",
+      "source_sha256": "911c1b1c6a08028a6936ac9593c794fd65293bc635cf3199401feabdf04d61ce",
+      "translated_json_text_fields": [
+        "displayName",
+        "description"
+      ],
+      "translations": {
+        "zh-CN": "docs/DISC_PRESETS.md",
+        "zh-TW": "docs/DISC_PRESETS.zh-TW.md",
+        "en": "docs/DISC_PRESETS.en.md",
+        "ja": "docs/DISC_PRESETS.ja.md",
+        "tr": "docs/DISC_PRESETS.tr.md"
+      }
+    },
+    {
+      "source": "docs/ADDING_BLURAY.md",
+      "source_language": "zh-CN",
+      "source_sha256": "4217b91c5013ae8b8ff374abd5afc941dd1722e98e5f20505c92693fc85ed20f",
+      "translations": {
+        "zh-CN": "docs/ADDING_BLURAY.md",
+        "zh-TW": "docs/ADDING_BLURAY.zh-TW.md",
+        "en": "docs/ADDING_BLURAY.en.md",
+        "ja": "docs/ADDING_BLURAY.ja.md",
+        "tr": "docs/ADDING_BLURAY.tr.md"
+      }
+    },
+    {
+      "source": "docs/BLURAY_BYTE_DENSITY.md",
+      "source_language": "zh-CN",
+      "source_sha256": "6f08436a0e4fc25c96a2b2216bd947b0976be2cdc72b52b1c8a37b4e65197851",
+      "translations": {
+        "zh-CN": "docs/BLURAY_BYTE_DENSITY.md",
+        "zh-TW": "docs/BLURAY_BYTE_DENSITY.zh-TW.md",
+        "en": "docs/BLURAY_BYTE_DENSITY.en.md",
+        "ja": "docs/BLURAY_BYTE_DENSITY.ja.md",
+        "tr": "docs/BLURAY_BYTE_DENSITY.tr.md"
+      },
+      "generated_artifacts": [
+        "../artifacts/bluray-byte-density/all-bytes.csv",
+        "../artifacts/bluray-byte-density/all-bytes.md",
+        "../artifacts/bluray-byte-density/all-bytes-density.png",
+        "../artifacts/bluray-byte-density/fine-pattern-comparison.png"
+      ]
+    },
+    {
+      "source": "docs/CD_AUDIO_COMPATIBILITY.md",
+      "source_language": "zh-CN",
+      "source_sha256": "0034e52d2ccc94f0dd6b66a4ac9942fe577c4267fc76c1fa6fb1eed81cc6a656",
+      "translations": {
+        "zh-CN": "docs/CD_AUDIO_COMPATIBILITY.md",
+        "zh-TW": "docs/CD_AUDIO_COMPATIBILITY.zh-TW.md",
+        "en": "docs/CD_AUDIO_COMPATIBILITY.en.md",
+        "ja": "docs/CD_AUDIO_COMPATIBILITY.ja.md",
+        "tr": "docs/CD_AUDIO_COMPATIBILITY.tr.md"
+      }
+    },
+    {
+      "source": "docs/RELEASING.md",
+      "source_language": "zh-CN",
+      "source_sha256": "9bd61677ab02a7a4dccdcf2de3144caccee8334bab42a38a62e8e3380d009270",
+      "translations": {
+        "zh-CN": "docs/RELEASING.md",
+        "zh-TW": "docs/RELEASING.zh-TW.md",
+        "en": "docs/RELEASING.en.md",
+        "ja": "docs/RELEASING.ja.md",
+        "tr": "docs/RELEASING.tr.md"
+      }
+    },
+    {
+      "source": "docs/ARCHITECTURE.md",
+      "source_language": "zh-CN",
+      "source_sha256": "fad2a136705816770ffa01c681bd2f72177e9d84a44de1d67560c25336b43685",
+      "translated_mermaid_labels": [
+        "CdEngine",
+        "BdEngine"
+      ],
+      "translations": {
+        "zh-CN": "docs/ARCHITECTURE.md",
+        "zh-TW": "docs/ARCHITECTURE.zh-TW.md",
+        "en": "docs/ARCHITECTURE.en.md",
+        "ja": "docs/ARCHITECTURE.ja.md",
+        "tr": "docs/ARCHITECTURE.tr.md"
+      }
+    },
+    {
+      "source": "README.md",
+      "source_language": "zh-CN",
+      "source_sha256": "bb7e3ea7d35a2140c8f0e0584cbe7b82e5c37eb58ae68e1eee3ccf31585f5ac7",
+      "translations": {
+        "zh-CN": "README.md",
+        "zh-TW": "README.zh-TW.md",
+        "en": "README.en.md",
+        "ja": "README.ja.md",
+        "tr": "README.tr.md"
+      }
+    },
+    {
+      "source": "docs/DVD_ENGINE.md",
+      "source_language": "zh-CN",
+      "source_sha256": "4b46176b75c16362d4b4c3ee7183a13bdb5d879afb638d4e9178114b9a0ce355",
+      "translations": {
+        "zh-CN": "docs/DVD_ENGINE.md",
+        "zh-TW": "docs/DVD_ENGINE.zh-TW.md",
+        "en": "docs/DVD_ENGINE.en.md",
+        "ja": "docs/DVD_ENGINE.ja.md",
+        "tr": "docs/DVD_ENGINE.tr.md"
+      }
+    },
+    {
+      "source": "CHANGELOG.md",
+      "source_language": "zh-CN",
+      "source_sha256": "31fe1c99b1cf2e641f72d573f33d3c6c47fcb432fbc1fe1584099b647fb5530c",
+      "parallel_language_sections": [
+        "中文",
+        "English"
+      ],
+      "translations": {
+        "zh-CN": "CHANGELOG.md",
+        "zh-TW": "CHANGELOG.zh-TW.md",
+        "en": "CHANGELOG.en.md",
+        "ja": "CHANGELOG.ja.md",
+        "tr": "CHANGELOG.tr.md"
+      }
+    },
+    {
+      "source": "docs/LOCALIZATION_AUDIT.md",
+      "source_language": "en",
+      "source_sha256": "954004f1dc32c5b9868ee10415ca140da473d917e92817af32e8134c51df56b4",
+      "translations": {
+        "zh-CN": "docs/LOCALIZATION_AUDIT.zh-CN.md",
+        "zh-TW": "docs/LOCALIZATION_AUDIT.zh-TW.md",
+        "en": "docs/LOCALIZATION_AUDIT.md",
+        "ja": "docs/LOCALIZATION_AUDIT.ja.md",
+        "tr": "docs/LOCALIZATION_AUDIT.tr.md"
+      }
+    }
+  ]
+}

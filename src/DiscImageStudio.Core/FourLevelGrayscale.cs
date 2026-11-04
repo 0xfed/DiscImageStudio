@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DiscImageStudio.Core;
 
 /// <summary>Shared image quantization and nominal preview levels, independent of media encoding.</summary>
@@ -11,7 +12,7 @@ public static class FourLevelGrayscale
     {
         if ((uint)levelIndex >= 4)
         {
-            throw new ArgumentOutOfRangeException(nameof(levelIndex), "Grayscale level must be 0..3.");
+            throw new ArgumentOutOfRangeException(nameof(levelIndex), L.T("Grayscale level must be 0..3."));
         }
 
         return (byte)(levelIndex * 85);

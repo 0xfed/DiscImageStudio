@@ -1,8 +1,11 @@
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using DiscImageStudio.Core;
+using DiscImageStudio.Localization;
 using DvdImageSolver.Encoding;
 using DvdImageSolver.Solver;
 
@@ -20,25 +23,25 @@ internal static class Program
     {
         try
         {
+            Console.OutputEncoding = new UTF8Encoding(false);
+            args = CommandLineLanguage.Initialize(args);
             if (args.Length == 0 || args[0] is "--help" or "-h")
             {
-                Console.WriteLine("DvdGrayProbe prepare --source FOUR_LEVEL.png --output-dir DIR\n"
-                    + "DvdGrayProbe generate --prepared DIR --output TEST.iso [--parallelism 8]\n"
-                    + "DvdGrayProbe verify --prepared DIR --iso TEST.iso\n"
-                    + "Verbatim 43533 calibrated geometry; complete raw DVD sector image; no burn command.");
+                Console.WriteLine(CommandHelp.DvdGrayProbe);
+                Console.WriteLine(L.T("Cli.LanguageHelp"));
                 return 0;
             }
             Dictionary<string, string> options = new(StringComparer.Ordinal);
             for (int i = 1; i < args.Length; i += 2)
                 if (i + 1 == args.Length || !args[i].StartsWith("--", StringComparison.Ordinal) || !options.TryAdd(args[i], args[i + 1]))
-                    throw new ArgumentException("Expected unique --name value options.");
-            string Need(string name) => options.TryGetValue(name, out string? value) ? Path.GetFullPath(value) : throw new ArgumentException("Missing " + name);
+                    throw new ArgumentException(L.T("Expected unique --name value options."));
+            string Need(string name) => options.TryGetValue(name, out string? value) ? Path.GetFullPath(value) : throw new ArgumentException(L.F($"Missing {name}."));
             switch (args[0])
             {
                 case "prepare": Prepare(Need("--source"), Need("--output-dir")); break;
-                case "generate": Generate(Need("--prepared"), Need("--output"), options.TryGetValue("--parallelism", out string? p) ? int.Parse(p) : 8); break;
+                case "generate": Generate(Need("--prepared"), Need("--output"), options.TryGetValue("--parallelism", out string? p) ? int.Parse(p, CultureInfo.InvariantCulture) : 8); break;
                 case "verify": Verify(Load(Need("--prepared")), Need("--iso")); break;
-                default: throw new ArgumentException("Unknown command.");
+                default: throw new ArgumentException(L.T("Unknown command."));
             }
             return 0;
         }
@@ -54,7 +57,7 @@ internal static class Program
     private static void Prepare(string source, string directory)
     {
         if (Directory.Exists(directory) && Directory.EnumerateFileSystemEntries(directory).Any())
-            throw new IOException("Preparation directory must be empty to avoid replacing an existing experiment.");
+            throw new IOException(L.T("Preparation directory must be empty to avoid replacing an existing experiment."));
         Directory.CreateDirectory(directory);
         ProbePattern pattern = new(source);
         string atlasPath = Path.Combine(directory, "atlas.q8");
@@ -64,49 +67,49 @@ internal static class Program
         WriteNew(Path.Combine(directory, "probe.json"), new
         {
             schema = "dvd-gray-probe-v1", createdUtc = DateTimeOffset.UtcNow,
-            source, sourceSha256 = HashFile(source), sourceKind = "already-dithered four-level Gray8 PNG",
+            source, sourceSha256 = HashFile(source), sourceKind = L.T("already-dithered four-level Gray8 PNG"),
             crop = new { x = 2880, y = 1920, width = 640, height = 640, resize = false, redither = false },
             atlasSha256 = HashFile(atlasPath), atlasWidth = ProbePattern.Size, atlasHeight = ProbePattern.Size,
-            cellMm = ProbePattern.CellMm, canvasMm = 120, coordinateSystem = "x right, y down; centre at 0,0",
-            sampling = "nearest immutable direct-Q atlas cell; no bilinear luminance mixing",
+            cellMm = ProbePattern.CellMm, canvasMm = 120, coordinateSystem = L.T("x right, y down; centre at 0,0"),
+            sampling = L.T("nearest immutable direct-Q atlas cell; no bilinear luminance mixing"),
             paletteCodes = ProbePattern.Codes.Select(q => $"{q:X2}"),
             panelsClockwiseFromTwelve = ProbePattern.PanelCandidates.Select((q, i) => new { panel = i + 1, darkQ = $"{q:X2}", centreDegrees = (i + .5) * 30 }),
             layout = new[]
             {
-                "r24.5..25.6: six pure Q codes repeated four times",
-                "r26.0..28.1: shared serpentine-FS 0/85/170/255 logical gradient",
-                "r28.5..30.5: 64/E4 direct binary FS mixtures, clockwise columns 25/50/75 percent 64",
-                "12.8mm square image at radius37.5: identical supplied-image crop, only dark Q changes",
-                "r45.8..47.5: 25/50/75 percent candidate mixed with A5",
-                "r47.8..49.5: 25/50/75 percent candidate mixed with B9",
-                "r49.8..51.5: 25/50/75 percent candidate mixed with 92",
-                "r52.2..57.3: A5/66/64/E4/B9/92 pure code patches repeated four times; labels at r56.2",
+                L.T("r24.5..25.6: six pure Q codes repeated four times"),
+                L.T("r26.0..28.1: shared serpentine-FS 0/85/170/255 logical gradient"),
+                L.T("r28.5..30.5: 64/E4 direct binary FS mixtures, clockwise columns 25/50/75 percent 64"),
+                L.T("12.8mm square image at radius37.5: identical supplied-image crop, only dark Q changes"),
+                L.T("r45.8..47.5: 25/50/75 percent candidate mixed with A5"),
+                L.T("r47.8..49.5: 25/50/75 percent candidate mixed with B9"),
+                L.T("r49.8..51.5: 25/50/75 percent candidate mixed with 92"),
+                L.T("r52.2..57.3: A5/66/64/E4/B9/92 pure code patches repeated four times; labels at r56.2"),
             },
-            geometry = new { preset = "Verbatim DVD-R AZO 43533 calibrated", totalSectors = Sectors,
+            geometry = new { preset = L.T("Verbatim DVD-R AZO 43533 calibrated"), totalSectors = Sectors,
                 innerRadiusMm = Inner, outerRadiusMm = Outer, channelBitLengthNm = BitNm,
                 pitchLinear = Linear, pitchQuadratic = Quadratic, pitchCubic = Cubic, clockwise = true },
             fullDiscBytes = (long)Sectors * 2048,
-            previewMeaning = "code-map is a false-color code legend; nominal-preview assumes 0/85/170/255 and is not measured optical brightness",
-            mixtureMeaning = "requested spatial pixel occupancies, not calibrated optical luminance; binary FS masks shared across candidates",
+            previewMeaning = L.T("code-map is a false-color code legend; nominal-preview assumes 0/85/170/255 and is not measured optical brightness"),
+            mixtureMeaning = L.T("requested spatial pixel occupancies, not calibrated optical luminance; binary FS masks shared across candidates"),
             opticalValidationPerformed = false,
         });
         VerifyFragments(pattern, null);
-        Console.WriteLine("Prepared: " + directory);
+        Console.WriteLine(L.F($"Prepared: {directory}"));
     }
 
     private static ProbePattern Load(string directory)
     {
         using JsonDocument metadata = JsonDocument.Parse(File.ReadAllText(Path.Combine(directory, "probe.json")));
         JsonElement root = metadata.RootElement;
-        if (root.GetProperty("schema").GetString() != "dvd-gray-probe-v1") throw new IOException("Unknown experiment schema.");
+        if (root.GetProperty("schema").GetString() != "dvd-gray-probe-v1") throw new IOException(L.T("Unknown experiment schema."));
         string atlas = Path.Combine(directory, "atlas.q8");
-        if (HashFile(atlas) != root.GetProperty("atlasSha256").GetString()) throw new IOException("Atlas hash mismatch.");
+        if (HashFile(atlas) != root.GetProperty("atlasSha256").GetString()) throw new IOException(L.T("Atlas hash mismatch."));
         return ProbePattern.Load(atlas);
     }
 
     private static void Generate(string prepared, string output, int parallelism)
     {
-        if (parallelism is < 1 or > 64) throw new ArgumentOutOfRangeException(nameof(parallelism));
+        if (parallelism is < 1 or > 64) throw new ArgumentOutOfRangeException(nameof(parallelism), L.T("Parallelism must be 1..64."));
         ProbePattern pattern = Load(prepared);
         string partial = output + ".partial";
         foreach (string path in new[] { output, partial, output + ".json" }) RefuseExisting(path);
@@ -125,7 +128,7 @@ internal static class Program
                     {
                         if (progress.Elapsed.TotalSeconds - lastUpdate < 10 && progress.CompletedBlocks != progress.TotalBlocks) return;
                         lastUpdate = progress.Elapsed.TotalSeconds;
-                        Console.WriteLine($"{progress.Fraction:P1} | {progress.BytesWritten:N0} bytes | {progress.Elapsed.TotalSeconds:F1}s");
+                        Console.WriteLine(L.F($"{progress.Fraction:P1} | {progress.BytesWritten:N0} bytes | {progress.Elapsed.TotalSeconds:F1}s"));
                     }, cancellation.Token);
                 stream.Flush(true);
             }
@@ -136,14 +139,14 @@ internal static class Program
             WriteNew(output + ".json", new
             {
                 schema = "dvd-gray-probe-image-v1", status = "generated-and-verified", completeDiscImage = true,
-                format = "raw 2048-byte-sector DVD image without filesystem", totalSectors = Sectors,
+                format = L.T("raw 2048-byte-sector DVD image without filesystem"), totalSectors = Sectors,
                 bytes = new FileInfo(output).Length, sha256 = hash, preparedDirectory = prepared,
                 atlasSha256 = HashFile(Path.Combine(prepared, "atlas.q8")),
-                preset = "Verbatim DVD-R AZO 43533 calibrated", seconds = elapsed.Elapsed.TotalSeconds,
+                preset = L.T("Verbatim DVD-R AZO 43533 calibrated"), seconds = elapsed.Elapsed.TotalSeconds,
                 actualBurnPerformed = false, opticalValidationPerformed = false,
-                validation = "exact length; all bytes in 9 radial slices x 128 sectors checked against target Q via independent descrambler; SHA256",
+                validation = L.T("exact length; all bytes in 9 radial slices x 128 sectors checked against target Q via independent descrambler; SHA256"),
             });
-            Console.WriteLine($"Complete: {output}\nSHA256: {hash}");
+            Console.WriteLine(L.F($"Complete: {output}\nSHA256: {hash}"));
         }
         finally { Console.CancelKeyPress -= handler; }
     }
@@ -151,7 +154,7 @@ internal static class Program
     private static void Verify(ProbePattern pattern, string iso)
     {
         using FileStream stream = File.OpenRead(iso);
-        if (stream.Length != (long)Sectors * 2048) throw new IOException("Incorrect full image length.");
+        if (stream.Length != (long)Sectors * 2048) throw new IOException(L.T("Incorrect full image length."));
         VerifyFragments(pattern, stream);
     }
 
@@ -184,15 +187,15 @@ internal static class Program
                 {
                     int index = sector * 2048 + i;
                     byte q = (byte)(data[index] ^ (state & 255));
-                    if (q != expected[index]) throw new IOException($"Wrong Q at LBA {start + sector}, byte {i}.");
+                    if (q != expected[index]) throw new IOException(L.F($"Wrong Q at LBA {start + sector}, byte {i}."));
                     counts[q]++;
                     for (int bit = 0; bit < 8; bit++) state = ((state << 1) | (((state >> 14) ^ (state >> 10)) & 1)) & 0x7FFF;
                 }
             }
         }
-        if (ProbePattern.Codes.Any(code => counts[code] == 0)) throw new IOException("Sample coverage missed a code.");
-        Console.WriteLine("Verified 2,359,296 target Q bytes across all test rows: "
-            + string.Join(", ", ProbePattern.Codes.Select(q => $"{q:X2}={counts[q]}")));
+        if (ProbePattern.Codes.Any(code => counts[code] == 0)) throw new IOException(L.T("Sample coverage missed a code."));
+        Console.WriteLine(L.Format("Verified 2,359,296 target Q bytes across all test rows: {0}",
+            string.Join(", ", ProbePattern.Codes.Select(q => $"{q:X2}={counts[q]}"))));
     }
 
     private static string HashFile(string path)
@@ -201,7 +204,7 @@ internal static class Program
         return Convert.ToHexString(SHA256.HashData(stream)).ToLowerInvariant();
     }
 
-    private static void RefuseExisting(string path) { if (File.Exists(path)) throw new IOException("Already exists: " + path); }
+    private static void RefuseExisting(string path) { if (File.Exists(path)) throw new IOException(L.F($"Already exists: {path}")); }
     private static void WriteNew(string path, object value)
     {
         using FileStream stream = new(path, FileMode.CreateNew);

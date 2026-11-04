@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using DiscImageStudio.Localization;
 using DiscImageStudio.BluRay.Encoding;
 
 /// <summary>
@@ -19,7 +20,7 @@ internal static class FinePatternAnalysis
         patterns = patterns.Distinct(StringComparer.Ordinal).ToArray();
         foreach (string pattern in patterns)
             if (pattern.Length is < 2 or > 64 || pattern.Any(c => c is not ('0' or '1')))
-                throw new ArgumentException("Supply binary patterns of 2..64 bits.", nameof(patterns));
+                throw new ArgumentException(L.T("Supply binary patterns of 2..64 bits."), nameof(patterns));
 
         Stopwatch watch = Stopwatch.StartNew();
         // Obtain the exact common run-in state from the complete production path.
@@ -32,7 +33,7 @@ internal static class FinePatternAnalysis
         long referenceTransitions = 0;
         foreach (byte bit in reference.ModulationBits.AsSpan(2760, 496 * 1932)) referenceTransitions += bit;
         if (referenceTransitions != checkedMetrics.Transitions)
-            throw new InvalidOperationException("Fine-pattern scanner disagrees with the full RUB path.");
+            throw new InvalidOperationException(L.T("Fine-pattern scanner disagrees with the full RUB path."));
 
         List<Case> cases = [];
         foreach (string pattern in patterns)
@@ -46,7 +47,7 @@ internal static class FinePatternAnalysis
             results.Add(MeasureCase(item, initialLevel, initialSum));
             int count = Interlocked.Increment(ref completed);
             if (count % 16 == 0 || count == cases.Count)
-                Console.WriteLine($"Fine pattern phases {count}/{cases.Count}; {watch.Elapsed.TotalSeconds:F1}s.");
+                Console.WriteLine(L.F($"Fine pattern phases {count}/{cases.Count}; {watch.Elapsed.TotalSeconds:F1}s."));
         });
         FineResult[] phaseSweep = results.OrderBy(r => r.Pattern).ThenBy(r => r.Layout).ThenBy(r => r.Phase).ToArray();
 
@@ -65,25 +66,25 @@ internal static class FinePatternAnalysis
             confirmations.Add(MeasureCase(item, initialLevel, initialSum));
             int count = Interlocked.Increment(ref completed);
             if (count % 16 == 0 || count == addressCases.Count)
-                Console.WriteLine($"Fine pattern addresses {count}/{addressCases.Count}; {watch.Elapsed.TotalSeconds:F1}s.");
+                Console.WriteLine(L.F($"Fine pattern addresses {count}/{addressCases.Count}; {watch.Elapsed.TotalSeconds:F1}s."));
         });
 
         return new
         {
             SchemaVersion = 1,
-            Scope = "Single-layer BD-R. All patterns specify post-scrambler user-data bits Q, MSB first. Each cluster restarts the coordinate origin.",
+            Scope = L.T("Single-layer BD-R. All patterns specify post-scrambler user-data bits Q, MSB first. Each cluster restarts the coordinate origin."),
             LayoutDefinitions = new Dictionary<string, string>
             {
-                ["payload-sequential"] = "Pattern index = (sectorWithinCluster*2048+payloadByteOffset)*8 + bitWithinByte. LDC reorders this stream.",
-                ["physical-ecc"] = "Pattern index = (recordingFrame*155+eccColumn)*8 + bitWithinByte. EDC, BIS and parity holes advance the phase without being controlled.",
-                ["physical-17pp-input"] = "Pattern index = recordingFrame*1268 + rawFrameBit + DCbefore(rawFrameBit). DCbefore(j)=0 for j<25, else 1+(j-25)/45. Unknown DC bits occupy their slots; sync is not 17PP input.",
-                ["dc-block-reset"] = "Pattern index = rawFrameBit for the first 25 data bits, else (rawFrameBit-25)%45. Every 25/45-bit data segment starts at the selected phase; DC bits remain drive-selected. EDC/BIS holes retain their within-segment positions."
+                ["payload-sequential"] = L.T("Pattern index = (sectorWithinCluster*2048+payloadByteOffset)*8 + bitWithinByte. LDC reorders this stream."),
+                ["physical-ecc"] = L.T("Pattern index = (recordingFrame*155+eccColumn)*8 + bitWithinByte. EDC, BIS and parity holes advance the phase without being controlled."),
+                ["physical-17pp-input"] = L.T("Pattern index = recordingFrame*1268 + rawFrameBit + DCbefore(rawFrameBit). DCbefore(j)=0 for j<25, else 1+(j-25)/45. Unknown DC bits occupy their slots; sync is not 17PP input."),
+                ["dc-block-reset"] = L.T("Pattern index = rawFrameBit for the first 25 data bits, else (rawFrameBit-25)%45. Every 25/45-bit data segment starts at the selected phase; DC bits remain drive-selected. EDC/BIS holes retain their within-segment positions.")
             },
-            Phase = "Pattern[(coordinate+phase)%period]; every phase tested at PSN 0x00100000. Lowest/highest greedy-density phases per layout rechecked at three additional PSNs.",
-            Verification = "All 65536 controllable Q bytes are compared byte-for-byte against their actual post-LDC/BIS ECC locations for every generated cluster. Placement must be a one-to-one scatter.",
-            Density = "Transitions/channel bits over all 496*1932 bits including sync, EDC, LDC parity and BIS. Run-in/out/Guard3 excluded; run-in level/DSV retained.",
-            DataRegion = "First 432 frames contain payload plus EDC/BIS/DC/sync. Their density is not a payload-only attribution. Last 64 frames are LDC parity plus BIS/DC/sync.",
-            Dc = "Greedy diagnostic, future bits provisionally zero; all-zero/all-one/random policies are sensitivity probes, not driver predictions or DC-balanced prescriptions.",
+            Phase = L.T("Pattern[(coordinate+phase)%period]; every phase tested at PSN 0x00100000. Lowest/highest greedy-density phases per layout rechecked at three additional PSNs."),
+            Verification = L.T("All 65536 controllable Q bytes are compared byte-for-byte against their actual post-LDC/BIS ECC locations for every generated cluster. Placement must be a one-to-one scatter."),
+            Density = L.T("Transitions/channel bits over all 496*1932 bits including sync, EDC, LDC parity and BIS. Run-in/out/Guard3 excluded; run-in level/DSV retained."),
+            DataRegion = L.T("First 432 frames contain payload plus EDC/BIS/DC/sync. Their density is not a payload-only attribution. Last 64 frames are LDC parity plus BIS/DC/sync."),
+            Dc = L.T("Greedy diagnostic, future bits provisionally zero; all-zero/all-one/random policies are sensitivity probes, not driver predictions or DC-balanced prescriptions."),
             PhaseSweep = phaseSweep,
             AddressConfirmations = confirmations.OrderBy(r => r.Pattern).ThenBy(r => r.Layout).ThenBy(r => r.Phase).ThenBy(r => r.Psn).ToArray(),
             ElapsedSeconds = watch.Elapsed.TotalSeconds,
@@ -120,7 +121,7 @@ internal static class FinePatternAnalysis
                     "physical-ecc" => position.EccIndex * 8 + bit,
                     "physical-17pp-input" => position.Frame * 1268 + rawBit + dcBefore,
                     "dc-block-reset" => rawBit < 25 ? rawBit : (rawBit - 25) % 45,
-                    _ => throw new ArgumentException("Unknown pattern placement.", nameof(layout)),
+                    _ => throw new ArgumentException(L.T("Unknown pattern placement."), nameof(layout)),
                 };
                 q = (byte)((q << 1) | (pattern[(coordinate + phase) % pattern.Length] - '0'));
             }
@@ -130,7 +131,7 @@ internal static class FinePatternAnalysis
         byte[] ecc = BluRayEccEncoder.Encode(payload, psn);
         for (int i = 0; i < expectedQ.Length; i++)
             if (ecc[Positions[i].EccIndex] != expectedQ[i])
-                throw new InvalidOperationException("Inverse interleaving failed to preserve a target payload byte.");
+                throw new InvalidOperationException(L.T("Inverse interleaving failed to preserve a target payload byte."));
         return ecc;
     }
 
@@ -148,7 +149,7 @@ internal static class FinePatternAnalysis
             int eccColumn = ldcColumn + ldcColumn / 38;
             int eccIndex = frame * 155 + eccColumn;
             if (frame >= 432 || !assigned.Add(eccIndex))
-                throw new InvalidOperationException("Invalid/duplicate physical payload position.");
+                throw new InvalidOperationException(L.T("Invalid/duplicate physical payload position."));
             positions[i] = new(frame, eccColumn, eccIndex);
         }
         return positions;
@@ -174,7 +175,7 @@ internal static class FinePatternAnalysis
             else
             {
                 for (int i = 0; i < controls.Length; i++)
-                    controls[i] = policy switch { "zero" => 0, "one" => 1, "random" => (byte)random.Next(2), _ => throw new ArgumentException("Unknown DC policy.") };
+                    controls[i] = policy switch { "zero" => 0, "one" => 1, "random" => (byte)random.Next(2), _ => throw new ArgumentException(L.T("Unknown DC policy.")) };
                 result = BluRayRecordingFrameEncoder.Encode(current, frame % 31, controls, previousTermination, level);
             }
             foreach (byte transition in result.ModulationBits)
@@ -186,7 +187,7 @@ internal static class FinePatternAnalysis
                     if (lastTransition >= 0)
                     {
                         long gap = position - lastTransition;
-                        if (gap < 2 || gap > 9) throw new InvalidOperationException("Invalid full-cluster RLL interval.");
+                        if (gap < 2 || gap > 9) throw new InvalidOperationException(L.T("Invalid full-cluster RLL interval."));
                         runs[gap]++;
                     }
                     lastTransition = position;
@@ -198,7 +199,7 @@ internal static class FinePatternAnalysis
             sum += result.DigitalSum;
             previousTermination = result.UsedTermination;
         }
-        if (position != 958272) throw new InvalidOperationException("Incorrect physical-cluster length.");
+        if (position != 958272) throw new InvalidOperationException(L.T("Incorrect physical-cluster length."));
         return new(position, transitions, ones, dataTransitions, parityTransitions, runs);
     }
 

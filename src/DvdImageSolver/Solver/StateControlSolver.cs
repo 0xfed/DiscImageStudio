@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Diagnostics;
 using DvdImageSolver.Encoding;
 
@@ -60,7 +61,7 @@ public sealed class StateControlSolver
         uint firstPsn = checked(initialLba + psnOffset);
         if ((firstPsn & 0xF) != 0)
         {
-            throw new ArgumentException("The first PSN must be aligned to a 16-sector ECC Block.");
+            throw new ArgumentException(L.T("The first PSN must be aligned to a 16-sector ECC Block."));
         }
 
         Stopwatch stopwatch = Stopwatch.StartNew();
@@ -952,7 +953,7 @@ public sealed class StateControlSolver
     {
         if (initialPayloads.Length != DvdEccBlockEncoder.PayloadBytesPerBlock)
         {
-            throw new ArgumentException("Initial payload must contain one complete 16-sector ECC Block.", nameof(initialPayloads));
+            throw new ArgumentException(L.T("Initial payload must contain one complete 16-sector ECC Block."), nameof(initialPayloads));
         }
 
         if (options.Iterations < 0
@@ -967,7 +968,7 @@ public sealed class StateControlSolver
         {
             throw new ArgumentOutOfRangeException(
                 nameof(options),
-                "Invalid state-control pass, bridge, beam, or adaptive retry option.");
+                L.T("Invalid state-control pass, bridge, beam, or adaptive retry option."));
         }
     }
 }

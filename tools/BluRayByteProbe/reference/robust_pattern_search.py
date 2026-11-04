@@ -1,8 +1,11 @@
 import json
-import argparse
 import math
 from fractions import Fraction
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from localization import ArgumentParser, initialize, run, t
 from analyze import cycle_bits
 from pattern_search import fast_cycle
 
@@ -12,10 +15,11 @@ def with_dc(pattern,controls):
     return cycle_bits(''.join(raw[i*45:(i+1)*45]+controls[i%len(controls)] for i in range(count)))
 
 def main():
-    parser=argparse.ArgumentParser(description='Search short input patterns robust to either bit-pair phase.')
-    parser.add_argument('--output-dir',type=Path,default=Path.cwd())
-    parser.add_argument('--max-period',type=int,default=16)
-    args=parser.parse_args()
+    arguments=initialize()
+    parser=ArgumentParser(description=t('Search short input patterns robust to either bit-pair phase.'))
+    parser.add_argument('--output-dir',type=Path,default=Path.cwd(),help=t('Python.OutputDirectory'))
+    parser.add_argument('--max-period',type=int,default=16,help=t('Python.MaximumPeriod'))
+    args=parser.parse_args(arguments)
     args.output_dir.mkdir(parents=True,exist_ok=True)
     lowest=Fraction(1);highest=Fraction(0);lows=[];highs=[]
     avg_low=Fraction(1);avg_high=Fraction(0);avg_lows=[];avg_highs=[]
@@ -35,7 +39,7 @@ def main():
             elif avg==avg_low:avg_lows.append(p)
             if avg>avg_high:avg_high=avg;avg_highs=[p]
             elif avg==avg_high:avg_highs.append(p)
-        print(n,count,'robust limits',lowest,highest,'average limits',avg_low,avg_high,flush=True)
+        print(t('Python.RobustProgress',n,count,lowest,highest,avg_low,avg_high),flush=True)
     result={'robust_low_ratio':str(lowest),'robust_high_ratio':str(highest),
        'robust_low':[{'input':p,'even':cycle_bits(p),'odd':cycle_bits(p,1)} for p in lows],
        'robust_high':[{'input':p,'even':cycle_bits(p),'odd':cycle_bits(p,1)} for p in highs],
@@ -44,12 +48,12 @@ def main():
     (args.output_dir/'robust-bitpattern-search.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
     for k in ('robust_low','robust_high'):
         print(k,[(v['input'],v['even']['density_ratio'],v['odd']['density_ratio']) for v in result[k]],flush=True)
-    print('AVERAGE_LOW',avg_lows,flush=True);print('AVERAGE_HIGH',avg_highs,flush=True)
+    print(t('AVERAGE_LOW'),avg_lows,flush=True);print(t('AVERAGE_HIGH'),avg_highs,flush=True)
     patterns=['0000101101110010','0111011110','0001','00111101']+[x['input'] for x in result['robust_low']]+[x['input'] for x in result['robust_high']]
     dc={p:{ctrl:{k:v for k,v in with_dc(p,ctrl).items() if k not in ('trace','prefix','period')} for ctrl in ('0','1','01')} for p in dict.fromkeys(patterns)}
     (args.output_dir/'bitpattern-fixed-dc.json').write_text(json.dumps(dc,indent=2),encoding='utf-8')
-    print('FIXED DC')
+    print(t('FIXED DC'))
     for p,res in dc.items():
         print(p,[(k,v['density_ratio']) for k,v in res.items()],flush=True)
 
-if __name__=='__main__':main()
+if __name__=='__main__':raise SystemExit(run(main))

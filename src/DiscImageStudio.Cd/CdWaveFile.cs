@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Buffers.Binary;
 using System.IO;
 using System.Text;
@@ -12,7 +13,7 @@ internal static class CdWaveFile
     {
         if (audioBytes <= 0 || audioBytes > uint.MaxValue - 36L)
         {
-            throw new ArgumentOutOfRangeException(nameof(audioBytes), "Audio exceeds the RIFF/WAV size limit.");
+            throw new ArgumentOutOfRangeException(nameof(audioBytes), L.T("Audio exceeds the RIFF/WAV size limit."));
         }
     }
 
@@ -51,13 +52,13 @@ internal static class CdWaveFile
         using BinaryReader reader = new(input, Encoding.ASCII, leaveOpen: true);
         if (input.Length < 12 || reader.ReadUInt32() != 0x46464952)
         {
-            throw new InvalidDataException("Expected a RIFF/WAV audio file.");
+            throw new InvalidDataException(L.T("Expected a RIFF/WAV audio file."));
         }
 
         long riffEnd = reader.ReadUInt32() + 8L;
         if (reader.ReadUInt32() != 0x45564157 || riffEnd < 12 || riffEnd > input.Length)
         {
-            throw new InvalidDataException("The WAV header or declared length is invalid.");
+            throw new InvalidDataException(L.T("The WAV header or declared length is invalid."));
         }
 
         bool hasFormat = false;
@@ -66,7 +67,7 @@ internal static class CdWaveFile
         {
             if (riffEnd - input.Position < 8)
             {
-                throw new InvalidDataException("Truncated WAV chunk header.");
+                throw new InvalidDataException(L.T("Truncated WAV chunk header."));
             }
 
             uint chunk = reader.ReadUInt32();
@@ -75,7 +76,7 @@ internal static class CdWaveFile
             long next = start + length + (length & 1);
             if (next > riffEnd)
             {
-                throw new InvalidDataException("Truncated WAV chunk data.");
+                throw new InvalidDataException(L.T("Truncated WAV chunk data."));
             }
 
             if (chunk == 0x20746D66) // fmt
@@ -88,7 +89,7 @@ internal static class CdWaveFile
                     || reader.ReadUInt16() != 4
                     || reader.ReadUInt16() != 16)
                 {
-                    throw new InvalidDataException("CD WAV audio must be PCM, 44100 Hz, 16-bit stereo.");
+                    throw new InvalidDataException(L.T("CD WAV audio must be PCM, 44100 Hz, 16-bit stereo."));
                 }
 
                 hasFormat = true;
@@ -97,7 +98,7 @@ internal static class CdWaveFile
             {
                 if (audio is not null || length == 0 || length % 4 != 0)
                 {
-                    throw new InvalidDataException("WAV must contain one data chunk with complete stereo samples.");
+                    throw new InvalidDataException(L.T("WAV must contain one data chunk with complete stereo samples."));
                 }
 
                 audio = (start, length);
@@ -108,7 +109,7 @@ internal static class CdWaveFile
 
         if (!hasFormat || audio is null)
         {
-            throw new InvalidDataException("WAV is missing its PCM format or audio data chunk.");
+            throw new InvalidDataException(L.T("WAV is missing its PCM format or audio data chunk."));
         }
 
         return audio.Value;

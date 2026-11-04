@@ -1,3 +1,5 @@
+using DiscImageStudio.Localization;
+
 namespace DiscImageStudio.BluRay;
 
 /// <summary>ISO/IEC 30190:2021 BD-R data-zone model. Drive spare areas and remapping
@@ -23,13 +25,13 @@ public sealed record BluRayDiscParameters(
     public void Validate()
     {
         if (LayerCount != 1)
-            throw new ArgumentOutOfRangeException(nameof(LayerCount), "Only single-layer 25 GB BD-R is currently supported.");
+            throw new ArgumentOutOfRangeException(nameof(LayerCount), L.T("Only single-layer 25 GB BD-R is currently supported."));
         if (TotalSectors == 0 || TotalSectors % SectorsPerCluster != 0 || TotalSectors > SectorsPerLayer)
             throw new ArgumentOutOfRangeException(nameof(TotalSectors),
-                $"BD-R total sectors must be a positive multiple of 32, no greater than {SectorsPerLayer}.");
+                L.F($"BD-R total sectors must be a positive multiple of 32, no greater than {SectorsPerLayer}."));
         if (!double.IsFinite(InnerRadiusMm) || !double.IsFinite(OuterRadiusMm)
             || InnerRadiusMm <= 0 || OuterRadiusMm <= InnerRadiusMm || OuterRadiusMm > 60)
-            throw new ArgumentOutOfRangeException(nameof(OuterRadiusMm), "BD-R radii must satisfy 0 < inner < outer <= 60 mm.");
+            throw new ArgumentOutOfRangeException(nameof(OuterRadiusMm), L.T("BD-R radii must satisfy 0 < inner < outer <= 60 mm."));
         if (!double.IsFinite(StartAngleDegrees))
             throw new ArgumentOutOfRangeException(nameof(StartAngleDegrees));
     }
@@ -74,5 +76,5 @@ public sealed record BluRayDiscPreset(string Id, string DisplayName, int LayerCo
 
     public static BluRayDiscPreset Find(string id)
         => BuiltIn.FirstOrDefault(p => p.Id.Equals(id, StringComparison.OrdinalIgnoreCase))
-            ?? throw new ArgumentException($"Unknown BD-R preset '{id}'.", nameof(id));
+            ?? throw new ArgumentException(L.F($"Unknown BD-R preset '{id}'."), nameof(id));
 }

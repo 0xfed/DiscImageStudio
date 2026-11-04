@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -10,7 +11,7 @@ public static partial class RasterCodec
         BitmapDecoder decoder = BitmapDecoder.Create(stream,
             BitmapCreateOptions.DelayCreation | BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnDemand);
         if (decoder.Frames.Count == 0)
-            throw new ArgumentException("The source image contains no frames.", "path");
+            throw new ArgumentException(L.T("The source image contains no frames."), "path");
         BitmapFrame frame = decoder.Frames[0];
         CheckDimensions(frame.PixelWidth, frame.PixelHeight, maxPixels);
         return frame;

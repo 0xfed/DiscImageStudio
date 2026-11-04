@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Diagnostics;
 using System.IO;
 using DiscImageStudio.Core;
@@ -48,7 +49,7 @@ public static class CdDataImageGenerator
         CdDataLayoutPlan plan = new(Iso9660ImageWriter.Plan(dataDirectory,
             checked((uint)parameters.Sectors), volumeLabel, filesAtOuterRing: filesAtOuterRing));
         if (plan.DrawingStartLba >= plan.DrawingEndLbaExclusive)
-            throw new ArgumentException("The filesystem leaves no CD sectors for drawing.", nameof(dataDirectory));
+            throw new ArgumentException(L.T("The filesystem leaves no CD sectors for drawing."), nameof(dataDirectory));
         return plan;
     }
 
@@ -61,11 +62,11 @@ public static class CdDataImageGenerator
         string source = Path.GetFullPath(imagePath);
         string target = Path.GetFullPath(outputPath);
         if (!Path.GetExtension(target).Equals(".iso", StringComparison.OrdinalIgnoreCase))
-            throw new ArgumentException("CD data output must be a Mode 1 .iso image.", nameof(outputPath));
+            throw new ArgumentException(L.T("CD data output must be a Mode 1 .iso image."), nameof(outputPath));
         if (target.Equals(source, StringComparison.OrdinalIgnoreCase)
             || target.StartsWith(Path.TrimEndingDirectorySeparator(plan.SourceDirectory)
                 + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
-            throw new ArgumentException("The output must be outside the source data folder and must not overwrite the source image.", nameof(outputPath));
+            throw new ArgumentException(L.T("The output must be outside the source data folder and must not overwrite the source image."), nameof(outputPath));
         RasterImage image = RasterImage.Load(source);
         ToneProfile effectiveTone = (tone ?? ToneProfile.LegacyBinary).Normalized();
         Directory.CreateDirectory(Path.GetDirectoryName(target)!);
@@ -97,7 +98,7 @@ public static class CdDataImageGenerator
         Action<CdProgress>? progress, CancellationToken cancellationToken, ToneProfile tone, bool useSimdSampling)
     {
         ArgumentNullException.ThrowIfNull(output);
-        if (!output.CanWrite) throw new ArgumentException("CD data output must be writable.", nameof(output));
+        if (!output.CanWrite) throw new ArgumentException(L.T("CD data output must be writable."), nameof(output));
         CdImageSampler sampler = new(image, parameters);
         bool sampleFour = useSimdSampling && sampler.SupportsSimd;
         Stopwatch stopwatch = Stopwatch.StartNew();
@@ -153,7 +154,7 @@ public static class CdDataImageGenerator
         ArgumentNullException.ThrowIfNull(plan);
         parameters.Validate();
         if (parameters.Sectors != plan.TotalSectors)
-            throw new ArgumentException("CD layout and geometry must have the same sector count.", nameof(plan));
+            throw new ArgumentException(L.T("CD layout and geometry must have the same sector count."), nameof(plan));
     }
 
     /// <summary>
@@ -229,7 +230,7 @@ public static class CdDataImageGenerator
         using FileStream input = new(isoPath, FileMode.Open, FileAccess.Read, FileShare.Read,
             1024 * 1024, FileOptions.SequentialScan);
         if (input.Length % BytesPerSector != 0 || input.Length != checked(actual.Sectors * BytesPerSector))
-            throw new ArgumentException("CD data ISO length must match the selected 2048-byte sector count.", nameof(isoPath));
+            throw new ArgumentException(L.T("CD data ISO length must match the selected 2048-byte sector count."), nameof(isoPath));
         CdDataImageMetadata? metadata = CdDataImageMetadata.TryLoad(isoPath);
         if (metadata?.Parameters.Sectors != actual.Sectors) metadata = null;
         long start = metadata?.DrawingStartLba ?? 0;
@@ -254,7 +255,7 @@ public static class CdDataImageGenerator
     private static void ValidatePreview(CdDiscParameters parameters, int size, int interval)
     {
         parameters.Validate();
-        if (size is < 64 or > 8192) throw new ArgumentOutOfRangeException(nameof(size), "Preview size must be 64..8192.");
+        if (size is < 64 or > 8192) throw new ArgumentOutOfRangeException(nameof(size), L.T("Preview size must be 64..8192."));
         if (interval <= 0) throw new ArgumentOutOfRangeException(nameof(interval));
     }
 

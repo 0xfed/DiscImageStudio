@@ -4,11 +4,11 @@
     "en": "Scroll to zoom, right-drag to pan; drag control points to fit the edge.",
     "zh-TW": "滾輪縮放，右鍵平移；拖曳控制點貼合邊緣。",
     "ja": "ホイールでズーム、右ドラッグでパン。制御点をドラッグして縁に合わせます。",
-    "tr": "Yakınlaştırmak için kaydırın, kaydırmak için sağ tıklayıp sürükleyin; kenara oturtmak için denetim noktalarını sürükleyin."
+    "tr": "Yakınlaştırıp uzaklaştırmak için tekerleği çevirin, görüntüyü kaydırmak için sağ tuşla sürükleyin; kenara oturtmak için denetim noktalarını sürükleyin."
   },
   "拖到盘片实体外缘；不要沿刻录区边界。": {
     "zh-CN": "拖到盘片实体外缘；不要沿刻录区边界。",
-    "en": "Drag to the physical outer edge of the disc, not the recorded area.",
+    "en": "Drag to the physical outer edge of the disc, not the boundary of the recorded area.",
     "zh-TW": "拖到碟片實體外緣；不要沿燒錄區邊界。",
     "ja": "ディスク本体の外縁までドラッグします。書き込み領域の境界には合わせないでください。",
     "tr": "Diskin fiziksel dış kenarına sürükleyin; yazma alanı sınırına değil."
@@ -64,17 +64,17 @@
   },
   "点击照片上同一条可见曲线，由内向外连续描点。": {
     "zh-CN": "点击照片上同一条可见曲线，由内向外连续描点。",
-    "en": "Trace the same visible curve in the photo, placing points from inside out.",
+    "en": "Click along the same visible curve in the photo, adding points continuously from the inside outward.",
     "zh-TW": "點選相片上同一條可見曲線，由內向外連續描點。",
-    "ja": "写真上の同じ曲線をクリックし、内側から外側へ連続して点を打ちます。",
-    "tr": "Fotoğraftaki görünür aynı eğriyi, içten dışa doğru noktalar koyarak çizin."
+    "ja": "写真に見える同じ曲線上をクリックし、内側から外側へ連続して点を打ちます。",
+    "tr": "Fotoğraftaki aynı görünür eğri üzerinde içten dışa art arda noktalar eklemek için tıklayın."
   },
   "滚轮缩放，右键平移；点击添加点，拖动已有点修正位置。": {
     "zh-CN": "滚轮缩放，右键平移；点击添加点，拖动已有点修正位置。",
-    "en": "Scroll to zoom, right-drag to pan; click to add points, drag to adjust.",
+    "en": "Scroll to zoom, right-drag to pan; click to add points, drag existing points to adjust their position.",
     "zh-TW": "滾輪縮放，右鍵平移；點選添加點，拖曳已有點修正位置。",
     "ja": "ホイールでズーム、右ドラッグでパン。クリックで点を追加し、既存の点をドラッグして位置を修正します。",
-    "tr": "Yakınlaştırmak için kaydırın, kaydırmak için sağ tıklayıp sürükleyin; nokta eklemek için tıklayın, ayarlamak için sürükleyin."
+    "tr": "Yakınlaştırıp uzaklaştırmak için tekerleği çevirin, görüntüyü kaydırmak için sağ tuşla sürükleyin; nokta eklemek için tıklayın, konumlarını düzeltmek için mevcut noktaları sürükleyin."
   },
   "点击左侧「导入图片」开始设计": {
     "zh-CN": "点击左侧「导入图片」开始设计",
@@ -100,14 +100,14 @@
   "启用 CD-DA 延迟交织": {
     "zh-CN": "启用 CD-DA 延迟交织",
     "en": "Enable CD-DA delay interleaving",
-    "zh-TW": "啟用 CD-DA 延遲交織",
+    "zh-TW": "啟用 CD-DA 延遲交錯",
     "ja": "CD-DA 遅延インターリーブを有効にする",
     "tr": "CD-DA gecikmeli serpiştirmeyi etkinleştir"
   },
   "如您在盘片制作时勾选了“启用 CD-DA 延迟交织”，则应勾选该选项。": {
     "zh-CN": "如您在盘片制作时勾选了“启用 CD-DA 延迟交织”，则应勾选该选项。",
     "en": "Select this option if CD-DA delay interleaving was enabled when generating the disc.",
-    "zh-TW": "如您在碟片製作時勾選了“啟用 CD-DA 延遲交織”，則應勾選該選項。",
+    "zh-TW": "如您在碟片製作時勾選了“啟用 CD-DA 延遲交錯”，則應勾選該選項。",
     "ja": "ディスク作成時に「CD-DA 遅延インターリーブを有効にする」をオンにした場合は、このオプションをオンにしてください。",
     "tr": "Disk oluşturulurken CD-DA gecikmeli serpiştirme etkinleştirilmişse bu seçeneği belirleyin."
   },
@@ -246,17 +246,17 @@
   },
   "当前蓝光制作与标定仅支持起始角 0°；此 JSON 的非零起始角不能导入，也不会自动改为 0°。": {
     "zh-CN": "当前蓝光制作与标定仅支持起始角 0°；此 JSON 的非零起始角不能导入，也不会自动改为 0°。",
-    "en": "Blu-ray generation and calibration currently require a 0° start angle. The nonzero angle in this JSON cannot be imported or automatically reset to 0°.",
+    "en": "Blu-ray generation and calibration currently require a 0° start angle. The nonzero start angle in this JSON cannot be imported and will not be automatically changed to 0°.",
     "zh-TW": "目前藍光製作與校準僅支援起始角 0°；此 JSON 的非零起始角不能匯入，也不會自動改為 0°。",
     "ja": "現在、Blu-ray の作成とキャリブレーションは開始角 0° のみに対応しています。この JSON の 0 以外の開始角はインポートできず、0° に自動変更されることもありません。",
-    "tr": "Blu-ray oluşturma ve kalibrasyon şu anda yalnızca 0° başlangıç açısını destekler. Bu JSON'daki sıfır olmayan açı içe aktarılamaz veya otomatik olarak 0°'ye sıfırlanamaz."
+    "tr": "Blu-ray oluşturma ve kalibrasyon şu anda yalnızca 0° başlangıç açısını destekler. Bu JSON'daki sıfır olmayan başlangıç açısı içe aktarılamaz; değer otomatik olarak 0° yapılmaz."
   },
   "蓝光 parameters 缺少 {0}，不能使用默认值替代导入的参数。": {
     "zh-CN": "蓝光 parameters 缺少 {0}，不能使用默认值替代导入的参数。",
     "en": "Blu-ray parameters is missing {0}. Imported parameters cannot be replaced with defaults.",
     "zh-TW": "藍光 parameters 缺少 {0}，不能使用預設值替代匯入的參數。",
     "ja": "Blu-ray の parameters に {0} がありません。インポートしたパラメーターを既定値で代替することはできません。",
-    "tr": "Blu-ray parametrelerinde {0} eksik. İçe aktarılan parametreler varsayılan değerlerle değiştirilemez."
+    "tr": "Blu-ray parameters alanında {0} eksik. İçe aktarılan parametreler varsayılan değerlerle değiştirilemez."
   },
   "BD ISO 长度与总扇区数不符：需要 {0:N0} 字节，实际 {1:N0} 字节。": {
     "zh-CN": "BD ISO 长度与总扇区数不符：需要 {0:N0} 字节，实际 {1:N0} 字节。",
@@ -344,10 +344,10 @@
   },
   "照片尺寸上限应为 64–4096 像素。": {
     "zh-CN": "照片尺寸上限应为 64–4096 像素。",
-    "en": "The photo dimension limit must be 64–4096 pixels.",
+    "en": "The maximum photo dimension must be 64–4096 pixels.",
     "zh-TW": "相片尺寸上限應為 64–4096 像素。",
     "ja": "写真サイズの上限は 64–4096 ピクセルにしてください。",
-    "tr": "Fotoğraf boyut sınırı 64–4096 piksel olmalıdır."
+    "tr": "Fotoğrafın azami boyut sınırı 64–4096 piksel olmalıdır."
   },
   "照片文件过大，请使用小于 256 MB 的图片。": {
     "zh-CN": "照片文件过大，请使用小于 256 MB 的图片。",
@@ -400,17 +400,17 @@
   },
   "请先按照片尺寸上限载入图片，再进行矫正。": {
     "zh-CN": "请先按照片尺寸上限载入图片，再进行矫正。",
-    "en": "Load the image within the photo dimension limit before rectifying it.",
+    "en": "Load the image using the photo dimension limit before rectifying it.",
     "zh-TW": "請先按相片尺寸上限載入圖片，再進行校正。",
     "ja": "補正する前に、写真サイズの上限内で画像を読み込んでください。",
-    "tr": "Görseli düzeltmeden önce fotoğraf boyut sınırları içinde yükleyin."
+    "tr": "Düzeltmeden önce görseli fotoğraf boyut sınırını kullanarak yükleyin."
   },
   "照片变换在当前画布内退化，请重新矫正轮廓或缩小画布。": {
     "zh-CN": "照片变换在当前画布内退化，请重新矫正轮廓或缩小画布。",
     "en": "The photo transform is degenerate within this canvas. Adjust the contours or reduce the canvas.",
     "zh-TW": "相片變換在目前畫布內退化，請重新校正輪廓或縮小畫布。",
     "ja": "現在のキャンバス内で写真の変換が縮退しています。輪郭を補正し直すか、キャンバスを縮小してください。",
-    "tr": "Fotoğraf dönüşümü bu tuval içinde bozuldu. Konturları ayarlayın veya tuvali küçültün."
+    "tr": "Fotoğraf dönüşümü geçerli tuval içinde dejenere oluyor. Konturları yeniden düzeltin veya tuvali küçültün."
   },
   "完整数据区半径（创建图案时）：{0}–{1} mm": {
     "zh-CN": "完整数据区半径（创建图案时）：{0}–{1} mm",
@@ -522,21 +522,21 @@
     "en": "The recorder has started writing.",
     "zh-TW": "燒錄機開始寫入。",
     "ja": "ドライブが書き込みを開始しました。",
-    "tr": "Yazıcı yazmaya başladı."
+    "tr": "Disk yazıcısı yazmaya başladı."
   },
   "正在刷新缓存并关闭刻录会话…": {
     "zh-CN": "正在刷新缓存并关闭刻录会话…",
     "en": "Flushing the cache and closing the burn session…",
     "zh-TW": "正在寫出快取並關閉燒錄工作階段…",
     "ja": "キャッシュをフラッシュし、書き込みセッションを閉じています…",
-    "tr": "Önbellek temizleniyor ve yazma oturumu kapatılıyor…"
+    "tr": "Önbellek diske aktarılıyor ve yazma oturumu kapatılıyor…"
   },
   "标定参数已应用": {
     "zh-CN": "标定参数已应用",
-    "en": "Calibration applied",
+    "en": "Calibration parameters applied",
     "zh-TW": "校準參數已套用",
-    "ja": "キャリブレーションを適用しました",
-    "tr": "Kalibrasyon uygulandı"
+    "ja": "キャリブレーションパラメーターを適用しました",
+    "tr": "Kalibrasyon parametreleri uygulandı"
   },
   "本工程的参数已更新。": {
     "zh-CN": "本工程的参数已更新。",
@@ -584,10 +584,10 @@
   },
   "已改用系统临时目录。": {
     "zh-CN": "已改用系统临时目录。",
-    "en": "Using the system temporary directory.",
+    "en": "Switched to the system temporary directory.",
     "zh-TW": "已改用系統暫存資料夾。",
-    "ja": "システムの一時フォルダーを代わりに使用します。",
-    "tr": "Sistem geçici dizini kullanılıyor."
+    "ja": "システムの一時フォルダーに切り替えました。",
+    "tr": "Sistem geçici dizinine geçildi."
   },
   "展开侧边栏": {
     "zh-CN": "展开侧边栏",
@@ -612,10 +612,10 @@
   },
   "切换为“{0}”会用该预设的几何参数覆盖当前参数，确认后无法撤销。是否继续？": {
     "zh-CN": "切换为“{0}”会用该预设的几何参数覆盖当前参数，确认后无法撤销。是否继续？",
-    "en": "Switching to “{0}” will replace the current geometry with this preset. This cannot be undone. Continue?",
+    "en": "Switching to “{0}” will overwrite the current parameters with this preset’s geometry parameters. This cannot be undone after confirmation. Continue?",
     "zh-TW": "切換為“{0}”會用該預設的幾何參數覆蓋目前參數，確認後無法復原。是否繼續？",
-    "ja": "「{0}」に切り替えると、現在のパラメーターがこのプリセットのジオメトリで上書きされます。この操作は元に戻せません。続行しますか?",
-    "tr": "“{0}” önayarına geçildiğinde geçerli geometri bu önayarla değiştirilecektir. Bu işlem geri alınamaz. Devam edilsin mi?"
+    "ja": "「{0}」に切り替えると、現在のパラメーターがこのプリセットのジオメトリで上書きされます。確定後は元に戻せません。続行しますか?",
+    "tr": "“{0}” önayarına geçildiğinde geçerli parametreler bu önayarın geometri parametreleriyle değiştirilecektir. Onaylandıktan sonra geri alınamaz. Devam edilsin mi?"
   },
   "覆盖参数": {
     "zh-CN": "覆盖参数",
@@ -626,7 +626,7 @@
   },
   "选择工程保存位置": {
     "zh-CN": "选择工程保存位置",
-    "en": "Select project location",
+    "en": "Select project save location",
     "zh-TW": "選擇專案儲存位置",
     "ja": "プロジェクトの保存場所の選択",
     "tr": "Proje kayıt konumunu seçin"
@@ -746,10 +746,10 @@
   },
   "界面外观偏好。": {
     "zh-CN": "界面外观偏好。",
-    "en": "Appearance and language preferences.",
+    "en": "Interface appearance preferences.",
     "zh-TW": "介面外觀偏好。",
     "ja": "外観の設定。",
-    "tr": "Görünüm ve dil tercihleri."
+    "tr": "Arayüz görünüm tercihleri."
   },
   "外观": {
     "zh-CN": "外观",
@@ -788,10 +788,10 @@
   },
   "保存后立即应用到所有窗口。": {
     "zh-CN": "保存后立即应用到所有窗口。",
-    "en": "Applied to all windows after saving.",
+    "en": "Applied immediately to all windows after saving.",
     "zh-TW": "儲存後立即套用至所有視窗。",
     "ja": "保存すると、すべてのウィンドウにすぐに適用されます。",
-    "tr": "Kaydedildikten sonra tüm pencerelere uygulanır."
+    "tr": "Kaydedildikten hemen sonra tüm pencerelere uygulanır."
   },
   "语言": {
     "zh-CN": "语言",
@@ -815,18 +815,18 @@
     "tr": "English"
   },
   "语言将在重启应用后生效；跟随系统时，中文系统使用简体中文，其他系统使用 English。": {
-    "zh-CN": "语言将在重启应用后生效。跟随系统时区分简体和繁体中文，其他语言使用 English。",
-    "en": "Language changes take effect after restarting. System follows Simplified or Traditional Chinese; other system languages use English.",
-    "zh-TW": "語言會在重新啟動應用程式後生效。跟隨系統時會區分簡體與繁體中文，其他語言使用 English。",
-    "ja": "言語の変更はアプリの再起動後に反映されます。「システムに従う」の場合、簡体字中国語と繁体字中国語を区別し、その他の言語では English を使用します。",
-    "tr": "Dil değişiklikleri yeniden başlatıldıktan sonra geçerli olur. Sistem dili Basitleştirilmiş veya Geleneksel Çince, Japonca ya da Türkçe ise ilgili dili izler; diğer sistem dillerinde English kullanılır."
+    "zh-CN": "保存后语言立即生效。跟随系统时区分简体与繁体中文，并支持日文和土耳其文；其他系统语言使用 English。",
+    "en": "Language changes apply immediately after saving. Follow system uses Simplified or Traditional Chinese, Japanese, or Turkish where appropriate; other system languages use English.",
+    "zh-TW": "儲存後語言立即生效。跟隨系統時區分簡體與繁體中文，並支援日文及土耳其文；其他系統語言使用 English。",
+    "ja": "保存後、言語の変更はすぐに反映されます。「システムに従う」では簡体字中国語・繁体字中国語・日本語・トルコ語を判別し、その他の言語では English を使用します。",
+    "tr": "Dil değişiklikleri kaydedilince hemen uygulanır. Sistemi izleme, uygun olduğunda Basitleştirilmiş veya Geleneksel Çince, Japonca ya da Türkçe kullanır; diğer sistem dillerinde English kullanılır."
   },
   "新建工程与临时缓存的默认位置。": {
     "zh-CN": "新建工程与临时缓存的默认位置。",
-    "en": "Default locations for new projects and temporary files.",
+    "en": "Default locations for new projects and temporary cache.",
     "zh-TW": "新專案與暫存快取的預設位置。",
     "ja": "新規プロジェクトと一時キャッシュの既定の場所。",
-    "tr": "Yeni projeler ve geçici dosyalar için varsayılan konumlar."
+    "tr": "Yeni projeler ve geçici önbellek için varsayılan konumlar."
   },
   "位置": {
     "zh-CN": "位置",
@@ -851,10 +851,10 @@
   },
   "仅作为新建工程对话框的默认位置；留空使用系统文档目录。": {
     "zh-CN": "仅作为新建工程对话框的默认位置；留空使用系统文档目录。",
-    "en": "Default location for new projects. Leave blank to use the system Documents folder.",
+    "en": "Used only as the default location in the New Project dialog. Leave blank to use the system Documents folder.",
     "zh-TW": "僅作為新專案對話框的預設位置；留空使用系統「文件」資料夾。",
     "ja": "新規プロジェクト ダイアログの既定の場所としてのみ使用されます。空欄の場合はシステムのドキュメント フォルダーを使用します。",
-    "tr": "Yeni projeler için varsayılan konum. Sistem Belgeler klasörünü kullanmak için boş bırakın."
+    "tr": "Yalnızca Yeni Proje iletişim kutusunun varsayılan konumudur. Sistem Belgeler klasörünü kullanmak için boş bırakın."
   },
   "缓存位置": {
     "zh-CN": "缓存位置",
@@ -865,10 +865,10 @@
   },
   "用于设计合成图、预览渲染与缩略图；留空使用系统临时目录，切换后新任务使用新位置，旧缓存不会自动迁移。": {
     "zh-CN": "用于设计合成图、预览渲染与缩略图；留空使用系统临时目录，切换后新任务使用新位置，旧缓存不会自动迁移。",
-    "en": "Used for composites, previews and thumbnails. Leave blank to use the system temporary folder. New jobs use the new location; existing cache files stay in place.",
+    "en": "Used for design composites, rendered previews and thumbnails. Leave blank to use the system temporary folder. New jobs use the new location; existing cache files are not moved automatically.",
     "zh-TW": "用於設計合成圖、預覽算繪與縮圖；留空使用系統暫存資料夾，切換後新工作使用新位置，舊快取不會自動遷移。",
     "ja": "デザインの合成画像、プレビューのレンダリング、サムネイルに使用されます。空欄の場合はシステムの一時フォルダーを使用します。変更後の新しいジョブは新しい場所を使用し、既存のキャッシュは自動的に移行されません。",
-    "tr": "Birleşik görseller, önizlemeler ve küçük resimler için kullanılır. Sistem geçici klasörünü kullanmak için boş bırakın. Yeni görevler yeni konumu kullanır; mevcut önbellek dosyaları yerinde kalır."
+    "tr": "Birleştirilmiş tasarım görselleri, işlenmiş önizlemeler ve küçük resimler için kullanılır. Sistem geçici klasörünü kullanmak için boş bırakın. Yeni görevler yeni konumu kullanır; mevcut önbellek dosyaları otomatik taşınmaz."
   },
   "缓存": {
     "zh-CN": "缓存",
@@ -963,10 +963,10 @@
   },
   "Settings.AppliedToAllWindowsAfterSaving": {
     "zh-CN": "保存后立即应用到所有窗口。",
-    "en": "Applied to all windows after saving.",
+    "en": "Applied immediately to all windows after saving.",
     "zh-TW": "儲存後立即套用至所有視窗。",
     "ja": "保存すると、すべてのウィンドウにすぐに適用されます。",
-    "tr": "Kaydedildikten sonra tüm pencerelere uygulanır."
+    "tr": "Kaydedildikten hemen sonra tüm pencerelere uygulanır."
   },
   "Settings.Language": {
     "zh-CN": "语言",
@@ -976,18 +976,18 @@
     "tr": "Dil"
   },
   "Settings.LanguageChangesTakeEffectAfterRestartingTheAppSystemUse": {
-    "zh-CN": "语言将在重启应用后生效。跟随系统时区分简体和繁体中文，日文系统使用日本語，其他语言使用 English。",
-    "en": "Language changes take effect after restarting. System follows Simplified or Traditional Chinese, or Japanese; other system languages use English.",
-    "zh-TW": "語言會在重新啟動應用程式後生效。跟隨系統時會區分簡體與繁體中文，日文系統使用日本語，其他語言使用 English。",
-    "ja": "言語の変更はアプリの再起動後に反映されます。「システムに従う」の場合、簡体字中国語・繁体字中国語・日本語を判別し、その他の言語では English を使用します。",
-    "tr": "Dil değişiklikleri yeniden başlatıldıktan sonra geçerli olur. Sistem dili Basitleştirilmiş veya Geleneksel Çince, Japonca ya da Türkçe ise ilgili dili izler; diğer sistem dillerinde English kullanılır."
+    "zh-CN": "保存后语言立即生效。跟随系统时区分简体与繁体中文，并支持日文和土耳其文；其他系统语言使用 English。",
+    "en": "Language changes apply immediately after saving. Follow system uses Simplified or Traditional Chinese, Japanese, or Turkish where appropriate; other system languages use English.",
+    "zh-TW": "儲存後語言立即生效。跟隨系統時區分簡體與繁體中文，並支援日文及土耳其文；其他系統語言使用 English。",
+    "ja": "保存後、言語の変更はすぐに反映されます。「システムに従う」では簡体字中国語・繁体字中国語・日本語・トルコ語を判別し、その他の言語では English を使用します。",
+    "tr": "Dil değişiklikleri kaydedilince hemen uygulanır. Sistemi izleme, uygun olduğunda Basitleştirilmiş veya Geleneksel Çince, Japonca ya da Türkçe kullanır; diğer sistem dillerinde English kullanılır."
   },
   "Settings.DefaultLocationsForNewProjectsAndTemporaryFiles": {
     "zh-CN": "新建工程与临时缓存的默认位置。",
-    "en": "Default locations for new projects and temporary files.",
+    "en": "Default locations for new projects and temporary cache.",
     "zh-TW": "新專案與暫存快取的預設位置。",
     "ja": "新規プロジェクトと一時キャッシュの既定の場所。",
-    "tr": "Yeni projeler ve geçici dosyalar için varsayılan konumlar."
+    "tr": "Yeni projeler ve geçici önbellek için varsayılan konumlar."
   },
   "Settings.Locations": {
     "zh-CN": "位置",
@@ -1012,10 +1012,10 @@
   },
   "Settings.DefaultLocationForNewProjectsLeaveBlankToUseTheSystemDo": {
     "zh-CN": "仅作为新建工程对话框的默认位置；留空使用系统文档目录。",
-    "en": "Default location for new projects. Leave blank to use the system Documents folder.",
+    "en": "Used only as the default location in the New Project dialog. Leave blank to use the system Documents folder.",
     "zh-TW": "僅作為新專案對話框的預設位置；留空使用系統「文件」資料夾。",
     "ja": "新規プロジェクト ダイアログの既定の場所としてのみ使用されます。空欄の場合はシステムのドキュメント フォルダーを使用します。",
-    "tr": "Yeni projeler için varsayılan konum. Sistem Belgeler klasörünü kullanmak için boş bırakın."
+    "tr": "Yalnızca Yeni Proje iletişim kutusunun varsayılan konumudur. Sistem Belgeler klasörünü kullanmak için boş bırakın."
   },
   "Settings.CacheLocation": {
     "zh-CN": "缓存位置",
@@ -1026,10 +1026,10 @@
   },
   "Settings.UsedForCompositesPreviewsAndThumbnailsLeaveBlankToUseTh": {
     "zh-CN": "用于设计合成图、预览渲染与缩略图；留空使用系统临时目录，切换后新任务使用新位置，旧缓存不会自动迁移。",
-    "en": "Used for composites, previews and thumbnails. Leave blank to use the system temporary folder. New jobs use the new location; existing cache files stay in place.",
+    "en": "Used for design composites, rendered previews and thumbnails. Leave blank to use the system temporary folder. New jobs use the new location; existing cache files are not moved automatically.",
     "zh-TW": "用於設計合成圖、預覽算繪與縮圖；留空使用系統暫存資料夾，切換後新工作使用新位置，舊快取不會自動遷移。",
     "ja": "デザインの合成画像、プレビューのレンダリング、サムネイルに使用されます。空欄の場合はシステムの一時フォルダーを使用します。変更後の新しいジョブは新しい場所を使用し、既存のキャッシュは自動的に移行されません。",
-    "tr": "Birleşik görseller, önizlemeler ve küçük resimler için kullanılır. Sistem geçici klasörünü kullanmak için boş bırakın. Yeni görevler yeni konumu kullanır; mevcut önbellek dosyaları yerinde kalır."
+    "tr": "Birleştirilmiş tasarım görselleri, işlenmiş önizlemeler ve küçük resimler için kullanılır. Sistem geçici klasörünü kullanmak için boş bırakın. Yeni görevler yeni konumu kullanır; mevcut önbellek dosyaları otomatik taşınmaz."
   },
   "Settings.Cache": {
     "zh-CN": "缓存",
@@ -1071,13 +1071,13 @@
     "en": "简体中文",
     "zh-TW": "简体中文",
     "ja": "简体中文",
-    "tr": "Basitleştirilmiş Çince"
+    "tr": "简体中文"
   },
   "Settings.TraditionalChinese": {
     "zh-CN": "繁體中文",
     "en": "繁體中文",
     "zh-TW": "繁體中文",
     "ja": "繁體中文",
-    "tr": "Geleneksel Çince"
+    "tr": "繁體中文"
   }
 }

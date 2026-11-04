@@ -92,7 +92,7 @@ public partial class SettingsViewModel : ObservableObject
     private static string ReadLicense(string name)
     {
         using Stream stream = typeof(SettingsViewModel).Assembly.GetManifestResourceStream($"DiscImageStudio.Licenses.{name}")
-            ?? throw new InvalidOperationException($"Missing embedded license: {name}");
+            ?? throw new InvalidOperationException(L.F($"Missing embedded license: {name}"));
         using StreamReader reader = new(stream);
         return reader.ReadToEnd();
     }

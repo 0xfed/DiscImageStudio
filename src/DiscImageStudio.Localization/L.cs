@@ -19,9 +19,14 @@ public static class L
     public const string SystemLanguage = "system";
 
     private static readonly CultureInfo StartupCulture = CultureInfo.CurrentUICulture;
-    private static readonly IReadOnlyDictionary<string, Dictionary<string, string>> Catalog = LoadCatalog();
+    // Load text after language selection, so startup catalog failures use the selected language.
+    private static readonly Lazy<IReadOnlyDictionary<string, Dictionary<string, string>>> Catalog = new(LoadCatalog);
 
     public static string CurrentLanguage { get; private set; } = Chinese;
+
+    /// <summary>The normalized selection, including "system" when following the OS.
+    /// Keep this separate from the resolved language when presenting settings.</summary>
+    public static string PreferredLanguage { get; private set; } = Chinese;
 
     /// <summary>Raised after <see cref="SetLanguage"/> resolves to a different language. Views
     /// rebuilt from XAML bindings refresh themselves; cached text in view models listens too.</summary>
@@ -70,7 +75,8 @@ public static class L
 
     private static void ApplyLanguage(string? language, bool notify)
     {
-        string resolved = ResolveLanguage(language);
+        PreferredLanguage = NormalizeLanguage(language);
+        string resolved = ResolveLanguage(PreferredLanguage);
         bool changed = !string.Equals(CurrentLanguage, resolved, StringComparison.Ordinal);
         CurrentLanguage = resolved;
         CultureInfo culture = CultureInfo.GetCultureInfo(resolved);
@@ -82,12 +88,29 @@ public static class L
         }
     }
 
-    public static string T(string key)
+    public static bool TryGetText(string key, out string text)
     {
         ArgumentNullException.ThrowIfNull(key);
-        if (!Catalog.TryGetValue(key, out Dictionary<string, string>? translations)) return key;
-        if (translations.TryGetValue(CurrentLanguage, out string? translated)) return translated;
-        return translations.TryGetValue(Chinese, out string? fallback) ? fallback : key;
+        // Entry-point catch handlers must still report a failed main catalog.
+        if (key == "Cli.Error")
+        {
+            text = BootstrapText(key);
+            return true;
+        }
+        if (Catalog.Value.TryGetValue(key, out Dictionary<string, string>? translations)
+            && (translations.TryGetValue(CurrentLanguage, out string? translated)
+                || translations.TryGetValue(Chinese, out translated)))
+        {
+            text = translated;
+            return true;
+        }
+        text = key;
+        return false;
+    }
+
+    public static string T(string key)
+    {
+        return TryGetText(key, out string text) ? text : key;
     }
 
     public static string F(FormattableString text)
@@ -99,27 +122,47 @@ public static class L
     public static string Format(string key, params object?[] arguments) =>
         string.Format(CultureInfo.CurrentCulture, T(key), arguments);
 
-    internal static IReadOnlyDictionary<string, Dictionary<string, string>> Entries => Catalog;
+    internal static IReadOnlyDictionary<string, Dictionary<string, string>> Entries => Catalog.Value;
 
     private static IReadOnlyDictionary<string, Dictionary<string, string>> LoadCatalog()
     {
-        Dictionary<string, Dictionary<string, string>> result = new(StringComparer.Ordinal);
         Assembly assembly = typeof(L).Assembly;
-        foreach (string name in assembly.GetManifestResourceNames()
-                     .Where(name => name.StartsWith("DiscImageStudio.Localization.Catalogs.", StringComparison.Ordinal)
-                                    && name.EndsWith(".json", StringComparison.Ordinal))
-                     .OrderBy(name => name, StringComparer.Ordinal))
+        return LoadCatalog(assembly.GetManifestResourceNames()
+            .Where(name => name.StartsWith("DiscImageStudio.Localization.Catalogs.", StringComparison.Ordinal)
+                           && name.EndsWith(".json", StringComparison.Ordinal))
+            .OrderBy(name => name, StringComparer.Ordinal)
+            .Select(name => (name, assembly.GetManifestResourceStream(name)!)));
+    }
+
+    internal static IReadOnlyDictionary<string, Dictionary<string, string>> LoadCatalog(
+        IEnumerable<(string Name, Stream Content)> catalogs)
+    {
+        Dictionary<string, Dictionary<string, string>> result = new(StringComparer.Ordinal);
+        foreach ((string name, Stream content) in catalogs)
         {
-            using Stream stream = assembly.GetManifestResourceStream(name)!;
+            using Stream stream = content;
             var entries = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(stream)
-                          ?? throw new InvalidDataException($"Empty localization catalog: {name}");
+                          ?? throw CatalogError("Empty localization catalog: {0}", name);
             foreach (var entry in entries)
             {
                 if (!result.TryAdd(entry.Key, entry.Value))
-                    throw new InvalidDataException($"Duplicate localization key: {entry.Key}");
+                    throw CatalogError("Duplicate localization key: {0}", entry.Key);
             }
         }
-
         return result;
+    }
+
+    private static InvalidDataException CatalogError(string key, params object?[] arguments)
+        => new(string.Format(CultureInfo.CurrentCulture, BootstrapText(key), arguments));
+
+    private static string BootstrapText(string key)
+    {
+        // Do not call T while the main catalog is loading. Bootstrap diagnostics
+        // have a dedicated embedded resource and share the normal audit.
+        using Stream stream = typeof(L).Assembly.GetManifestResourceStream(
+            "DiscImageStudio.Localization.Catalogs.CatalogLoader.json")!;
+        var errors = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(stream)!;
+        Dictionary<string, string> translations = errors[key];
+        return translations.TryGetValue(CurrentLanguage, out string? value) ? value : translations[Chinese];
     }
 }

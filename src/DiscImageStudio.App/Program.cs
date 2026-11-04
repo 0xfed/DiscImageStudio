@@ -1,5 +1,6 @@
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace DiscImageStudio;
 
@@ -24,6 +25,7 @@ internal static class Program
             return;
         }
 
+        Console.OutputEncoding = new UTF8Encoding(false);
         Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true });
         Console.SetError(new StreamWriter(Console.OpenStandardError()) { AutoFlush = true });
     }

@@ -1,0 +1,247 @@
+{
+  "Verbatim 43533 calibrated geometry; complete raw DVD sector image; no burn command.": {
+    "en": "Verbatim 43533 calibrated geometry; complete raw DVD sector image; no burn command.",
+    "zh-CN": "Verbatim 43533 标定几何参数；完整的原始 DVD 扇区镜像；不提供刻录命令。",
+    "zh-TW": "Verbatim 43533 標定幾何參數；完整的原始 DVD 磁區映像；不提供燒錄命令。",
+    "ja": "Verbatim 43533 の校正済み幾何パラメーター。完全な DVD 生セクターイメージ。書き込みコマンドはありません。",
+    "tr": "Verbatim 43533 kalibre edilmiş geometrisi; tam ham DVD sektör görüntüsü; diske yazma komutu yoktur."
+  },
+  "Expected unique --name value options.": {
+    "en": "Expected unique --name value options.",
+    "zh-CN": "应提供不重复的 --name value 选项。",
+    "zh-TW": "應提供不重複的 --name value 選項。",
+    "ja": "重複しない --name value 形式のオプションを指定してください。",
+    "tr": "Benzersiz --name value seçenekleri bekleniyor."
+  },
+  "Unknown command.": {
+    "en": "Unknown command.",
+    "zh-CN": "未知命令。",
+    "zh-TW": "未知命令。",
+    "ja": "不明なコマンドです。",
+    "tr": "Bilinmeyen komut."
+  },
+  "Preparation directory must be empty to avoid replacing an existing experiment.": {
+    "en": "Preparation directory must be empty to avoid replacing an existing experiment.",
+    "zh-CN": "准备目录必须为空，以免替换现有实验。",
+    "zh-TW": "準備目錄必須為空，以免取代現有實驗。",
+    "ja": "既存の実験を上書きしないよう、準備用ディレクトリは空にしてください。",
+    "tr": "Mevcut bir deneyin değiştirilmemesi için hazırlık dizini boş olmalıdır."
+  },
+  "already-dithered four-level Gray8 PNG": {
+    "en": "already-dithered four-level Gray8 PNG",
+    "zh-CN": "已经过抖动处理的四阶 Gray8 PNG",
+    "zh-TW": "已經過遞色處理的四階 Gray8 PNG",
+    "ja": "ディザ処理済みの 4 階調 Gray8 PNG",
+    "tr": "Önceden renk taklidi uygulanmış dört düzeyli Gray8 PNG"
+  },
+  "x right, y down; centre at 0,0": {
+    "en": "x right, y down; centre at 0,0",
+    "zh-CN": "x 向右、y 向下；中心位于 0,0",
+    "zh-TW": "x 向右、y 向下；中心位於 0,0",
+    "ja": "x は右向き、y は下向き。中心は 0,0",
+    "tr": "x sağa, y aşağıya; merkez 0,0 noktasında"
+  },
+  "nearest immutable direct-Q atlas cell; no bilinear luminance mixing": {
+    "en": "nearest immutable direct-Q atlas cell; no bilinear luminance mixing",
+    "zh-CN": "最近的不可变直接 Q 图集单元；不进行双线性亮度混合",
+    "zh-TW": "最近的不可變直接 Q 圖集單元；不進行雙線性亮度混合",
+    "ja": "不変の直接 Q アトラスの最近傍セル。輝度のバイリニア混合なし",
+    "tr": "Değişmez doğrudan Q atlasının en yakın hücresi; çift doğrusal parlaklık karışımı yok"
+  },
+  "r24.5..25.6: six pure Q codes repeated four times": {
+    "en": "r24.5..25.6: six pure Q codes repeated four times",
+    "zh-CN": "r24.5..25.6：六种纯 Q 码，重复四次",
+    "zh-TW": "r24.5..25.6：六種純 Q 碼，重複四次",
+    "ja": "r24.5..25.6：6 種の単一 Q コードを 4 回反復",
+    "tr": "r24.5..25.6: dört kez tekrarlanan altı saf Q kodu"
+  },
+  "r26.0..28.1: shared serpentine-FS 0/85/170/255 logical gradient": {
+    "en": "r26.0..28.1: shared serpentine-FS 0/85/170/255 logical gradient",
+    "zh-CN": "r26.0..28.1：共用的蛇形 FS 0/85/170/255 逻辑渐变",
+    "zh-TW": "r26.0..28.1：共用的蛇形 FS 0/85/170/255 邏輯漸層",
+    "ja": "r26.0..28.1：共通の蛇行走査 FS による 0/85/170/255 の論理グラデーション",
+    "tr": "r26.0..28.1: ortak yılanvari FS 0/85/170/255 mantıksal gradyanı"
+  },
+  "r28.5..30.5: 64/E4 direct binary FS mixtures, clockwise columns 25/50/75 percent 64": {
+    "en": "r28.5..30.5: 64/E4 direct binary FS mixtures, clockwise columns 25/50/75 percent 64",
+    "zh-CN": "r28.5..30.5：64/E4 直接二值 FS 混合，顺时针各列中 64 占 25/50/75%",
+    "zh-TW": "r28.5..30.5：64/E4 直接二值 FS 混合，順時針各欄中 64 佔 25/50/75%",
+    "ja": "r28.5..30.5：64/E4 の直接 2 値 FS 混合。時計回りの各列で 64 の割合は 25/50/75%",
+    "tr": "r28.5..30.5: 64/E4 doğrudan ikili FS karışımları; saat yönündeki sütunlarda 64 oranı yüzde 25/50/75"
+  },
+  "12.8mm square image at radius37.5: identical supplied-image crop, only dark Q changes": {
+    "en": "12.8mm square image at radius37.5: identical supplied-image crop, only dark Q changes",
+    "zh-CN": "半径 37.5 处的 12.8mm 方形图像：使用相同的输入图像裁剪，仅改变深色 Q",
+    "zh-TW": "半徑 37.5 處的 12.8mm 方形影像：使用相同的輸入影像裁切，僅改變深色 Q",
+    "ja": "半径 37.5 の位置に 12.8mm 四方の画像。同じ入力画像の切り抜きを使用し、暗部の Q のみ変更",
+    "tr": "37.5 yarıçapında 12.8mm kare görsel: sağlanan görselden aynı kırpım, yalnızca koyu Q değişir"
+  },
+  "r45.8..47.5: 25/50/75 percent candidate mixed with A5": {
+    "en": "r45.8..47.5: 25/50/75 percent candidate mixed with A5",
+    "zh-CN": "r45.8..47.5：占比 25/50/75% 的候选码与 A5 混合",
+    "zh-TW": "r45.8..47.5：佔比 25/50/75% 的候選碼與 A5 混合",
+    "ja": "r45.8..47.5：候補コードを 25/50/75% の割合で A5 と混合",
+    "tr": "r45.8..47.5: yüzde 25/50/75 aday kodu A5 ile karıştırılır"
+  },
+  "r47.8..49.5: 25/50/75 percent candidate mixed with B9": {
+    "en": "r47.8..49.5: 25/50/75 percent candidate mixed with B9",
+    "zh-CN": "r47.8..49.5：占比 25/50/75% 的候选码与 B9 混合",
+    "zh-TW": "r47.8..49.5：佔比 25/50/75% 的候選碼與 B9 混合",
+    "ja": "r47.8..49.5：候補コードを 25/50/75% の割合で B9 と混合",
+    "tr": "r47.8..49.5: yüzde 25/50/75 aday kodu B9 ile karıştırılır"
+  },
+  "r49.8..51.5: 25/50/75 percent candidate mixed with 92": {
+    "en": "r49.8..51.5: 25/50/75 percent candidate mixed with 92",
+    "zh-CN": "r49.8..51.5：占比 25/50/75% 的候选码与 92 混合",
+    "zh-TW": "r49.8..51.5：佔比 25/50/75% 的候選碼與 92 混合",
+    "ja": "r49.8..51.5：候補コードを 25/50/75% の割合で 92 と混合",
+    "tr": "r49.8..51.5: yüzde 25/50/75 aday kodu 92 ile karıştırılır"
+  },
+  "r52.2..57.3: A5/66/64/E4/B9/92 pure code patches repeated four times; labels at r56.2": {
+    "en": "r52.2..57.3: A5/66/64/E4/B9/92 pure code patches repeated four times; labels at r56.2",
+    "zh-CN": "r52.2..57.3：A5/66/64/E4/B9/92 纯码色块重复四次；标签位于 r56.2",
+    "zh-TW": "r52.2..57.3：A5/66/64/E4/B9/92 純碼色塊重複四次；標籤位於 r56.2",
+    "ja": "r52.2..57.3：A5/66/64/E4/B9/92 の単一コードパッチを 4 回反復。ラベルは r56.2",
+    "tr": "r52.2..57.3: dört kez tekrarlanan A5/66/64/E4/B9/92 saf kod yamaları; etiketler r56.2 konumunda"
+  },
+  "Verbatim DVD-R AZO 43533 calibrated": {
+    "en": "Verbatim DVD-R AZO 43533 calibrated",
+    "zh-CN": "Verbatim DVD-R AZO 43533（已标定）",
+    "zh-TW": "Verbatim DVD-R AZO 43533（已標定）",
+    "ja": "Verbatim DVD-R AZO 43533（校正済み）",
+    "tr": "Verbatim DVD-R AZO 43533 kalibre edilmiş"
+  },
+  "code-map is a false-color code legend; nominal-preview assumes 0/85/170/255 and is not measured optical brightness": {
+    "en": "code-map is a false-color code legend; nominal-preview assumes 0/85/170/255 and is not measured optical brightness",
+    "zh-CN": "code-map 是伪彩色码值图例；nominal-preview 假定亮度为 0/85/170/255，并非实测光学亮度",
+    "zh-TW": "code-map 是偽彩色碼值圖例；nominal-preview 假定亮度為 0/85/170/255，並非實測光學亮度",
+    "ja": "code-map は疑似カラーのコード凡例。nominal-preview は 0/85/170/255 を仮定し、実測の光学的明るさではありません",
+    "tr": "code-map sahte renkli kod açıklamasıdır; nominal-preview 0/85/170/255 varsayar ve ölçülmüş optik parlaklık değildir"
+  },
+  "requested spatial pixel occupancies, not calibrated optical luminance; binary FS masks shared across candidates": {
+    "en": "requested spatial pixel occupancies, not calibrated optical luminance; binary FS masks shared across candidates",
+    "zh-CN": "请求的空间像素占比，并非标定后的光学亮度；所有候选码共用二值 FS 掩模",
+    "zh-TW": "要求的空間像素佔比，並非標定後的光學亮度；所有候選碼共用二值 FS 遮罩",
+    "ja": "指定した空間的な画素占有率であり、校正済みの光学的輝度ではありません。候補間で 2 値 FS マスクを共有",
+    "tr": "İstenen uzamsal piksel doluluk oranlarıdır, kalibre edilmiş optik parlaklık değildir; adaylar arasında ortak ikili FS maskeleri"
+  },
+  "Prepared: {0}": {
+    "en": "Prepared: {0}",
+    "zh-CN": "准备完成：{0}",
+    "zh-TW": "準備完成：{0}",
+    "ja": "準備完了：{0}",
+    "tr": "Hazırlandı: {0}"
+  },
+  "Unknown experiment schema.": {
+    "en": "Unknown experiment schema.",
+    "zh-CN": "未知的实验架构。",
+    "zh-TW": "未知的實驗結構描述。",
+    "ja": "不明な実験スキーマです。",
+    "tr": "Bilinmeyen deney şeması."
+  },
+  "Atlas hash mismatch.": {
+    "en": "Atlas hash mismatch.",
+    "zh-CN": "图集哈希不匹配。",
+    "zh-TW": "圖集雜湊不符。",
+    "ja": "アトラスのハッシュが一致しません。",
+    "tr": "Atlas özeti uyuşmuyor."
+  },
+  "Parallelism must be 1..64.": {
+    "en": "Parallelism must be 1..64.",
+    "zh-CN": "并行度必须为 1..64。",
+    "zh-TW": "平行度必須為 1..64。",
+    "ja": "並列度は 1..64 にしてください。",
+    "tr": "Paralellik 1..64 arasında olmalıdır."
+  },
+  "{0:P1} | {1:N0} bytes | {2:F1}s": {
+    "en": "{0:P1} | {1:N0} bytes | {2:F1}s",
+    "zh-CN": "{0:P1} | {1:N0} 字节 | {2:F1} 秒",
+    "zh-TW": "{0:P1} | {1:N0} 位元組 | {2:F1} 秒",
+    "ja": "{0:P1} | {1:N0} バイト | {2:F1} 秒",
+    "tr": "{0:P1} | {1:N0} bayt | {2:F1} sn"
+  },
+  "raw 2048-byte-sector DVD image without filesystem": {
+    "en": "raw 2048-byte-sector DVD image without filesystem",
+    "zh-CN": "无文件系统的原始 DVD 镜像，每扇区 2048 字节",
+    "zh-TW": "無檔案系統的原始 DVD 映像，每磁區 2048 位元組",
+    "ja": "ファイルシステムのない、1 セクター 2048 バイトの DVD 生イメージ",
+    "tr": "Dosya sistemi olmayan, 2048 bayt sektörlü ham DVD görüntüsü"
+  },
+  "exact length; all bytes in 9 radial slices x 128 sectors checked against target Q via independent descrambler; SHA256": {
+    "en": "exact length; all bytes in 9 radial slices x 128 sectors checked against target Q via independent descrambler; SHA256",
+    "zh-CN": "精确长度；通过独立解扰器检查 9 个径向切片 × 128 扇区中的所有字节是否符合目标 Q；SHA256",
+    "zh-TW": "精確長度；透過獨立解擾器檢查 9 個徑向切片 × 128 磁區中的所有位元組是否符合目標 Q；SHA256",
+    "ja": "正確な長さ。9 個の半径方向スライス × 128 セクターの全バイトを、独立したデスクランブラーで目標 Q と照合。SHA256",
+    "tr": "Tam uzunluk; 9 radyal dilim × 128 sektördeki tüm baytların bağımsız çözücüyle hedef Q değerine göre kontrolü; SHA256"
+  },
+  "Complete: {0}\nSHA256: {1}": {
+    "en": "Complete: {0}\nSHA256: {1}",
+    "zh-CN": "完成：{0}\nSHA256：{1}",
+    "zh-TW": "完成：{0}\nSHA256：{1}",
+    "ja": "完了：{0}\nSHA256：{1}",
+    "tr": "Tamamlandı: {0}\nSHA256: {1}"
+  },
+  "Incorrect full image length.": {
+    "en": "Incorrect full image length.",
+    "zh-CN": "完整镜像长度不正确。",
+    "zh-TW": "完整映像長度不正確。",
+    "ja": "全体イメージの長さが正しくありません。",
+    "tr": "Tam görüntü uzunluğu yanlış."
+  },
+  "Wrong Q at LBA {0}, byte {1}.": {
+    "en": "Wrong Q at LBA {0}, byte {1}.",
+    "zh-CN": "LBA {0}、字节 {1} 处的 Q 错误。",
+    "zh-TW": "LBA {0}、位元組 {1} 處的 Q 錯誤。",
+    "ja": "LBA {0} のバイト {1} で Q が一致しません。",
+    "tr": "LBA {0}, bayt {1} konumunda yanlış Q."
+  },
+  "Sample coverage missed a code.": {
+    "en": "Sample coverage missed a code.",
+    "zh-CN": "采样覆盖范围遗漏了一种码值。",
+    "zh-TW": "取樣涵蓋範圍遺漏了一種碼值。",
+    "ja": "サンプル範囲に含まれないコードがあります。",
+    "tr": "Örnekleme kapsamı bir kodu atladı."
+  },
+  "Verified 2,359,296 target Q bytes across all test rows: {0}": {
+    "en": "Verified 2,359,296 target Q bytes across all test rows: {0}",
+    "zh-CN": "已验证所有测试行的 2,359,296 个目标 Q 字节：{0}",
+    "zh-TW": "已驗證所有測試列的 2,359,296 個目標 Q 位元組：{0}",
+    "ja": "全テスト行の目標 Q バイト 2,359,296 個を検証しました：{0}",
+    "tr": "Tüm test satırlarında 2,359,296 hedef Q baytı doğrulandı: {0}"
+  },
+  "Already exists: {0}": {
+    "en": "Already exists: {0}",
+    "zh-CN": "已存在：{0}",
+    "zh-TW": "已存在：{0}",
+    "ja": "既に存在します：{0}",
+    "tr": "Zaten var: {0}"
+  },
+  "This experiment uses the supplied 6000 x 6000 four-level image.": {
+    "en": "This experiment uses the supplied 6000 x 6000 four-level image.",
+    "zh-CN": "本实验使用所提供的 6000 x 6000 四阶图像。",
+    "zh-TW": "本實驗使用所提供的 6000 x 6000 四階影像。",
+    "ja": "この実験では、提供された 6000 x 6000 の 4 階調画像を使用します。",
+    "tr": "Bu deney, sağlanan 6000 x 6000 dört düzeyli görseli kullanır."
+  },
+  "The source crop must already contain only 0/85/170/255.": {
+    "en": "The source crop must already contain only 0/85/170/255.",
+    "zh-CN": "源图裁剪区域必须已经仅包含 0/85/170/255。",
+    "zh-TW": "來源影像裁切區域必須已經僅包含 0/85/170/255。",
+    "ja": "入力画像の切り抜き範囲は、あらかじめ 0/85/170/255 のみで構成されている必要があります。",
+    "tr": "Kaynak kırpım zaten yalnızca 0/85/170/255 içermelidir."
+  },
+  "Binary error diffusion did not preserve requested pixel occupancy.": {
+    "en": "Binary error diffusion did not preserve requested pixel occupancy.",
+    "zh-CN": "二值误差扩散未保留请求的像素占比。",
+    "zh-TW": "二值誤差擴散未保留要求的像素佔比。",
+    "ja": "2 値誤差拡散で、指定した画素占有率が保持されませんでした。",
+    "tr": "İkili hata yayılımı istenen piksel doluluk oranını korumadı."
+  },
+  "Invalid direct-Q atlas.": {
+    "en": "Invalid direct-Q atlas.",
+    "zh-CN": "无效的直接 Q 图集。",
+    "zh-TW": "無效的直接 Q 圖集。",
+    "ja": "直接 Q アトラスが無効です。",
+    "tr": "Geçersiz doğrudan Q atlası."
+  }
+}

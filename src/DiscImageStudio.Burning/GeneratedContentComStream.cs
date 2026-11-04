@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -104,7 +105,7 @@ internal sealed class GeneratedContentComStream : IStream, IDisposable
         {
             AwaitProducerCompletion();
             throw new EndOfStreamException(
-                $"Generated stream ended at {_position} bytes; expected {_length} bytes.");
+                L.F($"Generated stream ended at {_position} bytes; expected {_length} bytes."));
         }
 
         _hasRead |= totalRead > 0;
@@ -154,7 +155,7 @@ internal sealed class GeneratedContentComStream : IStream, IDisposable
         bool canSeekBeforeReading = !_hasRead && (requested == 0 || requested == _length);
         if (requested < 0 || (requested != _position && !canSeekBeforeReading))
         {
-            throw new COMException("The generated burn stream is forward-only.", StgEInvalidFunction);
+            throw new COMException(L.T("The generated burn stream is forward-only."), StgEInvalidFunction);
         }
 
         _position = requested;
@@ -306,16 +307,16 @@ internal sealed class GeneratedContentComStream : IStream, IDisposable
         catch (Exception exception)
         {
             throw new COMException(
-                $"Image generation failed while streaming to the recorder: {exception.Message}",
+                L.F($"Image generation failed while streaming to the recorder: {exception.Message}"),
                 exception.HResult);
         }
     }
 
     private static void ThrowReadOnly()
-        => throw new COMException("The generated burn stream is read-only.", StgEInvalidFunction);
+        => throw new COMException(L.T("The generated burn stream is read-only."), StgEInvalidFunction);
 
     private static void ThrowNotImplemented()
-        => throw new COMException("Operation is not implemented for the generated burn stream.", ENotImpl);
+        => throw new COMException(L.T("Operation is not implemented for the generated burn stream."), ENotImpl);
 
     private sealed class ProducerOutputStream(
         ChannelWriter<byte[]> writer,
@@ -357,7 +358,7 @@ internal sealed class GeneratedContentComStream : IStream, IDisposable
             ArgumentOutOfRangeException.ThrowIfNegative(count);
             if (offset > buffer.Length - count)
             {
-                throw new ArgumentException("Offset and count exceed the source buffer.");
+                throw new ArgumentException(L.T("Offset and count exceed the source buffer."));
             }
 
             while (count > 0)
@@ -409,7 +410,7 @@ internal sealed class GeneratedContentComStream : IStream, IDisposable
             if (_written != expectedLength)
             {
                 throw new InvalidDataException(
-                    $"Generator produced {_written} bytes; expected {expectedLength} bytes.");
+                    L.F($"Generator produced {_written} bytes; expected {expectedLength} bytes."));
             }
 
             _completed = true;
@@ -438,7 +439,7 @@ internal sealed class GeneratedContentComStream : IStream, IDisposable
             if (nextWritten > expectedLength)
             {
                 throw new InvalidDataException(
-                    $"Generator exceeded its declared length of {expectedLength} bytes.");
+                    L.F($"Generator exceeded its declared length of {expectedLength} bytes."));
             }
 
             byte[] chunk = new byte[_buffered];

@@ -1,9 +1,11 @@
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using DiscImageStudio.Localization;
 using DitherProcessor = DiscImageStudio.Imaging.GrayscaleDither;
 
 namespace DiscImageStudio.DitherTool;
@@ -15,6 +17,7 @@ internal static class Program
     {
         try
         {
+            args = CommandLineLanguage.Initialize(args);
             if (args.Length == 0 || (args.Length == 1 && !args[0].StartsWith("-", StringComparison.Ordinal)))
             {
                 Application application = new() { ShutdownMode = ShutdownMode.OnMainWindowClose };
@@ -24,11 +27,8 @@ internal static class Program
             AttachToParentConsole();
             if (args is ["--help"] or ["-h"])
             {
-                Console.WriteLine("FourLevelDither [IMAGE] — open the independent image tool.\n"
-                    + "FourLevelDither --input IMAGE --output RESULT.png [--mode dvd|cd] [--gamma none|srgb] — convert without a window.\n"
-                    + "Both modes output black/white 0/255. Default dvd: A5/92; cd: 0D/AA.\n"
-                    + "Gamma defaults to none (existing output); srgb decodes RGB to linear light before dithering.\n"
-                    + "Output: serpentine Floyd–Steinberg, original size, alpha over white.");
+                Console.WriteLine(L.T("Dither.Help"));
+                Console.WriteLine(L.T("Cli.LanguageHelp"));
                 return 0;
             }
 
@@ -38,17 +38,17 @@ internal static class Program
             string input = Path.GetFullPath(Required(options, "--input"));
             if (options.TryGetValue("--snapshot", out string? snapshot))
             {
-                if (options.ContainsKey("--output")) throw new ArgumentException("Choose --snapshot or --output.");
+                if (options.ContainsKey("--output")) throw new ArgumentException(L.T("Choose --snapshot or --output."));
                 return Snapshot(input, Path.GetFullPath(snapshot), mode, linearizeSrgb);
             }
 
             string output = Path.GetFullPath(Required(options, "--output"));
             ValidateOutputPath(input, output);
-            if (File.Exists(output)) throw new IOException("输出文件已存在，请选择另一个文件名。");
+            if (File.Exists(output)) throw new IOException(L.T("输出文件已存在，请选择另一个文件名。"));
             BitmapSource source = DitherProcessor.LoadImage(input);
             BitmapSource result = DitherProcessor.Process(source, DitherModes.Levels(mode), linearizeSrgb: linearizeSrgb);
             DitherProcessor.SavePng(result, output, DitherModes.Levels(mode));
-            Console.WriteLine($"Saved {result.PixelWidth} × {result.PixelHeight}, {DitherModes.Label(mode)} ({DitherModes.PaletteLabel(mode)}), gamma={(linearizeSrgb ? "srgb" : "none")}: {output}");
+            Console.WriteLine(L.F($"Saved {result.PixelWidth} × {result.PixelHeight}, {DitherModes.Label(mode)} ({DitherModes.PaletteLabel(mode)}), gamma={(linearizeSrgb ? "srgb" : "none")}: {output}"));
             return 0;
         }
         catch (Exception exception)
@@ -62,9 +62,9 @@ internal static class Program
     internal static void ValidateOutputPath(string input, string output)
     {
         if (Path.GetFullPath(input).Equals(Path.GetFullPath(output), StringComparison.OrdinalIgnoreCase))
-            throw new ArgumentException("请另存为新文件，不能覆盖原图。");
+            throw new ArgumentException(L.T("请另存为新文件，不能覆盖原图。"));
         if (!Path.GetExtension(output).Equals(".png", StringComparison.OrdinalIgnoreCase))
-            throw new ArgumentException("请保存为 PNG，以保留准确的灰阶。");
+            throw new ArgumentException(L.T("请保存为 PNG，以保留准确的灰阶。"));
     }
 
     private static Dictionary<string, string> ParseOptions(string[] args)
@@ -74,20 +74,20 @@ internal static class Program
         {
             if (index + 1 >= args.Length || args[index] is not ("--input" or "--output" or "--snapshot" or "--mode" or "--gamma")
                 || !options.TryAdd(args[index], args[index + 1]))
-                throw new ArgumentException("用法：FourLevelDither --input 原图 --output 结果.png [--mode dvd|cd] [--gamma none|srgb]");
+                throw new ArgumentException(L.T("用法：FourLevelDither --input 原图 --output 结果.png [--mode dvd|cd] [--gamma none|srgb]"));
         }
         return options;
     }
 
     private static string Required(Dictionary<string, string> options, string name)
         => options.TryGetValue(name, out string? value) && !string.IsNullOrWhiteSpace(value)
-            ? value : throw new ArgumentException($"Missing {name}.");
+            ? value : throw new ArgumentException(L.F($"Missing {name}."));
 
     private static bool ParseGamma(string value) => value.ToLowerInvariant() switch
     {
         "none" => false,
         "srgb" => true,
-        _ => throw new ArgumentException("--gamma 请选择 none（关闭）或 srgb（sRGB 伽马校正）。"),
+        _ => throw new ArgumentException(L.T("--gamma 请选择 none（关闭）或 srgb（sRGB 伽马校正）。")),
     };
 
     // Off-screen rendering exercises the same window and asynchronous processing used interactively.
@@ -110,7 +110,7 @@ internal static class Program
         Dispatcher.PushFrame(frame);
         timer.Stop();
         processing.GetAwaiter().GetResult();
-        if (!window.HasResult) throw new InvalidOperationException("Snapshot input could not be processed.");
+        if (!window.HasResult) throw new InvalidOperationException(L.T("Snapshot input could not be processed."));
         window.UpdateLayout();
         FrameworkElement content = (FrameworkElement)window.Content;
         int width = (int)Math.Ceiling(content.ActualWidth + content.Margin.Left + content.Margin.Right);
@@ -123,18 +123,24 @@ internal static class Program
         using (FileStream stream = File.Create(output)) encoder.Save(stream);
         window.Close();
         application.Shutdown();
-        Console.WriteLine($"Snapshot: {output}");
+        Console.WriteLine(L.F($"Snapshot: {output}"));
         return 0;
     }
 
     private static void AttachToParentConsole()
     {
-        if (!AttachConsole(0xFFFFFFFF)) return;
-        Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true });
-        Console.SetError(new StreamWriter(Console.OpenStandardError()) { AutoFlush = true });
+        bool attached = AttachConsole(0xFFFFFFFF);
+        bool hasConsole = attached || GetConsoleOutputCP() != 0;
+        if (!hasConsole && !Console.IsOutputRedirected && !Console.IsErrorRedirected) return;
+        if (hasConsole) Console.OutputEncoding = new UTF8Encoding(false);
+        Console.SetOut(new StreamWriter(Console.OpenStandardOutput(), new UTF8Encoding(false)) { AutoFlush = true });
+        Console.SetError(new StreamWriter(Console.OpenStandardError(), new UTF8Encoding(false)) { AutoFlush = true });
     }
 
     [DllImport("kernel32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool AttachConsole(uint processId);
+
+    [DllImport("kernel32.dll")]
+    private static extern uint GetConsoleOutputCP();
 }

@@ -1,5 +1,7 @@
 # Contributing to Disc Image Studio
 
+[简体中文](CONTRIBUTING.md) | [繁體中文](CONTRIBUTING.zh-TW.md) | [English](CONTRIBUTING.en.md) | [日本語](CONTRIBUTING.ja.md) | [Türkçe](CONTRIBUTING.tr.md)
+
 欢迎参与 Disc Image Studio。请先通读本文档；它覆盖问题报告、开发环境搭建、模块边界规则、验证要求与提交流程。
 
 ## 报告问题
@@ -23,7 +25,7 @@
 - 测试没有第三方框架依赖，全部是仓库自带的控制台回归程序。
 
 ```powershell
-git clone <你的 fork 地址>
+git clone <your-fork-url>
 cd DiscImageStudio
 dotnet build DiscImageStudio.slnx --configuration Release
 dotnet run --project src/DiscImageStudio.App --configuration Release
@@ -53,6 +55,7 @@ Pull Request 前必须全部通过：
 ```powershell
 dotnet build DiscImageStudio.slnx --configuration Release
 dotnet run --project src/DvdImageSolver --configuration Release -- selftest
+dotnet run --project tests/DiscImageStudio.LocalizationTests --configuration Release
 dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release
 ```
 

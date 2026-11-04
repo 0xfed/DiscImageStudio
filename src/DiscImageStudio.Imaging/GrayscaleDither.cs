@@ -1,4 +1,5 @@
 using System.IO;
+using DiscImageStudio.Localization;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -81,7 +82,7 @@ public static class GrayscaleDither
         int requiredLength = checked(pixelCount * 4);
         if (bgra.Length != requiredLength)
         {
-            throw new ArgumentException("The BGRA buffer must contain exactly width × height × 4 bytes.", nameof(bgra));
+            throw new ArgumentException(L.T("The BGRA buffer must contain exactly width × height × 4 bytes."), nameof(bgra));
         }
 
         cancellationToken.ThrowIfCancellationRequested();
@@ -140,12 +141,12 @@ public static class GrayscaleDither
         ArgumentException.ThrowIfNullOrWhiteSpace(path);
         if (!string.Equals(Path.GetExtension(path), ".png", StringComparison.OrdinalIgnoreCase))
         {
-            throw new ArgumentException("Dithered images must be saved as lossless PNG files (.png).", nameof(path));
+            throw new ArgumentException(L.T("Dithered images must be saved as lossless PNG files (.png)."), nameof(path));
         }
 
         if (output.Format != PixelFormats.Gray8)
         {
-            throw new ArgumentException("The output must be a Gray8 bitmap.", nameof(output));
+            throw new ArgumentException(L.T("The output must be a Gray8 bitmap."), nameof(output));
         }
 
         byte[] row = new byte[output.PixelWidth];
@@ -156,7 +157,7 @@ public static class GrayscaleDither
             {
                 if (!levels.Contains(gray))
                 {
-                    throw new ArgumentException("The output may contain only the selected gray levels.", nameof(output));
+                    throw new ArgumentException(L.T("The output may contain only the selected gray levels."), nameof(output));
                 }
             }
         }
@@ -192,11 +193,11 @@ public static class GrayscaleDither
     private static void ValidateLevels(ReadOnlySpan<byte> levels)
     {
         if (levels.Length < 2)
-            throw new ArgumentException("At least two gray levels are required.", nameof(levels));
+            throw new ArgumentException(L.T("At least two gray levels are required."), nameof(levels));
         for (int index = 1; index < levels.Length; index++)
         {
             if (levels[index] <= levels[index - 1])
-                throw new ArgumentException("Gray levels must be distinct and sorted from dark to light.", nameof(levels));
+                throw new ArgumentException(L.T("Gray levels must be distinct and sorted from dark to light."), nameof(levels));
         }
     }
 

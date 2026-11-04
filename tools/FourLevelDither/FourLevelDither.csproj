@@ -13,5 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="../../src/DiscImageStudio.Core/DiscImageStudio.Core.csproj" />
     <ProjectReference Include="../../src/DiscImageStudio.Imaging/DiscImageStudio.Imaging.csproj" />
+    <ProjectReference Include="../../src/DiscImageStudio.Localization/DiscImageStudio.Localization.csproj" />
+    <Compile Include="../../src/DiscImageStudio.App/Localization/TextExtension.cs" Link="Localization/TextExtension.cs" />
   </ItemGroup>
 </Project>

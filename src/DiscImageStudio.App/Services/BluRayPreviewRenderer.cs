@@ -60,7 +60,7 @@ public static class BluRayPreviewRenderer
         generated.Validate();
         Validate(actual, outputSize);
         if (drawingStartSector >= drawingEndSectorExclusive || drawingEndSectorExclusive > generated.TotalSectors)
-            throw new ArgumentOutOfRangeException(nameof(drawingEndSectorExclusive), "The drawing range must lie inside the generated disc.");
+            throw new ArgumentOutOfRangeException(nameof(drawingEndSectorExclusive), L.T("绘图范围必须位于生成的光盘范围内。"));
         cancellationToken.ThrowIfCancellationRequested();
         BluRayGray8Raster source = BluRayImageLoader.Load(sourcePath, tone, cancellationToken);
         BluRayTrackGeometry sourceGeometry = new(generated);
@@ -97,7 +97,7 @@ public static class BluRayPreviewRenderer
         Validate(actual, outputSize);
         uint drawingEnd = drawingEndSectorExclusive ?? actual.TotalSectors;
         if (drawingStartSector >= drawingEnd || drawingEnd > actual.TotalSectors)
-            throw new ArgumentOutOfRangeException(nameof(drawingEndSectorExclusive), "The drawing range must lie inside the disc.");
+            throw new ArgumentOutOfRangeException(nameof(drawingEndSectorExclusive), L.T("绘图范围必须位于光盘范围内。"));
         cancellationToken.ThrowIfCancellationRequested();
         using FileStream source = new(Path.GetFullPath(isoPath), FileMode.Open, FileAccess.Read,
             FileShare.Read, bufferSize: 1, FileOptions.RandomAccess);
@@ -171,7 +171,7 @@ public static class BluRayPreviewRenderer
         ArgumentNullException.ThrowIfNull(disc);
         disc.Validate();
         if (size is < 64 or > 8192)
-            throw new ArgumentOutOfRangeException(nameof(size), "BD preview size must be 64..8192 pixels.");
+            throw new ArgumentOutOfRangeException(nameof(size), L.T("蓝光预览尺寸必须在 64–8192 px 之间。"));
     }
 
     private static void SetPixel(byte[] pixels, int pixel, byte level)

@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 
@@ -21,14 +22,14 @@ internal sealed class CdDataRawImageSession : ICdRawImageSession
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
         ArgumentNullException.ThrowIfNull(isoContent);
-        if (_image is not null) throw new InvalidOperationException("The CD DAO image has already been created.");
+        if (_image is not null) throw new InvalidOperationException(L.T("The CD DAO image has already been created."));
         isoContent.Stat(out STATSTG stat, 1);
         if (stat.cbSize < 300L * 2048 || stat.cbSize % 2048 != 0)
-            throw new ArgumentException("CD DAO data tracks require at least 300 complete 2048-byte sectors.", nameof(isoContent));
+            throw new ArgumentException(L.T("CD DAO data tracks require at least 300 complete 2048-byte sectors."), nameof(isoContent));
         long sectors = stat.cbSize / 2048;
         IStream template = _templateSession.CreateImage(new ZeroAudioStream(checked(sectors * 2352)));
         if (_templateSession.StartOfLeadout != sectors)
-            throw new InvalidOperationException("IMAPI changed the requested CD data track length.");
+            throw new InvalidOperationException(L.T("IMAPI changed the requested CD data track length."));
         _image = new CdDataRawImageStream(template, isoContent, sectors);
         return _image;
     }
@@ -57,7 +58,7 @@ internal sealed class CdDataRawImageSession : ICdRawImageSession
         public void Seek(long offset, int origin, IntPtr newPosition)
         {
             long target = origin switch { 0 => offset, 1 => checked(_position + offset), 2 => checked(length + offset), _ => -1 };
-            if (target < 0 || target > length) throw new COMException("Invalid template position.", unchecked((int)0x80030001));
+            if (target < 0 || target > length) throw new COMException(L.T("Invalid template position."), unchecked((int)0x80030001));
             _position = target;
             if (newPosition != IntPtr.Zero) Marshal.WriteInt64(newPosition, _position);
         }
@@ -100,7 +101,7 @@ internal sealed class CdDataRawImageStream : IStream, IDisposable
         template.Stat(out STATSTG stat, 1);
         _length = stat.cbSize;
         if (_length % RawSectorBytes != 0 || _length <= (ProgramStartSector + sectors) * RawSectorBytes)
-            throw new InvalidOperationException("IMAPI returned an invalid DAO-96 template length.");
+            throw new InvalidOperationException(L.T("IMAPI returned an invalid DAO-96 template length."));
         _readCount = Marshal.AllocCoTaskMem(sizeof(int));
     }
 
@@ -151,7 +152,7 @@ internal sealed class CdDataRawImageStream : IStream, IDisposable
             Marshal.WriteInt32(_readCount, 0);
             input.Read(buffer, needed, _readCount);
             int count = Marshal.ReadInt32(_readCount);
-            if (count <= 0 || count > needed) throw new EndOfStreamException("CD DAO source ended inside a sector.");
+            if (count <= 0 || count > needed) throw new EndOfStreamException(L.T("CD DAO source ended inside a sector."));
             if (offset > 0) Buffer.BlockCopy(buffer, 0, destination, offset, count);
             offset += count;
         }
@@ -159,7 +160,7 @@ internal sealed class CdDataRawImageStream : IStream, IDisposable
 
     internal static void PatchDataSubchannel(Span<byte> subchannel, bool program)
     {
-        if (subchannel.Length != 96) throw new ArgumentException("Expected a 96-byte subchannel block.");
+        if (subchannel.Length != 96) throw new ArgumentException(L.T("Expected a 96-byte subchannel block."));
         Span<byte> q = stackalloc byte[12];
         q.Clear();
         for (int bit = 0; bit < 96; bit++)
@@ -188,7 +189,7 @@ internal sealed class CdDataRawImageStream : IStream, IDisposable
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
         long target = origin switch { 0 => offset, 1 => checked(_position + offset), 2 => checked(_length + offset), _ => -1 };
-        if (target < 0 || target > _length) throw new COMException("Invalid DAO image position.", unchecked((int)0x80030001));
+        if (target < 0 || target > _length) throw new COMException(L.T("Invalid DAO image position."), unchecked((int)0x80030001));
         if (!_hasRead && (target == 0 || target == _length))
         {
             _template.Seek(target, 0, IntPtr.Zero);
@@ -196,7 +197,7 @@ internal sealed class CdDataRawImageStream : IStream, IDisposable
             _frameOffset = RawSectorBytes;
         }
         else if (target < _position)
-            throw new COMException("The CD data DAO image is forward-only.", unchecked((int)0x80030001));
+            throw new COMException(L.T("The CD data DAO image is forward-only."), unchecked((int)0x80030001));
         else if (target > _position)
         {
             byte[] discard = new byte[64 * 1024];
@@ -228,7 +229,7 @@ internal sealed class CdDataRawImageStream : IStream, IDisposable
                 target.Write(remaining, taken - offset, _readCount);
                 int copied = Marshal.ReadInt32(_readCount);
                 if (copied <= 0 || copied > taken - offset)
-                    throw new IOException("The CD DAO copy target did not accept the requested bytes.");
+                    throw new IOException(L.T("The CD DAO copy target did not accept the requested bytes."));
                 offset += copied;
                 totalWritten += copied;
             }

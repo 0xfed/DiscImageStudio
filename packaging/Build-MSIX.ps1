@@ -1,4 +1,4 @@
-param(
+﻿param(
     [Parameter(Mandatory = $true)]
     [string]$IdentityName,
 
@@ -10,21 +10,24 @@ param(
     [ValidatePattern('^\d+\.\d+\.\d+\.\d+$')]
     [string]$Version,
     [string]$CertificateThumbprint,
-    [switch]$UnsignedDevelopmentPackage
+    [switch]$UnsignedDevelopmentPackage,
+    [string]$Language
 )
 
 $ErrorActionPreference = "Stop"
+. (Join-Path $PSScriptRoot 'Localization.ps1')
+Initialize-ToolLanguage -Language $Language -Explicit ($PSBoundParameters.ContainsKey('Language'))
 
 if ([string]::IsNullOrEmpty($Version)) {
-    $metadata = & (Join-Path $PSScriptRoot "Get-ReleaseMetadata.ps1")
+    $metadata = & (Join-Path $PSScriptRoot "Get-ReleaseMetadata.ps1") -Language $script:DiscToolLanguage
     if ($metadata.Prerelease) {
-        throw "Store packages require a stable version. Clear VersionSuffix or explicitly select a numeric test-package version."
+        throw (Get-ToolText 'Packaging.StableRequired')
     }
     $Version = $metadata.FileVersion
 }
 
 if ($UnsignedDevelopmentPackage -and -not [string]::IsNullOrWhiteSpace($CertificateThumbprint)) {
-    throw "UnsignedDevelopmentPackage cannot be combined with CertificateThumbprint."
+    throw (Get-ToolText 'Packaging.SigningConflict')
 }
 
 $versionParts = $Version.Split('.') | ForEach-Object { [int]$_ }
@@ -33,13 +36,13 @@ if (($versionParts.Count -ne 4) -or
     ($versionParts[0] -eq 0) -or
     $invalidVersionPart -or
     ($versionParts[3] -ne 0)) {
-    throw "Store package version must be A.B.C.0; A must be 1..65535 and B/C must be 0..65535."
+    throw (Get-ToolText 'Packaging.StoreVersion')
 }
 
 $workspaceRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot ".."))
 $artifactRoot = [IO.Path]::GetFullPath((Join-Path $workspaceRoot "artifacts\msix"))
 if (-not $artifactRoot.StartsWith($workspaceRoot, [StringComparison]::OrdinalIgnoreCase)) {
-    throw "Packaging output resolved outside the workspace."
+    throw (Get-ToolText 'Packaging.PackageOutside')
 }
 
 $publishDirectory = Join-Path $artifactRoot "publish"
@@ -79,14 +82,14 @@ New-Item -ItemType Directory -Path $publishDirectory, $installDirectory, $assetD
 
 & dotnet restore $projectPath --runtime win-x64
 if ($LASTEXITCODE -ne 0) {
-    throw "dotnet restore failed with exit code $LASTEXITCODE."
+    throw (Get-ToolText 'Packaging.CommandFailed' @('dotnet restore', $LASTEXITCODE))
 }
 
 & dotnet clean $projectPath `
     --configuration Release `
     --runtime win-x64
 if ($LASTEXITCODE -ne 0) {
-    throw "dotnet clean failed with exit code $LASTEXITCODE."
+    throw (Get-ToolText 'Packaging.CommandFailed' @('dotnet clean', $LASTEXITCODE))
 }
 
 & dotnet publish $projectPath `
@@ -100,20 +103,20 @@ if ($LASTEXITCODE -ne 0) {
     -p:PublishSingleFile=true `
     -p:IncludeNativeLibrariesForSelfExtract=true
 if ($LASTEXITCODE -ne 0) {
-    throw "dotnet publish failed with exit code $LASTEXITCODE."
+    throw (Get-ToolText 'Packaging.CommandFailed' @('dotnet publish', $LASTEXITCODE))
 }
 
 if ((Get-SourceSnapshot) -ne $sourceSnapshotBeforePublish) {
-    throw "Source files changed while publishing. Run the package build again from a stable workspace."
+    throw (Get-ToolText 'Packaging.SourceChanged')
 }
 
 $publishedExecutable = Join-Path $publishDirectory "DiscImageStudio.exe"
 if ([Diagnostics.FileVersionInfo]::GetVersionInfo($publishedExecutable).FileVersion -ne $Version) {
-    throw "Published executable version does not match the MSIX manifest version."
+    throw (Get-ToolText 'Packaging.ManifestVersion')
 }
-& $publishedExecutable burn-build-info
+& $publishedExecutable burn-build-info --language $script:DiscToolLanguage
 if ($LASTEXITCODE -ne 0) {
-    throw "Published executable contains the legacy CD session-finalization setter."
+    throw (Get-ToolText 'Packaging.LegacySetter')
 }
 
 Get-ChildItem -LiteralPath $publishDirectory -Filter "*.pdb" -File | Remove-Item -Force
@@ -132,7 +135,7 @@ function Escape-Xml([string]$Value) {
 $effectivePublisher = $Publisher
 if ($UnsignedDevelopmentPackage) {
     if ($Publisher -match '(^|,\s*)OID\.2\.25\.\d+=1($|,)') {
-        throw "Publisher already contains an unsigned-package OID. Pass only the normal CN when using UnsignedDevelopmentPackage."
+        throw (Get-ToolText 'Packaging.PublisherOid')
     }
 
     # Windows recognizes this exact, fixed marker as the unsigned publisher
@@ -156,12 +159,12 @@ $makeAppx = Get-ChildItem -LiteralPath $windowsKitsBin -Filter "makeappx.exe" -R
     Sort-Object FullName -Descending |
     Select-Object -First 1
 if ($null -eq $makeAppx) {
-    throw "MakeAppx.exe was not found. Install the Windows 10/11 SDK packaging tools."
+    throw (Get-ToolText 'Packaging.MakeAppxMissing')
 }
 
 & $makeAppx.FullName pack /d $stagingDirectory /p $packagePath /o
 if ($LASTEXITCODE -ne 0) {
-    throw "MakeAppx failed with exit code $LASTEXITCODE."
+    throw (Get-ToolText 'Packaging.CommandFailed' @('MakeAppx', $LASTEXITCODE))
 }
 
 if (-not [string]::IsNullOrWhiteSpace($CertificateThumbprint)) {
@@ -170,24 +173,24 @@ if (-not [string]::IsNullOrWhiteSpace($CertificateThumbprint)) {
         Sort-Object FullName -Descending |
         Select-Object -First 1
     if ($null -eq $signTool) {
-        throw "SignTool.exe was not found. Install the Windows 10/11 SDK signing tools."
+        throw (Get-ToolText 'Packaging.SignToolMissing')
     }
 
     & $signTool.FullName sign /sha1 $CertificateThumbprint /fd SHA256 $packagePath
     if ($LASTEXITCODE -ne 0) {
-        throw "SignTool failed with exit code $LASTEXITCODE."
+        throw (Get-ToolText 'Packaging.CommandFailed' @('SignTool', $LASTEXITCODE))
     }
 }
 
 $hash = Get-FileHash -LiteralPath $packagePath -Algorithm SHA256
-Write-Host "MSIX ready: $packagePath"
+Write-Host (Get-ToolText 'Packaging.MsixReady' @($packagePath))
 Write-Host "SHA-256: $($hash.Hash)"
 if ([string]::IsNullOrWhiteSpace($CertificateThumbprint)) {
     if ($UnsignedDevelopmentPackage) {
-        Write-Host "Unsigned development package ready. Install from an elevated PowerShell with Add-AppxPackage -AllowUnsigned."
-        Write-Host "Development publisher: $effectivePublisher"
+        Write-Host (Get-ToolText 'Packaging.UnsignedReady')
+        Write-Host (Get-ToolText 'Packaging.DevelopmentPublisher' @($effectivePublisher))
     }
     else {
-        Write-Host "Package is unsigned, which is appropriate for Partner Center submission. Sign it to sideload locally."
+        Write-Host (Get-ToolText 'Packaging.StoreUnsigned')
     }
 }

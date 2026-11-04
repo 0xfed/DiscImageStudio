@@ -1,0 +1,975 @@
+{
+  "蓝光会话已经取得刻录机访问权。": {
+    "en": "The Blu-ray session already has access to the recorder.",
+    "zh-CN": "蓝光会话已经取得刻录机访问权。",
+    "zh-TW": "藍光工作階段已取得燒錄機存取權。",
+    "ja": "Blu-ray セッションは既にレコーダーへのアクセス権を取得しています。",
+    "tr": "Blu-ray oturumu zaten yazıcıya erişim sağladı."
+  },
+  "蓝光写入参数已经设置。": {
+    "en": "Blu-ray write parameters have already been configured.",
+    "zh-CN": "蓝光写入参数已经设置。",
+    "zh-TW": "藍光寫入參數已設定。",
+    "ja": "Blu-ray の書き込みパラメーターは既に設定されています。",
+    "tr": "Blu-ray yazma parametreleri zaten ayarlandı."
+  },
+  "必须先设置蓝光顺序写入参数。": {
+    "en": "Configure Blu-ray sequential write parameters first.",
+    "zh-CN": "必须先设置蓝光顺序写入参数。",
+    "zh-TW": "必須先設定藍光循序寫入參數。",
+    "ja": "先に Blu-ray のシーケンシャル書き込みパラメーターを設定してください。",
+    "tr": "Önce Blu-ray sıralı yazma parametrelerini ayarlayın."
+  },
+  "尚未独占并锁定蓝光刻录机。": {
+    "en": "The Blu-ray recorder has not been exclusively acquired and locked.",
+    "zh-CN": "尚未独占并锁定蓝光刻录机。",
+    "zh-TW": "尚未獨占並鎖定藍光燒錄機。",
+    "ja": "Blu-ray レコーダーの排他アクセスとロックがまだ取得されていません。",
+    "tr": "Blu-ray yazıcısı henüz özel erişimle alınmadı ve kilitlenmedi."
+  },
+  "蓝光会话仍有未释放的刻录机访问权。": {
+    "en": "The Blu-ray session still holds unreleased recorder access.",
+    "zh-CN": "蓝光会话仍有未释放的刻录机访问权。",
+    "zh-TW": "藍光工作階段仍有未釋放的燒錄機存取權。",
+    "ja": "Blu-ray セッションには未解放のレコーダーアクセス権が残っています。",
+    "tr": "Blu-ray oturumunun henüz bırakılmamış yazıcı erişimi var."
+  },
+  "解除盘片弹出保护": {
+    "en": "Remove disc-ejection protection",
+    "zh-CN": "解除盘片弹出保护",
+    "zh-TW": "解除光碟退出保護",
+    "ja": "ディスク取り出し保護の解除",
+    "tr": "Disk çıkarma korumasını kaldır"
+  },
+  "恢复介质变化通知": {
+    "en": "Restore media-change notifications",
+    "zh-CN": "恢复介质变化通知",
+    "zh-TW": "恢復媒體變更通知",
+    "ja": "メディア変更通知の復元",
+    "tr": "Ortam değişikliği bildirimlerini geri yükle"
+  },
+  "释放刻录机独占访问": {
+    "en": "Release exclusive recorder access",
+    "zh-CN": "释放刻录机独占访问",
+    "zh-TW": "釋放燒錄機獨占存取權",
+    "ja": "レコーダーの排他アクセスの解放",
+    "tr": "Yazıcıya özel erişimi bırak"
+  },
+  "释放蓝光写入引擎": {
+    "en": "Release the Blu-ray write engine",
+    "zh-CN": "释放蓝光写入引擎",
+    "zh-TW": "釋放藍光寫入引擎",
+    "ja": "Blu-ray 書き込みエンジンの解放",
+    "tr": "Blu-ray yazma motorunu bırak"
+  },
+  "蓝光清理重试：{0}失败（HRESULT 0x{1:X8}）：{2}": {
+    "en": "Blu-ray cleanup retry: {0} failed (HRESULT 0x{1:X8}): {2}",
+    "zh-CN": "蓝光清理重试：{0}失败（HRESULT 0x{1:X8}）：{2}",
+    "zh-TW": "藍光清理重試：{0}失敗（HRESULT 0x{1:X8}）：{2}",
+    "ja": "Blu-ray クリーンアップ再試行：{0}に失敗（HRESULT 0x{1:X8}）：{2}",
+    "tr": "Blu-ray temizleme yeniden denemesi: {0} başarısız (HRESULT 0x{1:X8}): {2}"
+  },
+  "蓝光清理：{0}失败（HRESULT 0x{1:X8}）：{2}": {
+    "en": "Blu-ray cleanup: {0} failed (HRESULT 0x{1:X8}): {2}",
+    "zh-CN": "蓝光清理：{0}失败（HRESULT 0x{1:X8}）：{2}",
+    "zh-TW": "藍光清理：{0}失敗（HRESULT 0x{1:X8}）：{2}",
+    "ja": "Blu-ray クリーンアップ：{0}に失敗（HRESULT 0x{1:X8}）：{2}",
+    "tr": "Blu-ray temizleme: {0} başarısız (HRESULT 0x{1:X8}): {2}"
+  },
+  "正在准备盘片和写入设备…": {
+    "en": "Preparing the disc and writing device…",
+    "zh-CN": "正在准备盘片和写入设备…",
+    "zh-TW": "正在準備光碟與寫入裝置…",
+    "ja": "ディスクと書き込み装置を準備中…",
+    "tr": "Disk ve yazma cihazı hazırlanıyor…"
+  },
+  "正在写入，等待刻录机进度…": {
+    "en": "Writing; waiting for recorder progress…",
+    "zh-CN": "正在写入，等待刻录机进度…",
+    "zh-TW": "正在寫入，等待燒錄機進度…",
+    "ja": "書き込み中。レコーダーの進捗を待機中…",
+    "tr": "Yazılıyor; yazıcı ilerlemesi bekleniyor…"
+  },
+  "正在写入 CD 导入区…": {
+    "en": "Writing the CD lead-in…",
+    "zh-CN": "正在写入 CD 导入区…",
+    "zh-TW": "正在寫入 CD 導入區…",
+    "ja": "CD リードインを書き込み中…",
+    "tr": "CD lead-in alanı yazılıyor…"
+  },
+  "刻录机已接收": {
+    "en": "Accepted by the recorder",
+    "zh-CN": "刻录机已接收",
+    "zh-TW": "燒錄機已接收",
+    "ja": "レコーダー受信済み",
+    "tr": "Yazıcı tarafından kabul edildi"
+  },
+  "正在刻录": {
+    "en": "Writing",
+    "zh-CN": "正在刻录",
+    "zh-TW": "正在燒錄",
+    "ja": "書き込み中",
+    "tr": "Yazılıyor"
+  },
+  "未返回有效的设备 Sense 数据": {
+    "en": "No valid device Sense data returned",
+    "zh-CN": "未返回有效的设备 Sense 数据",
+    "zh-TW": "未傳回有效的裝置 Sense 資料",
+    "ja": "有効な装置 Sense データが返されませんでした",
+    "tr": "Geçerli cihaz Sense verisi dönmedi"
+  },
+  "，Windows 报告设备未连接": {
+    "en": ", Windows reports that the device is not connected",
+    "zh-CN": "，Windows 报告设备未连接",
+    "zh-TW": "，Windows 回報裝置未連線",
+    "ja": "、Windows は装置が接続されていないと報告しています",
+    "tr": ", Windows cihazın bağlı olmadığını bildiriyor"
+  },
+  "蓝光命令 0x{0:X2} 失败（HRESULT 0x{1:X8}，{2}{3}）。": {
+    "en": "Blu-ray command 0x{0:X2} failed (HRESULT 0x{1:X8}, {2}{3}).",
+    "zh-CN": "蓝光命令 0x{0:X2} 失败（HRESULT 0x{1:X8}，{2}{3}）。",
+    "zh-TW": "藍光命令 0x{0:X2} 失敗（HRESULT 0x{1:X8}，{2}{3}）。",
+    "ja": "Blu-ray コマンド 0x{0:X2} に失敗（HRESULT 0x{1:X8}、{2}{3}）。",
+    "tr": "Blu-ray komutu 0x{0:X2} başarısız (HRESULT 0x{1:X8}, {2}{3})."
+  },
+  "GET CONFIGURATION 返回了无效的长度字段。": {
+    "en": "GET CONFIGURATION returned an invalid length field.",
+    "zh-CN": "GET CONFIGURATION 返回了无效的长度字段。",
+    "zh-TW": "GET CONFIGURATION 傳回了無效的長度欄位。",
+    "ja": "GET CONFIGURATION が無効な長さフィールドを返しました。",
+    "tr": "GET CONFIGURATION geçersiz uzunluk alanı döndürdü."
+  },
+  "蓝光盘未报告有效的可写轨道编号。": {
+    "en": "The Blu-ray disc did not report a valid writable track number.",
+    "zh-CN": "蓝光盘未报告有效的可写轨道编号。",
+    "zh-TW": "藍光光碟未回報有效的可寫軌道編號。",
+    "ja": "Blu-ray ディスクが有効な書き込み可能トラック番号を報告しませんでした。",
+    "tr": "Blu-ray diski geçerli bir yazılabilir iz numarası bildirmedi."
+  },
+  "蓝光格式容量描述符长度无效。": {
+    "en": "Invalid Blu-ray format-capacity descriptor length.",
+    "zh-CN": "蓝光格式容量描述符长度无效。",
+    "zh-TW": "藍光格式容量描述元長度無效。",
+    "ja": "Blu-ray のフォーマット容量記述子の長さが無効です。",
+    "tr": "Blu-ray biçim kapasitesi tanımlayıcısının uzunluğu geçersiz."
+  },
+  "蓝光盘返回了不同的轨道编号，已停止刻录操作。": {
+    "en": "The Blu-ray disc returned a different track number; writing has stopped.",
+    "zh-CN": "蓝光盘返回了不同的轨道编号，已停止刻录操作。",
+    "zh-TW": "藍光光碟傳回了不同的軌道編號，已停止燒錄作業。",
+    "ja": "Blu-ray ディスクが異なるトラック番号を返したため、書き込みを停止しました。",
+    "tr": "Blu-ray diski farklı bir iz numarası döndürdü; yazma durduruldu."
+  },
+  "蓝光轨道已标记为损坏，已停止刻录操作。": {
+    "en": "The Blu-ray track is marked damaged; writing has stopped.",
+    "zh-CN": "蓝光轨道已标记为损坏，已停止刻录操作。",
+    "zh-TW": "藍光軌道已標記為損壞，已停止燒錄作業。",
+    "ja": "Blu-ray トラックが破損としてマークされているため、書き込みを停止しました。",
+    "tr": "Blu-ray izi hasarlı olarak işaretlenmiş; yazma durduruldu."
+  },
+  "蓝光封盘后未返回有效的已完成盘片状态。": {
+    "en": "The Blu-ray disc did not return a valid completed-disc state after finalization.",
+    "zh-CN": "蓝光封盘后未返回有效的已完成盘片状态。",
+    "zh-TW": "藍光封片後未傳回有效的已完成光碟狀態。",
+    "ja": "ファイナライズ後、Blu-ray ディスクが有効な完了状態を返しませんでした。",
+    "tr": "Blu-ray diski sonlandırıldıktan sonra geçerli bir tamamlanmış disk durumu döndürmedi."
+  },
+  "等待蓝光盘确认封盘完成超时。": {
+    "en": "Timed out waiting for the Blu-ray disc to confirm finalization.",
+    "zh-CN": "等待蓝光盘确认封盘完成超时。",
+    "zh-TW": "等待藍光光碟確認封片完成逾時。",
+    "ja": "Blu-ray ディスクによるファイナライズ完了の確認待ちがタイムアウトしました。",
+    "tr": "Blu-ray diskinin sonlandırmayı onaylaması beklenirken zaman aşımı oluştu."
+  },
+  "蓝光闭轨后未返回有效的已写入盘片状态。": {
+    "en": "The Blu-ray disc did not return a valid written-disc state after track closure.",
+    "zh-CN": "蓝光闭轨后未返回有效的已写入盘片状态。",
+    "zh-TW": "藍光閉軌後未傳回有效的已寫入光碟狀態。",
+    "ja": "トラックを閉じた後、Blu-ray ディスクが有効な書き込み済み状態を返しませんでした。",
+    "tr": "Blu-ray diski iz kapatıldıktan sonra geçerli bir yazılmış disk durumu döndürmedi."
+  },
+  "等待蓝光盘确认闭轨完成超时。": {
+    "en": "Timed out waiting for the Blu-ray disc to confirm track closure.",
+    "zh-CN": "等待蓝光盘确认闭轨完成超时。",
+    "zh-TW": "等待藍光光碟確認閉軌完成逾時。",
+    "ja": "Blu-ray ディスクによるトラッククローズ完了の確認待ちがタイムアウトしました。",
+    "tr": "Blu-ray diskinin iz kapatmayı onaylaması beklenirken zaman aşımı oluştu."
+  },
+  "等待蓝光盘完成写入收尾超时。": {
+    "en": "Timed out waiting for the Blu-ray disc to finish finalizing the write.",
+    "zh-CN": "等待蓝光盘完成写入收尾超时。",
+    "zh-TW": "等待藍光光碟完成寫入收尾逾時。",
+    "ja": "Blu-ray ディスクの書き込み終了処理待ちがタイムアウトしました。",
+    "tr": "Blu-ray diskinin yazma bitiş işlemlerini tamamlaması beklenirken zaman aşımı oluştu."
+  },
+  "{0} 返回的数据被截断（{1} 字节）。": {
+    "en": "{0} returned truncated data ({1} bytes).",
+    "zh-CN": "{0} 返回的数据被截断（{1} 字节）。",
+    "zh-TW": "{0} 傳回的資料遭截斷（{1} 位元組）。",
+    "ja": "{0} が切り詰められたデータ（{1} バイト）を返しました。",
+    "tr": "{0} eksik veri döndürdü ({1} bayt)."
+  },
+  "{0} 返回了无效的长度字段。": {
+    "en": "{0} returned an invalid length field.",
+    "zh-CN": "{0} 返回了无效的长度字段。",
+    "zh-TW": "{0} 傳回了無效的長度欄位。",
+    "ja": "{0} が無効な長さフィールドを返しました。",
+    "tr": "{0} geçersiz uzunluk alanı döndürdü."
+  },
+  "IMAPI 返回了超过接收缓冲区的长度。": {
+    "en": "IMAPI returned a length exceeding the receive buffer.",
+    "zh-CN": "IMAPI 返回了超过接收缓冲区的长度。",
+    "zh-TW": "IMAPI 傳回了超過接收緩衝區的長度。",
+    "ja": "IMAPI が受信バッファを超える長さを返しました。",
+    "tr": "IMAPI alım arabelleğini aşan bir uzunluk döndürdü."
+  },
+  " 无返回 Sense 数据。": {
+    "en": " No Sense data returned.",
+    "zh-CN": " 无返回 Sense 数据。",
+    "zh-TW": " 未傳回 Sense 資料。",
+    "ja": " Sense データが返されませんでした。",
+    "tr": " Sense verisi dönmedi."
+  },
+  " 原始 Sense={0}。": {
+    "en": " Raw Sense={0}.",
+    "zh-CN": " 原始 Sense={0}。",
+    "zh-TW": " 原始 Sense={0}。",
+    "ja": " 生の Sense={0}。",
+    "tr": " Ham Sense={0}."
+  },
+  "蓝光 WRITE(10) 0x2A 失败：LBA={0:N0}，扇区={1}，超时设置={2} 秒，命令耗时={3:F3} 秒；{4}{5} 未自动重试此写入命令。{6}": {
+    "en": "Blu-ray WRITE(10) 0x2A failed: LBA={0:N0}, sectors={1}, timeout setting={2}s, command elapsed={3:F3}s; {4}{5} This write command was not retried automatically.{6}",
+    "zh-CN": "蓝光 WRITE(10) 0x2A 失败：LBA={0:N0}，扇区={1}，超时设置={2} 秒，命令耗时={3:F3} 秒；{4}{5} 未自动重试此写入命令。{6}",
+    "zh-TW": "藍光 WRITE(10) 0x2A 失敗：LBA={0:N0}，磁區={1}，逾時設定={2} 秒，命令耗時={3:F3} 秒；{4}{5} 未自動重試此寫入命令。{6}",
+    "ja": "Blu-ray WRITE(10) 0x2A に失敗：LBA={0:N0}、セクター={1}、タイムアウト設定={2} 秒、コマンド所要時間={3:F3} 秒。{4}{5} この書き込みコマンドは自動再試行していません。{6}",
+    "tr": "Blu-ray WRITE(10) 0x2A başarısız: LBA={0:N0}, sektör={1}, zaman aşımı ayarı={2} sn, komut süresi={3:F3} sn; {4}{5} Bu yazma komutu otomatik olarak yeniden denenmedi.{6}"
+  },
+  "写入诊断：设备已接受 {0:N0} 字节 / {1:N0} 次命令；累计源流读取（含阻塞及块拷贝）={2:F3} 秒，累计 WRITE 命令={3:F3} 秒，本次写入调用={4:F3} 秒（耗时累计包含失败尝试）。": {
+    "en": "Write diagnostics: device accepted {0:N0} bytes / {1:N0} commands; total source-stream reads (including blocking and block copies)={2:F3}s, total WRITE commands={3:F3}s, this write call={4:F3}s (elapsed totals include the failed attempt).",
+    "zh-CN": "写入诊断：设备已接受 {0:N0} 字节 / {1:N0} 次命令；累计源流读取（含阻塞及块拷贝）={2:F3} 秒，累计 WRITE 命令={3:F3} 秒，本次写入调用={4:F3} 秒（耗时累计包含失败尝试）。",
+    "zh-TW": "寫入診斷：裝置已接受 {0:N0} 位元組 / {1:N0} 次命令；累計來源串流讀取（含阻塞及區塊複製）={2:F3} 秒，累計 WRITE 命令={3:F3} 秒，本次寫入呼叫={4:F3} 秒（耗時累計包含失敗嘗試）。",
+    "ja": "書き込み診断：装置受信済み {0:N0} バイト / {1:N0} コマンド。ソースストリーム読み取り合計（ブロッキングとブロックコピーを含む）={2:F3} 秒、WRITE コマンド合計={3:F3} 秒、今回の書き込み呼び出し={4:F3} 秒（合計時間は失敗した試行を含む）。",
+    "tr": "Yazma tanılaması: cihaz {0:N0} bayt / {1:N0} komut kabul etti; toplam kaynak akışı okuması (engellenme ve blok kopyaları dahil)={2:F3} sn, toplam WRITE komutları={3:F3} sn, bu yazma çağrısı={4:F3} sn (toplam süreler başarısız girişimi içerir)."
+  },
+  "失败块：源流读取={0:F3} 秒，WRITE={1:F3} 秒。": {
+    "en": "Failed block: source-stream read={0:F3}s, WRITE={1:F3}s.",
+    "zh-CN": "失败块：源流读取={0:F3} 秒，WRITE={1:F3} 秒。",
+    "zh-TW": "失敗區塊：來源串流讀取={0:F3} 秒，WRITE={1:F3} 秒。",
+    "ja": "失敗したブロック：ソースストリーム読み取り={0:F3} 秒、WRITE={1:F3} 秒。",
+    "tr": "Başarısız blok: kaynak akışı okuması={0:F3} sn, WRITE={1:F3} sn."
+  },
+  "最近 {0} 次成功 WRITE（最多 8 次，按时间顺序）：": {
+    "en": "Last {0} successful WRITE commands (at most 8, in chronological order):",
+    "zh-CN": "最近 {0} 次成功 WRITE（最多 8 次，按时间顺序）：",
+    "zh-TW": "最近 {0} 次成功 WRITE（最多 8 次，依時間順序）：",
+    "ja": "直近 {0} 回の成功した WRITE（最大 8 回、時系列順）：",
+    "tr": "Son {0} başarılı WRITE komutu (en fazla 8, zaman sırasıyla):"
+  },
+  "LBA={0:N0}，扇区={1}，源流读取={2:F3} 秒，WRITE={3:F3} 秒": {
+    "en": "LBA={0:N0}, sectors={1}, source-stream read={2:F3}s, WRITE={3:F3}s",
+    "zh-CN": "LBA={0:N0}，扇区={1}，源流读取={2:F3} 秒，WRITE={3:F3} 秒",
+    "zh-TW": "LBA={0:N0}，磁區={1}，來源串流讀取={2:F3} 秒，WRITE={3:F3} 秒",
+    "ja": "LBA={0:N0}、セクター={1}、ソースストリーム読み取り={2:F3} 秒、WRITE={3:F3} 秒",
+    "tr": "LBA={0:N0}, sektör={1}, kaynak akışı okuması={2:F3} sn, WRITE={3:F3} sn"
+  },
+  "蓝光流长度与计划写入的扇区数不一致。": {
+    "en": "The Blu-ray stream length does not match the planned sector count.",
+    "zh-CN": "蓝光流长度与计划写入的扇区数不一致。",
+    "zh-TW": "藍光串流長度與預計寫入的磁區數不符。",
+    "ja": "Blu-ray ストリームの長さが予定の書き込みセクター数と一致しません。",
+    "tr": "Blu-ray akış uzunluğu planlanan sektör sayısıyla uyuşmuyor."
+  },
+  "蓝光写入必须从源数据流的起始位置开始。": {
+    "en": "Blu-ray writing must start at the beginning of the source stream.",
+    "zh-CN": "蓝光写入必须从源数据流的起始位置开始。",
+    "zh-TW": "藍光寫入必須從來源資料串流的起始位置開始。",
+    "ja": "Blu-ray 書き込みはソースデータストリームの先頭から開始する必要があります。",
+    "tr": "Blu-ray yazma kaynak veri akışının başlangıcından başlamalıdır."
+  },
+  "蓝光流未提供完整写入块：已读取 {0} / {1} 字节，本次返回 {2} 字节。": {
+    "en": "The Blu-ray stream did not supply a complete write block: {0} / {1} bytes read; this read returned {2} bytes.",
+    "zh-CN": "蓝光流未提供完整写入块：已读取 {0} / {1} 字节，本次返回 {2} 字节。",
+    "zh-TW": "藍光串流未提供完整寫入區塊：已讀取 {0} / {1} 位元組，本次傳回 {2} 位元組。",
+    "ja": "Blu-ray ストリームが完全な書き込みブロックを供給しませんでした。読み取り済み {0} / {1} バイト、今回の戻り値 {2} バイト。",
+    "tr": "Blu-ray akışı tam yazma bloğu sağlamadı: {0} / {1} bayt okundu; bu okuma {2} bayt döndürdü."
+  },
+  "蓝光刻录已取消。": {
+    "en": "Blu-ray writing was cancelled.",
+    "zh-CN": "蓝光刻录已取消。",
+    "zh-TW": "藍光燒錄已取消。",
+    "ja": "Blu-ray 書き込みをキャンセルしました。",
+    "tr": "Blu-ray yazma iptal edildi."
+  },
+  "测量时间不足": {
+    "en": "Insufficient measurement time",
+    "zh-CN": "测量时间不足",
+    "zh-TW": "測量時間不足",
+    "ja": "測定時間不足",
+    "tr": "Ölçüm süresi yetersiz"
+  },
+  "（最后窗口）": {
+    "en": " (final window)",
+    "zh-CN": "（最后窗口）",
+    "zh-TW": "（最後時段）",
+    "ja": "（最終区間）",
+    "tr": " (son zaman aralığı)"
+  },
+  "BD 写入诊断{0}：窗口 {1:F3} 秒，设备接受速度={2}；源流读取（含阻塞/拷贝）={3:F3} 秒（{4}），WRITE（含传输/设备等待）={5:F3} 秒（{6}）；累计接受={7:N0} 字节。源流读取耗时不是纯 CPU 生成耗时。": {
+    "en": "BD write diagnostics{0}: window {1:F3}s, device acceptance rate={2}; source-stream reads (including blocking/copying)={3:F3}s ({4}), WRITE (including transfer/device waits)={5:F3}s ({6}); total accepted={7:N0} bytes. Source-stream read time is not pure CPU generation time.",
+    "zh-CN": "BD 写入诊断{0}：窗口 {1:F3} 秒，设备接受速度={2}；源流读取（含阻塞/拷贝）={3:F3} 秒（{4}），WRITE（含传输/设备等待）={5:F3} 秒（{6}）；累计接受={7:N0} 字节。源流读取耗时不是纯 CPU 生成耗时。",
+    "zh-TW": "BD 寫入診斷{0}：時段 {1:F3} 秒，裝置接收速率={2}；來源串流讀取（含阻塞／複製）={3:F3} 秒（{4}），WRITE（含傳輸／裝置等待）={5:F3} 秒（{6}）；累計接收={7:N0} 位元組。來源串流讀取耗時不是純 CPU 生成耗時。",
+    "ja": "BD 書き込み診断{0}：区間 {1:F3} 秒、装置受信速度={2}。ソースストリーム読み取り（ブロッキング／コピーを含む）={3:F3} 秒（{4}）、WRITE（転送／装置待機を含む）={5:F3} 秒（{6}）。受信合計={7:N0} バイト。ソースストリーム読み取り時間は CPU のみの生成時間ではありません。",
+    "tr": "BD yazma tanılaması{0}: zaman aralığı {1:F3} sn, cihaz kabul hızı={2}; kaynak akışı okuması (engellenme/kopyalama dahil)={3:F3} sn ({4}), WRITE (aktarım/cihaz beklemeleri dahil)={5:F3} sn ({6}); toplam kabul edilen={7:N0} bayt. Kaynak akışı okuma süresi yalnızca CPU üretim süresi değildir."
+  },
+  "刻录适配器的页对齐单次传输上限为 {0:N0} 字节，无法提交 {1:N0} 字节的完整蓝光写入块。": {
+    "en": "The recorder adapter's maximum page-aligned transfer is {0:N0} bytes; a complete {1:N0}-byte Blu-ray write block cannot be submitted.",
+    "zh-CN": "刻录适配器的页对齐单次传输上限为 {0:N0} 字节，无法提交 {1:N0} 字节的完整蓝光写入块。",
+    "zh-TW": "燒錄介面卡的頁面對齊單次傳輸上限為 {0:N0} 位元組，無法提交 {1:N0} 位元組的完整藍光寫入區塊。",
+    "ja": "レコーダーアダプターのページ境界に整列した 1 回の転送上限は {0:N0} バイトで、完全な {1:N0} バイトの Blu-ray 書き込みブロックを送信できません。",
+    "tr": "Yazıcı bağdaştırıcısının sayfa hizalı tek aktarım sınırı {0:N0} bayttır; {1:N0} baytlık tam Blu-ray yazma bloğu gönderilemez."
+  },
+  "刻录适配器报告了无法支持的缓冲区对齐要求。": {
+    "en": "The recorder adapter reported an unsupported buffer-alignment requirement.",
+    "zh-CN": "刻录适配器报告了无法支持的缓冲区对齐要求。",
+    "zh-TW": "燒錄介面卡回報了無法支援的緩衝區對齊要求。",
+    "ja": "レコーダーアダプターが未対応のバッファ整列要件を報告しました。",
+    "tr": "Yazıcı bağdaştırıcısı desteklenmeyen arabellek hizalama gereksinimi bildirdi."
+  },
+  "光驱 {0}": {
+    "en": "Optical drive {0}",
+    "zh-CN": "光驱 {0}",
+    "zh-TW": "光碟機 {0}",
+    "ja": "光学ドライブ {0}",
+    "tr": "Optik sürücü {0}"
+  },
+  "所选光驱不支持这种刻录方式。": {
+    "en": "The selected drive does not support this recording method.",
+    "zh-CN": "所选光驱不支持这种刻录方式。",
+    "zh-TW": "所選光碟機不支援此燒錄方式。",
+    "ja": "選択したドライブはこの書き込み方式に対応していません。",
+    "tr": "Seçilen sürücü bu kayıt yöntemini desteklemiyor."
+  },
+  "请放入与所选 CD/DVD/蓝光模式兼容的可写盘片。": {
+    "en": "Insert writable media compatible with the selected CD/DVD/Blu-ray mode.",
+    "zh-CN": "请放入与所选 CD/DVD/蓝光模式兼容的可写盘片。",
+    "zh-TW": "請放入與所選 CD/DVD／藍光模式相容的可寫光碟。",
+    "ja": "選択した CD/DVD/Blu-ray モードに適合する書き込み可能なディスクを挿入してください。",
+    "tr": "Seçilen CD/DVD/Blu-ray moduyla uyumlu yazılabilir bir disk yerleştirin."
+  },
+  "读取当前盘片的刻录速度失败（0x{0:X8}）：{1}": {
+    "en": "Failed to read recording speeds for the current disc (0x{0:X8}): {1}",
+    "zh-CN": "读取当前盘片的刻录速度失败（0x{0:X8}）：{1}",
+    "zh-TW": "讀取目前光碟的燒錄速度失敗（0x{0:X8}）：{1}",
+    "ja": "現在のディスクの書き込み速度を取得できませんでした（0x{0:X8}）：{1}",
+    "tr": "Geçerli diskin kayıt hızları okunamadı (0x{0:X8}): {1}"
+  },
+  "初始化 Windows 刻录接口": {
+    "en": "Initialize the Windows recording interface",
+    "zh-CN": "初始化 Windows 刻录接口",
+    "zh-TW": "初始化 Windows 燒錄介面",
+    "ja": "Windows 書き込みインターフェイスの初期化",
+    "tr": "Windows kayıt arabirimini başlat"
+  },
+  "正在检查刻录机和空白介质…": {
+    "en": "Checking the recorder and blank media…",
+    "zh-CN": "正在检查刻录机和空白介质…",
+    "zh-TW": "正在檢查燒錄機與空白媒體…",
+    "ja": "レコーダーと未使用メディアを確認中…",
+    "tr": "Yazıcı ve boş ortam kontrol ediliyor…"
+  },
+  "创建刻录格式": {
+    "en": "Create the recording format",
+    "zh-CN": "创建刻录格式",
+    "zh-TW": "建立燒錄格式",
+    "ja": "書き込み形式の作成",
+    "tr": "Kayıt biçimini oluştur"
+  },
+  "连接刻录机": {
+    "en": "Connect the recorder",
+    "zh-CN": "连接刻录机",
+    "zh-TW": "連接燒錄機",
+    "ja": "レコーダーの接続",
+    "tr": "Yazıcıyı bağla"
+  },
+  "检查刻录机支持": {
+    "en": "Check recorder support",
+    "zh-CN": "检查刻录机支持",
+    "zh-TW": "檢查燒錄機支援",
+    "ja": "レコーダー対応状況の確認",
+    "tr": "Yazıcı desteğini kontrol et"
+  },
+  "检查当前盘片兼容性": {
+    "en": "Check current disc compatibility",
+    "zh-CN": "检查当前盘片兼容性",
+    "zh-TW": "檢查目前光碟相容性",
+    "ja": "現在のディスクの互換性確認",
+    "tr": "Geçerli diskin uyumluluğunu kontrol et"
+  },
+  "当前盘片与所选 CD/DVD/蓝光模式不兼容。": {
+    "en": "The current disc is incompatible with the selected CD/DVD/Blu-ray mode.",
+    "zh-CN": "当前盘片与所选 CD/DVD/蓝光模式不兼容。",
+    "zh-TW": "目前光碟與所選 CD/DVD／藍光模式不相容。",
+    "ja": "現在のディスクは選択した CD/DVD/Blu-ray モードと適合しません。",
+    "tr": "Geçerli disk seçilen CD/DVD/Blu-ray moduyla uyumlu değil."
+  },
+  "选择最低刻录速度": {
+    "en": "Select the lowest recording speed",
+    "zh-CN": "选择最低刻录速度",
+    "zh-TW": "選擇最低燒錄速度",
+    "ja": "最低書き込み速度の選択",
+    "tr": "En düşük kayıt hızını seç"
+  },
+  "当前盘片未报告可选速度，将使用刻录接口的保守回退设置…": {
+    "en": "The current disc did not report selectable speeds; conservative recording-interface fallback settings will be used…",
+    "zh-CN": "当前盘片未报告可选速度，将使用刻录接口的保守回退设置…",
+    "zh-TW": "目前光碟未回報可選速度，將使用燒錄介面的保守備援設定…",
+    "ja": "現在のディスクが選択可能な速度を報告しなかったため、書き込みインターフェイスの保守的な代替設定を使用します…",
+    "tr": "Geçerli disk seçilebilir hız bildirmedi; kayıt arabiriminin temkinli yedek ayarları kullanılacak…"
+  },
+  "自动选择最低写入速度：{0:0.#}×（{1:0.0} MB/s）…": {
+    "en": "Automatically selected the lowest write speed: {0:0.#}× ({1:0.0} MB/s)…",
+    "zh-CN": "自动选择最低写入速度：{0:0.#}×（{1:0.0} MB/s）…",
+    "zh-TW": "自動選擇最低寫入速度：{0:0.#}×（{1:0.0} MB/s）…",
+    "ja": "最低書き込み速度を自動選択：{0:0.#}×（{1:0.0} MB/s）…",
+    "tr": "En düşük yazma hızı otomatik seçildi: {0:0.#}× ({1:0.0} MB/s)…"
+  },
+  "正在向刻录接口传输 {0:F1} / {1:F1} MiB…": {
+    "en": "Transferring {0:F1} / {1:F1} MiB to the recording interface…",
+    "zh-CN": "正在向刻录接口传输 {0:F1} / {1:F1} MiB…",
+    "zh-TW": "正在向燒錄介面傳輸 {0:F1} / {1:F1} MiB…",
+    "ja": "書き込みインターフェイスへ {0:F1} / {1:F1} MiB 転送中…",
+    "tr": "Kayıt arabirimine {0:F1} / {1:F1} MiB aktarılıyor…"
+  },
+  "正在关闭 CD 刻录会话…": {
+    "en": "Closing the CD recording session…",
+    "zh-CN": "正在关闭 CD 刻录会话…",
+    "zh-TW": "正在關閉 CD 燒錄工作階段…",
+    "ja": "CD 書き込みセッションを閉じています…",
+    "tr": "CD kayıt oturumu kapatılıyor…"
+  },
+  "写入 DVD 数据": {
+    "en": "Write DVD data",
+    "zh-CN": "写入 DVD 数据",
+    "zh-TW": "寫入 DVD 資料",
+    "ja": "DVD データの書き込み",
+    "tr": "DVD verisini yaz"
+  },
+  "Windows 刻录接口在“{0}”时返回错误 0x{1:X8}：{2}": {
+    "en": "The Windows recording interface returned error 0x{1:X8} during “{0}”: {2}",
+    "zh-CN": "Windows 刻录接口在“{0}”时返回错误 0x{1:X8}：{2}",
+    "zh-TW": "Windows 燒錄介面在「{0}」時傳回錯誤 0x{1:X8}：{2}",
+    "ja": "Windows 書き込みインターフェイスが「{0}」でエラー 0x{1:X8} を返しました：{2}",
+    "tr": "Windows kayıt arabirimi “{0}” sırasında 0x{1:X8} hatası döndürdü: {2}"
+  },
+  "刻录完成，盘片会话已关闭。": {
+    "en": "Writing complete; the disc session is closed.",
+    "zh-CN": "刻录完成，盘片会话已关闭。",
+    "zh-TW": "燒錄完成，光碟工作階段已關閉。",
+    "ja": "書き込みが完了し、ディスクセッションを閉じました。",
+    "tr": "Yazma tamamlandı; disk oturumu kapatıldı."
+  },
+  "释放刻录格式 COM 对象": {
+    "en": "Release the recording-format COM object",
+    "zh-CN": "释放刻录格式 COM 对象",
+    "zh-TW": "釋放燒錄格式 COM 物件",
+    "ja": "書き込み形式の COM オブジェクトの解放",
+    "tr": "Kayıt biçimi COM nesnesini bırak"
+  },
+  "释放刻录机 COM 对象": {
+    "en": "Release the recorder COM object",
+    "zh-CN": "释放刻录机 COM 对象",
+    "zh-TW": "釋放燒錄機 COM 物件",
+    "ja": "レコーダーの COM オブジェクトの解放",
+    "tr": "Yazıcı COM nesnesini bırak"
+  },
+  "\n设备释放期间还出现以下问题（已尝试后续清理）：\n{0}": {
+    "en": "\nAdditional problems occurred while releasing the device (subsequent cleanup was attempted):\n{0}",
+    "zh-CN": "\n设备释放期间还出现以下问题（已尝试后续清理）：\n{0}",
+    "zh-TW": "\n釋放裝置期間還出現以下問題（已嘗試後續清理）：\n{0}",
+    "ja": "\n装置の解放中に次の問題も発生しました（後続のクリーンアップは試行済み）：\n{0}",
+    "tr": "\nCihaz bırakılırken ek sorunlar oluştu (sonraki temizleme adımları denendi):\n{0}"
+  },
+  "刻录流程已完成，但设备未能正常释放。{0}": {
+    "en": "The recording workflow completed, but the device could not be released normally.{0}",
+    "zh-CN": "刻录流程已完成，但设备未能正常释放。{0}",
+    "zh-TW": "燒錄流程已完成，但裝置未能正常釋放。{0}",
+    "ja": "書き込み処理は完了しましたが、装置を正常に解放できませんでした。{0}",
+    "tr": "Kayıt işlemi tamamlandı, ancak cihaz normal şekilde bırakılamadı.{0}"
+  },
+  "{0}失败（HRESULT 0x{1:X8}）：{2}": {
+    "en": "{0} failed (HRESULT 0x{1:X8}): {2}",
+    "zh-CN": "{0}失败（HRESULT 0x{1:X8}）：{2}",
+    "zh-TW": "{0}失敗（HRESULT 0x{1:X8}）：{2}",
+    "ja": "{0}に失敗（HRESULT 0x{1:X8}）：{2}",
+    "tr": "{0} başarısız (HRESULT 0x{1:X8}): {2}"
+  },
+  "顺序 BD-R 通道只接受蓝光数据。": {
+    "en": "The sequential BD-R path only accepts Blu-ray data.",
+    "zh-CN": "顺序 BD-R 通道只接受蓝光数据。",
+    "zh-TW": "循序 BD-R 通道僅接受藍光資料。",
+    "ja": "シーケンシャル BD-R 経路は Blu-ray データのみ受け付けます。",
+    "tr": "Sıralı BD-R yolu yalnızca Blu-ray verisi kabul eder."
+  },
+  "锁定 BD-R 盘片": {
+    "en": "Lock the BD-R disc",
+    "zh-CN": "锁定 BD-R 盘片",
+    "zh-TW": "鎖定 BD-R 光碟",
+    "ja": "BD-R ディスクのロック",
+    "tr": "BD-R diskini kilitle"
+  },
+  "检查未格式化 BD-R 的原始容量": {
+    "en": "Check the unformatted BD-R's raw capacity",
+    "zh-CN": "检查未格式化 BD-R 的原始容量",
+    "zh-TW": "檢查未格式化 BD-R 的原始容量",
+    "ja": "未フォーマット BD-R の生容量の確認",
+    "tr": "Biçimlendirilmemiş BD-R'nin ham kapasitesini kontrol et"
+  },
+  "设置 BD-R 写入速度": {
+    "en": "Set the BD-R write speed",
+    "zh-CN": "设置 BD-R 写入速度",
+    "zh-TW": "設定 BD-R 寫入速度",
+    "ja": "BD-R 書き込み速度の設定",
+    "tr": "BD-R yazma hızını ayarla"
+  },
+  "无备用区顺序写入 BD-R：{0:N0} 扇区": {
+    "en": "Sequential BD-R writing without spare areas: {0:N0} sectors",
+    "zh-CN": "无备用区顺序写入 BD-R：{0:N0} 扇区",
+    "zh-TW": "無備用區循序寫入 BD-R：{0:N0} 磁區",
+    "ja": "スペア領域なしのシーケンシャル BD-R 書き込み：{0:N0} セクター",
+    "tr": "Yedek alan olmadan sıralı BD-R yazma: {0:N0} sektör"
+  },
+  "刷新 BD-R 缓存并封盘（请等待完成）": {
+    "en": "Flush the BD-R cache and finalize the disc (please wait for completion)",
+    "zh-CN": "刷新 BD-R 缓存并封盘（请等待完成）",
+    "zh-TW": "寫出 BD-R 快取並封片（請等待完成）",
+    "ja": "BD-R キャッシュの書き出しとファイナライズ（完了までお待ちください）",
+    "tr": "BD-R önbelleğini diske aktar ve diski sonlandır (lütfen tamamlanmasını bekleyin)"
+  },
+  "蓝光失败后刷新缓存失败（HRESULT 0x{0:X8}，耗时 {1:F3} 秒）：{2}": {
+    "en": "Cache flush after Blu-ray failure also failed (HRESULT 0x{0:X8}, elapsed {1:F3}s): {2}",
+    "zh-CN": "蓝光失败后刷新缓存失败（HRESULT 0x{0:X8}，耗时 {1:F3} 秒）：{2}",
+    "zh-TW": "藍光失敗後寫出快取也失敗（HRESULT 0x{0:X8}，耗時 {1:F3} 秒）：{2}",
+    "ja": "Blu-ray の失敗後、キャッシュの書き出しも失敗しました（HRESULT 0x{0:X8}、所要時間 {1:F3} 秒）：{2}",
+    "tr": "Blu-ray hatası sonrası önbelleği diske aktarma da başarısız (HRESULT 0x{0:X8}, geçen süre {1:F3} sn): {2}"
+  },
+  "无备用区绘图需要顺序记录 BD-R（SRM）；不支持 BD-RE 或随机记录 BD-R。": {
+    "en": "Drawing without spare areas requires sequential-recording BD-R (SRM); BD-RE and random-recording BD-R are unsupported.",
+    "zh-CN": "无备用区绘图需要顺序记录 BD-R（SRM）；不支持 BD-RE 或随机记录 BD-R。",
+    "zh-TW": "無備用區繪圖需要循序記錄 BD-R（SRM）；不支援 BD-RE 或隨機記錄 BD-R。",
+    "ja": "スペア領域なしの描画にはシーケンシャル記録 BD-R（SRM）が必要です。BD-RE とランダム記録 BD-R は未対応です。",
+    "tr": "Yedek alansız çizim sıralı kayıt BD-R (SRM) gerektirir; BD-RE ve rastgele kayıt BD-R desteklenmez."
+  },
+  "无备用区绘图需要从 LBA 0 开始的全新空白 BD-R，已取消刻录。": {
+    "en": "Drawing without spare areas requires a fresh blank BD-R starting at LBA 0; writing has been cancelled.",
+    "zh-CN": "无备用区绘图需要从 LBA 0 开始的全新空白 BD-R，已取消刻录。",
+    "zh-TW": "無備用區繪圖需要從 LBA 0 開始的全新空白 BD-R，已取消燒錄。",
+    "ja": "スペア領域なしの描画には LBA 0 から始まる新品の未使用 BD-R が必要です。書き込みをキャンセルしました。",
+    "tr": "Yedek alansız çizim LBA 0'dan başlayan yeni ve boş BD-R gerektirir; yazma iptal edildi."
+  },
+  "BD-R 已格式化或格式状态未知；无法保证无备用区的物理位置，请使用未格式化的新盘。": {
+    "en": "The BD-R is formatted or its format status is unknown; physical positions without spare areas cannot be guaranteed. Use a new unformatted disc.",
+    "zh-CN": "BD-R 已格式化或格式状态未知；无法保证无备用区的物理位置，请使用未格式化的新盘。",
+    "zh-TW": "BD-R 已格式化或格式狀態未知；無法確保無備用區的物理位置，請使用未格式化的新光碟。",
+    "ja": "BD-R はフォーマット済み、またはフォーマット状態が不明です。スペア領域なしの物理位置を保証できません。未フォーマットの新品ディスクを使用してください。",
+    "tr": "BD-R biçimlendirilmiş veya biçim durumu bilinmiyor; yedek alansız fiziksel konumlar garanti edilemez. Biçimlendirilmemiş yeni bir disk kullanın."
+  },
+  "蓝光绘图总扇区数必须是 32 的倍数，且不超过 12,219,392。": {
+    "en": "The Blu-ray drawing sector count must be a multiple of 32 and at most 12,219,392.",
+    "zh-CN": "蓝光绘图总扇区数必须是 32 的倍数，且不超过 12,219,392。",
+    "zh-TW": "藍光繪圖總磁區數必須為 32 的倍數，且不超過 12,219,392。",
+    "ja": "Blu-ray 描画の総セクター数は 32 の倍数で、12,219,392 以下にしてください。",
+    "tr": "Blu-ray çizim sektör sayısı 32'nin katı ve en fazla 12.219.392 olmalıdır."
+  },
+  "蓝光盘容量不足：需要 {0:N0} 扇区，原始轨道可写 {1:N0} 扇区。不会自动缩小绘图容量。": {
+    "en": "Insufficient Blu-ray capacity: {0:N0} sectors required, {1:N0} writable sectors on the raw track. Drawing capacity will not be reduced automatically.",
+    "zh-CN": "蓝光盘容量不足：需要 {0:N0} 扇区，原始轨道可写 {1:N0} 扇区。不会自动缩小绘图容量。",
+    "zh-TW": "藍光光碟容量不足：需要 {0:N0} 磁區，原始軌道可寫 {1:N0} 磁區。不會自動縮小繪圖容量。",
+    "ja": "Blu-ray の容量不足：必要 {0:N0} セクター、生トラックの書き込み可能容量 {1:N0} セクター。描画容量は自動縮小しません。",
+    "tr": "Blu-ray kapasitesi yetersiz: {0:N0} sektör gerekiyor, ham izde {1:N0} sektör yazılabilir. Çizim kapasitesi otomatik azaltılmayacak."
+  },
+  "盘片原始容量或轨道布局不符合单层无备用区 BD-R：最大 {0:N0}、轨道 {1:N0}、可写 {2:N0} 扇区；需要完整的 12,219,392 扇区布局。": {
+    "en": "The raw capacity or track layout does not match single-layer BD-R without spare areas: maximum {0:N0}, track {1:N0}, writable {2:N0} sectors; the full 12,219,392-sector layout is required.",
+    "zh-CN": "盘片原始容量或轨道布局不符合单层无备用区 BD-R：最大 {0:N0}、轨道 {1:N0}、可写 {2:N0} 扇区；需要完整的 12,219,392 扇区布局。",
+    "zh-TW": "光碟原始容量或軌道配置不符合單層無備用區 BD-R：最大 {0:N0}、軌道 {1:N0}、可寫 {2:N0} 磁區；需要完整的 12,219,392 磁區配置。",
+    "ja": "生容量またはトラック配置がスペア領域なしの単層 BD-R に適合しません。最大 {0:N0}、トラック {1:N0}、書き込み可能 {2:N0} セクター。完全な 12,219,392 セクターの配置が必要です。",
+    "tr": "Ham kapasite veya iz düzeni yedek alansız tek katmanlı BD-R ile uyuşmuyor: en fazla {0:N0}, iz {1:N0}, yazılabilir {2:N0} sektör; tam 12.219.392 sektörlük düzen gereklidir."
+  },
+  "数据轨": {
+    "en": "data track",
+    "zh-CN": "数据轨",
+    "zh-TW": "資料軌",
+    "ja": "データトラック",
+    "tr": "veri izi"
+  },
+  "音轨": {
+    "en": "audio track",
+    "zh-CN": "音轨",
+    "zh-TW": "音軌",
+    "ja": "音声トラック",
+    "tr": "ses izi"
+  },
+  "准备并锁定 CD 介质": {
+    "en": "Prepare and lock the CD media",
+    "zh-CN": "准备并锁定 CD 介质",
+    "zh-TW": "準備並鎖定 CD 媒體",
+    "ja": "CD メディアの準備とロック",
+    "tr": "CD ortamını hazırla ve kilitle"
+  },
+  "检查 CD 是否为空白盘": {
+    "en": "Check whether the CD is blank",
+    "zh-CN": "检查 CD 是否为空白盘",
+    "zh-TW": "檢查 CD 是否為空白光碟",
+    "ja": "CD の未使用状態の確認",
+    "tr": "CD'nin boş olup olmadığını kontrol et"
+  },
+  "CD 不是空白盘，已取消刻录。": {
+    "en": "The CD is not blank; writing has been cancelled.",
+    "zh-CN": "CD 不是空白盘，已取消刻录。",
+    "zh-TW": "CD 不是空白光碟，已取消燒錄。",
+    "ja": "CD が未使用ではないため、書き込みをキャンセルしました。",
+    "tr": "CD boş değil; yazma iptal edildi."
+  },
+  "设置 CD DAO 扇区格式": {
+    "en": "Set the CD DAO sector format",
+    "zh-CN": "设置 CD DAO 扇区格式",
+    "zh-TW": "設定 CD DAO 磁區格式",
+    "ja": "CD DAO セクター形式の設定",
+    "tr": "CD DAO sektör biçimini ayarla"
+  },
+  "所选光驱不支持 CD DAO 所需的 Cooked R-W 子通道格式。": {
+    "en": "The selected drive does not support the Cooked R-W subchannel format required for CD DAO.",
+    "zh-CN": "所选光驱不支持 CD DAO 所需的 Cooked R-W 子通道格式。",
+    "zh-TW": "所選光碟機不支援 CD DAO 所需的 Cooked R-W 子通道格式。",
+    "ja": "選択したドライブは、CD DAO に必要な Cooked R-W サブチャネル形式に対応していません。",
+    "tr": "Seçilen sürücü CD DAO için gereken Cooked R-W alt kanal biçimini desteklemiyor."
+  },
+  "设置 CD 刻录速度": {
+    "en": "Set the CD recording speed",
+    "zh-CN": "设置 CD 刻录速度",
+    "zh-TW": "設定 CD 燒錄速度",
+    "ja": "CD 書き込み速度の設定",
+    "tr": "CD kayıt hızını ayarla"
+  },
+  "使用 CD DAO 保守回退速度": {
+    "en": "Use the conservative CD DAO fallback speed",
+    "zh-CN": "使用 CD DAO 保守回退速度",
+    "zh-TW": "使用 CD DAO 保守備援速度",
+    "ja": "CD DAO の保守的な代替速度の使用",
+    "tr": "Temkinli CD DAO yedek hızını kullan"
+  },
+  "构造 CD DAO {0}": {
+    "en": "Build the CD DAO {0}",
+    "zh-CN": "构造 CD DAO {0}",
+    "zh-TW": "建構 CD DAO {0}",
+    "ja": "CD DAO {0}の構築",
+    "tr": "CD DAO {0} oluştur"
+  },
+  "CD DAO lead-out 超出盘片边界 {0} 个扇区；最多允许 {1} 个 DAO 扇区的受限 overburn。": {
+    "en": "CD DAO lead-out exceeds the disc boundary by {0} sectors; limited overburn permits at most {1} DAO sectors.",
+    "zh-CN": "CD DAO lead-out 超出盘片边界 {0} 个扇区；最多允许 {1} 个 DAO 扇区的受限 overburn。",
+    "zh-TW": "CD DAO lead-out 超出光碟邊界 {0} 個磁區；最多允許 {1} 個 DAO 磁區的受限 overburn。",
+    "ja": "CD DAO の lead-out がディスク境界を {0} セクター超えています。制限付き overburn で許可されるのは最大 {1} DAO セクターです。",
+    "tr": "CD DAO lead-out disk sınırını {0} sektör aşıyor; sınırlı overburn en fazla {1} DAO sektörüne izin verir."
+  },
+  "使用 CD DAO 末端 overburn（超出 {0} 个 DAO 扇区）": {
+    "en": "Use CD DAO end overburn (exceeds by {0} DAO sectors)",
+    "zh-CN": "使用 CD DAO 末端 overburn（超出 {0} 个 DAO 扇区）",
+    "zh-TW": "使用 CD DAO 末端 overburn（超出 {0} 個 DAO 磁區）",
+    "ja": "CD DAO 終端 overburn を使用（{0} DAO セクター超過）",
+    "tr": "CD DAO son overburn kullan ({0} DAO sektörü aşım)"
+  },
+  "写入 CD DAO {0}": {
+    "en": "Write the CD DAO {0}",
+    "zh-CN": "写入 CD DAO {0}",
+    "zh-TW": "寫入 CD DAO {0}",
+    "ja": "CD DAO {0}の書き込み",
+    "tr": "CD DAO {0} yaz"
+  },
+  "关闭 CD 刻录会话": {
+    "en": "Close the CD recording session",
+    "zh-CN": "关闭 CD 刻录会话",
+    "zh-TW": "關閉 CD 燒錄工作階段",
+    "ja": "CD 書き込みセッションのクローズ",
+    "tr": "CD kayıt oturumunu kapat"
+  },
+  "CD-R 或 CD-RW": {
+    "en": "CD-R or CD-RW",
+    "zh-CN": "CD-R 或 CD-RW",
+    "zh-TW": "CD-R 或 CD-RW",
+    "ja": "CD-R または CD-RW",
+    "tr": "CD-R veya CD-RW"
+  },
+  "未格式化的单层顺序 BD-R（无备用区）": {
+    "en": "unformatted single-layer sequential BD-R (no spare areas)",
+    "zh-CN": "未格式化的单层顺序 BD-R（无备用区）",
+    "zh-TW": "未格式化的單層循序 BD-R（無備用區）",
+    "ja": "未フォーマットの単層シーケンシャル BD-R（スペア領域なし）",
+    "tr": "biçimlendirilmemiş tek katmanlı sıralı BD-R (yedek alansız)"
+  },
+  "所选刻录模式需要可写的 {0} 盘片；当前盘片不兼容。": {
+    "en": "The selected recording mode requires writable {0} media; the current disc is incompatible.",
+    "zh-CN": "所选刻录模式需要可写的 {0} 盘片；当前盘片不兼容。",
+    "zh-TW": "所選燒錄模式需要可寫的 {0} 光碟；目前光碟不相容。",
+    "ja": "選択した書き込みモードには書き込み可能な {0} メディアが必要です。現在のディスクは適合しません。",
+    "tr": "Seçilen kayıt modu yazılabilir {0} ortamı gerektirir; geçerli disk uyumlu değil."
+  },
+  "{0} 剩余容量不足：需要 {1:N0} 扇区（{2:F3} MiB），实际可写 {3:N0} 扇区（{4:F3} MiB），超出 {5:N0} 扇区（{6:F3} MiB）。": {
+    "en": "Insufficient remaining {0} capacity: {1:N0} sectors ({2:F3} MiB) required, {3:N0} sectors ({4:F3} MiB) writable; excess {5:N0} sectors ({6:F3} MiB).",
+    "zh-CN": "{0} 剩余容量不足：需要 {1:N0} 扇区（{2:F3} MiB），实际可写 {3:N0} 扇区（{4:F3} MiB），超出 {5:N0} 扇区（{6:F3} MiB）。",
+    "zh-TW": "{0} 剩餘容量不足：需要 {1:N0} 磁區（{2:F3} MiB），實際可寫 {3:N0} 磁區（{4:F3} MiB），超出 {5:N0} 磁區（{6:F3} MiB）。",
+    "ja": "{0} の残容量不足：必要 {1:N0} セクター（{2:F3} MiB）、書き込み可能 {3:N0} セクター（{4:F3} MiB）、超過 {5:N0} セクター（{6:F3} MiB）。",
+    "tr": "Kalan {0} kapasitesi yetersiz: {1:N0} sektör ({2:F3} MiB) gerekiyor, {3:N0} sektör ({4:F3} MiB) yazılabilir; aşım {5:N0} sektör ({6:F3} MiB)."
+  },
+  "蓝光盘": {
+    "en": "Blu-ray disc",
+    "zh-CN": "蓝光盘",
+    "zh-TW": "藍光光碟",
+    "ja": "Blu-ray ディスク",
+    "tr": "Blu-ray diski"
+  },
+  "{0} 不是空白盘，已取消刻录。": {
+    "en": "The {0} is not blank; writing has been cancelled.",
+    "zh-CN": "{0} 不是空白盘，已取消刻录。",
+    "zh-TW": "{0} 不是空白光碟，已取消燒錄。",
+    "ja": "{0} が未使用ではないため、書き込みをキャンセルしました。",
+    "tr": "{0} boş değil; yazma iptal edildi."
+  },
+  "{0} 未报告可用的数据容量（{1:N0} 扇区）。": {
+    "en": "The {0} did not report usable data capacity ({1:N0} sectors).",
+    "zh-CN": "{0} 未报告可用的数据容量（{1:N0} 扇区）。",
+    "zh-TW": "{0} 未回報可用的資料容量（{1:N0} 磁區）。",
+    "ja": "{0} が使用可能なデータ容量を報告しませんでした（{1:N0} セクター）。",
+    "tr": "{0} kullanılabilir veri kapasitesi bildirmedi ({1:N0} sektör)."
+  },
+  "设备设置速度={0:0.#}× · {1:0.0} MB/s{2}（设备返回的设置值；实时吞吐另行测量）。": {
+    "en": "Device speed setting={0:0.#}× · {1:0.0} MB/s{2} (setting returned by the device; live throughput is measured separately).",
+    "zh-CN": "设备设置速度={0:0.#}× · {1:0.0} MB/s{2}（设备返回的设置值；实时吞吐另行测量）。",
+    "zh-TW": "裝置設定速度={0:0.#}× · {1:0.0} MB/s{2}（裝置傳回的設定值；即時輸送量另行測量）。",
+    "ja": "装置設定速度={0:0.#}× · {1:0.0} MB/s{2}（装置から返された設定値。実時間のスループットは別途測定）。",
+    "tr": "Cihaz hız ayarı={0:0.#}× · {1:0.0} MB/s{2} (cihazın döndürdüğü ayar; anlık aktarım hızı ayrıca ölçülür)."
+  },
+  "Windows Image Mastering API 2 (IMAPI2) 不可用。": {
+    "en": "Windows Image Mastering API 2 (IMAPI2) is unavailable.",
+    "zh-CN": "Windows Image Mastering API 2 (IMAPI2) 不可用。",
+    "zh-TW": "Windows Image Mastering API 2 (IMAPI2) 無法使用。",
+    "ja": "Windows Image Mastering API 2 (IMAPI2) を利用できません。",
+    "tr": "Windows Image Mastering API 2 (IMAPI2) kullanılamıyor."
+  },
+  "无法创建 Windows 刻录组件 {0}。": {
+    "en": "Cannot create Windows recording component {0}.",
+    "zh-CN": "无法创建 Windows 刻录组件 {0}。",
+    "zh-TW": "無法建立 Windows 燒錄元件 {0}。",
+    "ja": "Windows 書き込みコンポーネント {0} を作成できません。",
+    "tr": "Windows kayıt bileşeni {0} oluşturulamıyor."
+  },
+  "Buffer capacity must be a positive multiple of 256 KiB.": {
+    "en": "Buffer capacity must be a positive multiple of 256 KiB.",
+    "zh-CN": "缓冲区容量必须是 256 KiB 的正整数倍。",
+    "zh-TW": "緩衝區容量必須為 256 KiB 的正整數倍。",
+    "ja": "バッファ容量は 256 KiB の正の整数倍にしてください。",
+    "tr": "Arabellek kapasitesi 256 KiB'nin pozitif katı olmalıdır."
+  },
+  "Prebuffer must be a positive multiple of 256 KiB, no larger than capacity.": {
+    "en": "Prebuffer must be a positive multiple of 256 KiB, no larger than capacity.",
+    "zh-CN": "预缓冲量必须是 256 KiB 的正整数倍，且不超过容量。",
+    "zh-TW": "預先緩衝量必須為 256 KiB 的正整數倍，且不超過容量。",
+    "ja": "事前バッファ量は 256 KiB の正の整数倍で、容量以下にしてください。",
+    "tr": "Ön arabelleğe alma miktarı 256 KiB'nin pozitif katı olmalı ve kapasiteyi aşmamalıdır."
+  },
+  "A Mode 1 payload must contain exactly 2048 bytes.": {
+    "en": "A Mode 1 payload must contain exactly 2048 bytes.",
+    "zh-CN": "Mode 1 负载必须恰好包含 2048 字节。",
+    "zh-TW": "Mode 1 負載必須恰好包含 2048 位元組。",
+    "ja": "Mode 1 ペイロードは正確に 2048 バイトである必要があります。",
+    "tr": "Mode 1 yükü tam olarak 2048 bayt içermelidir."
+  },
+  "A RAW main-channel sector requires 2352 bytes.": {
+    "en": "A RAW main-channel sector requires 2352 bytes.",
+    "zh-CN": "RAW 主通道扇区需要 2352 字节。",
+    "zh-TW": "RAW 主通道磁區需要 2352 位元組。",
+    "ja": "RAW メインチャネルセクターには 2352 バイトが必要です。",
+    "tr": "RAW ana kanal sektörü 2352 bayt gerektirir."
+  },
+  "The sector address must fit a two-digit CD minute field.": {
+    "en": "The sector address must fit a two-digit CD minute field.",
+    "zh-CN": "扇区地址必须能以 CD 的两位分钟字段表示。",
+    "zh-TW": "磁區位址必須能以 CD 的兩位數分鐘欄位表示。",
+    "ja": "セクターアドレスは CD の 2 桁の分フィールドで表せる必要があります。",
+    "tr": "Sektör adresi CD'nin iki basamaklı dakika alanına sığmalıdır."
+  },
+  "The CD DAO image has already been created.": {
+    "en": "The CD DAO image has already been created.",
+    "zh-CN": "CD DAO 镜像已经创建。",
+    "zh-TW": "CD DAO 映像已建立。",
+    "ja": "CD DAO イメージは既に作成されています。",
+    "tr": "CD DAO görüntüsü zaten oluşturuldu."
+  },
+  "CD DAO data tracks require at least 300 complete 2048-byte sectors.": {
+    "en": "CD DAO data tracks require at least 300 complete 2048-byte sectors.",
+    "zh-CN": "CD DAO 数据轨至少需要 300 个完整的 2048 字节扇区。",
+    "zh-TW": "CD DAO 資料軌至少需要 300 個完整的 2048 位元組磁區。",
+    "ja": "CD DAO データトラックには、少なくとも 300 個の完全な 2048 バイトセクターが必要です。",
+    "tr": "CD DAO veri izleri en az 300 tam 2048 baytlık sektör gerektirir."
+  },
+  "IMAPI changed the requested CD data track length.": {
+    "en": "IMAPI changed the requested CD data track length.",
+    "zh-CN": "IMAPI 改变了请求的 CD 数据轨长度。",
+    "zh-TW": "IMAPI 變更了要求的 CD 資料軌長度。",
+    "ja": "IMAPI が要求された CD データトラック長を変更しました。",
+    "tr": "IMAPI istenen CD veri izi uzunluğunu değiştirdi."
+  },
+  "Invalid template position.": {
+    "en": "Invalid template position.",
+    "zh-CN": "模板位置无效。",
+    "zh-TW": "範本位置無效。",
+    "ja": "テンプレート位置が無効です。",
+    "tr": "Geçersiz şablon konumu."
+  },
+  "IMAPI returned an invalid DAO-96 template length.": {
+    "en": "IMAPI returned an invalid DAO-96 template length.",
+    "zh-CN": "IMAPI 返回了无效的 DAO-96 模板长度。",
+    "zh-TW": "IMAPI 傳回了無效的 DAO-96 範本長度。",
+    "ja": "IMAPI が無効な DAO-96 テンプレート長を返しました。",
+    "tr": "IMAPI geçersiz DAO-96 şablon uzunluğu döndürdü."
+  },
+  "CD DAO source ended inside a sector.": {
+    "en": "CD DAO source ended inside a sector.",
+    "zh-CN": "CD DAO 源数据在扇区内部结束。",
+    "zh-TW": "CD DAO 來源資料在磁區內部結束。",
+    "ja": "CD DAO のソースがセクターの途中で終了しました。",
+    "tr": "CD DAO kaynağı bir sektörün ortasında sona erdi."
+  },
+  "Expected a 96-byte subchannel block.": {
+    "en": "Expected a 96-byte subchannel block.",
+    "zh-CN": "应为 96 字节的子通道块。",
+    "zh-TW": "應為 96 位元組的子通道區塊。",
+    "ja": "96 バイトのサブチャネルブロックが必要です。",
+    "tr": "96 baytlık alt kanal bloğu bekleniyor."
+  },
+  "Invalid DAO image position.": {
+    "en": "Invalid DAO image position.",
+    "zh-CN": "DAO 镜像位置无效。",
+    "zh-TW": "DAO 映像位置無效。",
+    "ja": "DAO イメージ位置が無効です。",
+    "tr": "Geçersiz DAO görüntü konumu."
+  },
+  "The CD data DAO image is forward-only.": {
+    "en": "The CD data DAO image is forward-only.",
+    "zh-CN": "CD 数据 DAO 镜像仅支持向前读取。",
+    "zh-TW": "CD 資料 DAO 映像僅支援向前讀取。",
+    "ja": "CD データ DAO イメージは前方向のみです。",
+    "tr": "CD veri DAO görüntüsü yalnızca ileri yöndedir."
+  },
+  "The CD DAO copy target did not accept the requested bytes.": {
+    "en": "The CD DAO copy target did not accept the requested bytes.",
+    "zh-CN": "CD DAO 复制目标未接受所请求的字节。",
+    "zh-TW": "CD DAO 複製目標未接受所要求的位元組。",
+    "ja": "CD DAO コピー先が要求されたバイト数を受け付けませんでした。",
+    "tr": "CD DAO kopyalama hedefi istenen baytları kabul etmedi."
+  },
+  "This MMC transport does not support data writes.": {
+    "en": "This MMC transport does not support data writes.",
+    "zh-CN": "此 MMC 传输不支持数据写入。",
+    "zh-TW": "此 MMC 傳輸不支援資料寫入。",
+    "ja": "この MMC トランスポートはデータ書き込みに対応していません。",
+    "tr": "Bu MMC aktarımı veri yazmayı desteklemiyor."
+  },
+  "Generated stream ended at {0} bytes; expected {1} bytes.": {
+    "en": "Generated stream ended at {0} bytes; expected {1} bytes.",
+    "zh-CN": "生成流在 {0} 字节处结束；应为 {1} 字节。",
+    "zh-TW": "生成串流在 {0} 位元組處結束；應為 {1} 位元組。",
+    "ja": "生成ストリームが {0} バイトで終了しました。必要な長さは {1} バイトです。",
+    "tr": "Üretilen akış {0} baytta sona erdi; {1} bayt bekleniyordu."
+  },
+  "The generated burn stream is forward-only.": {
+    "en": "The generated burn stream is forward-only.",
+    "zh-CN": "生成的刻录流仅支持向前读取。",
+    "zh-TW": "生成的燒錄串流僅支援向前讀取。",
+    "ja": "生成された書き込みストリームは前方向のみです。",
+    "tr": "Üretilen diske yazma akışı yalnızca ileri yöndedir."
+  },
+  "Image generation failed while streaming to the recorder: {0}": {
+    "en": "Image generation failed while streaming to the recorder: {0}",
+    "zh-CN": "向刻录机供流时图像生成失败：{0}",
+    "zh-TW": "向燒錄機供流時影像生成失敗：{0}",
+    "ja": "レコーダーへのストリーミング中にイメージ生成に失敗しました：{0}",
+    "tr": "Yazıcıya akış sağlanırken görüntü üretimi başarısız: {0}"
+  },
+  "The generated burn stream is read-only.": {
+    "en": "The generated burn stream is read-only.",
+    "zh-CN": "生成的刻录流为只读。",
+    "zh-TW": "生成的燒錄串流為唯讀。",
+    "ja": "生成された書き込みストリームは読み取り専用です。",
+    "tr": "Üretilen diske yazma akışı salt okunurdur."
+  },
+  "Operation is not implemented for the generated burn stream.": {
+    "en": "Operation is not implemented for the generated burn stream.",
+    "zh-CN": "生成的刻录流未实现此操作。",
+    "zh-TW": "生成的燒錄串流未實作此操作。",
+    "ja": "生成された書き込みストリームでは、この操作は実装されていません。",
+    "tr": "Bu işlem üretilen diske yazma akışı için uygulanmamış."
+  },
+  "Offset and count exceed the source buffer.": {
+    "en": "Offset and count exceed the source buffer.",
+    "zh-CN": "偏移量与数量超出源缓冲区。",
+    "zh-TW": "位移與數量超出來源緩衝區。",
+    "ja": "オフセットと個数がソースバッファを超えています。",
+    "tr": "Ofset ve adet kaynak arabelleğini aşıyor."
+  },
+  "Generator produced {0} bytes; expected {1} bytes.": {
+    "en": "Generator produced {0} bytes; expected {1} bytes.",
+    "zh-CN": "生成器生成了 {0} 字节；应为 {1} 字节。",
+    "zh-TW": "生成器產生了 {0} 位元組；應為 {1} 位元組。",
+    "ja": "生成器が {0} バイトを生成しました。必要な長さは {1} バイトです。",
+    "tr": "Üretici {0} bayt üretti; {1} bayt bekleniyordu."
+  },
+  "Generator exceeded its declared length of {0} bytes.": {
+    "en": "Generator exceeded its declared length of {0} bytes.",
+    "zh-CN": "生成器超出了声明的 {0} 字节长度。",
+    "zh-TW": "生成器超出了宣告的 {0} 位元組長度。",
+    "ja": "生成器が宣言された長さ {0} バイトを超えました。",
+    "tr": "Üretici bildirilen {0} bayt uzunluğunu aştı."
+  },
+  "BD-R writes require complete 32-sector clusters within single-layer capacity.": {
+    "en": "BD-R writes require complete 32-sector clusters within single-layer capacity.",
+    "zh-CN": "BD-R 写入要求完整的 32 扇区簇，且不超过单层容量。",
+    "zh-TW": "BD-R 寫入需要完整的 32 磁區叢集，且不超過單層容量。",
+    "ja": "BD-R 書き込みには、単層容量内の完全な 32 セクタークラスターが必要です。",
+    "tr": "BD-R yazma, tek katman kapasitesi içinde tam 32 sektörlük kümeler gerektirir."
+  },
+  "Unknown optical media kind.": {
+    "en": "Unknown optical media kind.",
+    "zh-CN": "未知的光学介质类型。",
+    "zh-TW": "未知的光學媒體類型。",
+    "ja": "不明な光学メディアの種類です。",
+    "tr": "Bilinmeyen optik ortam türü."
+  },
+  "Write speed must be greater than zero sectors per second.": {
+    "en": "Write speed must be greater than zero sectors per second.",
+    "zh-CN": "写入速度必须大于每秒零扇区。",
+    "zh-TW": "寫入速度必須大於每秒零磁區。",
+    "ja": "書き込み速度は毎秒 0 セクターより大きい必要があります。",
+    "tr": "Yazma hızı saniyede sıfır sektörden büyük olmalıdır."
+  },
+  "Stream length must be a positive multiple of {0} bytes.": {
+    "en": "Stream length must be a positive multiple of {0} bytes.",
+    "zh-CN": "流长度必须是 {0} 字节的正整数倍。",
+    "zh-TW": "串流長度必須為 {0} 位元組的正整數倍。",
+    "ja": "ストリーム長は {0} バイトの正の整数倍にしてください。",
+    "tr": "Akış uzunluğu {0} baytın pozitif katı olmalıdır."
+  },
+  "CD DAO requires an audio or CD data request.": {
+    "en": "CD DAO requires an audio or CD data request.",
+    "zh-CN": "CD DAO 需要音轨或 CD 数据请求。",
+    "zh-TW": "CD DAO 需要音軌或 CD 資料請求。",
+    "ja": "CD DAO には音声または CD データのリクエストが必要です。",
+    "tr": "CD DAO bir ses veya CD veri isteği gerektirir."
+  },
+  "Expected CD, DVD or Blu-ray data.": {
+    "en": "Expected CD, DVD or Blu-ray data.",
+    "zh-CN": "应为 CD、DVD 或蓝光数据。",
+    "zh-TW": "應為 CD、DVD 或藍光資料。",
+    "ja": "CD、DVD、または Blu-ray データが必要です。",
+    "tr": "CD, DVD veya Blu-ray verisi bekleniyor."
+  }
+}

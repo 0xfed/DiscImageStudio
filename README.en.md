@@ -1,6 +1,6 @@
 <div align="center">
 
-[简体中文](README.md) | [繁體中文](README.zh-TW.md) | **English** | [日本語](README.ja.md)
+[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md) | [日本語](README.ja.md) | [Türkçe](README.tr.md)
 
 ![Banner](docs/images/DiscImageStudio_Banner_2.png)
 
@@ -63,14 +63,14 @@ Live burning is experimental. Use only expendable test media.
 
 ### Disc Data Generation
 
-- **CD support**: Supports any CD. Export WAV audio tracks with format headers and accompanying CUE files, compatible with burning software such as cdrecord and ImgBurn; RAW audio track export is also available. See [CD burning compatibility](docs/CD_AUDIO_COMPATIBILITY.md).
+- **CD support**: Supports any CD. Export WAV audio tracks with format headers and accompanying CUE files, compatible with burning software such as cdrecord and ImgBurn; RAW audio track export is also available. See [CD burning compatibility](docs/CD_AUDIO_COMPATIBILITY.en.md).
 - **DVD support**: Supports any DVD. Export ISO images.
-- **Blu-ray support**: Supports any single-layer 25 GB BD-R, with drawing-only mode and UDF 2.01 files. See [ADDING_BLURAY.md](docs/ADDING_BLURAY.md).
+- **Blu-ray support**: Supports any single-layer 25 GB BD-R, with drawing-only mode and UDF 2.01 files. See [ADDING_BLURAY.md](docs/ADDING_BLURAY.en.md).
 - **Files on disc**: For CD, DVD, and Blu-ray, select a folder and place its files on the inner or outer ring directly from the Design page, or adjust these options on the Export page. The settings are saved with the project.
 - **File region preview**: Hybrid-disc design projections and artifact readback highlight the file region, including the file system, in yellow.
-- **Media grayscale schemes**: CD and DVD both use two black-and-white levels: `0D / AA` for CD and `A5 / 92` in the DVD scrambled domain. See [PHYSICAL_MODEL_AUDIT.md](docs/PHYSICAL_MODEL_AUDIT.md).
-- **Grayscale dithering tool**: A standalone program can also process a source image into a two-level `0/255` black-and-white PNG. It supports opening or dragging in source images, side-by-side previews, and lossless PNG export. See the [usage and build instructions](tools/FourLevelDither/README.md).
-- **Disc presets**: Built-in disc parameters cover several brands of CD, DVD, and BD. You can also contribute your own calibrated data; see [preset maintenance](docs/DISC_PRESETS.md).
+- **Media grayscale schemes**: CD and DVD both use two black-and-white levels: `0D / AA` for CD and `A5 / 92` in the DVD scrambled domain. See [PHYSICAL_MODEL_AUDIT.md](docs/PHYSICAL_MODEL_AUDIT.en.md).
+- **Grayscale dithering tool**: A standalone program can also process a source image into a two-level `0/255` black-and-white PNG. It supports opening or dragging in source images, side-by-side previews, and lossless PNG export. See the [usage and build instructions](tools/FourLevelDither/README.en.md).
+- **Disc presets**: Built-in disc parameters cover several brands of CD, DVD, and BD. You can also contribute your own calibrated data; see [preset maintenance](docs/DISC_PRESETS.en.md).
 
 ### Assisted Calibration
 
@@ -82,7 +82,7 @@ Disc Image Studio provides an intelligent, precise assisted calibration workflow
 | `P20261004-133519.jpg` | `P20261004-135416.jpg` |
 
 
-See the [assisted calibration guide](docs/CALIBRATION.md) for the workflow and parameters.
+See the [assisted calibration guide](docs/CALIBRATION.en.md) for the workflow and parameters.
 
 ### Burning
 
@@ -95,6 +95,12 @@ See the [assisted calibration guide](docs/CALIBRATION.md) for the workflow and p
 - The desktop app requires Windows 10 2004 (2004/20H1, 19041) or later, or Windows 11.
 - Building: .NET 10 SDK (`global.json` pins 10.0.x). A non-self-contained GUI built from source requires the .NET 10 Windows Desktop Runtime. The Release EXE includes the runtime, so a separate .NET installation is unnecessary.
 - Live burning requires a CD / DVD / BD recorder recognized by Windows and blank media. BD-R requires a blank single-layer disc that supports sequential writing.
+
+## Interface Language
+
+The Windows desktop app supports 简体中文, 繁體中文, English, 日本語, and Türkçe. Open Settings → General → Language at the top right, select a language or follow the system, and save to apply it immediately without restarting. Cancel leaves preferences unchanged. Language and theme follow the system by default.
+
+Switching languages does not change project names, layer names, user presets, paths, geometry, or numeric parsing. See [LOCALIZATION.md](docs/LOCALIZATION.en.md) for system-language mapping, command-line language, and maintenance.
 
 ## Build and Run
 
@@ -110,11 +116,13 @@ dotnet run --project src/DvdImageSolver --configuration Release -- selftest
 dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release
 ```
 
-See the [release guide](docs/RELEASING.md) for versioning rules, CI-generated EXEs, release draft checks, MSIX packaging, and signing procedures.
+See the [release guide](docs/RELEASING.en.md) for versioning rules, CI-generated EXEs, release draft checks, MSIX packaging, and signing procedures.
 
 ## Command Line
 
 For Linux with glibc, select `linux-x64` or `linux-arm64`. For macOS, select `osx-arm64` for Apple Silicon or `osx-x64` for Intel. The CLI writes image files and audio tracks that you can burn with a compatible tool.
+
+The CLI supports global `--language zh-CN|zh-TW|en|ja|tr|system` (also `--language=ja`). An explicit option overrides `DISC_IMAGE_STUDIO_LANGUAGE`; otherwise it follows the system UI language. Commands, option names, paths, and numeric parsing do not change with language.
 
 Run the CLI from source with the .NET 10 SDK
 
@@ -145,39 +153,40 @@ See the corresponding documentation for each command’s complete parameters.
 
 ## Source Layout
 
-```text
-src/DiscImageStudio.Cli/     Offline Linux and macOS command-line host
-src/DiscImageStudio.ImageIO/ WIC and cross-platform image codecs
-src/DiscImageStudio.Core/    Media-independent module contracts, project/preset models, job and command catalog
-src/DiscImageStudio.Imaging/ Image preprocessing and dithering helpers shared by CD/DVD/BD
-src/DiscImageStudio.Burning/ Windows IMAPI2 device enumeration, stream buffering, and safe burning layer
-src/DiscImageStudio.Cd/      CD-DA generation core and CD module
-src/DiscImageStudio.Dvd/     DVD engine adapter module
-src/DiscImageStudio.BluRay/  BD-R geometry, 17PP/ECC, 3T/6T mapping, streaming generation, and ISO
-src/DiscImageStudio.Iso/     UDF 2.01 / ISO9660 writers
-src/DiscImageStudio.App/     WPF GUI, unified command line, and Store assets
-src/DvdImageSolver/          Isolated DVD encoding/solving engine
-tests/                       Architecture regression tests without a third-party test framework
-packaging/                   MSIX manifest and packaging scripts
-tools/                       Standalone utilities and asset generation scripts
-docs/                        Architecture, engine, preset, release, and other documentation
-```
+| Path | Responsibility |
+| --- | --- |
+| `src/DiscImageStudio.Cli/` | Offline Linux and macOS command-line host |
+| `src/DiscImageStudio.ImageIO/` | WIC and cross-platform image codecs |
+| `src/DiscImageStudio.Localization/` | Shared five-language UI, CLI, and module resources, language selection, and formatting |
+| `src/DiscImageStudio.Core/` | Media-independent module contracts, project/preset models, job and command catalog |
+| `src/DiscImageStudio.Imaging/` | Image preprocessing and dithering helpers shared by CD/DVD/BD |
+| `src/DiscImageStudio.Burning/` | Windows IMAPI2 device enumeration, stream buffering, and safe burning layer |
+| `src/DiscImageStudio.Cd/` | CD-DA generation core and CD module |
+| `src/DiscImageStudio.Dvd/` | DVD engine adapter module |
+| `src/DiscImageStudio.BluRay/` | BD-R geometry, 17PP/ECC, 3T/6T mapping, streaming generation, and ISO |
+| `src/DiscImageStudio.Iso/` | UDF 2.01 / ISO9660 writers |
+| `src/DiscImageStudio.App/` | WPF GUI, unified command line, and Store assets |
+| `src/DvdImageSolver/` | Isolated DVD encoding/solving engine |
+| `tests/` | Architecture regression tests without a third-party test framework |
+| `packaging/` | MSIX manifest and packaging scripts |
+| `tools/` | Standalone utilities and asset generation scripts |
+| `docs/` | Architecture, engine, preset, release, and other documentation |
 
 ## Documentation
 
 | Document | Contents |
 | --- | --- |
-| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Module abstractions, boundaries between layers, and extension rules |
-| [LOCALIZATION.md](docs/LOCALIZATION.md) | Language settings and translation resource maintenance |
-| [DVD_ENGINE.md](docs/DVD_ENGINE.md) | DVD NRZI image constraint solver conventions, encoding chain, and self-test coverage |
-| [CD_AUDIO_COMPATIBILITY.md](docs/CD_AUDIO_COMPATIBILITY.md) | CD audio track formats, byte order, and ghosting troubleshooting |
-| [ADDING_BLURAY.md](docs/ADDING_BLURAY.md) | Blu-ray module physical model, generation/burning pipeline, and extension points |
-| [DISC_PRESETS.md](docs/DISC_PRESETS.md) | Layered JSON format and merging rules for editable disc presets |
-| [CALIBRATION.md](docs/CALIBRATION.md) | Photo rectification (marking the disc’s outermost physical edge and center-hole edge), curve calibration, and DVD cubic track-pitch fitting |
-| [PHYSICAL_MODEL_AUDIT.md](docs/PHYSICAL_MODEL_AUDIT.md) | Review of the CD / DVD generation physical models |
-| [VALIDATION.md](docs/VALIDATION.md) | Local validation records for builds, regressions, and physical disc tests |
-| [RELEASING.md](docs/RELEASING.md) | GitHub Releases, MSIX packaging, signing tests, and Store submission procedures |
-| [CHANGELOG.md](CHANGELOG.md) | Version change history |
+| [ARCHITECTURE.md](docs/ARCHITECTURE.en.md) | Module abstractions, boundaries between layers, and extension rules |
+| [LOCALIZATION.md](docs/LOCALIZATION.en.md) | Interface language configuration, system-language fallback, and translation resource maintenance |
+| [DVD_ENGINE.md](docs/DVD_ENGINE.en.md) | DVD NRZI image constraint solver conventions, encoding chain, and self-test coverage |
+| [CD_AUDIO_COMPATIBILITY.md](docs/CD_AUDIO_COMPATIBILITY.en.md) | CD audio track formats, byte order, and ghosting troubleshooting |
+| [ADDING_BLURAY.md](docs/ADDING_BLURAY.en.md) | Blu-ray module physical model, generation/burning pipeline, and extension points |
+| [DISC_PRESETS.md](docs/DISC_PRESETS.en.md) | Layered JSON format and merging rules for editable disc presets |
+| [CALIBRATION.md](docs/CALIBRATION.en.md) | Photo rectification (marking the disc’s outermost physical edge and center-hole edge), curve calibration, and DVD cubic track-pitch fitting |
+| [PHYSICAL_MODEL_AUDIT.md](docs/PHYSICAL_MODEL_AUDIT.en.md) | Review of the CD / DVD generation physical models |
+| [VALIDATION.md](docs/VALIDATION.en.md) | Local validation records for builds, regressions, and physical disc tests |
+| [RELEASING.md](docs/RELEASING.en.md) | GitHub Releases, MSIX packaging, signing tests, and Store submission procedures |
+| [CHANGELOG.md](CHANGELOG.en.md) | Version change history |
 
 ## Reference Standards
 
@@ -202,16 +211,16 @@ The common CD encoding components also reference [ECMA-130, 2nd edition (CD-ROM,
 
 ## Privacy and Security
 
-- Disc Image Studio does not access the network, upload files, or collect telemetry. See the [privacy policy](PRIVACY.md).
-- Do not disclose security issues in public issues. Follow the [security policy](SECURITY.md) and use GitHub’s private reporting feature.
+- Disc Image Studio does not access the network, upload files, or collect telemetry. See the [privacy policy](PRIVACY.en.md).
+- Do not disclose security issues in public issues. Follow the [security policy](SECURITY.en.md) and use GitHub’s private reporting feature.
 
 ## Contributing
 
-Issue reports and code contributions are welcome. See the [contributing guide](CONTRIBUTING.md) for development environment setup, module boundary rules, testing requirements, and the pull request process.
+Issue reports and code contributions are welcome. See the [contributing guide](CONTRIBUTING.en.md) for development environment setup, module boundary rules, testing requirements, and the pull request process.
 
 ## License
 
-This project is licensed under [GNU GPL v3.0 or later](LICENSE) (`GPL-3.0-or-later`). The CD interleaving implementation includes code ported and modified from CDImage, and the project as a whole is distributed under a compatible GPL license. Distributing binaries or modified versions requires compliance with the corresponding-source and other applicable requirements. Third-party fonts and components retain their own licenses; see the [license notice](LICENSE-NOTICE.md) and [third-party notices](THIRD-PARTY-NOTICES.txt). The full texts are also available offline on the app’s About page.
+This project is licensed under [GNU GPL v3.0 or later](LICENSE) (`GPL-3.0-or-later`). The CD interleaving implementation includes code ported and modified from CDImage, and the project as a whole is distributed under a compatible GPL license. Distributing binaries or modified versions requires compliance with the corresponding-source and other applicable requirements. Third-party fonts and components retain their own licenses; see the [license notice](LICENSE-NOTICE.en.md) and [third-party notices](THIRD-PARTY-NOTICES.txt). The full texts are also available offline on the app’s About page.
 
 ## Acknowledgments
 

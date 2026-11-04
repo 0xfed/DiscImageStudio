@@ -1,0 +1,100 @@
+{
+  "Burn progress snapshot must be write, buffer or finalize.": {
+    "en": "Burn progress snapshot must be write, buffer or finalize.",
+    "zh-CN": "刻录进度快照必须为 write、buffer 或 finalize。",
+    "zh-TW": "燒錄進度快照必須為 write、buffer 或 finalize。",
+    "ja": "書き込み進捗のスナップショットは write、buffer、finalize のいずれかにしてください。",
+    "tr": "Diske yazma ilerlemesi anlık görüntüsü write, buffer veya finalize olmalıdır."
+  },
+  "Calibration snapshot view must be pattern, closeup or target.": {
+    "en": "Calibration snapshot view must be pattern, closeup or target.",
+    "zh-CN": "标定快照视图必须为 pattern、closeup 或 target。",
+    "zh-TW": "標定快照檢視必須為 pattern、closeup 或 target。",
+    "ja": "校正スナップショットのビューは pattern、closeup、target のいずれかにしてください。",
+    "tr": "Kalibrasyon anlık görüntüsü görünümü pattern, closeup veya target olmalıdır."
+  },
+  "Closeup needs a loaded calibration trace.": {
+    "en": "Closeup needs a loaded calibration trace.",
+    "zh-CN": "局部视图需要已载入的标定曲线。",
+    "zh-TW": "局部檢視需要已載入的標定曲線。",
+    "ja": "拡大表示には、読み込まれた校正トレースが必要です。",
+    "tr": "Yakın görünüm için yüklenmiş bir kalibrasyon izi gerekir."
+  },
+  "Snapshot dimensions must be at least 800×600 (640×600 for the settings dialog) and at most 4096×2160.": {
+    "en": "Snapshot dimensions must be at least 800×600 (640×600 for the settings dialog) and at most 4096×2160.",
+    "zh-CN": "快照尺寸最小为 800×600（设置对话框为 640×600），最大为 4096×2160。",
+    "zh-TW": "快照尺寸最小為 800×600（設定對話框為 640×600），最大為 4096×2160。",
+    "ja": "スナップショットの寸法は最小 800×600（設定ダイアログは 640×600）、最大 4096×2160 です。",
+    "tr": "Anlık görüntü boyutları en az 800×600 (ayarlar iletişim kutusu için 640×600), en fazla 4096×2160 olmalıdır."
+  },
+  "Snapshot theme must be dark, light or system.": {
+    "en": "Snapshot theme must be dark, light or system.",
+    "zh-CN": "快照主题必须为 dark、light 或 system。",
+    "zh-TW": "快照佈景主題必須為 dark、light 或 system。",
+    "ja": "スナップショットのテーマは dark、light、system のいずれかにしてください。",
+    "tr": "Anlık görüntü teması dark, light veya system olmalıdır."
+  },
+  "Snapshot language must be zh-CN, zh-TW, en, ja, tr or system.": {
+    "en": "Snapshot language must be zh-CN, zh-TW, en, ja, tr or system.",
+    "zh-CN": "快照语言必须为 zh-CN、zh-TW、en、ja、tr 或 system。",
+    "zh-TW": "快照語言必須為 zh-CN、zh-TW、en、ja、tr 或 system。",
+    "ja": "スナップショットの言語は zh-CN、zh-TW、en、ja、tr、system のいずれかにしてください。",
+    "tr": "Anlık görüntü dili zh-CN, zh-TW, en, ja, tr veya system olmalıdır."
+  },
+  "Calibration snapshot did not finish within the timeout.": {
+    "en": "Calibration snapshot did not finish within the timeout.",
+    "zh-CN": "标定快照未在超时时间内完成。",
+    "zh-TW": "標定快照未在逾時期限內完成。",
+    "ja": "校正スナップショットが制限時間内に完了しませんでした。",
+    "tr": "Kalibrasyon anlık görüntüsü zaman aşımı süresi içinde tamamlanmadı."
+  },
+  "Project dialog snapshot mode must be new, edit or bd.": {
+    "en": "Project dialog snapshot mode must be new, edit or bd.",
+    "zh-CN": "工程对话框快照模式必须为 new、edit 或 bd。",
+    "zh-TW": "專案對話框快照模式必須為 new、edit 或 bd。",
+    "ja": "プロジェクトダイアログのスナップショットモードは new、edit、bd のいずれかにしてください。",
+    "tr": "Proje iletişim kutusu anlık görüntüsü modu new, edit veya bd olmalıdır."
+  },
+  "Settings snapshot view must be general, storage or about.": {
+    "en": "Settings snapshot view must be general, storage or about.",
+    "zh-CN": "设置快照视图必须为 general、storage 或 about。",
+    "zh-TW": "設定快照檢視必須為 general、storage 或 about。",
+    "ja": "設定スナップショットのビューは general、storage、about のいずれかにしてください。",
+    "tr": "Ayarlar anlık görüntüsü görünümü general, storage veya about olmalıdır."
+  },
+  "Live preview did not finish within the snapshot timeout.": {
+    "en": "Live preview did not finish within the snapshot timeout.",
+    "zh-CN": "实时预览未在快照超时时间内完成。",
+    "zh-TW": "即時預覽未在快照逾時期限內完成。",
+    "ja": "ライブプレビューがスナップショットの制限時間内に完了しませんでした。",
+    "tr": "Canlı önizleme anlık görüntü zaman aşımı süresi içinde tamamlanmadı."
+  },
+  "Tone preview did not finish within the snapshot timeout.": {
+    "en": "Tone preview did not finish within the snapshot timeout.",
+    "zh-CN": "影调预览未在快照超时时间内完成。",
+    "zh-TW": "色調預覽未在快照逾時期限內完成。",
+    "ja": "トーンプレビューがスナップショットの制限時間内に完了しませんでした。",
+    "tr": "Ton önizlemesi anlık görüntü zaman aşımı süresi içinde tamamlanmadı."
+  },
+  "Missing embedded license: {0}": {
+    "en": "Missing embedded license: {0}",
+    "zh-CN": "缺少嵌入的许可证：{0}",
+    "zh-TW": "缺少內嵌的授權條款：{0}",
+    "ja": "埋め込みライセンスがありません：{0}",
+    "tr": "Gömülü lisans eksik: {0}"
+  },
+  "A confirmation is already pending.": {
+    "en": "A confirmation is already pending.",
+    "zh-CN": "已有待处理的确认请求。",
+    "zh-TW": "已有待處理的確認請求。",
+    "ja": "既に確認待ちの要求があります。",
+    "tr": "Zaten bekleyen bir onay var."
+  },
+  "UI snapshot complete: output={0}": {
+    "en": "UI snapshot complete: output={0}",
+    "zh-CN": "界面快照完成：输出={0}",
+    "zh-TW": "介面快照完成：輸出={0}",
+    "ja": "UI スナップショット完了：出力={0}",
+    "tr": "Arayüz anlık görüntüsü tamamlandı: çıktı={0}"
+  }
+}

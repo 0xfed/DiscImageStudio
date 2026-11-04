@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Diagnostics;
 using System.Runtime.Intrinsics;
 using DvdImageSolver.Encoding;
@@ -188,14 +189,14 @@ public static class FastDispersionImageWriter
         ArgumentNullException.ThrowIfNull(output);
         if (!output.CanWrite)
         {
-            throw new ArgumentException("DVD output stream must be writable.", nameof(output));
+            throw new ArgumentException(L.T("DVD output stream must be writable."), nameof(output));
         }
 
         Validate(options);
         if (options.PreserveExistingIso)
         {
             throw new ArgumentException(
-                "Direct DVD streaming cannot preserve or seek within an existing ISO.",
+                L.T("Direct DVD streaming cannot preserve or seek within an existing ISO."),
                 nameof(options));
         }
     }
@@ -364,14 +365,14 @@ public static class FastDispersionImageWriter
     {
         if (options.Algorithm != SolverAlgorithm.Dispersion)
         {
-            throw new ArgumentException("Fast output requires --algorithm dispersion.");
+            throw new ArgumentException(L.T("Fast output requires --algorithm dispersion."));
         }
 
         if (options.FastParallelism is < 0 or > 64)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(options),
-                "Fast parallelism must be 0 (automatic) or 1..64.");
+                L.T("Fast parallelism must be 0 (automatic) or 1..64."));
         }
 
         if (options.FillSectors < DvdEccBlockEncoder.SectorCount
@@ -379,24 +380,24 @@ public static class FastDispersionImageWriter
         {
             throw new ArgumentOutOfRangeException(
                 nameof(options),
-                "Fast output sector count must be a positive multiple of 16.");
+                L.T("Fast output sector count must be a positive multiple of 16."));
         }
 
         if ((ulong)options.StartLba + options.FillSectors > options.ImageMapping.TotalSectors)
         {
-            throw new ArgumentOutOfRangeException(nameof(options), "Filled range exceeds the disc size.");
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Filled range exceeds the disc size."));
         }
 
         uint firstPsn = checked(options.StartLba + options.PsnOffset);
         uint finalPsn = checked(firstPsn + options.FillSectors - 1);
         if ((firstPsn & 0xF) != 0)
         {
-            throw new ArgumentException("The first PSN must be aligned to a 16-sector ECC Block.");
+            throw new ArgumentException(L.T("The first PSN must be aligned to a 16-sector ECC Block."));
         }
 
         if (finalPsn > 0x00FF_FFFF)
         {
-            throw new ArgumentOutOfRangeException(nameof(options), "The output exceeds the 24-bit PSN range.");
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("The output exceeds the 24-bit PSN range."));
         }
     }
 

@@ -8,6 +8,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="../../src/DiscImageStudio.Localization/DiscImageStudio.Localization.csproj" />
     <ProjectReference Include="../../src/DvdImageSolver/DvdImageSolver.csproj" />
     <ProjectReference Include="../../src/DiscImageStudio.Imaging/DiscImageStudio.Imaging.csproj" />
   </ItemGroup>

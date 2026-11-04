@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using DiscImageStudio.Imaging;
+using DiscImageStudio.Localization;
 
 namespace DvdGrayProbe;
 
@@ -23,19 +24,19 @@ internal sealed class ProbePattern
     {
         BitmapSource original = FourLevelDither.LoadImage(source);
         if (original.PixelWidth != Size || original.PixelHeight != Size)
-            throw new ArgumentException("This experiment uses the supplied 6000 x 6000 four-level image.");
+            throw new ArgumentException(L.T("This experiment uses the supplied 6000 x 6000 four-level image."));
         BitmapSource gray = new FormatConvertedBitmap(original, PixelFormats.Gray8, null, 0);
         _crop = new byte[640 * 640];
         gray.CopyPixels(new Int32Rect(2880, 1920, 640, 640), _crop, 640, 0);
         if (_crop.Any(value => value is not (0 or 85 or 170 or 255)))
-            throw new ArgumentException("The source crop must already contain only 0/85/170/255.");
+            throw new ArgumentException(L.T("The source crop must already contain only 0/85/170/255."));
         _ramp = Diffuse(640, 105, (x, _) => x / 639.0, 4);
         _mixes = new[] { .25, .5, .75 }.Select(fraction => Diffuse(256, 128, (_, _) => fraction, 2)).ToArray();
         foreach (byte[] mix in _mixes)
         {
             double fraction = mix.Average(value => (double)value);
             if (Math.Abs(fraction - new[] { .25, .5, .75 }[Array.IndexOf(_mixes, mix)]) > .01)
-                throw new InvalidOperationException("Binary error diffusion did not preserve requested pixel occupancy.");
+                throw new InvalidOperationException(L.T("Binary error diffusion did not preserve requested pixel occupancy."));
         }
         Atlas = new byte[Size * Size];
         Parallel.For(0, Size, y =>
@@ -57,7 +58,7 @@ internal sealed class ProbePattern
         _ramp = [];
         _mixes = [];
         if (atlas.Length != Size * Size || atlas.Any(value => !Codes.Contains(value)))
-            throw new ArgumentException("Invalid direct-Q atlas.");
+            throw new ArgumentException(L.T("Invalid direct-Q atlas."));
     }
 
     public static ProbePattern Load(string path) => new(File.ReadAllBytes(path));

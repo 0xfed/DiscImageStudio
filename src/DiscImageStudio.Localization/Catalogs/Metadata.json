@@ -1,0 +1,478 @@
+{
+  "2 or 4": {
+    "en": "2 or 4",
+    "zh-CN": "2 或 4",
+    "zh-TW": "2 或 4",
+    "ja": "2 または 4",
+    "tr": "2 veya 4"
+  },
+  "Audio track (.wav/.raw) or data image (.iso)": {
+    "en": "Audio track (.wav/.raw) or data image (.iso)",
+    "zh-CN": "音轨（.wav/.raw）或数据镜像（.iso）",
+    "zh-TW": "音軌（.wav/.raw）或資料映像檔（.iso）",
+    "ja": "オーディオトラック（.wav/.raw）またはデータイメージ（.iso）",
+    "tr": "Ses izi (.wav/.raw) veya veri imajı (.iso)"
+  },
+  "BD-R ECC diagnostic": {
+    "en": "BD-R ECC diagnostic",
+    "zh-CN": "BD-R ECC 诊断",
+    "zh-TW": "BD-R ECC 診斷",
+    "ja": "BD-R ECC 診断",
+    "tr": "BD-R ECC tanılaması"
+  },
+  "BD-R parameters": {
+    "en": "BD-R parameters",
+    "zh-CN": "BD-R 参数",
+    "zh-TW": "BD-R 參數",
+    "ja": "BD-R パラメーター",
+    "tr": "BD-R parametreleri"
+  },
+  "BD-R payload probe": {
+    "en": "BD-R payload probe",
+    "zh-CN": "BD-R 有效载荷探测",
+    "zh-TW": "BD-R 有效負載探測",
+    "ja": "BD-R ペイロードプローブ",
+    "tr": "BD-R yük denemesi"
+  },
+  "BD-R picture generation": {
+    "en": "BD-R picture generation",
+    "zh-CN": "BD-R 图片生成",
+    "zh-TW": "BD-R 圖片產生",
+    "ja": "BD-R 画像生成",
+    "tr": "BD-R görseli oluşturma"
+  },
+  "BD-R preset": {
+    "en": "BD-R preset",
+    "zh-CN": "BD-R 预设",
+    "zh-TW": "BD-R 預設",
+    "ja": "BD-R プリセット",
+    "tr": "BD-R önayarı"
+  },
+  "Brightness offset -64..64": {
+    "en": "Brightness offset -64..64",
+    "zh-CN": "亮度偏移 -64..64",
+    "zh-TW": "亮度偏移 -64..64",
+    "ja": "明るさのオフセット -64..64",
+    "tr": "Parlaklık kaydırması -64..64"
+  },
+  "Byte sampling interval": {
+    "en": "Byte sampling interval",
+    "zh-CN": "字节采样间隔",
+    "zh-TW": "位元組取樣間隔",
+    "ja": "バイトのサンプリング間隔",
+    "tr": "Bayt örnekleme aralığı"
+  },
+  "CD": {
+    "en": "CD",
+    "zh-CN": "CD",
+    "zh-TW": "CD",
+    "ja": "CD",
+    "tr": "CD"
+  },
+  "CD audio tracks or Mode 1 ISO9660/Joliet data images with CLV geometry previews.": {
+    "en": "CD audio tracks or Mode 1 ISO9660/Joliet data images with CLV geometry previews.",
+    "zh-CN": "CD 音轨或 Mode 1 ISO9660/Joliet 数据镜像，支持 CLV 几何预览。",
+    "zh-TW": "CD 音軌或 Mode 1 ISO9660/Joliet 資料映像檔，支援 CLV 幾何預覽。",
+    "ja": "CD オーディオトラックまたは Mode 1 ISO9660/Joliet データイメージと、CLV ジオメトリのプレビュー。",
+    "tr": "CLV geometrisi önizlemeleriyle CD ses izleri veya Mode 1 ISO9660/Joliet veri imajları."
+  },
+  "CD-DA delay interleave": {
+    "en": "CD-DA delay interleave",
+    "zh-CN": "CD-DA 延迟交织",
+    "zh-TW": "CD-DA 延遲交錯",
+    "ja": "CD-DA 遅延インターリーブ",
+    "tr": "CD-DA gecikmeli serpiştirme"
+  },
+  "Channel output": {
+    "en": "Channel output",
+    "zh-CN": "通道数据输出",
+    "zh-TW": "通道資料輸出",
+    "ja": "チャネル出力",
+    "tr": "Kanal çıktısı"
+  },
+  "Data files for drawing-range preview": {
+    "en": "Data files for drawing-range preview",
+    "zh-CN": "用于绘图范围预览的数据文件",
+    "zh-TW": "用於繪圖範圍預覽的資料檔案",
+    "ja": "描画範囲プレビュー用のデータファイル",
+    "tr": "Çizim aralığı önizlemesi için veri dosyaları"
+  },
+  "Data volume label": {
+    "en": "Data volume label",
+    "zh-CN": "数据卷标",
+    "zh-TW": "資料磁碟區標籤",
+    "ja": "データボリュームラベル",
+    "tr": "Veri birimi etiketi"
+  },
+  "degrees": {
+    "en": "degrees",
+    "zh-CN": "度",
+    "zh-TW": "度",
+    "ja": "度",
+    "tr": "derece"
+  },
+  "Disc total sectors": {
+    "en": "Disc total sectors",
+    "zh-CN": "光盘总扇区数",
+    "zh-TW": "光碟總磁區數",
+    "ja": "ディスクの総セクター数",
+    "tr": "Diskin toplam sektör sayısı"
+  },
+  "Dither strength": {
+    "en": "Dither strength",
+    "zh-CN": "抖动强度",
+    "zh-TW": "遞色強度",
+    "ja": "ディザリング強度",
+    "tr": "Renk taklidi gücü"
+  },
+  "Dither strength 0..1": {
+    "en": "Dither strength 0..1",
+    "zh-CN": "抖动强度 0..1",
+    "zh-TW": "遞色強度 0..1",
+    "ja": "ディザリング強度 0..1",
+    "tr": "Renk taklidi gücü 0..1"
+  },
+  "DVD fast-dispersion ISO writer and clockwise geometry calibration adapter.": {
+    "en": "DVD fast-dispersion ISO writer and clockwise geometry calibration adapter.",
+    "zh-CN": "DVD 快速离散 ISO 写入器与顺时针几何标定适配器。",
+    "zh-TW": "DVD 快速離散 ISO 寫入器與順時針幾何校準配接器。",
+    "ja": "DVD 高速分散 ISO ライターと時計回りのジオメトリキャリブレーションアダプター。",
+    "tr": "DVD hızlı dağılım ISO yazıcısı ve saat yönünde geometri kalibrasyon bağdaştırıcısı."
+  },
+  "ECC cluster": {
+    "en": "ECC cluster",
+    "zh-CN": "ECC 簇",
+    "zh-TW": "ECC 叢集",
+    "ja": "ECC クラスター",
+    "tr": "ECC kümesi"
+  },
+  "Encode DVD payload": {
+    "en": "Encode DVD payload",
+    "zh-CN": "编码 DVD 有效载荷",
+    "zh-TW": "編碼 DVD 有效負載",
+    "ja": "DVD ペイロードを符号化",
+    "tr": "DVD yükünü kodla"
+  },
+  "File placement": {
+    "en": "File placement",
+    "zh-CN": "文件放置位置",
+    "zh-TW": "檔案配置位置",
+    "ja": "ファイルの配置",
+    "tr": "Dosya yerleşimi"
+  },
+  "File position": {
+    "en": "File position",
+    "zh-CN": "文件位置",
+    "zh-TW": "檔案位置",
+    "ja": "ファイルの位置",
+    "tr": "Dosya konumu"
+  },
+  "Files directory": {
+    "en": "Files directory",
+    "zh-CN": "文件目录",
+    "zh-TW": "檔案目錄",
+    "ja": "ファイルディレクトリ",
+    "tr": "Dosya dizini"
+  },
+  "Files to include; omitted for audio": {
+    "en": "Files to include; omitted for audio",
+    "zh-CN": "随盘文件；音轨模式不填写",
+    "zh-TW": "隨碟檔案；音軌模式不填寫",
+    "ja": "含めるファイル。オーディオの場合は省略",
+    "tr": "Eklenecek dosyalar; ses için belirtilmez"
+  },
+  "First physical sector": {
+    "en": "First physical sector",
+    "zh-CN": "首物理扇区",
+    "zh-TW": "第一個實體磁區",
+    "ja": "先頭物理セクター",
+    "tr": "İlk fiziksel sektör"
+  },
+  "First sector": {
+    "en": "First sector",
+    "zh-CN": "首扇区",
+    "zh-TW": "第一個磁區",
+    "ja": "先頭セクター",
+    "tr": "İlk sektör"
+  },
+  "Generate CD audio or data image": {
+    "en": "Generate CD audio or data image",
+    "zh-CN": "生成 CD 音轨或数据镜像",
+    "zh-TW": "產生 CD 音軌或資料映像檔",
+    "ja": "CD オーディオまたはデータイメージを生成",
+    "tr": "CD sesi veya veri imajı oluştur"
+  },
+  "Generate DVD image": {
+    "en": "Generate DVD image",
+    "zh-CN": "生成 DVD 镜像",
+    "zh-TW": "產生 DVD 映像檔",
+    "ja": "DVD イメージを生成",
+    "tr": "DVD imajı oluştur"
+  },
+  "Generated ISO image": {
+    "en": "Generated ISO image",
+    "zh-CN": "已生成的 ISO 镜像",
+    "zh-TW": "已產生的 ISO 映像檔",
+    "ja": "生成済み ISO イメージ",
+    "tr": "Oluşturulmuş ISO imajı"
+  },
+  "Hybrid data folder": {
+    "en": "Hybrid data folder",
+    "zh-CN": "混合数据文件夹",
+    "zh-TW": "混合資料資料夾",
+    "ja": "混合データフォルダー",
+    "tr": "Karma veri klasörü"
+  },
+  "Image outer radius": {
+    "en": "Image outer radius",
+    "zh-CN": "图片外半径",
+    "zh-TW": "圖片外半徑",
+    "ja": "画像の外半径",
+    "tr": "Görsel dış yarıçapı"
+  },
+  "Inner radius": {
+    "en": "Inner radius",
+    "zh-CN": "内半径",
+    "zh-TW": "內半徑",
+    "ja": "内半径",
+    "tr": "İç yarıçap"
+  },
+  "ISO output": {
+    "en": "ISO output",
+    "zh-CN": "ISO 输出",
+    "zh-TW": "ISO 輸出",
+    "ja": "ISO 出力",
+    "tr": "ISO çıktısı"
+  },
+  "ISO volume label": {
+    "en": "ISO volume label",
+    "zh-CN": "ISO 卷标",
+    "zh-TW": "ISO 磁碟區標籤",
+    "ja": "ISO ボリュームラベル",
+    "tr": "ISO birim etiketi"
+  },
+  "ISO/IEC 30190 single-layer BD-R image generation using 3T/6T run-count bias, payload probes and ECC diagnostics.": {
+    "en": "ISO/IEC 30190 single-layer BD-R image generation using 3T/6T run-count bias, payload probes and ECC diagnostics.",
+    "zh-CN": "使用 3T/6T 游程数量偏向生成 ISO/IEC 30190 单层 BD-R 镜像，并提供有效载荷探测与 ECC 诊断。",
+    "zh-TW": "使用 3T/6T 游程數量偏向產生 ISO/IEC 30190 單層 BD-R 映像檔，並提供有效負載探測與 ECC 診斷。",
+    "ja": "3T/6T ラン数バイアスを使った ISO/IEC 30190 単層 BD-R イメージ生成、ペイロードプローブ、ECC 診断。",
+    "tr": "3T/6T dizi sayısı ağırlığıyla ISO/IEC 30190 tek katmanlı BD-R imajı oluşturma, yük denemeleri ve ECC tanılamaları."
+  },
+  "JSON output": {
+    "en": "JSON output",
+    "zh-CN": "JSON 输出",
+    "zh-TW": "JSON 輸出",
+    "ja": "JSON 出力",
+    "tr": "JSON çıktısı"
+  },
+  "Linear velocity": {
+    "en": "Linear velocity",
+    "zh-CN": "线速度",
+    "zh-TW": "線速度",
+    "ja": "線速度",
+    "tr": "Doğrusal hız"
+  },
+  "Measured inner radius": {
+    "en": "Measured inner radius",
+    "zh-CN": "实测内半径",
+    "zh-TW": "實測內半徑",
+    "ja": "実測内半径",
+    "tr": "Ölçülen iç yarıçap"
+  },
+  "Measured outer radius": {
+    "en": "Measured outer radius",
+    "zh-CN": "实测外半径",
+    "zh-TW": "實測外半徑",
+    "ja": "実測外半径",
+    "tr": "Ölçülen dış yarıçap"
+  },
+  "Outer radius": {
+    "en": "Outer radius",
+    "zh-CN": "外半径",
+    "zh-TW": "外半徑",
+    "ja": "外半径",
+    "tr": "Dış yarıçap"
+  },
+  "Output ISO": {
+    "en": "Output ISO",
+    "zh-CN": "输出 ISO",
+    "zh-TW": "輸出 ISO",
+    "ja": "出力 ISO",
+    "tr": "Çıktı ISO"
+  },
+  "Palette levels": {
+    "en": "Palette levels",
+    "zh-CN": "调色板档位",
+    "zh-TW": "調色盤階數",
+    "ja": "パレットの階調数",
+    "tr": "Palet düzeyleri"
+  },
+  "Payload": {
+    "en": "Payload",
+    "zh-CN": "有效载荷",
+    "zh-TW": "有效負載",
+    "ja": "ペイロード",
+    "tr": "Yük"
+  },
+  "Payload cluster": {
+    "en": "Payload cluster",
+    "zh-CN": "有效载荷簇",
+    "zh-TW": "有效負載叢集",
+    "ja": "ペイロードクラスター",
+    "tr": "Yük kümesi"
+  },
+  "Payload output": {
+    "en": "Payload output",
+    "zh-CN": "有效载荷输出",
+    "zh-TW": "有效負載輸出",
+    "ja": "ペイロード出力",
+    "tr": "Yük çıktısı"
+  },
+  "Preview CD audio or data image": {
+    "en": "Preview CD audio or data image",
+    "zh-CN": "预览 CD 音轨或数据镜像",
+    "zh-TW": "預覽 CD 音軌或資料映像檔",
+    "ja": "CD オーディオまたはデータイメージをプレビュー",
+    "tr": "CD sesi veya veri imajını önizle"
+  },
+  "Preview CD geometry": {
+    "en": "Preview CD geometry",
+    "zh-CN": "预览 CD 几何",
+    "zh-TW": "預覽 CD 幾何",
+    "ja": "CD ジオメトリをプレビュー",
+    "tr": "CD geometrisini önizle"
+  },
+  "Preview DVD geometry": {
+    "en": "Preview DVD geometry",
+    "zh-CN": "预览 DVD 几何",
+    "zh-TW": "預覽 DVD 幾何",
+    "ja": "DVD ジオメトリをプレビュー",
+    "tr": "DVD geometrisini önizle"
+  },
+  "Preview PNG": {
+    "en": "Preview PNG",
+    "zh-CN": "预览 PNG",
+    "zh-TW": "預覽 PNG",
+    "ja": "プレビュー PNG",
+    "tr": "Önizleme PNG dosyası"
+  },
+  "Preview size": {
+    "en": "Preview size",
+    "zh-CN": "预览尺寸",
+    "zh-TW": "預覽尺寸",
+    "ja": "プレビューサイズ",
+    "tr": "Önizleme boyutu"
+  },
+  "Program sectors": {
+    "en": "Program sectors",
+    "zh-CN": "节目区扇区数",
+    "zh-TW": "節目區磁區數",
+    "ja": "プログラム領域のセクター数",
+    "tr": "Program alanı sektörleri"
+  },
+  "Run DVD engine self-tests": {
+    "en": "Run DVD engine self-tests",
+    "zh-CN": "运行 DVD 引擎自检",
+    "zh-TW": "執行 DVD 引擎自我測試",
+    "ja": "DVD エンジンのセルフテストを実行",
+    "tr": "DVD motoru öz testlerini çalıştır"
+  },
+  "Samples per sector": {
+    "en": "Samples per sector",
+    "zh-CN": "每扇区采样数",
+    "zh-TW": "每磁區取樣數",
+    "ja": "セクターあたりのサンプル数",
+    "tr": "Sektör başına örnek sayısı"
+  },
+  "Scrambled byte": {
+    "en": "Scrambled byte",
+    "zh-CN": "扰码字节",
+    "zh-TW": "擾碼位元組",
+    "ja": "スクランブル済みバイト",
+    "tr": "Karıştırılmış bayt"
+  },
+  "Sector count": {
+    "en": "Sector count",
+    "zh-CN": "扇区数",
+    "zh-TW": "磁區數",
+    "ja": "セクター数",
+    "tr": "Sektör sayısı"
+  },
+  "Simulate DVD read-back": {
+    "en": "Simulate DVD read-back",
+    "zh-CN": "模拟 DVD 读回",
+    "zh-TW": "模擬 DVD 讀回",
+    "ja": "DVD の読み戻しをシミュレート",
+    "tr": "DVD geri okumasını benzet"
+  },
+  "Source image": {
+    "en": "Source image",
+    "zh-CN": "源图片",
+    "zh-TW": "來源圖片",
+    "ja": "ソース画像",
+    "tr": "Kaynak görsel"
+  },
+  "sRGB linearization": {
+    "en": "sRGB linearization",
+    "zh-CN": "sRGB 线性化",
+    "zh-TW": "sRGB 線性化",
+    "ja": "sRGB リニア化",
+    "tr": "sRGB doğrusallaştırma"
+  },
+  "Start angle": {
+    "en": "Start angle",
+    "zh-CN": "起始角",
+    "zh-TW": "起始角",
+    "ja": "開始角",
+    "tr": "Başlangıç açısı"
+  },
+  "Swap 3T/6T assignment": {
+    "en": "Swap 3T/6T assignment",
+    "zh-CN": "交换 3T/6T 分配",
+    "zh-TW": "交換 3T/6T 分配",
+    "ja": "3T/6T の割り当てを交換",
+    "tr": "3T/6T atamasını değiştir"
+  },
+  "Tone brightness": {
+    "en": "Tone brightness",
+    "zh-CN": "影调亮度",
+    "zh-TW": "影調亮度",
+    "ja": "トーンの明るさ",
+    "tr": "Ton parlaklığı"
+  },
+  "Tone levels (BD is binary)": {
+    "en": "Tone levels (BD is binary)",
+    "zh-CN": "影调档位（BD 为二值）",
+    "zh-TW": "影調階數（BD 為二值）",
+    "ja": "トーンの階調数（BD は 2 値）",
+    "tr": "Ton düzeyleri (BD ikilidir)"
+  },
+  "Undo CD-DA delay interleave": {
+    "en": "Undo CD-DA delay interleave",
+    "zh-CN": "撤销 CD-DA 延迟交织",
+    "zh-TW": "還原 CD-DA 延遲交錯",
+    "ja": "CD-DA 遅延インターリーブを解除",
+    "tr": "CD-DA gecikmeli serpiştirmeyi geri al"
+  },
+  "WAV/RAW track or Mode 1 ISO": {
+    "en": "WAV/RAW track or Mode 1 ISO",
+    "zh-CN": "WAV/RAW 音轨或 Mode 1 ISO",
+    "zh-TW": "WAV/RAW 音軌或 Mode 1 ISO",
+    "ja": "WAV/RAW トラックまたは Mode 1 ISO",
+    "tr": "WAV/RAW izi veya Mode 1 ISO"
+  },
+  "Write a CUE sheet next to the WAV track": {
+    "en": "Write a CUE sheet next to the WAV track",
+    "zh-CN": "在 WAV 音轨旁写出 CUE 文件",
+    "zh-TW": "在 WAV 音軌旁寫出 CUE 檔案",
+    "ja": "WAV トラックと同じ場所に CUE シートを書き出す",
+    "tr": "WAV izinin yanına bir CUE dosyası yaz"
+  },
+  "A disc job command is required.": {
+    "en": "A disc job command is required.",
+    "zh-CN": "必须提供光盘任务命令。",
+    "zh-TW": "必須提供光碟工作命令。",
+    "ja": "ディスクジョブのコマンドが必要です。",
+    "tr": "Bir disk görevi komutu gereklidir."
+  }
+}

@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DvdImageSolver.Encoding;
 
 internal sealed class EfmPlusEncoder
@@ -42,7 +43,7 @@ internal sealed class EfmPlusEncoder
         {
             if (!CanAppend(word))
             {
-                throw new InvalidOperationException("EFMPlus code word would violate the RLL(2,10) boundary.");
+                throw new InvalidOperationException(L.T("EFMPlus code word would violate the RLL(2,10) boundary."));
             }
 
             AppendBits(word, 16);
@@ -91,12 +92,12 @@ internal sealed class EfmPlusEncoder
     {
         if (bytes.Length != BytesPerSyncFrame)
         {
-            throw new ArgumentException($"A Sync Frame contains {BytesPerSyncFrame} bytes.", nameof(bytes));
+            throw new ArgumentException(L.F($"A Sync Frame contains {BytesPerSyncFrame} bytes."), nameof(bytes));
         }
 
         if (physicalLevels.Length < BitsPerSyncFrame)
         {
-            throw new ArgumentException($"Output needs {BitsPerSyncFrame} level entries.", nameof(physicalLevels));
+            throw new ArgumentException(L.F($"Output needs {BitsPerSyncFrame} level entries."), nameof(physicalLevels));
         }
 
         StreamCandidate stream1 = _stream1;
@@ -178,7 +179,7 @@ internal sealed class EfmPlusEncoder
         var stateFour = EfmPlusTables.LookupMain(value, 4);
         if (!stream1.CanAppend(stateOne.Word) || !stream2.CanAppend(stateFour.Word))
         {
-            throw new InvalidOperationException("Invalid State 1/4 EFMPlus branch.");
+            throw new InvalidOperationException(L.T("Invalid State 1/4 EFMPlus branch."));
         }
 
         stream1.Append(stateOne.Word, stateOne.NextState);

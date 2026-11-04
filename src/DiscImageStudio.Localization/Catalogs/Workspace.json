@@ -22,10 +22,10 @@
   },
   "CD 音轨输出位置": {
     "zh-CN": "CD 音轨输出位置",
-    "en": "CD track output location",
+    "en": "CD audio track output location",
     "zh-TW": "CD 音軌輸出位置",
-    "ja": "CD トラックの出力先",
-    "tr": "CD izi çıktı konumu"
+    "ja": "CD オーディオ トラックの出力先",
+    "tr": "CD ses izi çıktı konumu"
   },
   "DVD ISO 输出位置": {
     "zh-CN": "DVD ISO 输出位置",
@@ -108,7 +108,7 @@
     "zh-CN": "{0}\n最近打开：{1:yyyy-MM-dd HH:mm}",
     "en": "{0}\nLast opened: {1:yyyy-MM-dd HH:mm}",
     "zh-TW": "{0}\n最近開啟：{1:yyyy-MM-dd HH:mm}",
-    "ja": "{0}\n最終使用日時: {1:yyyy-MM-dd HH:mm}",
+    "ja": "{0}\n最後に開いた日時: {1:yyyy-MM-dd HH:mm}",
     "tr": "{0}\nSon açılış: {1:yyyy-MM-dd HH:mm}"
   },
   "{0} 级 · {1} 抖动": {
@@ -116,13 +116,13 @@
     "en": "{0} levels · {1} dithering",
     "zh-TW": "{0} 級 · {1} 抖動",
     "ja": "{0} 階調 · {1} ディザリング",
-    "tr": "{0} düzey · {1} sarsıntı"
+    "tr": "{0} düzey · {1} renk taklidi"
   },
   "{0}之前要保存对「{1}」的更改吗？": {
     "zh-CN": "{0}之前要保存对「{1}」的更改吗？",
     "en": "Save changes to “{1}” before continuing ({0})?",
     "zh-TW": "{0}之前要儲存對「{1}」的變更嗎？",
-    "ja": "{0}の前に「{1}」への変更を保存しますか？",
+    "ja": "次の操作に進む前に「{1}」への変更を保存しますか？（{0}）",
     "tr": "Devam etmeden önce ({0}) “{1}” üzerindeki değişiklikler kaydedilsin mi?"
   },
   "不保存": {
@@ -186,7 +186,7 @@
     "en": "Files are included; export as a CD data disc ISO.",
     "zh-TW": "包含隨碟檔案，匯出為 CD 資料光碟 ISO。",
     "ja": "ファイルが含まれているため、CD データ ディスク ISO としてエクスポートします。",
-    "tr": "Dosyalar dahil edildi; CD veri diski ISO'su olarak dışa aktarılıyor."
+    "tr": "Dosyalar dahil; CD veri diski ISO'su olarak dışa aktarılır."
   },
   "可直接粘贴或浏览已生成的 ISO 镜像。": {
     "zh-CN": "可直接粘贴或浏览已生成的 ISO 镜像。",
@@ -197,7 +197,7 @@
   },
   "可直接粘贴或浏览已生成的 ISO；同名 sidecar 会带回几何与影调。": {
     "zh-CN": "可直接粘贴或浏览已生成的 ISO；同名 sidecar 会带回几何与影调。",
-    "en": "Paste a path or browse for a generated ISO; its sidecar restores geometry and tone settings.",
+    "en": "Paste a path or browse for a generated ISO; a sidecar with the matching name restores geometry and tone settings.",
     "zh-TW": "可直接貼上或瀏覽已產生的 ISO；同名 sidecar 會帶回幾何與影調。",
     "ja": "生成済みの ISO のパスを貼り付けるか、参照して選択します。同名の sidecar からジオメトリとトーンが復元されます。",
     "tr": "Oluşturulmuş bir ISO'nun yolunu yapıştırın veya göz atın; aynı adlı yan dosya geometri ve ton ayarlarını geri yükler."
@@ -533,17 +533,17 @@
   },
   "生成镜像": {
     "zh-CN": "生成镜像",
-    "en": "Generate image",
+    "en": "Generate disc image",
     "zh-TW": "產生映像檔",
-    "ja": "イメージの生成",
-    "tr": "İmaj oluştur"
+    "ja": "ディスク イメージの生成",
+    "tr": "Disk imajı oluştur"
   },
   "生成音轨": {
     "zh-CN": "生成音轨",
-    "en": "Generate track",
+    "en": "Generate audio track",
     "zh-TW": "產生音軌",
-    "ja": "トラックの生成",
-    "tr": "İz oluştur"
+    "ja": "オーディオ トラックの生成",
+    "tr": "Ses izi oluştur"
   },
   "用户预设 JSON 无法加载，已继续使用程序内置参数。\n\n{0}\n\n文件位置：\n{1}": {
     "zh-CN": "用户预设 JSON 无法加载，已继续使用程序内置参数。\n\n{0}\n\n文件位置：\n{1}",
@@ -592,7 +592,7 @@
     "en": "The Blu-ray sector count cannot exceed the single-layer capacity of {0:N0}.",
     "zh-TW": "藍光磁區數不能超過單層容量 {0:N0}。",
     "ja": "Blu-ray のセクター数は単層容量 {0:N0} を超えることはできません。",
-    "tr": "Blu-ray sektör sayısı tek katmanlı {0:N0} kapasitesini aşamaz."
+    "tr": "Blu-ray sektör sayısı tek katman kapasitesi {0:N0} değerini aşamaz."
   },
   "蓝光的扇区数必须是 32 的倍数。": {
     "zh-CN": "蓝光的扇区数必须是 32 的倍数。",
@@ -610,7 +610,7 @@
   },
   "设计页合成图源（{0} px）": {
     "zh-CN": "设计页合成图源（{0} px）",
-    "en": "Design composite ({0} px)",
+    "en": "Design page composite source ({0} px)",
     "zh-TW": "設計頁合成圖源（{0} px）",
     "ja": "デザイン ページの合成ソース ({0} px)",
     "tr": "Tasarım sayfası birleşik görsel kaynağı ({0} px)"
@@ -736,10 +736,10 @@
   },
   "选择生成的 CD 音轨或数据盘": {
     "zh-CN": "选择生成的 CD 音轨或数据盘",
-    "en": "Select a generated CD track or data disc",
+    "en": "Select a generated CD audio track or data disc",
     "zh-TW": "選擇產生的 CD 音軌或資料光碟",
-    "ja": "生成済みの CD トラックまたはデータ ディスクを選択",
-    "tr": "Oluşturulan CD izini veya veri diskini seçin"
+    "ja": "生成済みの CD オーディオ トラックまたはデータ ディスクを選択",
+    "tr": "Oluşturulan CD ses izini veya veri diskini seçin"
   },
   "选择生成的 DVD ISO": {
     "zh-CN": "选择生成的 DVD ISO",
@@ -1069,7 +1069,7 @@
   },
   "生成参数已在界面中手动调整；如需长期保存，请写入用户预设 JSON。": {
     "zh-CN": "生成参数已在界面中手动调整；如需长期保存，请写入用户预设 JSON。",
-    "en": "Generation parameters have been adjusted manually. Save them as a user preset to keep them.",
+    "en": "Generation parameters have been adjusted manually in the interface. To keep them permanently, save them to the user preset JSON.",
     "zh-TW": "產生參數已在介面中手動調整；如需長期儲存，請寫入使用者預設 JSON。",
     "ja": "生成パラメーターは画面上で手動調整されています。保持するには、ユーザー プリセット JSON に保存してください。",
     "tr": "Oluşturma parametreleri arayüzde el ile ayarlandı. Kalıcı olarak saklamak için kullanıcı önayar JSON'ına kaydedin."

@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Buffers.Binary;
 
 namespace DiscImageStudio.BluRay.Encoding;
@@ -37,7 +38,7 @@ public static class BluRayEccEncoder
     {
         ValidatePsn(firstPhysicalSectorNumber);
         if (userData.Length != PayloadBytes)
-            throw new ArgumentException("A BD cluster contains 65536 user-data bytes.", nameof(userData));
+            throw new ArgumentException(L.T("A BD cluster contains 65536 user-data bytes."), nameof(userData));
         byte[] dataBlock = new byte[32 * BluRayEdc.DataFrameBytes];
         byte[] mask = BluRayScrambler.CreateMask(firstPhysicalSectorNumber);
         for (int sector = 0; sector < SectorsPerCluster; sector++)
@@ -69,9 +70,9 @@ public static class BluRayEccEncoder
     {
         ValidatePsn(firstPhysicalSectorNumber);
         if (!addressFlags.IsEmpty && addressFlags.Length != 16)
-            throw new ArgumentException("Supply one flag byte for each of the 16 address units.", nameof(addressFlags));
+            throw new ArgumentException(L.T("Supply one flag byte for each of the 16 address units."), nameof(addressFlags));
         if (!userControlData.IsEmpty && userControlData.Length != UserControlBytes)
-            throw new ArgumentException("Supply 18 control bytes for each of the 32 sectors.", nameof(userControlData));
+            throw new ArgumentException(L.T("Supply 18 control bytes for each of the 32 sectors."), nameof(userControlData));
 
         // Keep the access block column-major so each shortened RS word is contiguous.
         byte[] access = new byte[24 * 30];
@@ -112,6 +113,6 @@ public static class BluRayEccEncoder
     {
         if ((firstPhysicalSectorNumber & 31) != 0 || firstPhysicalSectorNumber > 0x07ffffe0)
             throw new ArgumentOutOfRangeException(nameof(firstPhysicalSectorNumber),
-                "A cluster PSN must be a multiple of 32 with reserved bits 31..27 clear.");
+                L.T("A cluster PSN must be a multiple of 32 with reserved bits 31..27 clear."));
     }
 }

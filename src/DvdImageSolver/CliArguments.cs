@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Globalization;
 
 namespace DvdImageSolver;
@@ -16,7 +17,7 @@ internal sealed class CliArguments
             string argument = arguments[index];
             if (!argument.StartsWith("--", StringComparison.Ordinal))
             {
-                throw new ArgumentException($"Unexpected argument '{argument}'. Options must start with --.");
+                throw new ArgumentException(L.F($"Unexpected argument '{argument}'. Options must start with --."));
             }
 
             int equals = argument.IndexOf('=');
@@ -32,7 +33,7 @@ internal sealed class CliArguments
                 key = argument[2..];
                 if (++index >= arguments.Length)
                 {
-                    throw new ArgumentException($"Missing value for --{key}.");
+                    throw new ArgumentException(L.F($"Missing value for --{key}."));
                 }
 
                 value = arguments[index];
@@ -40,7 +41,7 @@ internal sealed class CliArguments
 
             if (!values.TryAdd(key, value))
             {
-                throw new ArgumentException($"Option --{key} was specified more than once.");
+                throw new ArgumentException(L.F($"Option --{key} was specified more than once."));
             }
         }
 
@@ -50,7 +51,7 @@ internal sealed class CliArguments
     internal string Require(string key)
         => _values.TryGetValue(key, out string? value)
             ? value
-            : throw new ArgumentException($"Missing required option --{key}.");
+            : throw new ArgumentException(L.F($"Missing required option --{key}."));
 
     internal string Get(string key, string fallback)
         => _values.TryGetValue(key, out string? value) ? value : fallback;

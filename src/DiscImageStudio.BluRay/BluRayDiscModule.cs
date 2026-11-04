@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Globalization;
 using System.Text.Json;
 using DiscImageStudio.BluRay.Encoding;
@@ -70,12 +71,12 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
     private DiscJobResult Execute(DiscJobRequest request, IProgress<DiscJobProgress>? progress, CancellationToken token)
     {
         DiscCommandDescriptor command = Descriptor.Commands.FirstOrDefault(c => c.Name == request.Command)
-            ?? throw new ArgumentException($"Unknown Blu-ray command '{request.Command}'.");
+            ?? throw new ArgumentException(L.F($"Unknown Blu-ray command '{request.Command}'."));
         Dictionary<string, string> options = Parse(request.Arguments, command);
         if (request.RequestedOutputPath is not null && !options.ContainsKey("output"))
             options["output"] = request.RequestedOutputPath;
         foreach (DiscOptionDefinition option in command.Options.Where(o => o.Required))
-            if (!options.ContainsKey(option.Name)) throw new ArgumentException($"Missing --{option.Name}.");
+            if (!options.ContainsKey(option.Name)) throw new ArgumentException(L.F($"Missing --{option.Name}."));
         string? output = options.GetValueOrDefault("output");
         if (output is not null) ArgumentException.ThrowIfNullOrWhiteSpace(output);
 
@@ -83,23 +84,23 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
         {
             string input = options["input"];
             if (Path.GetFullPath(input).Equals(Path.GetFullPath(output!), StringComparison.OrdinalIgnoreCase))
-                throw new ArgumentException("Input and output paths must be different.");
+                throw new ArgumentException(L.T("Input and output paths must be different."));
             uint psn = UInt(options.GetValueOrDefault("psn", "0x100000"), "psn");
             bool validPsn = psn >= BluRayDiscParameters.FirstLayer0PhysicalSector && psn <= 0x00CA73E0;
             if (!validPsn || psn % 32 != 0)
-                throw new ArgumentOutOfRangeException("psn", "PSN must start a complete, aligned BD-R data-zone cluster.");
+                throw new ArgumentOutOfRangeException("psn", L.T("PSN must start a complete, aligned BD-R data-zone cluster."));
             byte[] payload = new byte[BluRayDiscParameters.PayloadBytesPerCluster];
             using (FileStream source = File.OpenRead(input))
             {
                 if (source.Length != payload.Length)
-                    throw new ArgumentException("bd-encode input must contain exactly 65536 bytes (32 user sectors).");
+                    throw new ArgumentException(L.T("bd-encode input must contain exactly 65536 bytes (32 user sectors)."));
                 source.ReadExactly(payload);
             }
             token.ThrowIfCancellationRequested();
             byte[] encoded = BluRayEccEncoder.Encode(payload, psn);
             BluRayOutputPublisher.Write(output!, stream => stream.Write(encoded), token);
             return new(Descriptor.Id, command.Name, 0,
-                $"BD ECC diagnostic: {encoded.Length} bytes; no 17PP/RUB or filesystem in this file.", Path.GetFullPath(output!));
+                L.F($"BD ECC diagnostic: {encoded.Length} bytes; no 17PP/RUB or filesystem in this file."), Path.GetFullPath(output!));
         }
 
         BluRayDiscPreset preset = BluRayDiscPreset.Find(options.GetValueOrDefault("preset", "bd-r-sl-25gb"));
@@ -124,14 +125,14 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
                     light = new { run = invert ? "3T" : "6T", scrambledByte = $"0x{(invert ? BluRayRunLengthMapping.ThreeTByte : BluRayRunLengthMapping.SixTByte):X2}" },
                     invert,
                     invertSupported = true,
-                    note = "Run-count bias is not an optical-reflectance calibration.",
+                    note = L.T("Run-count bias is not an optical-reflectance calibration."),
                 },
                 payloadBytesPerSector = 2048, sectorsPerCluster = 32,
                 channelBitsPerRecordingUnit = BluRayDiscParameters.ChannelBitsPerRecordingUnit,
                 channelBitLengthNm = BluRayDiscParameters.ChannelBitLengthNm,
                 nominalTrackPitchMicrometers = BluRayDiscParameters.NominalTrackPitchMicrometers,
                 effectiveTrackPitchMicrometers = new BluRayTrackGeometry(disc).EffectiveTrackPitchMicrometers,
-                addressModel = "Nominal data zones; drive spare areas and defect remapping require calibration.",
+                addressModel = L.T("Nominal data zones; drive spare areas and defect remapping require calibration."),
                 physicalLayerStarts = Enumerable.Range(0, disc.LayerCount)
                     .Select(layer => disc.GetPhysicalSectorNumber((uint)layer * BluRayDiscParameters.SectorsPerLayer)).ToArray(),
             }, new JsonSerializerOptions { WriteIndented = true });
@@ -144,7 +145,7 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
         bool isPicture = command.Name == "bd-generate";
         uint start = isPicture ? 0 : UInt(options.GetValueOrDefault("start-sector", "0"), "start-sector");
         if (start >= disc.TotalSectors)
-            throw new ArgumentOutOfRangeException("start-sector", "First sector must be inside the disc.");
+            throw new ArgumentOutOfRangeException("start-sector", L.T("First sector must be inside the disc."));
         uint count = options.TryGetValue("sectors", out string? sectorCount)
             ? UInt(sectorCount, "sectors") : isPicture ? disc.TotalSectors : 32;
         BluRayStreamingOptions streaming = new(disc, start, count);
@@ -158,14 +159,14 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
         {
             string input = options["input"];
             if (Path.GetFullPath(input).Equals(Path.GetFullPath(output!), StringComparison.OrdinalIgnoreCase))
-                throw new ArgumentException("Input and output paths must be different.");
+                throw new ArgumentException(L.T("Input and output paths must be different."));
             generationInvert = options.TryGetValue("invert", out string? polarity)
                 ? Boolean(polarity, "invert") : preset.InvertMapping;
             bool filesAtOuterRing = options.GetValueOrDefault("file-position", "inner") switch
             {
                 "inner" => false,
                 "outer" => true,
-                _ => throw new ArgumentException("--file-position must be inner or outer."),
+                _ => throw new ArgumentException(L.T("--file-position must be inner or outer.")),
             };
             isoPlan = BluRayIsoGenerator.PrepareDrawing(disc, options.GetValueOrDefault("data-dir"),
                 options.GetValueOrDefault("volume-label", "BD_IMAGE"), filesAtOuterRing: filesAtOuterRing);
@@ -173,7 +174,7 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
             token.ThrowIfCancellationRequested();
             if (_imageLoader is null)
                 return new(Descriptor.Id, command.Name, 2,
-                    "BD picture generation requires an image loader. Run bd-generate through the application or provide a BluRayGray8Raster loader.");
+                    L.T("BD picture generation requires an image loader. Run bd-generate through the application or provide a BluRayGray8Raster loader."));
             BluRayGray8Raster raster = _imageLoader(input, token);
             token.ThrowIfCancellationRequested();
             int levels = options.TryGetValue("tone-levels", out string? toneLevels)
@@ -185,27 +186,27 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
                 options.TryGetValue("tone-gamma", out string? gamma) && Boolean(gamma, "tone-gamma"));
             tone.Validate("tone");
             if (levels != ToneProfile.TwoLevels)
-                throw new ArgumentException("bd-generate accepts only --tone-levels 2.");
+                throw new ArgumentException(L.T("bd-generate accepts only --tone-levels 2."));
             raster = BluRayToneMapping.Apply(raster, tone, token);
             token.ThrowIfCancellationRequested();
             mapping = new BluRayImagePayloadMapping(disc, raster, new BluRayRunLengthMapping(generationInvert));
             interpretation = generationInvert
-                ? "dark-to-6T / light-to-3T run-count bias"
-                : "dark-to-3T / light-to-6T run-count bias";
+                ? L.T("dark-to-6T / light-to-3T run-count bias")
+                : L.T("dark-to-3T / light-to-6T run-count bias");
         }
         else
         {
             uint value = UInt(options["byte"], "byte");
-            if (value > 255) throw new ArgumentOutOfRangeException("byte", "Probe byte must be 0..255 or 0x00..0xFF.");
+            if (value > 255) throw new ArgumentOutOfRangeException("byte", L.T("Probe byte must be 0..255 or 0x00..0xFF."));
             mapping = new BluRayConstantByteMapping((byte)value);
-            interpretation = $"scrambled byte 0x{value:X2}; no black/white interpretation";
+            interpretation = L.F($"scrambled byte 0x{value:X2}; no black/white interpretation");
         }
         TimeSpan nextProgressReport = TimeSpan.Zero;
         InlineProgress<BluRayStreamingProgress> report = new(p =>
             {
                 if (p.Elapsed < nextProgressReport && p.CompletedBytes != p.TotalBytes) return;
                 nextProgressReport = p.Elapsed + TimeSpan.FromMilliseconds(250);
-                progress?.Report(new(Descriptor.Id, isPicture ? "iso" : "payload", $"BD {p.CompletedBytes}/{p.TotalBytes} bytes",
+                progress?.Report(new(Descriptor.Id, isPicture ? "iso" : "payload", L.F($"BD {p.CompletedBytes}/{p.TotalBytes} bytes"),
                     p.Fraction, p.CompletedBytes, p.TotalBytes, p.Elapsed));
             });
         BluRayStreamingSummary summary = isPicture
@@ -221,8 +222,8 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
 
         return new(Descriptor.Id, command.Name, 0,
             isPicture
-                ? $"BD {(isoPlan!.HasFileSystem ? "UDF 2.01" : "full-area drawing, no filesystem")}: {summary.BytesWritten} bytes, {disc.TotalSectors} sectors; {isoPlan.FileCount} {(isoPlan.FilesAtOuterRing ? "outer" : "inner")} files; drawing sectors {isoPlan.DrawingStartSector}..{isoPlan.DrawingEndSectorExclusive - 1}; {interpretation}."
-                : $"BD probe: {summary.BytesWritten} raw payload bytes, sectors {start}..{start + count - 1}; {interpretation}. No filesystem.",
+                ? L.F($"BD {(isoPlan!.HasFileSystem ? "UDF 2.01" : L.T("full-area drawing, no filesystem"))}: {summary.BytesWritten} bytes, {disc.TotalSectors} sectors; {isoPlan.FileCount} {(isoPlan.FilesAtOuterRing ? L.T("BluRay.OuterFilePosition") : L.T("BluRay.InnerFilePosition"))} files; drawing sectors {isoPlan.DrawingStartSector}..{isoPlan.DrawingEndSectorExclusive - 1}; {interpretation}.")
+                : L.F($"BD probe: {summary.BytesWritten} raw payload bytes, sectors {start}..{start + count - 1}; {interpretation}. No filesystem."),
             Path.GetFullPath(output!));
     }
 
@@ -234,19 +235,19 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
         {
             string argument = args[i];
             if (!argument.StartsWith("--", StringComparison.Ordinal))
-                throw new ArgumentException($"Expected a named option, got '{argument}'.");
+                throw new ArgumentException(L.F($"Expected a named option, got '{argument}'."));
             int separator = argument.IndexOf('=');
             string name = separator < 0 ? argument[2..] : argument[2..separator];
             if (command.Name == "bd-generate" && (name.Equals("sectors", StringComparison.OrdinalIgnoreCase)
                 || name.Equals("start-sector", StringComparison.OrdinalIgnoreCase)))
-                throw new ArgumentException("bd-generate now outputs a complete ISO. Use --total-sectors for disc capacity; raw ranges remain available in bd-probe.");
-            if (!allowed.Contains(name)) throw new ArgumentException($"Unknown option --{name} for {command.Name}.");
+                throw new ArgumentException(L.T("bd-generate now outputs a complete ISO. Use --total-sectors for disc capacity; raw ranges remain available in bd-probe."));
+            if (!allowed.Contains(name)) throw new ArgumentException(L.F($"Unknown option --{name} for {command.Name}."));
             string value;
             if (separator >= 0) value = argument[(separator + 1)..];
             else if (++i < args.Count && !args[i].StartsWith("--", StringComparison.Ordinal)) value = args[i];
-            else throw new ArgumentException($"Missing value for --{name}.");
-            if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException($"Empty value for --{name}.");
-            if (!result.TryAdd(name, value)) throw new ArgumentException($"Duplicate option --{name}.");
+            else throw new ArgumentException(L.F($"Missing value for --{name}."));
+            if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException(L.F($"Empty value for --{name}."));
+            if (!result.TryAdd(name, value)) throw new ArgumentException(L.F($"Duplicate option --{name}."));
         }
         return result;
     }
@@ -256,17 +257,17 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
         bool hex = value.StartsWith("0x", StringComparison.OrdinalIgnoreCase);
         if (!uint.TryParse(hex ? value[2..] : value, hex ? NumberStyles.AllowHexSpecifier : NumberStyles.None,
             CultureInfo.InvariantCulture, out uint result))
-            throw new ArgumentException($"--{name} must be an unsigned integer (decimal or 0x hex).");
+            throw new ArgumentException(L.F($"--{name} must be an unsigned integer (decimal or 0x hex)."));
         return result;
     }
 
     private static double Number(string value, string name)
         => double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out double result) && double.IsFinite(result)
-            ? result : throw new ArgumentException($"--{name} must be a finite number.");
+            ? result : throw new ArgumentException(L.F($"--{name} must be a finite number."));
 
     private static bool Boolean(string value, string name)
         => bool.TryParse(value, out bool result)
-            ? result : throw new ArgumentException($"--{name} must be true or false.");
+            ? result : throw new ArgumentException(L.F($"--{name} must be true or false."));
 
     private sealed class InlineProgress<T>(Action<T> report) : IProgress<T>
     {

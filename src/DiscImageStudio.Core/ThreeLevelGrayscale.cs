@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DiscImageStudio.Core;
 
 /// <summary>
@@ -20,7 +21,7 @@ public static class ThreeLevelGrayscale
         0 => 0,
         1 => MiddleLuminance,
         2 => 255,
-        _ => throw new ArgumentOutOfRangeException(nameof(levelIndex), "Grayscale level must be 0..2."),
+        _ => throw new ArgumentOutOfRangeException(nameof(levelIndex), L.T("Grayscale level must be 0..2.")),
     };
 
     public static byte Quantize(byte luminance) => GetLuminance(GetLevelIndex(luminance));

@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using DiscImageStudio.Core;
 using DvdImageSolver.Encoding;
 
@@ -177,27 +178,27 @@ internal static class ImageTargetMapper
         {
             throw new ArgumentOutOfRangeException(
                 nameof(initialLba),
-                "The selected 16-sector ECC Block must fit inside the reported total sector count.");
+                L.T("The selected 16-sector ECC Block must fit inside the reported total sector count."));
         }
 
         if (!double.IsFinite(options.ChannelBitLengthNm) || options.ChannelBitLengthNm <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(options), "Channel-bit length must be positive.");
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Channel-bit length must be positive."));
         }
 
         if (!double.IsFinite(options.StartAngleDegrees))
         {
-            throw new ArgumentOutOfRangeException(nameof(options), "Start angle must be finite.");
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Start angle must be finite."));
         }
 
         if (options.AlphaThreshold == 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(options), "Alpha threshold must be between 1 and 255.");
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Alpha threshold must be between 1 and 255."));
         }
 
         if (options.SampleEveryChannelBits < 1)
         {
-            throw new ArgumentOutOfRangeException(nameof(options), "Image constraint step must be positive.");
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Image constraint step must be positive."));
         }
     }
 }

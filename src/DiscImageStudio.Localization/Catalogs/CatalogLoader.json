@@ -1,0 +1,23 @@
+{
+  "Empty localization catalog: {0}": {
+    "zh-CN": "本地化资源为空：{0}",
+    "zh-TW": "在地化資源為空：{0}",
+    "en": "Empty localization catalog: {0}",
+    "ja": "ローカライズカタログが空です：{0}",
+    "tr": "Yerelleştirme kataloğu boş: {0}"
+  },
+  "Duplicate localization key: {0}": {
+    "en": "Duplicate localization key: {0}",
+    "zh-CN": "翻译资源键重复：{0}",
+    "zh-TW": "翻譯資源鍵重複：{0}",
+    "ja": "翻訳リソースキーが重複しています：{0}",
+    "tr": "Yinelenen çeviri kaynak anahtarı: {0}"
+  },
+  "Cli.Error": {
+    "en": "error: {0}",
+    "zh-CN": "错误：{0}",
+    "zh-TW": "錯誤：{0}",
+    "ja": "エラー: {0}",
+    "tr": "hata: {0}"
+  }
+}

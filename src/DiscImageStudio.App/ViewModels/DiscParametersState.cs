@@ -342,9 +342,7 @@ public partial class DiscParametersState : ObservableObject
             _ => "cd",
         };
         string id = $"user-{familyToken}-{now:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToString("N")[..4]}";
-        string note = string.Create(
-            System.Globalization.CultureInfo.InvariantCulture,
-            $"用户预设：内半径 {innerRadiusMm:0.###} mm、外半径 {outerRadiusMm:0.###} mm、{sectors:N0} 扇区。");
+        string note = PresetText.UserDescriptionFallback(innerRadiusMm, outerRadiusMm, sectors);
         DiscPresetJsonDocument updated = family switch
         {
             OpticalDiscFamily.Dvd => user with
@@ -360,6 +358,7 @@ public partial class DiscParametersState : ObservableObject
                         checked((uint)sectors),
                         innerRadiusMm,
                         outerRadiusMm,
+                        DescriptionResourceKey: PresetText.UserDescriptionKey,
                         PitchLinear: pitchLinear,
                         PitchQuadratic: pitchQuadratic,
                         PitchCubic: pitchCubic),
@@ -378,7 +377,8 @@ public partial class DiscParametersState : ObservableObject
                         checked((uint)sectors),
                         innerRadiusMm,
                         outerRadiusMm,
-                        invertMapping),
+                        invertMapping,
+                        DescriptionResourceKey: PresetText.UserDescriptionKey),
                 ],
             },
             _ => user with
@@ -393,7 +393,8 @@ public partial class DiscParametersState : ObservableObject
                         note,
                         sectors,
                         innerRadiusMm,
-                        outerRadiusMm),
+                        outerRadiusMm,
+                        DescriptionResourceKey: PresetText.UserDescriptionKey),
                 ],
             },
         };
@@ -444,10 +445,13 @@ public partial class DiscParametersState : ObservableObject
         List<CdDiscPreset> cdPresets = merged.CdPresets
             .Select(value => new CdDiscPreset(
                 value.Id,
-                LocalizeBuiltInText(value.DisplayName,
-                    builtIn.CdPresets.FirstOrDefault(preset => preset.Id == value.Id)?.DisplayName),
-                LocalizeBuiltInText(value.Description,
-                    builtIn.CdPresets.FirstOrDefault(preset => preset.Id == value.Id)?.Description),
+                PresetText.Resolve(value.DisplayName, value.DisplayNameResourceKey,
+                    builtIn.CdPresets.FirstOrDefault(preset => preset.Id == value.Id)?.DisplayName
+                    ?? PresetText.InitialDisplayName(OpticalDiscFamily.CompactDisc, value.Id)),
+                PresetText.Description(value.Description, value.DescriptionResourceKey,
+                    builtIn.CdPresets.FirstOrDefault(preset => preset.Id == value.Id)?.Description
+                    ?? PresetText.InitialDescription(OpticalDiscFamily.CompactDisc, value.Id),
+                    value.InnerRadiusMm, value.OuterRadiusMm, value.Sectors),
                 value.Sectors,
                 value.InnerRadiusMm,
                 value.OuterRadiusMm,
@@ -460,10 +464,13 @@ public partial class DiscParametersState : ObservableObject
         List<DvdDiscPreset> dvdPresets = merged.DvdPresets
             .Select(value => new DvdDiscPreset(
                 value.Id,
-                LocalizeBuiltInText(value.DisplayName,
-                    builtIn.DvdPresets.FirstOrDefault(preset => preset.Id == value.Id)?.DisplayName),
-                LocalizeBuiltInText(value.Description,
-                    builtIn.DvdPresets.FirstOrDefault(preset => preset.Id == value.Id)?.Description),
+                PresetText.Resolve(value.DisplayName, value.DisplayNameResourceKey,
+                    builtIn.DvdPresets.FirstOrDefault(preset => preset.Id == value.Id)?.DisplayName
+                    ?? PresetText.InitialDisplayName(OpticalDiscFamily.Dvd, value.Id)),
+                PresetText.Description(value.Description, value.DescriptionResourceKey,
+                    builtIn.DvdPresets.FirstOrDefault(preset => preset.Id == value.Id)?.Description
+                    ?? PresetText.InitialDescription(OpticalDiscFamily.Dvd, value.Id),
+                    value.InnerRadiusMm, value.OuterRadiusMm, value.TotalSectors),
                 value.TotalSectors,
                 value.InnerRadiusMm,
                 value.OuterRadiusMm,
@@ -479,8 +486,9 @@ public partial class DiscParametersState : ObservableObject
         List<BluRayDiscPreset> bluRayPresets = (merged.BluRayPresets ?? [])
             .Select(value => new BluRayDiscPreset(
                 value.Id,
-                LocalizeBuiltInText(value.DisplayName,
-                    builtIn.BluRayPresets?.FirstOrDefault(preset => preset.Id == value.Id)?.DisplayName),
+                PresetText.Resolve(value.DisplayName, value.DisplayNameResourceKey,
+                    builtIn.BluRayPresets?.FirstOrDefault(preset => preset.Id == value.Id)?.DisplayName
+                    ?? PresetText.InitialDisplayName(OpticalDiscFamily.BluRay, value.Id)),
                 1,
                 new BluRayDiscParameters(
                     value.TotalSectors,
@@ -493,10 +501,6 @@ public partial class DiscParametersState : ObservableObject
         bluRayPresets.Add(ManualBluRayPreset);
         return (cdPresets, dvdPresets, bluRayPresets);
     }
-
-    // User-edited names and descriptions remain content. Only unchanged built-in text is translated.
-    private static string LocalizeBuiltInText(string value, string? builtInValue)
-        => value == builtInValue ? L.T(value) : value;
 
     private void ApplyPresetDocuments(
         (IReadOnlyList<CdDiscPreset> Cd, IReadOnlyList<DvdDiscPreset> Dvd, IReadOnlyList<BluRayDiscPreset> BluRay) presets)

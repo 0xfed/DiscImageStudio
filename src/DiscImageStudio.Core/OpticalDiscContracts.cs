@@ -1,3 +1,6 @@
+using System.Text.Json.Serialization;
+using DiscImageStudio.Localization;
+
 namespace DiscImageStudio.Core;
 
 public enum OpticalDiscFamily
@@ -38,14 +41,29 @@ public sealed record DiscOptionDefinition(
     bool Required = false,
     string? DefaultValue = null,
     string? Unit = null,
-    IReadOnlyList<string>? Choices = null);
+    IReadOnlyList<string>? Choices = null)
+{
+    // Store resource keys, not rendered text: cached descriptors follow language
+    // changes without replacing option identities or accepted values.
+    private readonly string _displayName = DisplayName;
+    public string DisplayName { get => L.T(_displayName); init => _displayName = value; }
+
+    [JsonIgnore]
+    public string? DisplayUnit => Unit is null ? null : L.T(Unit);
+}
 
 public sealed record DiscCommandDescriptor(
     string Name,
     string DisplayName,
     string Description,
     DiscModuleCapabilities Capabilities,
-    IReadOnlyList<DiscOptionDefinition> Options);
+    IReadOnlyList<DiscOptionDefinition> Options)
+{
+    private readonly string _displayName = DisplayName;
+    private readonly string _description = Description;
+    public string DisplayName { get => L.T(_displayName); init => _displayName = value; }
+    public string Description { get => L.T(_description); init => _description = value; }
+}
 
 public sealed record DiscModuleDescriptor(
     string Id,
@@ -53,7 +71,13 @@ public sealed record DiscModuleDescriptor(
     OpticalDiscFamily Family,
     string Description,
     bool SupportsCancellation,
-    IReadOnlyList<DiscCommandDescriptor> Commands);
+    IReadOnlyList<DiscCommandDescriptor> Commands)
+{
+    private readonly string _displayName = DisplayName;
+    private readonly string _description = Description;
+    public string DisplayName { get => L.T(_displayName); init => _displayName = value; }
+    public string Description { get => L.T(_description); init => _description = value; }
+}
 
 public sealed class DiscJobRequest
 {
@@ -64,7 +88,7 @@ public sealed class DiscJobRequest
     {
         if (string.IsNullOrWhiteSpace(command))
         {
-            throw new ArgumentException("A disc job command is required.", nameof(command));
+            throw new ArgumentException(L.T("A disc job command is required."), nameof(command));
         }
 
         Command = command.Trim().ToLowerInvariant();

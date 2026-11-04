@@ -1,5 +1,7 @@
 # 固定标定参考图
 
+[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md) | [日本語](README.ja.md) | [Türkçe](README.tr.md)
+
 `target_slim.png` 是用户指定图片的原样副本，2400×2400 RGB。文件 SHA-256：
 
 ```text
@@ -13,7 +15,7 @@ c98ffe87db7cf9c3f132352814e1ce611c44f704de5b7212da4083188257c829
 ```
 
 图像按生成外半径缩放，使用普通图片编码器相同的像素坐标约定：DVD 的像素中心基准为 `1199.5`，CD 为 `1200`。盘心坐标为
-`((x-centre)*外半径/centre, (y-centre)*外半径/centre)` mm，Y 向下。9 条圆的原图参考半径为
+`((x-centre)*outerRadius/centre, (y-centre)*outerRadius/centre)` mm，Y 向下。9 条圆的原图参考半径为
 490、570、650、730、810、890、970、1050、1130 像素；线宽约 10 像素，实际毫米尺寸随生成外半径同比缩放。
 
 编码、预览和 PNG 导出共用这份图像，先按外半径缩放，再按内外半径裁切绘图区。预览的 120 mm 盘面背景不决定图像编码尺度。图片没有被解析重画。`CalibrationEncoderTests` 检查原 PNG 哈希、每个灰度像素、原生预览与导出、CD/DVD 文件和流的一致性。

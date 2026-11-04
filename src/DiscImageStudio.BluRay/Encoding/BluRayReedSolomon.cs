@@ -1,3 +1,5 @@
+using DiscImageStudio.Localization;
+
 namespace DiscImageStudio.BluRay.Encoding;
 
 /// <summary>Shortened systematic RS over GF(256), polynomial 0x11d, roots alpha^0 onward.</summary>
@@ -12,9 +14,9 @@ public static class BluRayReedSolomon
     public static void ComputeParity(ReadOnlySpan<byte> information, Span<byte> parity)
     {
         if (parity.Length is not (4 or 32))
-            throw new ArgumentException("BD address and LDC/BIS codes use 4 or 32 parity bytes.", nameof(parity));
+            throw new ArgumentException(L.T("BD address and LDC/BIS codes use 4 or 32 parity bytes."), nameof(parity));
         if (information.Length == 0 || information.Length + parity.Length > 255)
-            throw new ArgumentException("The shortened code word must contain 1..255 symbols.", nameof(information));
+            throw new ArgumentException(L.T("The shortened code word must contain 1..255 symbols."), nameof(information));
         byte[] generator = parity.Length == 4 ? Generator4 : Generator32;
         Span<byte> work = stackalloc byte[255];
         work.Clear();

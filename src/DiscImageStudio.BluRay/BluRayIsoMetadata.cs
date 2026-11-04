@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -101,19 +102,19 @@ public sealed record BluRayIsoMetadata(
         if (TotalSectors == 0 || TotalSectors > BluRayDiscParameters.SectorsPerLayer
             || TotalSectors % BluRayDiscParameters.SectorsPerCluster != 0)
         {
-            throw new InvalidDataException("BD sidecar sectors must be a 32-aligned single-layer size.");
+            throw new InvalidDataException(L.T("BD sidecar sectors must be a 32-aligned single-layer size."));
         }
 
         if (!double.IsFinite(InnerRadiusMm) || !double.IsFinite(OuterRadiusMm)
             || InnerRadiusMm <= 0 || OuterRadiusMm <= InnerRadiusMm || OuterRadiusMm > 60)
         {
-            throw new InvalidDataException("BD sidecar radii are outside the supported data zone.");
+            throw new InvalidDataException(L.T("BD sidecar radii are outside the supported data zone."));
         }
 
         if (DrawingStartSector >= DrawingEndSectorExclusive
             || DrawingEndSectorExclusive > TotalSectors)
         {
-            throw new InvalidDataException("BD sidecar drawing bounds are invalid.");
+            throw new InvalidDataException(L.T("BD sidecar drawing bounds are invalid."));
         }
 
         Tone.Validate("tone");

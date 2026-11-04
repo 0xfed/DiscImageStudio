@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Buffers.Binary;
 
 namespace DiscImageStudio.Burning;
@@ -27,17 +28,17 @@ internal static class CdMode1SectorEncoder
     {
         if (payload.Length != PayloadBytes)
         {
-            throw new ArgumentException("A Mode 1 payload must contain exactly 2048 bytes.", nameof(payload));
+            throw new ArgumentException(L.T("A Mode 1 payload must contain exactly 2048 bytes."), nameof(payload));
         }
 
         if (destination.Length < SectorBytes)
         {
-            throw new ArgumentException("A RAW main-channel sector requires 2352 bytes.", nameof(destination));
+            throw new ArgumentException(L.T("A RAW main-channel sector requires 2352 bytes."), nameof(destination));
         }
 
         if (lba < -150 || lba > MaximumLba)
         {
-            throw new ArgumentOutOfRangeException(nameof(lba), "The sector address must fit a two-digit CD minute field.");
+            throw new ArgumentOutOfRangeException(nameof(lba), L.T("The sector address must fit a two-digit CD minute field."));
         }
 
         Span<byte> sector = destination[..SectorBytes];

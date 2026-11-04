@@ -27,7 +27,7 @@ internal static class CdDataDaoWorkflowTests
             using RecordingCdRawImageSession image = new(session.Calls) { ImageStartOfLeadout = sectors };
             List<string> operations = [];
             WindowsImapiBurner.BurnCdDao(session, image, content, request, CancellationToken.None,
-                reportOperation: operations.Add);
+                reportOperation: operation => operations.Add(operation.Message));
             Require(session.Calls.Contains("WriteMedia") && session.Calls[^1] == "ReleaseMedia",
                 "data DAO follows audio lead-out capacity handling and closes the session");
             Require(session.Calls.IndexOf("PrepareMedia") < session.Calls.IndexOf("LastPossibleStartOfLeadout")

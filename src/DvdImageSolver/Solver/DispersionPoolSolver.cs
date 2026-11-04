@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Diagnostics;
 using DvdImageSolver.Encoding;
 
@@ -20,7 +21,7 @@ internal sealed class DispersionPoolSolver
         if (initialPayloads.Length != DvdEccBlockEncoder.PayloadBytesPerBlock)
         {
             throw new ArgumentException(
-                $"Initial payload must contain {DvdEccBlockEncoder.PayloadBytesPerBlock} bytes.",
+                L.F($"Initial payload must contain {DvdEccBlockEncoder.PayloadBytesPerBlock} bytes."),
                 nameof(initialPayloads));
         }
 
@@ -29,7 +30,7 @@ internal sealed class DispersionPoolSolver
         if ((firstPsn & 0xF) != 0)
         {
             throw new ArgumentException(
-                $"The first PSN 0x{firstPsn:X6} is not aligned to a 16-sector ECC Block.");
+                L.F($"The first PSN 0x{firstPsn:X6} is not aligned to a 16-sector ECC Block."));
         }
 
         byte[] payloads = initialPayloads.ToArray();

@@ -1,5 +1,7 @@
 # CD 音轨格式、字节序与重影排查
 
+[简体中文](CD_AUDIO_COMPATIBILITY.md) | [繁體中文](CD_AUDIO_COMPATIBILITY.zh-TW.md) | [English](CD_AUDIO_COMPATIBILITY.en.md) | [日本語](CD_AUDIO_COMPATIBILITY.ja.md) | [Türkçe](CD_AUDIO_COMPATIBILITY.tr.md)
+
 ## 随盘文件与数据盘
 
 CD 工程在设计页或导出页选择随盘文件夹后，自动切换为 ISO9660/Joliet 数据盘，输出后缀切换为 `.iso`；清空文件夹路径后恢复 WAV 音轨。文件位置可选内圈或外圈，默认内圈，设置随工程保存。文件系统元数据仍位于盘首，外圈模式把文件内容放在盘尾，绘图保持原有的整盘坐标，不挤压到剩余区域。
@@ -9,7 +11,7 @@ DiscImageStudio.exe cd-generate --input picture.png --output cd-image.iso `
   --data-dir "D:\随盘文件" --volume-label CD_IMAGE --file-position outer
 ```
 
-ISO 长度为 `扇区数 × 2048`，按 CD-ROM Mode 1 数据盘刻录。程序内即时刻录使用相同的 ISO 数据流；外部刻录软件应选择刻录镜像功能。音频交织开关和 CUE 只用于音轨模式。数据盘的绘图区单独补偿 CD-ROM 扰码及位置映射，随盘文件保留原始内容。
+ISO 长度为 `sectorCount × 2048`（sectorCount 为扇区数），按 CD-ROM Mode 1 数据盘刻录。程序内即时刻录使用相同的 ISO 数据流；外部刻录软件应选择刻录镜像功能。音频交织开关和 CUE 只用于音轨模式。数据盘的绘图区单独补偿 CD-ROM 扰码及位置映射，随盘文件保留原始内容。
 
 CD 数据盘即时刻录与音轨共用 DAO 会话和 lead-out 边界检查，保留 ATIP 标定的扇区数及完整文件布局。程序将 ISO 负载编码为 Mode 1 原始扇区，并设置数据轨标识；使用铼德医疗水蓝盘预设时仍写出 359,845 个数据扇区，不按 TAO 接口较小的可用容量缩短图案或文件。DAO 沿用音轨模式最多 3 扇区的受限 overburn 检查，超限会在写入前报错。
 
@@ -23,7 +25,7 @@ CD 数据盘即时刻录与音轨共用 DAO 会话和 lead-out 边界检查，�
 
 | 刻录入口 | 使用方式 |
 | --- | --- |
-| cdrecord | `cdrecord dev=设备 speed=速度 -audio "cd-track.wav"`，不要额外添加 `-swab` |
+| cdrecord | `cdrecord dev=DEVICE speed=SPEED -audio "cd-track.wav"`（DEVICE 为设备，SPEED 为速度），不要额外添加 `-swab` |
 | ImgBurn | 在“Write image file to disc”中打开 `cd-track.cue` |
 | 程序内流式刻录 | 自动生成同样的小端 PCM 数据，不包含 WAV 文件头，不生成完整临时音轨 |
 | 旧 RAW 工作流 | 输出仍可选择 `.raw`；`cdrecord -audio "cd-track.raw"` 不加 `-swab` |
@@ -38,7 +40,7 @@ DiscImageStudio.exe cd-generate --input picture.png --output cd-track.wav --inte
 
 `--cue`（缺省 `true`）控制 WAV 输出是否同时写出同名 CUE；`.raw` 输出始终不写 CUE。
 
-WAV 的文件长度为 `扇区数 × 2352 + 44`；音频长度、生成进度和流式刻录容量仍为 `扇区数 × 2352`。文件头不占盘片音轨扇区，也不改变图案几何。
+WAV 的文件长度为 `sectorCount × 2352 + 44`；音频长度、生成进度和流式刻录容量仍为 `sectorCount × 2352`。文件头不占盘片音轨扇区，也不改变图案几何。
 
 ## 影调（抖动、sRGB 线性化、灰阶与亮度）
 

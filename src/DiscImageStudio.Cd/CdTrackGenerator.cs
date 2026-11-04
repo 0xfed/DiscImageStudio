@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Diagnostics;
 using System.IO;
 using DiscImageStudio.Core;
@@ -41,7 +42,7 @@ public static class CdTrackGenerator
         bool wave = extension.Equals(".wav", StringComparison.OrdinalIgnoreCase);
         if (!wave && !extension.Equals(".raw", StringComparison.OrdinalIgnoreCase))
         {
-            throw new ArgumentException("CD output must be .wav (PCM audio + CUE) or .raw (big-endian cdrecord audio).", nameof(outputPath));
+            throw new ArgumentException(L.T("CD output must be .wav (PCM audio + CUE) or .raw (big-endian cdrecord audio)."), nameof(outputPath));
         }
 
         if (wave)
@@ -51,7 +52,7 @@ public static class CdTrackGenerator
 
         if (sourceFullPath.Equals(outputFullPath, StringComparison.OrdinalIgnoreCase))
         {
-            throw new ArgumentException("The output must not overwrite the source image.", nameof(outputPath));
+            throw new ArgumentException(L.T("The output must not overwrite the source image."), nameof(outputPath));
         }
 
         EnsureParentDirectory(outputFullPath);
@@ -114,7 +115,7 @@ public static class CdTrackGenerator
         ArgumentNullException.ThrowIfNull(output);
         if (!output.CanWrite)
         {
-            throw new ArgumentException("CD output stream must be writable.", nameof(output));
+            throw new ArgumentException(L.T("CD output stream must be writable."), nameof(output));
         }
 
         CdAudioSamples.Validate(audioByteOrder);
@@ -156,7 +157,7 @@ public static class CdTrackGenerator
         bool wave = extension.Equals(".wav", StringComparison.OrdinalIgnoreCase);
         if (!wave && !extension.Equals(".raw", StringComparison.OrdinalIgnoreCase))
         {
-            throw new ArgumentException("CD output must be .wav (PCM audio + CUE) or .raw (big-endian cdrecord audio).", nameof(outputPath));
+            throw new ArgumentException(L.T("CD output must be .wav (PCM audio + CUE) or .raw (big-endian cdrecord audio)."), nameof(outputPath));
         }
 
         if (wave)
@@ -210,7 +211,7 @@ public static class CdTrackGenerator
         ArgumentNullException.ThrowIfNull(output);
         if (!output.CanWrite)
         {
-            throw new ArgumentException("CD output stream must be writable.", nameof(output));
+            throw new ArgumentException(L.T("CD output stream must be writable."), nameof(output));
         }
 
         CdAudioSamples.Validate(audioByteOrder);
@@ -409,12 +410,12 @@ public static class CdTrackGenerator
         actual.Validate();
         if (outputSize is < 64 or > 8192)
         {
-            throw new ArgumentOutOfRangeException(nameof(outputSize), "Preview size must be 64..8192.");
+            throw new ArgumentOutOfRangeException(nameof(outputSize), L.T("Preview size must be 64..8192."));
         }
 
         if (byteStep <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(byteStep), "Byte step must be positive.");
+            throw new ArgumentOutOfRangeException(nameof(byteStep), L.T("Byte step must be positive."));
         }
 
         GrayPreview preview = new(outputSize);
@@ -641,14 +642,14 @@ public static class CdTrackGenerator
     {
         if (outputSize is < 64 or > 8192)
         {
-            throw new ArgumentOutOfRangeException(nameof(outputSize), "Preview size must be 64..8192.");
+            throw new ArgumentOutOfRangeException(nameof(outputSize), L.T("Preview size must be 64..8192."));
         }
 
         if (samplesPerSector is < 1 or > CdDiscParameters.BytesPerSector)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(samplesPerSector),
-                $"Samples per sector must be 1..{CdDiscParameters.BytesPerSector}.");
+                L.F($"Samples per sector must be 1..{CdDiscParameters.BytesPerSector}."));
         }
     }
 

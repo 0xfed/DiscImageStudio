@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using DvdImageSolver.Encoding;
 
 namespace DvdImageSolver.Solver;
@@ -166,19 +167,19 @@ internal sealed class CodewordGrayTarget
     {
         if (recordingFrames.Length != _desiredLandCounts.Length)
         {
-            throw new ArgumentException("Unexpected recording-frame byte count.", nameof(recordingFrames));
+            throw new ArgumentException(L.T("Unexpected recording-frame byte count."), nameof(recordingFrames));
         }
 
         if (syncFrameInputs is not null && syncFrameInputs.Length != DvdEccBlockEncoder.SyncFrameCount)
         {
-            throw new ArgumentException("Unexpected Sync Frame trace length.", nameof(syncFrameInputs));
+            throw new ArgumentException(L.T("Unexpected Sync Frame trace length."), nameof(syncFrameInputs));
         }
 
         if (syncFrameEvaluations is not null
             && syncFrameEvaluations.Length != DvdEccBlockEncoder.SyncFrameCount)
         {
             throw new ArgumentException(
-                "Unexpected Sync Frame evaluation length.",
+                L.T("Unexpected Sync Frame evaluation length."),
                 nameof(syncFrameEvaluations));
         }
 

@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -32,7 +33,7 @@ public partial class ConfirmModal : UserControl
     {
         if (_pending is not null || _pendingThreeWay is not null)
         {
-            throw new InvalidOperationException("A confirmation is already pending.");
+            throw new InvalidOperationException(L.T("A confirmation is already pending."));
         }
 
         TitleText.Text = title;
@@ -53,7 +54,7 @@ public partial class ConfirmModal : UserControl
     {
         if (_pending is not null || _pendingThreeWay is not null)
         {
-            throw new InvalidOperationException("A confirmation is already pending.");
+            throw new InvalidOperationException(L.T("A confirmation is already pending."));
         }
 
         TitleText.Text = title;

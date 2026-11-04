@@ -16,5 +16,6 @@
     <ProjectReference Include="..\..\src\DiscImageStudio.Dvd\DiscImageStudio.Dvd.csproj" />
     <ProjectReference Include="..\..\src\DiscImageStudio.BluRay\DiscImageStudio.BluRay.csproj" />
     <ProjectReference Include="..\..\src\DiscImageStudio.App\DiscImageStudio.App.csproj" />
+    <ProjectReference Include="../../tools/FourLevelDither/FourLevelDither.csproj" />
   </ItemGroup>
 </Project>

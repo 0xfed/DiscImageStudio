@@ -9,6 +9,7 @@ try
     UdfFilesystemTests.Run();
     UdfVatUpdateTests.Run();
     BluRayFileUpdateBurnTests.Run();
+SequentialFileUpdateBurnTests.Run();
     BluRaySequentialWriterTests.Run();
     BluRaySequentialBurnTests.Run();
     BluRaySessionCleanupTests.Run();

@@ -16,6 +16,8 @@
     <Compile Include="../../src/DiscImageStudio.App/Localization/PresetText.cs" Link="PresetText.cs" />
     <Compile Include="../../tools/FourLevelDither/DitherMode.cs" Link="DitherMode.cs" />
     <Compile Include="../DiscImageStudio.ArchitectureTests/BluRayEncodingTests.cs" Link="BluRayEncodingTests.cs" />
+    <Compile Include="../DiscImageStudio.ArchitectureTests/UdfFilesystemTests.cs" Link="UdfFilesystemTests.cs" />
+    <Compile Include="../DiscImageStudio.ArchitectureTests/MediaUdfTests.cs" Link="MediaUdfTests.cs" />
     <!-- The SDK already ships the C# parser. No additional NuGet dependency is needed. -->
     <Reference Include="Microsoft.CodeAnalysis">
       <HintPath>$(MSBuildSDKsPath)/../Roslyn/bincore/Microsoft.CodeAnalysis.dll</HintPath>

@@ -78,6 +78,7 @@ public partial class DiscParametersState : ObservableObject
         nameof(CdOutputLabel), nameof(CdOutputHint))]
     private string _cdDataDirectory = string.Empty;
     [ObservableProperty] private bool _cdFilesAtOuterRing;
+    [ObservableProperty] private bool _cdUseUdf250;
     [ObservableProperty] private string _cdVolumeLabel = "CD_IMAGE";
 
     // Second parameter set of the live preview page's calibration mode: the disc the reader
@@ -94,6 +95,7 @@ public partial class DiscParametersState : ObservableObject
     [ObservableProperty] private string _dvdOutputPath = string.Empty;
     [ObservableProperty, NotifyPropertyChangedFor(nameof(HasDvdFiles))] private string _dvdDataDirectory = string.Empty;
     [ObservableProperty] private bool _dvdFilesAtOuterRing;
+    [ObservableProperty] private bool _dvdUseUdf250;
     [ObservableProperty, NotifyPropertyChangedFor(nameof(DvdPitchSummary), nameof(DvdActualPitchSummary))] private string _dvdTotalSectors = "2295104";
     [ObservableProperty, NotifyPropertyChangedFor(nameof(DvdPitchSummary))] private string _dvdInnerRadius = "24.0";
     [ObservableProperty, NotifyPropertyChangedFor(nameof(DvdPitchSummary))] private string _dvdOuterRadius = "58.0";

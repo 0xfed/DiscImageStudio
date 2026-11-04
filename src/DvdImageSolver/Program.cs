@@ -483,9 +483,13 @@ internal static class Program
                 arguments.Require("data-dir"),
                 imageMapping.TotalSectors,
                 arguments.Get("volume-label", "DVD_IMAGE"),
-                filesAtOuterRing);
-            uint minimumDrawingLba = AlignToEccBlock(filesAtOuterRing
-                ? isoLayout.MetadataEndLbaExclusive : isoLayout.DataEndLbaExclusive, psnOffset);
+                filesAtOuterRing, arguments.Get("file-system", "iso9660").ToLowerInvariant() switch
+                {
+                    "iso9660" => false,
+                    "udf250" => true,
+                    _ => throw new ArgumentException(L.T("--file-system must be iso9660 or udf250.")),
+                });
+            uint minimumDrawingLba = AlignToEccBlock(isoLayout.DrawingStartLba, psnOffset);
             lba = arguments.Has("drawing-start-lba")
                 ? arguments.GetUInt("drawing-start-lba", 0)
                 : minimumDrawingLba;
@@ -509,9 +513,7 @@ internal static class Program
                     L.T("--drawing-start-lba exceeds the reported disc size."));
             }
 
-            uint drawingEndLba = filesAtOuterRing
-                ? isoLayout.FileDataStartLba / DvdEccBlockEncoder.SectorCount * DvdEccBlockEncoder.SectorCount
-                : imageMapping.TotalSectors;
+            uint drawingEndLba = isoLayout.DrawingEndLbaExclusive / DvdEccBlockEncoder.SectorCount * DvdEccBlockEncoder.SectorCount;
             if (drawingEndLba < lba)
                 throw new ArgumentException(L.T("The selected drawing range overlaps the outer-ring files."));
             fillSectors = checked((drawingEndLba - lba)

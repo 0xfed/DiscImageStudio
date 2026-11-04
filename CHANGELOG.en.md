@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## [1.5.0] - 2026-11-04
+
+- Extend UDF 2.50 VAT images and open-disc file updates to CD and DVD data projects, including 4.7 GB M-DISC DVD-R/+R. Add visible Design format selection, a shared Burn reserve/update panel, saved project and sidecar settings, and CLI `--file-system iso9660|udf250`. Use native CD/DVD sessions with DVD+R compatibility finalization disabled, session-relative volume descriptors, CD postgap handling, locked media/capacity checks, cancellation and paired cleanup. Verify and reuse unchanged file extents; append replacements, metadata and linked VATs while preserving prior sectors and drawing. Retain the BD-R path and ISO9660/Joliet defaults. Add independent cross-media traversal, repeated-update and fake-recorder tests. Random-overwrite media, finalized discs and foreign volumes remain unsupported; physical burning requires hardware validation.
+
 ## [1.4.0] - 2026-11-04
 
 - Generate UDF 2.50 VAT volumes and support reserving space on the first BD-R burn for later file additions, replacements, and removals. File updates append a new tree and linked VAT under the drive lock, preserve the original drawing, and leave the disc open. Old bytes remain recorded and all selected files are rewritten. Add independent VAT traversal and fake-recorder regressions. Fix SDK bootstrap hash failures by using Microsoft’s direct blob endpoint with unchanged reviewed SHA512 values and explicit partial-download checks.

@@ -88,7 +88,20 @@ Süreç ve parametreler için [yardımcı kalibrasyon kılavuzuna](docs/CALIBRAT
 
 - **Disk görüntüsü çıktısı**: Tam ISO / RAW dosyaları dışa aktarabilir ve uygun yazılımla elle diske yazabilirsiniz.
 - **Anlık akışla yazma (deneysel)**: CD, DVD ve BD-R verilerini üretirken diske yazar; tam bir görüntü kaydetmez. BD-R, MMC sıralı yazma kullanır.
-- **Boş olmayan ortam kullanmayın!**
+- **İlk çizim yazımı boş ortam gerektirir. Dosya güncellemeleri özgün açık UDF VAT diskini gerektirir.**
+
+### UDF 2.50 ve sonraki dosya güncellemeleri
+
+CD ve DVD veri projelerinde **Tasarım → Disk dosyaları** altında **UDF 2.50 (VAT) kullan** seçeneği bulunur; Blu-ray otomatik olarak UDF 2.50 kullanır. CD/DVD için varsayılan biçim ISO9660/Joliet olarak kalır.
+
+1. Diskte olmasını istediğiniz tüm dosyaları içeren klasörü seçin.
+2. İlk kayıttan önce **Yazdırma** sayfasında **Dosya güncellemeleri için diski açık bırak** seçeneğini işaretleyin ve **Güncelleme rezervi (MiB)** değerini ayarlayın. CD/DVD için UDF otomatik seçilir ve ayrılan alana yazılmaz.
+3. Sonraki değişiklikler için bu klasörü düzenleyin, özgün açık diski takın ve Yazdırma sayfasında **Disk dosyalarını güncelle** seçeneğini kullanın. Eksik dosyalar geçerli listeden kaldırılır; eklenen ve değiştirilen dosyalar yeni sektörlere yazılır.
+4. Güncellemeler değişmeyen dosya verilerini doğrulayıp yeniden kullanır, yeni üstveri ile bağlantılı VAT ekler ve özgün çizimi korur. İptal edilen veya başarısız güncellemeler otomatik tekrarlanmaz.
+
+Güncellemeler CD-R, tek katmanlı DVD-R/+R (4.7 GB M-DISC dahil) ve tek katmanlı BD-R ortamlarını destekler. CD-RW, DVD-RW, DVD+RW, DVD-RAM ve BD-RE bu VAT akışını kullanamaz. Sonlandırılmış veya başka yazılımlarla oluşturulmuş diskler burada güncellenemez. Silinen dosyalar yazılmış alanı geri kazandırmaz; her güncelleme yeni veri, üstveri ve oturum ek yükü için boş alan gerektirir. CD ses parçasının dosya sistemi yoktur.
+
+CLI, `--file-system udf250` ile CD/DVD UDF kalıpları dışa aktarabilir; `--file-system iso9660` uyumlu biçimi korur. Sonraki fiziksel disk güncellemeleri için Windows Yazdırma sayfasını kullanın.
 
 ## Sistem ve aygıt gereksinimleri
 

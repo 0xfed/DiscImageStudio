@@ -129,8 +129,8 @@ internal static class UdfFilesystemTests
                 }
                 else
                 {
-                    Require(currentMainStart == mainStart && currentMainLength == mainLength,
-                        "both anchors reference the immutable main descriptors");
+                    Require(currentMainLength == mainLength, "descriptor extent length stays stable across sessions");
+                    mainStart = currentMainStart;
                     reserveStart = currentReserveStart; reserveLength = currentReserveLength;
                 }
             }
@@ -155,7 +155,7 @@ internal static class UdfFilesystemTests
             Require(_partitionLength > 0 && (ulong)_partitionStart + _partitionLength >= sectors,
                 "write-once partition includes the recording and any reserved update capacity");
             if (drawingEnd is { } end)
-                Require(reserveStart + reserveLength / SectorSize <= _partitionStart && sectors - 257 >= end,
+                Require((reserveStart + reserveLength / SectorSize <= (drawingStart ?? _partitionStart) || reserveStart >= end) && sectors - 257 >= end,
                     "reserve descriptors precede the physical partition and the tail anchor follows drawing");
 
             ReadOnlySpan<byte> logical = main[6];

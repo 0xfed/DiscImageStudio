@@ -17,7 +17,7 @@ internal static class FilePlacementProjectTests
                     ProjectJsonStore.CurrentSchemaVersion, "文件位置", family,
                     new ProjectGeometry(24, 58, 2048), [],
                     new ProjectOutputs(Path.Combine(directory, "output.iso"), false,
-                        Path.Combine(directory, "files"), "FILES", false, FilesAtOuterRing: true),
+                        Path.Combine(directory, "files"), "FILES", false, FilesAtOuterRing: true, UseUdf250: family != ProjectDocument.BluRayFamily),
                     null, null, DateTimeOffset.UnixEpoch, DateTimeOffset.UnixEpoch);
                 string path = Path.Combine(directory, family + ".discproj");
                 ProjectJsonStore.Save(path, document);
@@ -33,12 +33,19 @@ internal static class FilePlacementProjectTests
                     && ProjectSession.CaptureOutputs(loaded, state).VolumeLabel == "FILES",
                     "saving retains the folder and volume label");
 
+                if (family != ProjectDocument.BluRayFamily)
+                    Require(ProjectSession.CaptureOutputs(loaded, state).UseUdf250
+                        && (family == ProjectDocument.CdFamily ? state.CdUseUdf250 : state.DvdUseUdf250),
+                        "UDF selection survives project persistence and applies to the matching family");
+
                 // Existing project files do not carry the optional position field. Opening one
                 // after an outer-ring project must reset that selection to the original inner mode.
                 JsonObject legacy = JsonNode.Parse(File.ReadAllText(path))!.AsObject();
                 legacy["outputs"]!.AsObject().Remove("filesAtOuterRing");
+                legacy["outputs"]!.AsObject().Remove("useUdf250");
                 File.WriteAllText(path, legacy.ToJsonString());
                 ProjectDocument old = ProjectJsonStore.Load(path);
+                Require(!old.Outputs.UseUdf250, "legacy projects retain the ISO9660/Joliet format");
                 Require(!old.Outputs.FilesAtOuterRing, "missing position defaults to inner");
                 ProjectSession.ApplyToState(old, state);
                 Require(!FilesAtOuterRing(family, state),

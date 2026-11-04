@@ -27,6 +27,8 @@ internal interface IBluRaySequentialSession : IDisposable
     void WriteAppend(IStream content, uint sectorCount, uint startLba)
         => throw new NotSupportedException();
     byte[] ReadSector(uint lba) => throw new NotSupportedException();
+    byte[] ReadSectors(uint lba, ushort count)
+        => SequentialSectorReader.Read(ReadSector, lba, count);
     void CancelWrite();
     void Flush();
     void CloseTrack(int trackNumber);
@@ -55,7 +57,7 @@ internal sealed class DynamicBluRaySequentialSession : IBluRaySequentialSession
 
     internal DynamicBluRaySequentialSession(object recorder, object speedFormat,
         Action<long, long>? reportWriteProgress = null, Action<string>? reportCleanupWarning = null,
-        Action<string>? reportDiagnostics = null)
+        Action<string>? reportDiagnostics = null, bool forceExclusive = false)
     {
         ArgumentNullException.ThrowIfNull(recorder);
         ArgumentNullException.ThrowIfNull(speedFormat);
@@ -66,7 +68,7 @@ internal sealed class DynamicBluRaySequentialSession : IBluRaySequentialSession
         _transport = new ImapiMmcCommandTransport(recorder);
         _commands = new BluRayMmcCommands(_transport);
         _cleanup = new BluRaySessionCleanup(
-            acquireExclusive: () => _recorder.AcquireExclusiveAccess(false, "Disc Image Studio"),
+            acquireExclusive: () => _recorder.AcquireExclusiveAccess(forceExclusive, "Disc Image Studio"),
             disableMcn: () => _recorder.DisableMcn(),
             preventRemoval: () => _commands.PreventRemoval(true),
             allowRemoval: () => _commands.PreventRemoval(false),
@@ -117,6 +119,12 @@ internal sealed class DynamicBluRaySequentialSession : IBluRaySequentialSession
     {
         RequireAcquired();
         return _commands.ReadSector(lba);
+    }
+
+    public byte[] ReadSectors(uint lba, ushort count)
+    {
+        RequireAcquired();
+        return _commands.ReadSectors(lba, count);
     }
 
     public void WriteAppend(IStream content, uint sectorCount, uint startLba)
@@ -224,8 +232,8 @@ internal sealed class BluRaySessionCleanup : IDisposable
         _releaseAttempted = false;
         try
         {
-            // Exclusive access is never forced. Its release and MCN's paired enable
-            // are owed only after the corresponding acquisition reports success.
+            // Exclusive access and MCN's paired releases are owed only after
+            // acquisition succeeds. The caller chooses whether to dismount a filesystem.
             _acquireExclusive();
             _exclusive = true;
             _disableMcn();

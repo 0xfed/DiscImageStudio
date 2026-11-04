@@ -15,6 +15,7 @@
     <Compile Include="../DiscImageStudio.ArchitectureTests/BluRaySequentialBurnTests.cs" Link="BluRaySequentialBurnTests.cs" />
     <Compile Include="../DiscImageStudio.ArchitectureTests/UdfFilesystemTests.cs" Link="UdfFilesystemTests.cs" />
     <Compile Include="../DiscImageStudio.ArchitectureTests/UdfVatUpdateTests.cs" Link="UdfVatUpdateTests.cs" />
+    <Compile Include="../DiscImageStudio.ArchitectureTests/SequentialFileUpdateBurnTests.cs" Link="SequentialFileUpdateBurnTests.cs" />
     <Compile Include="../DiscImageStudio.ArchitectureTests/BluRayFileUpdateBurnTests.cs" Link="BluRayFileUpdateBurnTests.cs" />
     <Compile Include="../DiscImageStudio.ArchitectureTests/BluRaySessionCleanupTests.cs" Link="BluRaySessionCleanupTests.cs" />
     <Compile Include="../DiscImageStudio.ArchitectureTests/BluRayFlushDiagnosticsTests.cs" Link="BluRayFlushDiagnosticsTests.cs" />

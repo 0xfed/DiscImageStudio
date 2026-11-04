@@ -296,11 +296,12 @@ public partial class ToneViewModel : ObservableObject
                 string dataDirectory = _state.CdDataDirectory.Trim();
                 string volumeLabel = _state.CdVolumeLabel.Trim();
                 bool filesAtOuterRing = _state.CdFilesAtOuterRing;
+                bool useUdf250 = _state.CdUseUdf250;
                 await StaWorker.RunAsync(() =>
                 {
                     cancellationToken.ThrowIfCancellationRequested();
                     CdDataLayoutPlan? plan = dataDirectory.Length > 0
-                        ? CdDataImageGenerator.PrepareLayout(dataDirectory, parameters, volumeLabel, filesAtOuterRing)
+                        ? CdDataImageGenerator.PrepareLayout(dataDirectory, parameters, volumeLabel, filesAtOuterRing, useUdf250)
                         : null;
                     cancellationToken.ThrowIfCancellationRequested();
                     if (plan is not null)

@@ -104,16 +104,19 @@ internal sealed class BluRayMmcCommands(IMmcCommandTransport transport)
             (disc[2] & 3) == 2);
     }
 
-    internal byte[] ReadSector(uint lba)
+    internal byte[] ReadSector(uint lba) => ReadSectors(lba, 1);
+
+    internal byte[] ReadSectors(uint lba, ushort count)
     {
+        if (count is < 1 or > 64) throw new ArgumentOutOfRangeException(nameof(count));
         byte[] cdb = new byte[10];
-        cdb[0] = 0x28; // READ(10), one logical user-data sector.
+        cdb[0] = 0x28; // READ(10), cooked 2048-byte user-data sectors.
         BinaryPrimitives.WriteUInt32BigEndian(cdb.AsSpan(2, 4), lba);
-        BinaryPrimitives.WriteUInt16BigEndian(cdb.AsSpan(7, 2), 1);
-        MmcCommandResult result = transport.Execute(cdb, 2048, 30);
+        BinaryPrimitives.WriteUInt16BigEndian(cdb.AsSpan(7, 2), count);
+        MmcCommandResult result = transport.Execute(cdb, count * 2048, 30);
         if (result.HResult < 0 || result.HResult == CommandHasSenseData)
             throw new MmcCommandException(cdb[0], result);
-        RequireLength(result.Data, 2048, "READ(10)");
+        RequireLength(result.Data, count * 2048, "READ(10)");
         return result.Data;
     }
 

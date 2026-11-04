@@ -16,23 +16,33 @@ public sealed class CdDataLayoutPlan
         DrawingEndLbaExclusive = layout.FilesAtOuterRing ? layout.FileDataStartLba : layout.VolumeSectors;
     }
 
-    internal Iso9660ImageWriter.LayoutPlan IsoLayout { get; }
-    public long TotalSectors => IsoLayout.VolumeSectors;
-    public long ContentLength => TotalSectors * CdDataImageGenerator.BytesPerSector;
-    public string SourceDirectory => IsoLayout.SourceDirectory;
+    internal CdDataLayoutPlan(UdfImageWriter.LayoutPlan layout)
+    {
+        UdfLayout = layout;
+        DrawingStartLba = layout.DrawingStartLba;
+        DrawingEndLbaExclusive = layout.DrawingEndLbaExclusive;
+    }
+
+    internal Iso9660ImageWriter.LayoutPlan? IsoLayout { get; }
+    internal UdfImageWriter.LayoutPlan? UdfLayout { get; }
+    public bool UseUdf250 => UdfLayout is not null;
+    public long TotalSectors => UdfLayout?.CapacitySectors ?? IsoLayout!.VolumeSectors;
+    public long RecordedSectors => UdfLayout?.VolumeSectors ?? IsoLayout!.VolumeSectors;
+    public long ContentLength => RecordedSectors * CdDataImageGenerator.BytesPerSector;
+    public string SourceDirectory => UdfLayout?.SourceDirectory ?? IsoLayout!.SourceDirectory;
     public uint DrawingStartLba { get; }
     public uint DrawingEndLbaExclusive { get; }
     public uint DrawingSectors => DrawingEndLbaExclusive - DrawingStartLba;
-    public bool FilesAtOuterRing => IsoLayout.FilesAtOuterRing;
-    public int FileCount => IsoLayout.FileCount;
-    public int DirectoryCount => IsoLayout.DirectoryCount;
-    public long FileBytes => IsoLayout.FileBytes;
+    public bool FilesAtOuterRing => UdfLayout?.FilesAtOuterRing ?? IsoLayout!.FilesAtOuterRing;
+    public int FileCount => UdfLayout?.FileCount ?? IsoLayout!.FileCount;
+    public int DirectoryCount => UdfLayout?.DirectoryCount ?? IsoLayout!.DirectoryCount;
+    public long FileBytes => UdfLayout?.FileBytes ?? IsoLayout!.FileBytes;
 }
 
 /// <summary>
 /// Produces cooked 2048-byte Mode 1 sectors. The recording backend supplies headers, EDC/ECC,
 /// scrambling and CIRC. Only the drawing payload is compensated for those reversible
-/// byte transformations; filesystem bytes remain ordinary ISO9660/Joliet data.
+/// byte transformations; filesystem bytes remain ordinary ISO9660/Joliet or UDF data.
 /// </summary>
 public static class CdDataImageGenerator
 {
@@ -42,12 +52,18 @@ public static class CdDataImageGenerator
     private static readonly int[] PhysicalOffsets = BuildPhysicalOffsets();
 
     public static CdDataLayoutPlan PrepareLayout(string dataDirectory, CdDiscParameters parameters,
-        string volumeLabel = "CD_IMAGE", bool filesAtOuterRing = false)
+        string volumeLabel = "CD_IMAGE", bool filesAtOuterRing = false,
+        bool useUdf250 = false, uint updateReserveSectors = 0)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(dataDirectory);
         parameters.Validate();
-        CdDataLayoutPlan plan = new(Iso9660ImageWriter.Plan(dataDirectory,
-            checked((uint)parameters.Sectors), volumeLabel, filesAtOuterRing: filesAtOuterRing));
+        uint capacity = checked((uint)parameters.Sectors);
+        if (updateReserveSectors >= capacity || (!useUdf250 && updateReserveSectors != 0))
+            throw new ArgumentOutOfRangeException(nameof(updateReserveSectors));
+        CdDataLayoutPlan plan = useUdf250
+            ? new(UdfImageWriter.Plan(dataDirectory, capacity - updateReserveSectors, volumeLabel,
+                filesAtOuterRing: filesAtOuterRing, capacitySectors: capacity, blockAlignment: 1))
+            : new(Iso9660ImageWriter.Plan(dataDirectory, capacity, volumeLabel, filesAtOuterRing: filesAtOuterRing));
         if (plan.DrawingStartLba >= plan.DrawingEndLbaExclusive)
             throw new ArgumentException(L.T("The filesystem leaves no CD sectors for drawing."), nameof(dataDirectory));
         return plan;
@@ -78,7 +94,7 @@ public static class CdDataImageGenerator
                 cancellationToken, effectiveTone, useSimdSampling) with { OutputTrack = target };
         }
         CdDataImageMetadata.Save(target, new(parameters, plan.DrawingStartLba,
-            plan.DrawingEndLbaExclusive, plan.FilesAtOuterRing, effectiveTone));
+            plan.DrawingEndLbaExclusive, plan.FilesAtOuterRing, effectiveTone, plan.UseUdf250));
         return result;
     }
 
@@ -103,10 +119,12 @@ public static class CdDataImageGenerator
         bool sampleFour = useSimdSampling && sampler.SupportsSimd;
         Stopwatch stopwatch = Stopwatch.StartNew();
         ProgressStream writer = new(output, plan.ContentLength, stopwatch, progress, cancellationToken);
-        if (plan.FilesAtOuterRing)
-            Iso9660ImageWriter.WriteOuterRingPrefix(plan.IsoLayout, writer, plan.DrawingStartLba, cancellationToken);
+        if (plan.UdfLayout is { } udf)
+            UdfImageWriter.WriteSequentialPrefix(udf, writer, plan.DrawingStartLba, cancellationToken);
+        else if (plan.FilesAtOuterRing)
+            Iso9660ImageWriter.WriteOuterRingPrefix(plan.IsoLayout!, writer, plan.DrawingStartLba, cancellationToken);
         else
-            Iso9660ImageWriter.WriteSequentialPrefix(plan.IsoLayout, writer, plan.DrawingStartLba, cancellationToken);
+            Iso9660ImageWriter.WriteSequentialPrefix(plan.IsoLayout!, writer, plan.DrawingStartLba, cancellationToken);
 
         byte[] sector = new byte[BytesPerSector];
         Span<long> positions = stackalloc long[4];
@@ -139,8 +157,10 @@ public static class CdDataImageGenerator
             }
             writer.Write(sector);
         }
-        if (plan.FilesAtOuterRing)
-            Iso9660ImageWriter.WriteOuterRingSuffix(plan.IsoLayout, writer, plan.DrawingEndLbaExclusive, cancellationToken);
+        if (plan.UdfLayout is { } udfSuffix)
+            UdfImageWriter.WriteSequentialSuffix(udfSuffix, writer, plan.DrawingEndLbaExclusive, cancellationToken);
+        else if (plan.FilesAtOuterRing)
+            Iso9660ImageWriter.WriteOuterRingSuffix(plan.IsoLayout!, writer, plan.DrawingEndLbaExclusive, cancellationToken);
         writer.Flush();
         stopwatch.Stop();
         progress?.Invoke(new CdProgress(writer.CompletedBytes, plan.ContentLength, stopwatch.Elapsed));

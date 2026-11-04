@@ -16,8 +16,8 @@ namespace DiscImageStudio.ViewModels;
 
 public partial class BurnViewModel : ObservableObject
 {
-    [ObservableProperty] private bool keepBluRayDiscOpen;
-    [ObservableProperty] private string bluRayUpdateReserveMiB = "1024";
+    [ObservableProperty] private bool keepDiscOpenForFileUpdates;
+    [ObservableProperty] private string updateReserveMiB = "64";
     private readonly ShellViewModel _shell;
     private readonly DiscParametersState _state;
     private readonly DesignViewModel _design;
@@ -102,7 +102,7 @@ public partial class BurnViewModel : ObservableObject
         RefreshDevicesCommand = new RelayCommand(() => _ = RefreshDevicesAsync(), () => !_shell.IsBusy);
         RefreshSpeedsCommand = new RelayCommand(() => _ = RefreshWriteSpeedsAsync(), () => !_shell.IsBusy);
         StartBurnCommand = new AsyncRelayCommand(() => StartStreamBurnAsync(), CanStartBurn);
-        UpdateBluRayFilesCommand = new AsyncRelayCommand(UpdateBluRayFilesAsync, CanUpdateBluRayFiles);
+        UpdateDiscFilesCommand = new AsyncRelayCommand(UpdateDiscFilesAsync, CanUpdateDiscFiles);
         CancelBurnCommand = new RelayCommand(CancelStreamBurn, () => IsBurnRunning);
         _shell.BusyChanged += () =>
         {
@@ -111,7 +111,7 @@ public partial class BurnViewModel : ObservableObject
             RefreshDevicesCommand.NotifyCanExecuteChanged();
             RefreshSpeedsCommand.NotifyCanExecuteChanged();
             StartBurnCommand.NotifyCanExecuteChanged();
-            UpdateBluRayFilesCommand.NotifyCanExecuteChanged();
+            UpdateDiscFilesCommand.NotifyCanExecuteChanged();
             CancelBurnCommand.NotifyCanExecuteChanged();
         };
         // The disc family is derived from the burn source (project family, or the calibration
@@ -126,10 +126,18 @@ public partial class BurnViewModel : ObservableObject
         };
         _state.PropertyChanged += (_, args) =>
         {
-            if (args.PropertyName == nameof(DiscParametersState.BdDataDirectory))
+            if (args.PropertyName is nameof(DiscParametersState.BdDataDirectory)
+                or nameof(DiscParametersState.DvdDataDirectory) or nameof(DiscParametersState.CdDataDirectory))
             {
                 InvalidateConfirmation();
-                UpdateBluRayFilesCommand.NotifyCanExecuteChanged();
+                UpdateDiscFilesCommand.NotifyCanExecuteChanged();
+                OnPropertyChanged(nameof(FileUpdateSourceDirectory));
+            }
+            if (args.PropertyName is nameof(DiscParametersState.CdUseUdf250) or nameof(DiscParametersState.DvdUseUdf250))
+            {
+                if ((!IsDvdBurn && !IsBluRayBurn && !_state.CdUseUdf250) || (IsDvdBurn && !_state.DvdUseUdf250))
+                    KeepDiscOpenForFileUpdates = false;
+                InvalidateConfirmation();
             }
             if (args.PropertyName == nameof(DiscParametersState.CdDataDirectory)
                 && !UseCalibrationPattern
@@ -152,7 +160,7 @@ public partial class BurnViewModel : ObservableObject
     public RelayCommand RefreshSpeedsCommand { get; }
 
     public IAsyncRelayCommand StartBurnCommand { get; }
-    public IAsyncRelayCommand UpdateBluRayFilesCommand { get; }
+    public IAsyncRelayCommand UpdateDiscFilesCommand { get; }
 
     public RelayCommand CancelBurnCommand { get; }
 
@@ -177,7 +185,10 @@ public partial class BurnViewModel : ObservableObject
         ? _shell.Calibration.Target?.Parameters.Kind == CalibrationDiscKind.BluRay
         : _shell.CurrentProject?.IsBluRay ?? false;
 
-    public bool CanConfigureBluRayFileUpdates => IsBluRayBurn && !UseCalibrationPattern;
+    public bool CanConfigureFileUpdates => !UseCalibrationPattern;
+
+    public string FileUpdateSourceDirectory => IsBluRayBurn ? _state.BdDataDirectory
+        : IsDvdBurn ? _state.DvdDataDirectory : _state.CdDataDirectory;
 
     /// <summary>Family chip in the page header; follows the material being written.</summary>
     public string FamilyLabel => UseCalibrationPattern
@@ -203,11 +214,19 @@ public partial class BurnViewModel : ObservableObject
             && SelectedDevice is not null
             && ConfirmChecked;
 
-    private bool CanUpdateBluRayFiles() => IsSetupEnabled && SelectedDevice is not null
-        && IsBluRayBurn && !UseCalibrationPattern && Directory.Exists(_state.BdDataDirectory);
+    private bool CanUpdateDiscFiles() => IsSetupEnabled && SelectedDevice is not null
+        && !UseCalibrationPattern && Directory.Exists(FileUpdateSourceDirectory);
 
-    partial void OnKeepBluRayDiscOpenChanged(bool value) => InvalidateConfirmation();
-    partial void OnBluRayUpdateReserveMiBChanged(string value) => InvalidateConfirmation();
+    partial void OnKeepDiscOpenForFileUpdatesChanged(bool value)
+    {
+        if (value)
+        {
+            if (IsDvdBurn) _state.DvdUseUdf250 = true;
+            else if (!IsBluRayBurn) _state.CdUseUdf250 = true;
+        }
+        InvalidateConfirmation();
+    }
+    partial void OnUpdateReserveMiBChanged(string value) => InvalidateConfirmation();
 
     private void InvalidateConfirmation()
     {
@@ -238,10 +257,11 @@ public partial class BurnViewModel : ObservableObject
 
     private void OnFamilyInputsChanged()
     {
-        UpdateBluRayFilesCommand.NotifyCanExecuteChanged();
+        UpdateDiscFilesCommand.NotifyCanExecuteChanged();
         OnPropertyChanged(nameof(IsDvdBurn));
         OnPropertyChanged(nameof(IsBluRayBurn));
-        OnPropertyChanged(nameof(CanConfigureBluRayFileUpdates));
+        OnPropertyChanged(nameof(CanConfigureFileUpdates));
+        OnPropertyChanged(nameof(FileUpdateSourceDirectory));
         OnPropertyChanged(nameof(FamilyLabel));
         InvalidateConfirmation();
         UpdateSourceSummary();
@@ -294,7 +314,7 @@ public partial class BurnViewModel : ObservableObject
             identity = string.Join("\u001f", "dvd", _design.CompositeRevision, _state.DvdTotalSectors,
                 _state.DvdInnerRadius, _state.DvdOuterRadius,
                 _state.DvdPitchLinear, _state.DvdPitchQuadratic, _state.DvdPitchCubic,
-                _state.DvdDataDirectory, _state.DvdVolumeLabel, _state.DvdFilesAtOuterRing,
+                _state.DvdDataDirectory, _state.DvdVolumeLabel, _state.DvdFilesAtOuterRing, _state.DvdUseUdf250,
                 _state.ToneDitherStrength, _state.ToneBrightness, _state.ToneSrgbLinearization);
         }
         else if (IsBluRayBurn)
@@ -329,7 +349,7 @@ public partial class BurnViewModel : ObservableObject
                 : L.F($"合成图会自动生成本页输入。 · {encoding}");
             identity = string.Join("\u001f", "cd", _design.CompositeRevision, _state.CdSectors,
                 _state.CdInnerRadius, _state.CdOuterRadius, _state.CdInterleave,
-                _state.CdDataDirectory, _state.CdVolumeLabel, _state.CdFilesAtOuterRing,
+                _state.CdDataDirectory, _state.CdVolumeLabel, _state.CdFilesAtOuterRing, _state.CdUseUdf250,
                 _state.ToneDitherStrength, _state.ToneLevels, _state.ToneBrightness,
                 _state.ToneSrgbLinearization);
         }
@@ -405,7 +425,7 @@ public partial class BurnViewModel : ObservableObject
     private void UpdateActionState()
     {
         StartBurnCommand.NotifyCanExecuteChanged();
-        UpdateBluRayFilesCommand.NotifyCanExecuteChanged();
+        UpdateDiscFilesCommand.NotifyCanExecuteChanged();
     }
 
     internal async Task RefreshDevicesAsync()
@@ -602,8 +622,8 @@ public partial class BurnViewModel : ObservableObject
                             ? "BD_IMAGE"
                             : _state.BdVolumeLabel.Trim(),
                         filesAtOuterRing: dataDirectory.Length != 0 && _state.BdFilesAtOuterRing,
-                        updateReserveSectors: KeepBluRayDiscOpen
-                            ? checked((uint)(ParameterParser.ParsePositiveLong(BluRayUpdateReserveMiB, L.T("Update reserve (MiB)")) * 512))
+                        updateReserveSectors: KeepDiscOpenForFileUpdates
+                            ? checked((uint)(ParameterParser.ParsePositiveLong(UpdateReserveMiB, L.T("Update reserve (MiB)")) * 512))
                             : 0);
                     ToneProfile tone = _state.BluRayTone;
                     bool invert = _state.BdInvertMapping;
@@ -620,13 +640,13 @@ public partial class BurnViewModel : ObservableObject
                             BluRayIsoGenerator.GenerateToStream(
                                 output, plan, mapping, progress: null, cancellationToken);
                         },
-                        selectedWriteSpeed.Speed, LeaveDiscOpen: KeepBluRayDiscOpen);
+                        selectedWriteSpeed.Speed, LeaveDiscOpen: KeepDiscOpenForFileUpdates);
                     contentDescription = L.F($"BD-R · {disc.TotalSectors} 扇区")
                         + $" · {plan.ContentLength / (1024.0 * 1024.0):F1} MiB"
                         + L.F($" · 绘图 LBA {plan.DrawingStartSector}–{plan.DrawingEndSectorExclusive - 1}")
                         + (plan.HasFileSystem ? L.F($" · 文件：{(_state.BdFilesAtOuterRing ? L.T("外圈") : L.T("内圈"))}") : string.Empty)
                         + (invert ? L.T(" · 反转 3T/6T") : L.T(" · 标准 3T/6T"));
-                    if (KeepBluRayDiscOpen) contentDescription += " · " + L.T("The disc will remain open for file updates.");
+                    if (KeepDiscOpenForFileUpdates) contentDescription += " · " + L.T("The disc will remain open for file updates.");
                 }
                 else if (dvd)
                 {
@@ -640,11 +660,13 @@ public partial class BurnViewModel : ObservableObject
                             string.IsNullOrWhiteSpace(_state.DvdVolumeLabel)
                                 ? "DISC_IMAGE"
                                 : _state.DvdVolumeLabel.Trim(),
-                            filesAtOuterRing: _state.DvdFilesAtOuterRing);
+                            filesAtOuterRing: _state.DvdFilesAtOuterRing,
+                            useUdf250: _state.DvdUseUdf250 || KeepDiscOpenForFileUpdates,
+                            updateReserveSectors: KeepDiscOpenForFileUpdates ? ReadUpdateReserveSectors() : 0);
                     request = new OpticalBurnRequest(
                         device.Id,
                         OpticalBurnMediaKind.DvdData,
-                        options.ContentLength,
+                        hybridPlan?.ContentLength ?? options.ContentLength,
                         (output, cancellationToken) =>
                         {
                             if (hybridPlan is null)
@@ -665,7 +687,9 @@ public partial class BurnViewModel : ObservableObject
                                     cancellationToken: cancellationToken);
                             }
                         },
-                        selectedWriteSpeed.Speed);
+                        selectedWriteSpeed.Speed, LeaveDiscOpen: KeepDiscOpenForFileUpdates,
+                        UseUdf250: hybridPlan?.UseUdf250 ?? false,
+                        UdfCapacitySectors: hybridPlan?.UseUdf250 == true ? hybridPlan.TotalSectors : null);
                     contentDescription = hybridPlan is null
                         ? L.F($"DVD · {options.TotalSectors} 扇区 · {options.ContentLength / (1024.0 * 1024.0):F1} MiB")
                         : L.F($"DVD 混合盘 · {hybridPlan.FileCount} 个文件（{(_state.DvdFilesAtOuterRing ? L.T("外圈") : L.T("内圈"))}）")
@@ -684,13 +708,18 @@ public partial class BurnViewModel : ObservableObject
                         _state.CdInterleave,
                         _state.Tone,
                         device.Id,
-                        selectedWriteSpeed.Speed);
+                        selectedWriteSpeed.Speed, _state.CdUseUdf250 || KeepDiscOpenForFileUpdates,
+                        KeepDiscOpenForFileUpdates, KeepDiscOpenForFileUpdates ? ReadUpdateReserveSectors() : 0);
                     contentDescription = request.MediaKind == OpticalBurnMediaKind.CdData
                         ? L.F($"CD 数据盘（DAO） · 文件位于{(_state.CdFilesAtOuterRing ? L.T("外圈") : L.T("内圈"))}")
                         : L.T("CD 音轨");
+                    if (request.LeaveDiscOpen) contentDescription = "CD · UDF 2.50 (VAT) · " + L.T("The disc will remain open for file updates.");
                     contentDescription += L.F($" · {parameters.Sectors} 扇区 · {request.ContentLength / (1024.0 * 1024.0):F1} MiB");
                 }
             }
+
+            if (request.LeaveDiscOpen && !Directory.Exists(FileUpdateSourceDirectory))
+                throw new ArgumentException(L.T("Select the complete disc files folder on the Design page first."));
 
             // In-app danger modal; default focus sits on the refusing button.
             bool confirmed = await _shell.ConfirmAsync(
@@ -783,6 +812,9 @@ public partial class BurnViewModel : ObservableObject
         }
     }
 
+    private uint ReadUpdateReserveSectors()
+        => checked((uint)(ParameterParser.ParsePositiveLong(UpdateReserveMiB, L.T("Update reserve (MiB)")) * 512));
+
     // Build the layout before physical writing and capture all generation options.
     internal static OpticalBurnRequest CreateCdBurnRequest(
         string imagePath,
@@ -793,7 +825,8 @@ public partial class BurnViewModel : ObservableObject
         bool interleave,
         ToneProfile tone,
         string deviceId,
-        OpticalWriteSpeed? writeSpeed)
+        OpticalWriteSpeed? writeSpeed, bool useUdf250 = false, bool leaveDiscOpen = false,
+        uint updateReserveSectors = 0)
     {
         parameters.Validate();
         ToneProfile capturedTone = tone.Normalized();
@@ -806,10 +839,11 @@ public partial class BurnViewModel : ObservableObject
         }
 
         CdDataLayoutPlan plan = CdDataImageGenerator.PrepareLayout(dataDirectory.Trim(), parameters,
-            string.IsNullOrWhiteSpace(volumeLabel) ? "CD_IMAGE" : volumeLabel.Trim(), filesAtOuterRing);
-        return new OpticalBurnRequest(deviceId, OpticalBurnMediaKind.CdData, checked(parameters.Sectors * 2048),
+            string.IsNullOrWhiteSpace(volumeLabel) ? "CD_IMAGE" : volumeLabel.Trim(), filesAtOuterRing, useUdf250 || leaveDiscOpen, updateReserveSectors);
+        return new OpticalBurnRequest(deviceId, OpticalBurnMediaKind.CdData, plan.ContentLength,
             (output, token) => CdDataImageGenerator.GenerateToStream(imagePath, output, parameters, plan,
-                cancellationToken: token, tone: capturedTone), writeSpeed);
+                cancellationToken: token, tone: capturedTone), writeSpeed, LeaveDiscOpen: leaveDiscOpen, UseUdf250: plan.UseUdf250,
+            UdfCapacitySectors: plan.UseUdf250 ? checked((uint)plan.TotalSectors) : null);
     }
 
     // Request construction is separate from physical writing so the captured

@@ -4,6 +4,16 @@
 
 ## Unreleased
 
+## [1.5.0] - 2026-11-04
+
+### 中文
+
+- 将 UDF 2.50 VAT 镜像与开放光盘文件更新扩展到 CD、DVD 数据工程，支持 4.7 GB M-DISC DVD-R/+R。新增设计页格式选择、共用刻录预留/更新面板、工程及侧车设置持久化，以及 CLI `--file-system iso9660|udf250`。CD/DVD 使用原生会话，禁用 DVD+R 兼容封盘，写入会话卷描述符，处理 CD 后间隙，并在设备锁内检查介质和容量，配对取消与清理。校验并复用未改变的文件区段，追加替换文件、元数据与链接 VAT，保留先前扇区和图案。保留 BD-R 路径及 ISO9660/Joliet 默认值。新增跨介质独立遍历、多次更新和假刻录机测试。随机覆写介质、已封盘及外部卷仍不支持；实体刻录需要硬件验证。
+
+### English
+
+- Extend UDF 2.50 VAT images and open-disc file updates to CD and DVD data projects, including 4.7 GB M-DISC DVD-R/+R. Add visible Design format selection, a shared Burn reserve/update panel, saved project and sidecar settings, and CLI `--file-system iso9660|udf250`. Use native CD/DVD sessions with DVD+R compatibility finalization disabled, session-relative volume descriptors, CD postgap handling, locked media/capacity checks, cancellation and paired cleanup. Verify and reuse unchanged file extents; append replacements, metadata and linked VATs while preserving prior sectors and drawing. Retain the BD-R path and ISO9660/Joliet defaults. Add independent cross-media traversal, repeated-update and fake-recorder tests. Random-overwrite media, finalized discs and foreign volumes remain unsupported; physical burning requires hardware validation.
+
 ## [1.4.0] - 2026-11-04
 
 ### 中文

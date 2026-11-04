@@ -7,21 +7,23 @@ namespace DiscImageStudio.ViewModels;
 
 public partial class BurnViewModel
 {
-    internal static BluRayAppendContent PrepareBluRayFileUpdate(string sourceDirectory, BluRayAppendContext context)
+    internal static FileUpdateContent PrepareFileUpdate(string sourceDirectory, FileUpdateContext context, CancellationToken cancellationToken = default)
     {
         UdfImageWriter.SequentialSnapshot previous = UdfImageWriter.ReadSequentialSnapshot(
-            context.ReadSector, context.LastRecordedLba);
+            context.ReadSector, context.LastRecordedLba, context.BlockAlignment, context.ReadSectors);
         if (previous.CapacitySectors > context.CapacitySectors)
             throw new InvalidDataException(L.T("The recorded volume exceeds the current disc capacity."));
-        UdfImageWriter.LayoutPlan plan = UdfImageWriter.PlanAppend(sourceDirectory, previous, context.NextWritableLba);
+        UdfImageWriter.LayoutPlan plan = UdfImageWriter.PlanAppend(sourceDirectory, previous,
+            context.NextWritableLba, newSession: context.StartsNewSession, cancellationToken: cancellationToken);
         return new((long)(plan.VolumeSectors - plan.StartLba) * 2048,
             (output, token) => UdfImageWriter.WriteAppend(plan, output, token));
     }
 
-    private async Task UpdateBluRayFilesAsync()
+    private async Task UpdateDiscFilesAsync()
     {
-        if (!CanUpdateBluRayFiles() || SelectedDevice is not { } device) return;
-        string source = Path.GetFullPath(_state.BdDataDirectory);
+        if (!CanUpdateDiscFiles() || SelectedDevice is not { } device) return;
+        string source = Path.GetFullPath(FileUpdateSourceDirectory);
+        OpticalBurnMediaKind kind = CurrentMediaKind;
         int revision = _burnPreparationRevision;
         OpticalWriteSpeed? speed = SelectedSpeed?.Speed;
         bool ownsBusyState = false;
@@ -39,8 +41,8 @@ public partial class BurnViewModel
             IsBurnRunning = true;
             using CancellationTokenSource cancellation = new();
             _burnCancellation = cancellation;
-            _shell.BeginBurnDockJob(OpticalBurnMediaKind.BluRayData, 1);
-            SetBurnStatus("Updating Blu-ray files…");
+            _shell.BeginBurnDockJob(kind, 1);
+            SetBurnStatus("Updating disc files…");
             bool progressInitialized = false;
             Progress<OpticalBurnProgress> progress = new(value =>
             {
@@ -48,15 +50,15 @@ public partial class BurnViewModel
                 {
                     if (!progressInitialized && value.TotalBytes > 0)
                     {
-                        _shell.BeginBurnDockJob(OpticalBurnMediaKind.BluRayData, value.TotalBytes);
+                        _shell.BeginBurnDockJob(kind, value.TotalBytes);
                         progressInitialized = true;
                     }
                     _shell.ReportBurnProgress(value);
                     BurnProgressValue = _shell.JobProgressValue;
                 }
             });
-            OpticalBurnResult result = await _opticalDiscBurner.AppendBluRayAsync(device.Id,
-                context => PrepareBluRayFileUpdate(source, context), speed, progress, cancellation.Token);
+            OpticalBurnResult result = await _opticalDiscBurner.UpdateFilesAsync(device.Id, kind,
+                context => PrepareFileUpdate(source, context, cancellation.Token), speed, progress, cancellation.Token);
             BurnProgressValue = 100;
             SetBurnStatus("Files updated. The disc remains open for further updates.");
             _shell.CompleteDockJob(L.T("Disc files updated"));

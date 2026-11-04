@@ -4,6 +4,10 @@
 
 ## Henüz yayımlanmayan
 
+## [1.5.0] - 2026-11-04
+
+- UDF 2.50 VAT kalıplarını ve açık disk dosya güncellemelerini CD/DVD veri projelerine genişlet; 4.7 GB M-DISC DVD-R/+R desteği ekle. Tasarımda biçim seçimi, ortak yazdırma rezervi/güncelleme paneli, proje ve yan dosyalarda ayar kaydı ve CLI `--file-system iso9660|udf250` ekle. DVD+R uyumluluk sonlandırmasını devre dışı bırakan yerel CD/DVD oturumları, oturum birim tanımlayıcıları, CD son boşluğu, kilit altında ortam/kapasite kontrolü, iptal ve eşlenmiş temizleme kullan. Değişmeyen dosya alanlarını doğrulayıp yeniden kullan; önceki sektörleri ve çizimi koruyarak değişen verileri, üstveriyi ve bağlantılı VAT tablolarını ekle. BD-R yolunu ve ISO9660/Joliet varsayılanlarını koru. Bağımsız çapraz ortam okuma, tekrarlı güncelleme ve sahte yazıcı testleri ekle. Rastgele üzerine yazılabilen ortamlar, sonlandırılmış diskler ve başka yazılımların birimleri desteklenmez; fiziksel yazım donanım doğrulaması gerektirir.
+
 ## [1.4.0] - 2026-11-04
 
 - UDF 2.50 VAT birimleri üretin; sonraki dosya ekleme, değiştirme ve kaldırma işlemleri için ilk BD-R yazımında alan ayırın. Güncellemeler cihaz kilidi altında yeni bir dosya ağacı ve önceki VAT’a bağlı yeni VAT ekler, özgün çizimi korur ve diski açık bırakır. Eski baytlar kayıtlı kalır; seçilen tüm dosyalar yeniden yazılır. Bağımsız VAT okuma ve sahte yazıcı regresyonları eklendi. İncelenmiş SHA512 değerleri korunarak Microsoft’un doğrudan blob uç noktasına geçildi ve kısmi indirme denetimleriyle SDK önyükleme karma doğrulama hataları giderildi.

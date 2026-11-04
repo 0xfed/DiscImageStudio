@@ -88,7 +88,9 @@ public sealed record OpticalBurnRequest(
     Action<Stream, CancellationToken> ProduceContent,
     OpticalWriteSpeed? WriteSpeed = null,
     OpticalBurnBufferOptions? BufferOptions = null,
-    bool LeaveDiscOpen = false)
+    bool LeaveDiscOpen = false,
+    bool UseUdf250 = false,
+    uint? UdfCapacitySectors = null)
 {
     public OpticalBurnBufferOptions EffectiveBufferOptions => BufferOptions
         ?? (MediaKind == OpticalBurnMediaKind.BluRayData
@@ -98,8 +100,8 @@ public sealed record OpticalBurnRequest(
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(DeviceId);
         ArgumentNullException.ThrowIfNull(ProduceContent);
-        if (LeaveDiscOpen && MediaKind != OpticalBurnMediaKind.BluRayData)
-            throw new ArgumentException(L.T("Only Blu-ray VAT recordings can be left open for file updates."));
+        if (LeaveDiscOpen && MediaKind == OpticalBurnMediaKind.CdAudio)
+            throw new ArgumentException(L.T("File updates require a data disc with UDF 2.50 VAT."));
         int sectorBytes = OpticalBurnMedia.GetSectorBytes(MediaKind);
         if (ContentLength <= 0 || ContentLength % sectorBytes != 0)
         {
@@ -120,8 +122,19 @@ public sealed record OpticalBurnResult(
     TimeSpan Elapsed,
     OpticalWriteSpeed? ActualWriteSpeed = null);
 
+public sealed record FileUpdateContext(uint NextWritableLba, uint LastRecordedLba,
+    uint CapacitySectors, Func<uint, byte[]> ReadSector, uint BlockAlignment, bool StartsNewSession, Func<uint, ushort, byte[]>? ReadSectors = null);
+
+public sealed record FileUpdateContent(long ContentLength, Action<Stream, CancellationToken> ProduceContent);
+
 public interface IOpticalDiscBurner
 {
+    Task<OpticalBurnResult> UpdateFilesAsync(string deviceId, OpticalBurnMediaKind mediaKind,
+        Func<FileUpdateContext, FileUpdateContent> prepareContent,
+        OpticalWriteSpeed? writeSpeed = null, IProgress<OpticalBurnProgress>? progress = null,
+        CancellationToken cancellationToken = default)
+        => throw new NotSupportedException(L.T("This burner does not support disc file updates."));
+
     Task<OpticalBurnResult> AppendBluRayAsync(string deviceId,
         Func<BluRayAppendContext, BluRayAppendContent> prepareContent,
         OpticalWriteSpeed? writeSpeed = null, IProgress<OpticalBurnProgress>? progress = null,
@@ -143,6 +156,6 @@ public interface IOpticalDiscBurner
 }
 
 public sealed record BluRayAppendContext(uint NextWritableLba, uint LastRecordedLba,
-    uint CapacitySectors, Func<uint, byte[]> ReadSector);
+    uint CapacitySectors, Func<uint, byte[]> ReadSector, Func<uint, ushort, byte[]>? ReadSectors = null);
 
 public sealed record BluRayAppendContent(long ContentLength, Action<Stream, CancellationToken> ProduceContent);

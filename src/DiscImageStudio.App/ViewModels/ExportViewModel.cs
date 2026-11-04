@@ -234,6 +234,7 @@ public partial class ExportViewModel : ObservableObject
                 "--data-dir", _state.CdDataDirectory.Trim(),
                 "--volume-label", string.IsNullOrWhiteSpace(_state.CdVolumeLabel) ? "CD_IMAGE" : _state.CdVolumeLabel.Trim(),
                 "--file-position", _state.CdFilesAtOuterRing ? "outer" : "inner",
+                "--file-system", _state.CdUseUdf250 ? "udf250" : "iso9660",
             ]);
         }
         else
@@ -290,6 +291,8 @@ public partial class ExportViewModel : ObservableObject
             arguments.Add(_state.DvdDataDirectory.Trim());
             arguments.Add("--file-position");
             arguments.Add(_state.DvdFilesAtOuterRing ? "outer" : "inner");
+            arguments.Add("--file-system");
+            arguments.Add(_state.DvdUseUdf250 ? "udf250" : "iso9660");
         }
 
         await _shell.RunDiscJobAsync(

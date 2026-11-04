@@ -56,7 +56,18 @@ internal static class CalibrationBurnSourceTests
             Require(shell.Calibration.Target?.Parameters.Kind == CalibrationDiscKind.BluRay
                 && shell.Calibration.SelectedDiscType == "BD", "first target follows the BD project");
             BurnViewModel burn = shell.Burn;
+            foreach (string family in new[] { ProjectDocument.CdFamily, ProjectDocument.DvdFamily, ProjectDocument.BluRayFamily })
+            {
+                SetProjectFamily(shell, family);
+                Require(burn.CanConfigureFileUpdates, "every data project exposes the file-update panel");
+                burn.KeepDiscOpenForFileUpdates = true;
+                Require(family == ProjectDocument.BluRayFamily || (family == ProjectDocument.DvdFamily ? state.DvdUseUdf250 : state.CdUseUdf250),
+                    "leaving the disc open selects UDF for the active CD/DVD project");
+                burn.KeepDiscOpenForFileUpdates = false;
+            }
+            SetProjectFamily(shell, ProjectDocument.BluRayFamily);
             burn.UseCalibrationPattern = true;
+            Require(!burn.CanConfigureFileUpdates, "calibration patterns have no file-update controls");
             burn.RefreshDevicesAsync().GetAwaiter().GetResult();
             VerifySource(shell, burner, "BD", OpticalBurnMediaKind.BluRayData);
             Require(burn.SourceDetails.Contains("74.5 nm", StringComparison.Ordinal)

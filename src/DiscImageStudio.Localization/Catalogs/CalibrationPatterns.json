@@ -1,0 +1,51 @@
+{
+  "Unknown calibration pattern.": {
+    "en": "Unknown calibration pattern.",
+    "zh-CN": "未知的标定图案。",
+    "zh-TW": "未知的校準圖案。",
+    "ja": "不明なキャリブレーションパターンです。",
+    "tr": "Bilinmeyen kalibrasyon deseni."
+  },
+  "Current target: {0}": {
+    "en": "Current target: {0}",
+    "zh-CN": "当前标靶：{0}",
+    "zh-TW": "目前標靶：{0}",
+    "ja": "現在のターゲット: {0}",
+    "tr": "Geçerli hedef: {0}"
+  },
+  "Wide sectors (coarse)": {
+    "en": "Wide sectors (coarse)",
+    "zh-CN": "宽扇区（粗标定）",
+    "zh-TW": "寬扇區（粗校準）",
+    "ja": "広い扇形（粗調整）",
+    "tr": "Geniş sektörler (kaba)"
+  },
+  "Original cross (fine)": {
+    "en": "Original cross (fine)",
+    "zh-CN": "原始十字（精标定）",
+    "zh-TW": "原始十字（精校準）",
+    "ja": "元の十字（微調整）",
+    "tr": "Özgün artı (ince)"
+  },
+  "Xaml.CoarseCalibrationPattern": {
+    "en": "Use wide sectors for coarse calibration",
+    "zh-CN": "使用宽扇区进行粗标定",
+    "zh-TW": "使用寬扇區進行粗校準",
+    "ja": "粗調整に広い扇形を使用",
+    "tr": "Kaba kalibrasyon için geniş sektörler kullan"
+  },
+  "Xaml.CoarseCalibrationPatternHelp": {
+    "en": "For a cross that is too faint: wider black/white bands provide edges to trace. Select this, then create a new target. Existing records keep their saved pattern.",
+    "zh-CN": "十字线过淡时，较宽的黑白条带提供可描绘的边界。选择后重新创建标靶；已有记录保留原图案。",
+    "zh-TW": "十字線過淡時，較寬的黑白條帶提供可描繪的邊界。選擇後重新建立標靶；既有記錄保留原圖案。",
+    "ja": "十字が薄すぎる場合、幅広い白黒の帯の境界をトレースできます。選択後に新しいターゲットを作成してください。既存の記録のパターンは変わりません。",
+    "tr": "Artı çok soluksa, geniş siyah/beyaz bantlar izlenecek kenarlar sağlar. Seçtikten sonra yeni hedef oluşturun. Mevcut kayıtlar kendi desenini korur."
+  },
+  "Create a new target to use the selected pattern.": {
+    "en": "Create a new target to use the selected pattern.",
+    "zh-CN": "请创建新标靶以使用所选图案。",
+    "zh-TW": "請建立新標靶以使用所選圖案。",
+    "ja": "選択したパターンを使用するには新しいターゲットを作成してください。",
+    "tr": "Seçilen deseni kullanmak için yeni hedef oluşturun."
+  }
+}

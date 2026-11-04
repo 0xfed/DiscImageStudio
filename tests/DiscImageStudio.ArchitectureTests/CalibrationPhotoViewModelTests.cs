@@ -18,9 +18,27 @@ internal static class CalibrationPhotoViewModelTests
     {
         string directory = Path.Combine(Path.GetTempPath(), $"disc-photo-vm-{Guid.NewGuid():N}");
         Directory.CreateDirectory(directory);
-        try { TestWorkflow(directory); TestObservedRadiusDomain(directory); }
+        try { TestWorkflow(directory); TestCoarseSelectionAndReload(directory); TestObservedRadiusDomain(directory); }
         finally { Directory.Delete(directory, recursive: true); }
         Console.WriteLine("calibration-photo-view-model: passed (perspective photo, complete observed-radius curve, 10-point preservation, fit/apply, portable sessions, invalidation)");
+    }
+
+    private static void TestCoarseSelectionAndReload(string directory)
+    {
+        var model = CreateModel(new DiscParametersState());
+        model.UseCoarsePattern = true;
+        model.CreateTargetCommand.Execute(null);
+        var target = model.Target ?? throw new InvalidOperationException(model.LastStatusMessage);
+        Require(target.IsCoarsePattern && model.StreamBurnCommand.CanExecute(null),
+            "creating a coarse target enables output of the selected pattern");
+        string path = Path.Combine(directory, "wide-sectors.calibration.json");
+        Invoke(model, "SaveSessionTo", path);
+        model.UseCoarsePattern = false;
+        model.CreateTargetCommand.Execute(null);
+        Require(model.Target is { IsCoarsePattern: false }, "creating a fine target switches back explicitly");
+        Await(model, "LoadSessionFromAsync", path);
+        Require(model.Target?.Id == target.Id && model.UseCoarsePattern && model.Target.IsCoarsePattern
+            && model.StreamBurnCommand.CanExecute(null), "reopening restores the coarse target and checkbox together");
     }
 
     private static void TestWorkflow(string directory)
@@ -41,6 +59,14 @@ internal static class CalibrationPhotoViewModelTests
         Require(model.CurrentParametersSummary.Contains("内半径", StringComparison.Ordinal)
             && model.CurrentParametersSummary.Contains("外半径", StringComparison.Ordinal),
             "the target button names the project parameters a new target is built from");
+        model.UseCoarsePattern = true;
+        Require(ReferenceEquals(model.Target, target) && model.SaveSessionCommand.CanExecute(null)
+            && !model.ExportPngCommand.CanExecute(null) && !model.GenerateImageCommand.CanExecute(null)
+            && !model.StreamBurnCommand.CanExecute(null),
+            "changing the pattern selection keeps the recorded target and requires creating the selected target before output");
+        model.UseCoarsePattern = false;
+        Require(model.ExportPngCommand.CanExecute(null) && model.GenerateImageCommand.CanExecute(null)
+            && model.StreamBurnCommand.CanExecute(null), "restoring the recorded pattern enables output");
         var actual = target.Parameters with { InnerRadiusMm = 24.507, OuterRadiusMm = 56.791 };
         var camera = new CalibrationPhotoTransform([6.5, .8, 460, .35, 5.4, 380, .0018, -.0025, 1]);
         string photoPath = Path.Combine(directory, "disc.png");

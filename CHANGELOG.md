@@ -4,6 +4,17 @@
 
 ## Unreleased
 
+## [1.6.0] - 2026-11-04
+
+### 中文
+
+- 新增可选宽扇区标定标靶，用于十字线过淡或严重绕行的情况。四个黑白交替填充扇区提供连续径向边界，不含容易混淆的引导圆；原始精细十字仍为默认。预览、PNG 导出、CD/DVD/BD 生成和串流共享保存的图案，五语界面显示当前标靶，schema 7 记录图案类型并继续读取 schema 6 精细十字记录。验证 ±0.1 mm 内半径和 ±512 扇区误差下的数字对比度、粗边界拟合、导出像素与保存的刻录快照。实体光盘可见度仍未验证；不改变刻录功率、前导区或覆写行为。
+
+### English
+
+- Add an optional wide-sector calibration target for faint or tightly wound cross lines. Four alternating filled sectors provide continuous radial edges without guide-ring ambiguity; the original fine cross remains the default. Share the saved pattern across preview, PNG export, CD/DVD/BD generation and streaming, show the active target in all five interface languages, and record the pattern in schema 7 while retaining schema 6 fine-cross records. Validate digital contrast under ±0.1 mm inner-radius and ±512-sector errors, coarse-edge fitting, exported pixels and saved burn snapshots. Physical-disc visibility remains unverified; no recording power, preamble or overwrite behavior changes.
+
+
 ## [1.5.0] - 2026-11-04
 
 ### 中文

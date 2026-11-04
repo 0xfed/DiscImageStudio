@@ -170,6 +170,12 @@
                                 <!-- The target follows the project family (no manual disc-type
                                      switch): the line under the button names the parameters a
                                      new target is built from. -->
+                                <CheckBox x:Name="CoarsePatternCheckBox" IsChecked="{Binding UseCoarsePattern, Mode=TwoWay}"
+                                          Style="{StaticResource CompactCheckBox}" Margin="0,0,0,6">
+                                    <TextBlock Text="{loc:Text Xaml.CoarseCalibrationPattern}" TextWrapping="Wrap" />
+                                </CheckBox>
+                                <TextBlock Text="{loc:Text Xaml.CoarseCalibrationPatternHelp}"
+                                           Style="{StaticResource CompactHint}" TextWrapping="Wrap" Margin="0,0,0,10" />
                                 <Button Command="{Binding CreateTargetCommand}"
                                         Style="{StaticResource CompactPrimaryButton}" HorizontalAlignment="Stretch"
                                         Height="Auto" MinHeight="{StaticResource CompactHeight}" Padding="12,6" Margin="0,0,0,10">
@@ -177,6 +183,9 @@
                                 </Button>
                                 <TextBlock Text="{Binding CurrentParametersSummary}" Style="{StaticResource CompactHint}"
                                            Margin="0,0,0,10" />
+
+                                <TextBlock Text="{Binding ActivePatternSummary}" Style="{StaticResource CompactHint}"
+                                           TextWrapping="Wrap" Margin="0,0,0,10" />
 
                                 <!-- Two delivery paths, named by what the user does next:
                                      burn here, or take a generated file to another burner. -->

@@ -76,13 +76,19 @@ public sealed record CalibrationParameters(
     }
 }
 
-/// <summary>Legacy serialized options; group geometry is derived solely from the disc radii.</summary>
+public enum CalibrationPatternKind { FineCross, WideSectors }
+
+/// <summary>Captured pattern identity and legacy geometry options.</summary>
 public sealed record CalibrationPatternOptions(
     double LargeCellMm = 8, double MediumCellMm = 4,
-    double SmallCellMm = 2, double SectorGapMm = 1)
+    double SmallCellMm = 2, double SectorGapMm = 1,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    CalibrationPatternKind PatternKind = CalibrationPatternKind.FineCross)
 {
     public void Validate()
     {
+        if (!Enum.IsDefined(PatternKind))
+            throw new ArgumentException(L.T("Unknown calibration pattern."));
         if (!double.IsFinite(LargeCellMm) || !double.IsFinite(MediumCellMm)
             || !double.IsFinite(SmallCellMm) || !double.IsFinite(SectorGapMm)
             || SmallCellMm < 0.25 || MediumCellMm <= SmallCellMm
@@ -177,7 +183,8 @@ public sealed record CalibrationCell(
 
 public sealed class CalibrationTarget
 {
-    public const int CurrentSchemaVersion = 6;
+    public const int CurrentSchemaVersion = 7;
+    public const int LegacyFineCrossSchemaVersion = 6;
     private readonly Dictionary<string, CalibrationCell> _byId;
     private readonly Dictionary<(string CellId, int CornerIndex), CalibrationControlPoint> _controlPointByReference;
     private readonly CalibrationGeometry _generatedGeometry;
@@ -199,7 +206,9 @@ public sealed class CalibrationTarget
         _drawingOuterRadiusMm = Parameters.DrawingOuterRadiusMm;
         Groups = Array.AsReadOnly(BuildGroups(Parameters));
         double pixelSizeMm = CalibrationReferencePattern.MillimetresPerPixel(Parameters.OuterRadiusMm, Parameters.Kind);
-        RingRadiiMm = Array.AsReadOnly(CalibrationReferencePattern.RingRadiiPixels.Select(radius => radius * pixelSizeMm).ToArray());
+        RingRadiiMm = Array.AsReadOnly(IsCoarsePattern
+            ? Array.Empty<double>()
+            : CalibrationReferencePattern.RingRadiiPixels.Select(radius => radius * pixelSizeMm).ToArray());
         ControlCells = Array.AsReadOnly(Cells.Concat(BuildSpineCells(Groups)).ToArray());
         _byId = ControlCells.ToDictionary(cell => cell.Id, StringComparer.Ordinal);
         _controlPointByReference = new();
@@ -238,7 +247,12 @@ public sealed class CalibrationTarget
     public IReadOnlyList<double> RingRadiiMm { get; }
 
     [JsonIgnore]
-    public double RingThicknessMm => CalibrationReferencePattern.NominalLineWidthPixels
+    public bool IsCoarsePattern => Options.PatternKind == CalibrationPatternKind.WideSectors;
+
+    [JsonIgnore]
+    public double RingThicknessMm => IsCoarsePattern
+        ? 0
+        : CalibrationReferencePattern.NominalLineWidthPixels
         * CalibrationReferencePattern.MillimetresPerPixel(Parameters.OuterRadiusMm, Parameters.Kind);
 
     [JsonIgnore]
@@ -262,11 +276,13 @@ public sealed class CalibrationTarget
         return Groups.First(group => group.Id == cell.GroupId).Role;
     }
 
-    public static CalibrationTarget Create(CalibrationParameters parameters, CalibrationPatternOptions? options = null)
+    public static CalibrationTarget Create(CalibrationParameters parameters, CalibrationPatternOptions? options = null,
+        CalibrationPatternKind? patternKind = null)
     {
         parameters.Validate();
         double scale = Math.Clamp((parameters.OuterRadiusMm - parameters.InnerRadiusMm) / 32.3, 0.5, 2);
         options ??= new(8 * scale, 4 * scale, 2 * scale);
+        if (patternKind is { } selected) options = options with { PatternKind = selected };
         options.Validate();
         return new(CurrentSchemaVersion, Guid.NewGuid().ToString("N"), parameters, options,
             BuildCells(parameters));
@@ -274,7 +290,9 @@ public sealed class CalibrationTarget
 
     public void Validate()
     {
-        if (SchemaVersion != CurrentSchemaVersion)
+        if (SchemaVersion != CurrentSchemaVersion
+            && (SchemaVersion != LegacyFineCrossSchemaVersion
+                || Options.PatternKind != CalibrationPatternKind.FineCross))
             throw new ArgumentException(L.F($"不支持的标定会话版本 {SchemaVersion}。"));
         if (!Guid.TryParseExact(Id, "N", out _)) throw new ArgumentException(L.T("标定图案 ID 无效。"));
         Parameters.Validate();
@@ -297,7 +315,7 @@ public sealed class CalibrationTarget
         return cell.Corners[cornerIndex];
     }
 
-    /// <summary>True source ink path. Each cross arm is an open radial line.</summary>
+    /// <summary>A fine cross centerline or coarse sector edge, expressed as an open radial line.</summary>
     public IReadOnlyList<CalibrationPoint> GetOutline(string cellId, int samplesPerEdge = 32)
     {
         if (samplesPerEdge is < 1 or > 2048) throw new ArgumentOutOfRangeException(nameof(samplesPerEdge));
@@ -365,6 +383,14 @@ public sealed class CalibrationTarget
         if (radiusSquared < DrawingInnerRadiusMm * DrawingInnerRadiusMm - 1e-10
             || radiusSquared > DrawingOuterRadiusMm * DrawingOuterRadiusMm + 1e-10)
             return 255;
+        if (IsCoarsePattern)
+        {
+            // Four 90-degree sectors retain a 50% dark duty cycle when angular
+            // drift winds the pattern. Their four edges coincide with the fine
+            // target's radial arms, so the same single-curve model applies.
+            bool black = (xMm >= 0) == (yMm >= 0);
+            return black ? (byte)0 : (byte)255;
+        }
         return CalibrationReferencePattern.Sample(xMm, yMm, Parameters.OuterRadiusMm, Parameters.Kind);
     }
 

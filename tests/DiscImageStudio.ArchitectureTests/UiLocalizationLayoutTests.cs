@@ -154,6 +154,19 @@ internal static class UiLocalizationLayoutTests
                             }
                             if (workspace == Workspace.Calibration)
                             {
+                                if (!Descendants(window).OfType<CheckBox>().Any(box => box.IsVisible && box.Name == "CoarsePatternCheckBox"))
+                                    throw new InvalidOperationException($"Coarse pattern option is missing for {family}/{language}.");
+                                shell.Calibration.UseCoarsePattern = true;
+                                shell.Calibration.CreateTargetCommand.Execute(null);
+                                shell.Calibration.StepOneExpanded = true;
+                                shell.Calibration.ShowTargetPreview = true;
+                                Pump();
+                                if (shell.Calibration.Target?.IsCoarsePattern != true)
+                                    throw new InvalidOperationException("The coarse pattern option did not create a coarse target.");
+                                Capture(window, name + "-coarse");
+                                shell.Calibration.UseCoarsePattern = false;
+                                shell.Calibration.CreateTargetCommand.Execute(null);
+                                shell.Calibration.ShowTargetPreview = false;
                                 shell.Calibration.StepTwoExpanded = true;
                                 Pump();
                                 Capture(window, name + "-photo");
@@ -204,8 +217,11 @@ internal static class UiLocalizationLayoutTests
                     finally { dialog.Close(); }
                 }
             }
-            if (scenarios.Count != 325 || scenarios.Any(scenario => scenario.TextBlocks < 5))
-                throw new InvalidOperationException("The expected 325 UI layout scenarios did not all render meaningful text.");
+            // Per project/profile: base workspaces, two preview modes and three calibration modes.
+            // Per language: three settings categories and two project dialogs.
+            int expectedScenarios = Languages.Length * (3 * Profiles.Length * (Enum.GetValues<Workspace>().Length + 5) + 5);
+            if (scenarios.Count != expectedScenarios || scenarios.Any(scenario => scenario.TextBlocks < 5))
+                throw new InvalidOperationException($"The expected {expectedScenarios} UI layout scenarios did not all render meaningful text.");
             if (issues.Count != 0)
                 throw new InvalidOperationException($"UI localization layout found {issues.Count} text issues; see {output}.");
             Console.WriteLine($"UI localization layout: {scenarios.Count} scenarios passed in five languages; screenshots: {output}");

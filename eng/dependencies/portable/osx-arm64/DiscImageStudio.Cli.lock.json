@@ -16,44 +16,44 @@
       "discimagestudio.bluray": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Core": "[1.5.0, )",
-          "DiscImageStudio.Iso": "[1.5.0, )"
+          "DiscImageStudio.Core": "[1.6.0, )",
+          "DiscImageStudio.Iso": "[1.6.0, )"
         }
       },
       "discimagestudio.cd": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Core": "[1.5.0, )",
-          "DiscImageStudio.ImageIO": "[1.5.0, )",
-          "DiscImageStudio.Iso": "[1.5.0, )"
+          "DiscImageStudio.Core": "[1.6.0, )",
+          "DiscImageStudio.ImageIO": "[1.6.0, )",
+          "DiscImageStudio.Iso": "[1.6.0, )"
         }
       },
       "discimagestudio.core": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.5.0, )"
+          "DiscImageStudio.Localization": "[1.6.0, )"
         }
       },
       "discimagestudio.dvd": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Core": "[1.5.0, )",
-          "DiscImageStudio.ImageIO": "[1.5.0, )",
-          "DiscImageStudio.Iso": "[1.5.0, )",
-          "DiscImageStudio.Localization": "[1.5.0, )"
+          "DiscImageStudio.Core": "[1.6.0, )",
+          "DiscImageStudio.ImageIO": "[1.6.0, )",
+          "DiscImageStudio.Iso": "[1.6.0, )",
+          "DiscImageStudio.Localization": "[1.6.0, )"
         }
       },
       "discimagestudio.imageio": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.5.0, )",
+          "DiscImageStudio.Localization": "[1.6.0, )",
           "StbImageSharp": "[2.30.16, )"
         }
       },
       "discimagestudio.iso": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.5.0, )"
+          "DiscImageStudio.Localization": "[1.6.0, )"
         }
       },
       "discimagestudio.localization": {

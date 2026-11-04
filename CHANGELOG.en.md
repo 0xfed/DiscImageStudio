@@ -4,6 +4,11 @@
 
 ## Unreleased
 
+## [1.6.0] - 2026-11-04
+
+- Add an optional wide-sector calibration target for faint or tightly wound cross lines. Four alternating filled sectors provide continuous radial edges without guide-ring ambiguity; the original fine cross remains the default. Share the saved pattern across preview, PNG export, CD/DVD/BD generation and streaming, show the active target in all five interface languages, and record the pattern in schema 7 while retaining schema 6 fine-cross records. Validate digital contrast under ±0.1 mm inner-radius and ±512-sector errors, coarse-edge fitting, exported pixels and saved burn snapshots. Physical-disc visibility remains unverified; no recording power, preamble or overwrite behavior changes.
+
+
 ## [1.5.0] - 2026-11-04
 
 - Extend UDF 2.50 VAT images and open-disc file updates to CD and DVD data projects, including 4.7 GB M-DISC DVD-R/+R. Add visible Design format selection, a shared Burn reserve/update panel, saved project and sidecar settings, and CLI `--file-system iso9660|udf250`. Use native CD/DVD sessions with DVD+R compatibility finalization disabled, session-relative volume descriptors, CD postgap handling, locked media/capacity checks, cancellation and paired cleanup. Verify and reuse unchanged file extents; append replacements, metadata and linked VATs while preserving prior sectors and drawing. Retain the BD-R path and ISO9660/Joliet defaults. Add independent cross-media traversal, repeated-update and fake-recorder tests. Random-overwrite media, finalized discs and foreign volumes remain unsupported; physical burning requires hardware validation.

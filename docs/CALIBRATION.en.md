@@ -2,11 +2,11 @@
 
 [简体中文](CALIBRATION.md) | [繁體中文](CALIBRATION.zh-TW.md) | [English](CALIBRATION.en.md) | [日本語](CALIBRATION.ja.md) | [Türkçe](CALIBRATION.tr.md)
 
-Calibration has three stages: **generate a calibration disc → rectify the photograph → calibrate the curve**, corresponding to the three cards in the right column. The photograph only needs to show the physical outer edge, center hole, and one radial curve of the cross clearly. Adjust the lighting to improve visibility; there is no requirement to blacken the disc or position it squarely.
+Calibration has three stages: **generate a calibration disc → rectify the photograph → calibrate the curve**, corresponding to the three cards in the right column. The photograph only needs to show the physical outer edge, center hole, and one cross arm or wide-sector boundary clearly. Adjust the lighting to improve visibility; there is no requirement to blacken the disc or position it squarely.
 
 ## Calibration pattern and output
 
-Set the drawing inner/outer radii, sector count, linear velocity or bit length in Project settings. Then open “Create target” in the Calibration workspace and use “Create target from parameters.” The calibration pattern uses the built-in `target_slim.png`: nine thin concentric circles and a cross. **Scale the entire original image to the generation outer radius first, then clip the burning band between the inner and outer radii**, using the same coordinate mapping as ordinary DVD image generation. The original image's left/right and top/bottom boundaries correspond to the negative and positive generation outer radius. Circle positions and line widths scale proportionally with the outer radius; the inner radius clips the central region. Concentric circles are for observation only; parameter solving uses only the selected curve.
+Set the drawing inner/outer radii, sector count, linear velocity or bit length in Project settings. Then open “Create calibration disc” in the Calibration workspace and use “Create target from current parameters.” The default fine-cross pattern uses the built-in `target_slim.png`: nine thin concentric circles and a cross. **Scale the entire original image to the generation outer radius first, then clip the burning band between the inner and outer radii**, using the same coordinate mapping as ordinary DVD image generation. The original image's left/right and top/bottom boundaries correspond to the negative and positive generation outer radius. Circle positions and line widths scale proportionally with the outer radius; the inner radius clips the central region. Concentric circles are for observation only; parameter solving uses only the selected curve.
 
 The 120 mm disc background in the interface is for preview, not a fixed physical size of the original image. The 12 cm / 8 cm physical disc size chosen for photo rectification also serves only to recover the photo scale; it does not change the saved pattern generation mapping.
 
@@ -14,7 +14,17 @@ Creating a pattern fixes the generation parameters and CD interleaving setting a
 
 - CD outputs `.wav` (with `.cue`) or `.raw`; DVD and BD output a drawing-only `.iso`. A BD target covers the full single-layer data area and records the drawing start/end sectors, 3T/6T polarity, and ISO timestamp.
 - File generation also saves a same-name `.calibration.json`. Streaming burn saves the calibration record first, then opens the Burn workspace with this pattern fixed as the source, where you select a device and confirm.
-- Preview, PNG export, file output, and streaming output share the same built-in pattern and generation outer-radius mapping, preserving the original grayscale edges. PNG exports the clipped pattern at the original 2400 × 2400 pixels, without preview background margins or rescaling a preview screenshot. For the actual burn, use this page's generation or streaming entry point to keep the pattern consistent with its saved generation parameters.
+- Preview, PNG export, file output, and streaming output share the saved pattern and generation coordinates; the fine cross preserves the original grayscale edges. PNG exports the clipped pattern at the original 2400 × 2400 pixels, without preview background margins or rescaling a preview screenshot. For the actual burn, use this page's generation or streaming entry point to keep the pattern consistent with its saved generation parameters.
+
+### Coarse calibration when the cross is faint
+
+In Calibration, expand **Create calibration disc**, select **Use wide sectors for coarse calibration**, then click **Create target from current parameters**. The current-target label identifies the pattern actually saved and used for the next burn; changing the checkbox alone does not replace an existing target.
+
+The coarse target contains four alternating 90-degree black/white sectors with no guide circles. Its four radial boundaries use the same curve model as the fine cross. Broad filled regions retain a much larger local texture duty cycle when geometry error winds the boundaries into spirals. The original fine cross and its nine circles remain the default.
+
+Trace one continuous black/white boundary from inside to outside, with enough intermediate points to follow every turn; do not switch to a neighboring edge. After applying a coarse fit, create a new fine-cross target for refinement. Use this page’s generation or streaming controls so the selected pattern and its saved parameters stay together.
+
+This improves visibility in tested geometry simulations; it does not correct an arbitrary offset, guarantee a straight line, or establish physical-disc contrast. Tests cover ±0.1 mm inner-radius errors, ±512-sector offsets, and averaging over a 0.1 mm radial observation footprint. Physical burning still needs hardware validation.
 
 ## Step one: photo rectification
 
@@ -48,7 +58,7 @@ Return to step one to inspect the original photograph. Changing boundaries or di
 
 Calibration records save the generation snapshot, reduced original photograph, boundary control points, disc size, and all curve points; they do not depend on the original photo path. Reopening restores rectification from the saved boundaries so you can continue tracing or recompute. Fit candidates must be recalculated.
 
-The current pattern uses schema 6 and accepts only current-version records; old comb patterns are not migrated. Create a new pattern and use its corresponding burned disc.
+New records use schema 7 and capture the selected pattern. Schema 6 fine-cross records remain readable and retain their original pattern. Older comb records are not migrated. Use each burned disc with its own saved record.
 
 ## Validation scope
 

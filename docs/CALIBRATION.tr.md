@@ -2,11 +2,11 @@
 
 [简体中文](CALIBRATION.md) | [繁體中文](CALIBRATION.zh-TW.md) | [English](CALIBRATION.en.md) | [日本語](CALIBRATION.ja.md) | [Türkçe](CALIBRATION.tr.md)
 
-Yardımcı kalibrasyon, sağ sütundaki üç karta karşılık gelen **kalibrasyon diski oluşturma → fotoğraf düzeltme → eğri kalibrasyonu** adımlarından oluşur. Fotoğrafta yalnızca fiziksel dış kenarın, merkez deliğinin ve artı işaretinin bir radyal eğrisinin açıkça görünmesi yeterlidir. Görünürlüğü artırmak için ışıklandırma ayarlanabilir; diski siyaha boyamak veya tam karşıdan konumlandırmak gerekmez.
+Yardımcı kalibrasyon, sağ sütundaki üç karta karşılık gelen **kalibrasyon diski oluşturma → fotoğraf düzeltme → eğri kalibrasyonu** adımlarından oluşur. Fotoğrafta yalnızca fiziksel dış kenarın, merkez deliğinin ve bir artı kolunun veya geniş sektör sınırının açıkça görünmesi yeterlidir. Görünürlüğü artırmak için ışıklandırma ayarlanabilir; diski siyaha boyamak veya tam karşıdan konumlandırmak gerekmez.
 
 ## Kalibrasyon deseni ve çıktı
 
-Proje ayarlarında çizim iç/dış yarıçaplarını, sektör sayısını, doğrusal hızı veya bit uzunluğunu ayarlayın. Ardından Yardımcı Kalibrasyon çalışma alanında “Hedef oluştur” bölümünü açıp “Geçerli parametrelerden hedef oluştur” seçeneğini kullanın. Desen, dokuz ince eş merkezli çember ve bir artı işaretinden oluşan yerleşik `target_slim.png` görselidir. **Önce özgün görselin tamamını oluşturma dış yarıçapına göre ölçekleyin, sonra iç ve dış yarıçaplar arasındaki yazma halkasına kırpın**; normal DVD görseli oluşturmayla aynı koordinat eşlemesi kullanılır. Özgün görselin sol/sağ ve üst/alt sınırları, oluşturma dış yarıçapının negatif ve pozitif değerlerine karşılık gelir. Çember konumları ve çizgi kalınlıkları dış yarıçapla orantılı ölçeklenir; iç yarıçap merkez bölgeyi kırpar. Eş merkezli çemberler yalnızca gözlem içindir; parametre çözümü sadece seçilen eğriyi kullanır.
+Proje ayarlarında çizim iç/dış yarıçaplarını, sektör sayısını, doğrusal hızı veya bit uzunluğunu ayarlayın. Ardından Yardımcı Kalibrasyon çalışma alanında “Hedef oluştur” bölümünü açıp “Geçerli parametrelerden hedef oluştur” seçeneğini kullanın. Varsayılan ince artı deseni, dokuz ince eş merkezli çember ve bir artı işaretinden oluşan yerleşik `target_slim.png` görselidir. **Önce özgün görselin tamamını oluşturma dış yarıçapına göre ölçekleyin, sonra iç ve dış yarıçaplar arasındaki yazma halkasına kırpın**; normal DVD görseli oluşturmayla aynı koordinat eşlemesi kullanılır. Özgün görselin sol/sağ ve üst/alt sınırları, oluşturma dış yarıçapının negatif ve pozitif değerlerine karşılık gelir. Çember konumları ve çizgi kalınlıkları dış yarıçapla orantılı ölçeklenir; iç yarıçap merkez bölgeyi kırpar. Eş merkezli çemberler yalnızca gözlem içindir; parametre çözümü sadece seçilen eğriyi kullanır.
 
 Arayüzdeki 120 mm disk arka planı önizleme içindir, özgün görselin sabit fiziksel boyutu değildir. Fotoğraf düzeltmede seçilen 12 cm / 8 cm fiziksel disk boyutu da yalnızca fotoğraf ölçeğini geri elde etmek içindir; kaydedilen desen oluşturma eşlemesini değiştirmez.
 
@@ -14,7 +14,17 @@ Desen oluşturulurken oluşturma parametreleri ve CD serpiştirme ayarı sabitle
 
 - CD çıktısı `.wav` (`.cue` ile) veya `.raw`; DVD ve BD çıktısı yalnızca çizim içeren `.iso` olur. BD hedefi tek katmanlı veri alanının tamamını kapsar; çizim başlangıç/bitiş sektörlerini, 3T/6T kutupluluğunu ve ISO zaman damgasını kaydeder.
 - Dosya oluşturulurken aynı adlı `.calibration.json` da kaydedilir. Akışla yazma, önce kalibrasyon kaydını kaydeder; sonra kaynağı bu desene sabitlenmiş Yazma çalışma alanına geçer. Burada aygıt seçilir ve onaylanır.
-- Önizleme, PNG dışa aktarımı, dosya çıktısı ve akış çıktısı aynı yerleşik deseni ve oluşturma dış yarıçapı eşlemesini kullanır; özgün gri tonlu kenarlar korunur. PNG, kırpılmış deseni özgün 2400 × 2400 piksel boyutunda dışa aktarır; önizleme arka planı kenar boşlukları eklenmez ve önizleme ekran görüntüsü yeniden ölçeklenmez. Gerçek yazma için bu sayfanın oluşturma veya akış girişini kullanarak desenin kaydedilmiş oluşturma parametreleriyle tutarlı kalmasını sağlayın.
+- Önizleme, PNG dışa aktarımı, dosya çıktısı ve akış çıktısı kaydedilmiş deseni ve oluşturma koordinatlarını paylaşır; ince artı özgün gri tonlu kenarları korur. PNG, kırpılmış deseni özgün 2400 × 2400 piksel boyutunda dışa aktarır; önizleme arka planı kenar boşlukları eklenmez ve önizleme ekran görüntüsü yeniden ölçeklenmez. Gerçek yazma için bu sayfanın oluşturma veya akış girişini kullanarak desenin kaydedilmiş oluşturma parametreleriyle tutarlı kalmasını sağlayın.
+
+### Artı soluk olduğunda kaba kalibrasyon
+
+Kalibrasyonda hedef oluşturma kartını açın, **Kaba kalibrasyon için geniş sektörler kullan** seçeneğini işaretleyip **Geçerli parametrelerden hedef oluştur** düğmesine basın. Geçerli hedef etiketi, kaydedilen ve sonraki yazımda kullanılacak deseni gösterir; yalnızca kutuyu değiştirmek mevcut hedefi değiştirmez.
+
+Kaba hedef, sırayla siyah ve beyaz olan dört adet 90 derecelik sektörden oluşur; kılavuz çember içermez. Dört radyal kenarı ince artıyla aynı eğri modelini kullanır. Geometri hatası kenarları spirale dönüştürdüğünde geniş dolu alanlar daha büyük yerel doku oranını korur. Özgün artı ve dokuz çember varsayılan olarak kalır.
+
+Tek bir kesintisiz siyah/beyaz kenarı içten dışa izleyin ve her dönüşü takip etmek için ara noktalar ekleyin; komşu kenara geçmeyin. Kaba sonucu uyguladıktan sonra ince ayar için yeni bir ince artı hedefi oluşturun. Seçilen desenle kayıtlı parametrelerin aynı kalması için bu sayfanın oluşturma veya akışlı yazma kontrollerini kullanın.
+
+Bu tasarım, test edilen geometri benzetimlerinde görünürlüğü artırır; her ofseti düzeltmez, düz çizgi garanti etmez veya fiziksel disk kontrastını doğrulamaz. Testler ±0.1 mm iç yarıçap hatalarını, ±512 sektör ofsetini ve 0.1 mm radyal gözlem aralığındaki ortalamayı kapsar. Fiziksel yazım donanım doğrulaması gerektirir.
 
 ## Birinci adım: fotoğraf düzeltme
 
@@ -48,7 +58,7 @@ Birinci adıma dönerek özgün fotoğraf incelenebilir. Sınırlar veya disk bo
 
 Kalibrasyon kaydı oluşturma anlık görüntüsünü, küçültülmüş özgün fotoğrafı, kontur kontrol noktalarını, disk boyutunu ve tüm eğri noktalarını saklar; özgün fotoğraf yoluna bağımlı değildir. Yeniden açıldığında kaydedilen sınırlardan düzeltme geri yüklenir; izlemeye devam edilebilir veya yeniden hesaplanabilir. Uydurma adayları yeniden hesaplanmalıdır.
 
-Mevcut desen schema 6 kullanır ve yalnızca güncel sürüm kayıtlarını kabul eder; eski tarak desenleri taşınmaz. Yeni bir desen oluşturup ona karşılık gelen yazılmış diski kullanmak gerekir.
+Yeni kayıtlar seçilen deseni schema 7 ile saklar. Schema 6 ince artı kayıtları okunabilir ve özgün desenini korur. Daha eski tarak desenleri taşınmaz. Her yazılmış diski kendi kayıtlı dosyasıyla kullanın.
 
 ## Doğrulama kapsamı
 

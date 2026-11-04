@@ -47,7 +47,8 @@ internal static class CalibrationPatternRenderer
     internal static BitmapSource RenderEncodingImage(CalibrationTarget target, CancellationToken cancellationToken = default)
     {
         const int size = CalibrationReferencePattern.PixelSize;
-        byte[] pixels = CalibrationReferencePattern.ReadGrayPixels();
+        byte[] pixels = target.IsCoarsePattern
+            ? new byte[size * size] : CalibrationReferencePattern.ReadGrayPixels();
         CalibrationParameters parameters = target.Parameters;
         double inner2 = target.DrawingInnerRadiusMm * target.DrawingInnerRadiusMm;
         double outer2 = target.DrawingOuterRadiusMm * target.DrawingOuterRadiusMm;
@@ -57,7 +58,8 @@ internal static class CalibrationPatternRenderer
             {
                 CalibrationPoint p = CalibrationReferencePattern.PixelToDisc(x, y, parameters.OuterRadiusMm, parameters.Kind);
                 double r2 = p.X * p.X + p.Y * p.Y;
-                if (r2 < inner2 - 1e-10 || r2 > outer2 + 1e-10) pixels[y * size + x] = 255;
+                if (target.IsCoarsePattern) pixels[y * size + x] = target.Sample(p.X, p.Y);
+                else if (r2 < inner2 - 1e-10 || r2 > outer2 + 1e-10) pixels[y * size + x] = 255;
             }
         });
         BitmapSource image = BitmapSource.Create(size, size, 96, 96, PixelFormats.Gray8, null, pixels, size);

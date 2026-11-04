@@ -61,6 +61,7 @@ BluRayPatternRangeTests.Run();
 UdfFilesystemTests.Run();
 UdfVatUpdateTests.Run();
 MediaUdfTests.Run();
+CalibrationPatternTests.Run();
 BluRayFileUpdateBurnTests.Run();
 SequentialFileUpdateBurnTests.Run();
 UdfLargeFileTests.Run();

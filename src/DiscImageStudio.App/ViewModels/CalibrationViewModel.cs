@@ -40,9 +40,9 @@ public partial class CalibrationViewModel : ObservableObject
         _state = state;
         CreateTargetCommand = new RelayCommand(CreateTarget, () => !IsBusy);
         BrowseOutputCommand = new RelayCommand(BrowseOutput, () => !IsBusy);
-        ExportPngCommand = new AsyncRelayCommand(ExportPngAsync, CanUseTarget);
-        GenerateImageCommand = new AsyncRelayCommand(GenerateImageAsync, CanUseTarget);
-        StreamBurnCommand = new RelayCommand(PrepareStreamBurn, CanUseTarget);
+        ExportPngCommand = new AsyncRelayCommand(ExportPngAsync, CanGenerateTarget);
+        GenerateImageCommand = new AsyncRelayCommand(GenerateImageAsync, CanGenerateTarget);
+        StreamBurnCommand = new RelayCommand(PrepareStreamBurn, CanGenerateTarget);
         SaveSessionCommand = new RelayCommand(SaveSession, CanUseTarget);
         OpenSessionCommand = new AsyncRelayCommand(OpenSessionAsync, () => !IsBusy);
         SolveCommand = new AsyncRelayCommand(SolveAsync, CanSolveTrace);
@@ -56,6 +56,22 @@ public partial class CalibrationViewModel : ObservableObject
     }
 
     [ObservableProperty] private string _selectedDiscType = "CD";
+    [ObservableProperty] private bool _useCoarsePattern;
+
+    public string ActivePatternSummary => _target is null ? string.Empty
+        : L.Format("Current target: {0}", PatternLabel(_target))
+            + (_target.IsCoarsePattern == UseCoarsePattern ? string.Empty
+                : "\n" + L.T("Create a new target to use the selected pattern."));
+
+    internal static string PatternLabel(CalibrationTarget target) => L.T(target.IsCoarsePattern
+        ? "Wide sectors (coarse)" : "Original cross (fine)");
+
+    partial void OnUseCoarsePatternChanged(bool value)
+    {
+        OnPropertyChanged(nameof(ActivePatternSummary));
+        RefreshCommands();
+    }
+
     [ObservableProperty] private BitmapSource? _targetImage;
     [ObservableProperty] private double _canvasOuterRadiusMm = 60;
     [ObservableProperty] private IReadOnlyList<CoarseCandidate> _coarseCandidates = [];
@@ -122,6 +138,7 @@ public partial class CalibrationViewModel : ObservableObject
 
         OnPropertyChanged(nameof(SearchRangeHeader));
         OnPropertyChanged(nameof(CurrentParametersSummary));
+        OnPropertyChanged(nameof(ActivePatternSummary));
         UpdateFitAssessment();
         RelocalizePhoto();
     }
@@ -203,6 +220,7 @@ public partial class CalibrationViewModel : ObservableObject
         ResetPhoto();
         InvalidateFit();
         OnPropertyChanged(nameof(Target));
+        OnPropertyChanged(nameof(ActivePatternSummary));
         OnPropertyChanged(nameof(IsDvdTarget));
         OnPropertyChanged(nameof(IsBluRayTarget));
         OnPropertyChanged(nameof(StepOneState));
@@ -214,6 +232,7 @@ public partial class CalibrationViewModel : ObservableObject
 
     internal void OnWindowClosed() { _cancellation?.Cancel(); _previewCancellation?.Cancel(); }
     private bool CanUseTarget() => !IsBusy && _target is not null;
+    private bool CanGenerateTarget() => CanUseTarget() && _target!.IsCoarsePattern == UseCoarsePattern;
     private bool CanApplyParameters() => !IsBusy && IsTraceStep && _photoTransform is not null && _fit?.Succeeded == true
         && SelectedCoarseCandidate is { } selected && ContourConfirmed && _previewReady
         && CandidateResidualAccepted(selected)
@@ -251,7 +270,8 @@ public partial class CalibrationViewModel : ObservableObject
                     CdDiscParameters.StandardLinearVelocityMmPerSecond),
             };
             ValidateOutputParameters(p);
-            InstallTarget(CalibrationTarget.Create(p), new(), _state.CdInterleave);
+            InstallTarget(CalibrationTarget.Create(p, patternKind: UseCoarsePattern
+                ? CalibrationPatternKind.WideSectors : CalibrationPatternKind.FineCross), new(), _state.CdInterleave);
             _sessionPath = null;
             OutputPath = string.Empty;
         }
@@ -291,6 +311,7 @@ public partial class CalibrationViewModel : ObservableObject
             _previewCancellation?.Cancel();
             ResetPhoto();
             _target = target;
+            UseCoarsePattern = target.IsCoarsePattern;
             _cdInterleave = interleave;
             _searchCenter = options?.SearchCenter ?? target.Parameters;
             _loadedFitOptions = options ?? new();
@@ -312,6 +333,7 @@ public partial class CalibrationViewModel : ObservableObject
             TargetImage = CalibrationPatternRenderer.Render(target, CanvasOuterRadiusMm, 900);
             InvalidateFit();
             OnPropertyChanged(nameof(Target));
+            OnPropertyChanged(nameof(ActivePatternSummary));
             OnPropertyChanged(nameof(IsDvdTarget));
             OnPropertyChanged(nameof(IsBluRayTarget));
             OnPropertyChanged(nameof(StepOneState));

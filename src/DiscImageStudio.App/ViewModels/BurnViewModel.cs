@@ -296,6 +296,7 @@ public partial class BurnViewModel : ObservableObject
                 };
                 SourceDetails = L.F($"绘图区 {p.InnerRadiusMm:0.######}–{p.OuterRadiusMm:0.######} mm")
                     + L.F($" · {p.Sectors} 扇区 · {encoding}\n")
+                    + CalibrationViewModel.PatternLabel(target) + " · "
                     + L.T("按标定图案记录的盘型与参数写入。");
                 identity = $"calibration:{target.Id}:{p}:{_shell.Calibration.CdInterleave}";
             }
@@ -604,7 +605,8 @@ public partial class BurnViewModel : ObservableObject
                     _ => "CD",
                 };
                 contentDescription = L.F($"{family} 标定图案 · {target.Id[..8]}")
-                    + L.F($" · {target.Parameters.Sectors} 扇区 · {request.ContentLength / (1024.0 * 1024.0):F1} MiB");
+                    + L.F($" · {target.Parameters.Sectors} 扇区 · {request.ContentLength / (1024.0 * 1024.0):F1} MiB")
+                    + " · " + CalibrationViewModel.PatternLabel(target);
             }
             else
             {

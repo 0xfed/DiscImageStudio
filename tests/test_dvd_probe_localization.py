@@ -33,7 +33,9 @@ def check(executable: Path) -> None:
     catalogs = {key: value for path in (ROOT / "src/DiscImageStudio.Localization/Catalogs").glob("*.json")
                 for key, value in json.loads(path.read_text(encoding="utf-8")).items()}
     with tempfile.TemporaryDirectory(prefix="disc-dvd-probe-languages-") as temporary:
-        work = Path(temporary)
+        # Windows temp paths can contain an 8.3 alias that .NET expands. Compare
+        # the canonical path in both console output and generated metadata.
+        work = Path(temporary).resolve(strict=True)
         source = work / "原图-İ-日本語.png"
         write_fixture(source)
         original = digest(source)
@@ -70,8 +72,9 @@ def check(executable: Path) -> None:
             prepared = work / f"实验-İ-{language}"
             source_name = "--language" if language == "tr" else source.name
             output, _ = run("prepare", "--source", source_name, "--output-dir", str(prepared), "--language", language)
-            if catalogs["Prepared: {0}"][language].format(str(prepared)) not in output:
-                raise ValueError("Preparation result lost translated text or Unicode path")
+            expected_output = catalogs["Prepared: {0}"][language].format(str(prepared))
+            if expected_output not in output:
+                raise ValueError(f"Preparation output mismatch in {language}: expected {expected_output!r}, got {output!r}")
             hashes = {name: digest(prepared / name) for name in ("atlas.q8", "code-map.png", "nominal-preview.png")}
             if expected_hashes is not None and hashes != expected_hashes:
                 raise ValueError(f"Selecting {language} changed the direct-Q atlas or preview PNG bytes")

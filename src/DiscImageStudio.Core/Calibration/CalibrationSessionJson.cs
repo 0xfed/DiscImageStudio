@@ -13,7 +13,9 @@ public sealed record CalibrationSession(
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     bool UseRingMeasurements = false,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    double? RingDiameterToleranceMm = null)
+    double? RingDiameterToleranceMm = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    VisualSelectorSelection? VisualSelectorSelection = null)
 {
     public void Validate()
     {
@@ -23,6 +25,12 @@ public sealed record CalibrationSession(
         CalibrationFitter.ValidateObservations(Target, Observations);
         FitOptions?.Validate(Target);
         Photo?.Validate();
+        if (VisualSelectorSelection is { } selection)
+        {
+            if (!Target.IsVisualSelectorPattern)
+                throw new ArgumentException(L.T("Band choices require the matching visual selector record."));
+            CalibrationVisualSelector.ValidateSelection(selection);
+        }
         if (RingMeasurements is not null) CalibrationRingFitter.ValidateMeasurements(Target, RingMeasurements);
         if (RingDiameterToleranceMm is { } tolerance && (!double.IsFinite(tolerance) || tolerance is < .001 or > 2))
             throw new ArgumentException(L.T("Enter a diameter tolerance between 0.001 and 2 mm."));

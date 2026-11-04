@@ -10,7 +10,7 @@
       "discimagestudio.imageio": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.7.0, )",
+          "DiscImageStudio.Localization": "[1.8.0, )",
           "StbImageSharp": "[2.30.16, )"
         }
       },

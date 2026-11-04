@@ -1,0 +1,177 @@
+{
+  "VisualSelector.Label": {
+    "en": "Visual selector (experimental, DVD)",
+    "zh-CN": "目视选择器（实验性，DVD）",
+    "zh-TW": "目視選擇器（實驗性，DVD）",
+    "ja": "目視セレクター（実験的・DVD）",
+    "tr": "Görsel seçici (deneysel, DVD)"
+  },
+  "VisualSelector.Introduction": {
+    "en": "Estimate both radii by choosing bands, without a ruler or photograph. Experimental: readability has not been verified on a physical disc. This target uses constant pitch.",
+    "zh-CN": "通过选择条带估算内外半径，无需尺子或照片。实验性功能：尚未验证实物盘片的可辨识度。此标靶使用恒定轨距。",
+    "zh-TW": "透過選擇條帶估算內外半徑，無需尺或照片。實驗性功能：尚未驗證實體光碟的可辨識度。此標靶使用固定軌距。",
+    "ja": "定規や写真を使わず、帯を選んで内外半径を推定します。実験的機能であり、実ディスクでの見やすさは未検証です。このターゲットは一定のトラックピッチを使用します。",
+    "tr": "Cetvel veya fotoğraf olmadan bant seçerek iki yarıçapı tahmin edin. Deneyseldir: gerçek diskte okunabilirliği doğrulanmadı. Bu hedef sabit iz aralığı kullanır."
+  },
+  "VisualSelector.Range": {
+    "en": "Candidate range",
+    "zh-CN": "候选范围",
+    "zh-TW": "候選範圍",
+    "ja": "候補範囲",
+    "tr": "Aday aralığı"
+  },
+  "VisualSelector.PreviewCaption": {
+    "en": "Predicted appearance · numbers are preview guides, not burned labels.",
+    "zh-CN": "预测外观 · 数字仅为预览指引，不会刻录。",
+    "zh-TW": "預測外觀 · 數字僅為預覽指引，不會燒錄。",
+    "ja": "予測表示 · 番号はプレビューの目印で、書き込まれません。",
+    "tr": "Tahmini görünüm · numaralar önizleme kılavuzudur, diske yazılmaz."
+  },
+  "VisualSelector.SelectBands": {
+    "en": "Choose the clearest bands",
+    "zh-CN": "选择最清晰的条带",
+    "zh-TW": "選擇最清晰的條帶",
+    "ja": "最も明瞭な帯を選択",
+    "tr": "En belirgin bantları seçin"
+  },
+  "VisualSelector.ReviewEstimate": {
+    "en": "Review estimated radii",
+    "zh-CN": "检查估算半径",
+    "zh-TW": "檢查估算半徑",
+    "ja": "推定半径の確認",
+    "tr": "Tahmini yarıçapları inceleyin"
+  },
+  "VisualSelector.BandHelp": {
+    "en": "In each bank, choose the band whose black/white boundary bends least. Count 1–21 from inside outward separately for I and O; a wider gap separates the banks. Numbers appear only in the preview. If no band is clearly distinguishable, do not guess.",
+    "zh-CN": "在每组中选择黑白边界弯曲最小的条带。I 组和 O 组分别由内向外计数 1–21；两组之间有较宽间隔。数字仅显示在预览中。如果无法明确分辨，请勿猜测。",
+    "zh-TW": "在每組中選擇黑白邊界彎曲最小的條帶。I 組與 O 組分別由內向外計數 1–21；兩組之間有較寬間隔。數字僅顯示在預覽中。若無法明確分辨，請勿猜測。",
+    "ja": "各グループで白黒の境界の曲がりが最も少ない帯を選びます。I と O それぞれで内側から外側へ 1～21 と数えてください。広い隙間がグループの区切りです。番号はプレビューのみの表示です。明確に区別できない場合は推測で選ばないでください。",
+    "tr": "Her grupta siyah/beyaz sınırı en az kıvrılan bandı seçin. I ve O için ayrı ayrı içten dışa 1–21 sayın; geniş boşluk grupları ayırır. Numaralar yalnızca önizlemede görünür. Bantlar ayırt edilemiyorsa tahminle seçmeyin."
+  },
+  "VisualSelector.InnerBank": {
+    "en": "Inner bank I · band number",
+    "zh-CN": "内组 I · 条带编号",
+    "zh-TW": "內組 I · 條帶編號",
+    "ja": "内側グループ I · 帯番号",
+    "tr": "İç grup I · bant numarası"
+  },
+  "VisualSelector.OuterBank": {
+    "en": "Outer bank O · band number",
+    "zh-CN": "外组 O · 条带编号",
+    "zh-TW": "外組 O · 條帶編號",
+    "ja": "外側グループ O · 帯番号",
+    "tr": "Dış grup O · bant numarası"
+  },
+  "VisualSelector.Calculate": {
+    "en": "Estimate radii from selections",
+    "zh-CN": "根据选择估算半径",
+    "zh-TW": "依選擇估算半徑",
+    "ja": "選択から半径を推定",
+    "tr": "Seçimlerden yarıçapları tahmin et"
+  },
+  "VisualSelector.Apply": {
+    "en": "Apply as starting values",
+    "zh-CN": "应用为初始值",
+    "zh-TW": "套用為初始值",
+    "ja": "初期値として適用",
+    "tr": "Başlangıç değerleri olarak uygula"
+  },
+  "VisualSelector.SavedRange": {
+    "en": "Saved target: ±{0:0.###} mm correction range; {1:0.####} mm between candidates.",
+    "zh-CN": "已保存标靶：修正范围 ±{0:0.###} mm；候选间隔 {1:0.####} mm。",
+    "zh-TW": "已儲存標靶：修正範圍 ±{0:0.###} mm；候選間隔 {1:0.####} mm。",
+    "ja": "保存されたターゲット: 補正範囲 ±{0:0.###} mm、候補間隔 {1:0.####} mm。",
+    "tr": "Kayıtlı hedef: ±{0:0.###} mm düzeltme aralığı; adaylar arasında {1:0.####} mm."
+  },
+  "VisualSelector.Result": {
+    "en": "I{0} / O{1}: estimated inner radius {2:0.00} mm; outer radius {3:0.00} mm.",
+    "zh-CN": "I{0} / O{1}：估算内半径 {2:0.00} mm；外半径 {3:0.00} mm。",
+    "zh-TW": "I{0} / O{1}：估算內半徑 {2:0.00} mm；外半徑 {3:0.00} mm。",
+    "ja": "I{0} / O{1}: 推定内半径 {2:0.00} mm、外半径 {3:0.00} mm。",
+    "tr": "I{0} / O{1}: tahmini iç yarıçap {2:0.00} mm; dış yarıçap {3:0.00} mm."
+  },
+  "VisualSelector.EdgeSelection": {
+    "en": "A selected band is at the edge of the tested range. Choose a wider range and create a new target before applying an estimate.",
+    "zh-CN": "所选条带位于测试范围边缘。请扩大范围并创建新标靶，再应用估算值。",
+    "zh-TW": "所選條帶位於測試範圍邊緣。請擴大範圍並建立新標靶，再套用估算值。",
+    "ja": "選択した帯が試験範囲の端にあります。範囲を広げて新しいターゲットを作成してから推定値を適用してください。",
+    "tr": "Seçilen bant test aralığının kenarında. Tahmini uygulamadan önce daha geniş aralık seçip yeni hedef oluşturun."
+  },
+  "VisualSelector.EstimateLimit": {
+    "en": "These are coarse starting values, not a precision measurement. Similar-looking bands may give different estimates.",
+    "zh-CN": "这些是粗略初始值，并非精密测量。外观相似的条带可能给出不同估算结果。",
+    "zh-TW": "這些是粗略初始值，並非精密測量。外觀相似的條帶可能給出不同估算結果。",
+    "ja": "これは粗い初期値であり、精密測定ではありません。見た目が似た帯でも推定値は異なる場合があります。",
+    "tr": "Bunlar kaba başlangıç değerleridir, hassas ölçüm değildir. Benzer görünen bantlar farklı tahminler verebilir."
+  },
+  "VisualSelector.ApplyHelp": {
+    "en": "Applying sets both radii and resets DVD pitch corrections to zero. Keep this burn record, then create a wide-sector target to refine alignment.",
+    "zh-CN": "应用后将设置内外半径，并将 DVD 轨距修正归零。请保留本次刻录记录，再创建宽扇区标靶细化对齐。",
+    "zh-TW": "套用後將設定內外半徑，並將 DVD 軌距修正歸零。請保留本次燒錄記錄，再建立寬扇區標靶細化對齊。",
+    "ja": "適用すると内外半径を設定し、DVD のピッチ補正をゼロに戻します。この書き込み記録を保存し、広い扇形ターゲットで位置合わせを調整してください。",
+    "tr": "Uygulamak iki yarıçapı ayarlar ve DVD iz aralığı düzeltmelerini sıfırlar. Bu yazma kaydını saklayın, ardından hizalamayı iyileştirmek için geniş sektör hedefi oluşturun."
+  },
+  "VisualSelector.OutputHelp": {
+    "en": "Generate the ISO or use streaming burn for this target. PNG export is unavailable because the preview cannot reproduce the encoded visual selector.",
+    "zh-CN": "请为此标靶生成 ISO 或使用流式刻录。预览无法复现编码后的目视选择器，因此不提供 PNG 导出。",
+    "zh-TW": "請為此標靶產生 ISO 或使用串流燒錄。預覽無法重現編碼後的目視選擇器，因此不提供 PNG 匯出。",
+    "ja": "このターゲットは ISO を生成するかストリーミング書き込みを使用してください。プレビューでは符号化された目視セレクターを再現できないため、PNG エクスポートは使用できません。",
+    "tr": "Bu hedef için ISO oluşturun veya akışla yazmayı kullanın. Önizleme kodlanmış görsel seçiciyi yeniden üretemediğinden PNG dışa aktarımı kullanılamaz."
+  },
+  "DVD calibration requires a DVD target.": {
+    "en": "DVD calibration requires a DVD target.",
+    "zh-CN": "DVD 标定需要 DVD 标靶。",
+    "zh-TW": "DVD 校準需要 DVD 標靶。",
+    "ja": "DVD キャリブレーションには DVD ターゲットが必要です。",
+    "tr": "DVD kalibrasyonu bir DVD hedefi gerektirir."
+  },
+  "Visual selector PNG export is unavailable. Generate its ISO or use streaming burn.": {
+    "en": "Visual selector PNG export is unavailable. Generate its ISO or use streaming burn.",
+    "zh-CN": "目视选择器不支持 PNG 导出。请生成 ISO 或使用流式刻录。",
+    "zh-TW": "目視選擇器不支援 PNG 匯出。請產生 ISO 或使用串流燒錄。",
+    "ja": "目視セレクターは PNG にエクスポートできません。ISO を生成するかストリーミング書き込みを使用してください。",
+    "tr": "Görsel seçici PNG olarak dışa aktarılamaz. ISO oluşturun veya akışla yazmayı kullanın."
+  },
+  "Visual selection requires a DVD with constant pitch, complete ECC blocks and radii within 60 mm.": {
+    "en": "Visual selection requires a DVD with constant pitch, complete ECC blocks and radii within 60 mm.",
+    "zh-CN": "目视选择需要恒定轨距的 DVD、完整的 ECC 块，以及不超过 60 mm 的半径。",
+    "zh-TW": "目視選擇需要固定軌距的 DVD、完整的 ECC 區塊，以及不超過 60 mm 的半徑。",
+    "ja": "目視選択には一定ピッチの DVD、完全な ECC ブロック、60 mm 以内の半径が必要です。",
+    "tr": "Görsel seçim, sabit iz aralıklı DVD, tam ECC blokları ve 60 mm içindeki yarıçaplar gerektirir."
+  },
+  "Choose a visual selector range between 0.001 and 2 mm.": {
+    "en": "Choose a visual selector range between 0.001 and 2 mm.",
+    "zh-CN": "请选择 0.001 到 2 mm 之间的目视选择范围。",
+    "zh-TW": "請選擇 0.001 到 2 mm 之間的目視選擇範圍。",
+    "ja": "目視セレクターの範囲を 0.001～2 mm から選んでください。",
+    "tr": "0.001 ile 2 mm arasında bir görsel seçici aralığı seçin."
+  },
+  "The recording position is outside a visual selector band.": {
+    "en": "The recording position is outside a visual selector band.",
+    "zh-CN": "记录位置位于目视选择器条带之外。",
+    "zh-TW": "記錄位置位於目視選擇器條帶之外。",
+    "ja": "記録位置が目視セレクターの帯の外側です。",
+    "tr": "Kayıt konumu görsel seçici bandının dışında."
+  },
+  "These band choices do not give valid DVD radii. Check both band numbers.": {
+    "en": "These band choices do not give valid DVD radii. Check both band numbers.",
+    "zh-CN": "这些条带选择无法给出有效的 DVD 半径。请检查两个条带编号。",
+    "zh-TW": "這些條帶選擇無法給出有效的 DVD 半徑。請檢查兩個條帶編號。",
+    "ja": "選択した帯では有効な DVD 半径が得られません。両方の帯番号を確認してください。",
+    "tr": "Bu bant seçimleri geçerli DVD yarıçapları vermiyor. İki bant numarasını kontrol edin."
+  },
+  "Choose one band from 1 to 21 in each visual selector bank.": {
+    "en": "Choose one band from 1 to 21 in each visual selector bank.",
+    "zh-CN": "请在目视选择器的每组中选择 1 到 21 的一个条带。",
+    "zh-TW": "請在目視選擇器的每組中選擇 1 到 21 的一個條帶。",
+    "ja": "目視セレクターの各グループで 1～21 の帯を一つ選んでください。",
+    "tr": "Görsel seçicinin her grubunda 1 ile 21 arasında bir bant seçin."
+  },
+  "Band choices require the matching visual selector record.": {
+    "en": "Band choices require the matching visual selector record.",
+    "zh-CN": "条带选择需要匹配的目视选择器记录。",
+    "zh-TW": "條帶選擇需要相符的目視選擇器記錄。",
+    "ja": "帯の選択には対応する目視セレクターの記録が必要です。",
+    "tr": "Bant seçimleri eşleşen görsel seçici kaydını gerektirir."
+  }
+}

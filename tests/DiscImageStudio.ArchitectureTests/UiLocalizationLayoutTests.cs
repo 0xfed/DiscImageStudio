@@ -186,6 +186,44 @@ internal static class UiLocalizationLayoutTests
                                     throw new InvalidOperationException("The measured-diameter workflow did not produce an applicable fit.");
                                 Pump();
                                 Capture(window, name + "-ring-fit");
+                                if (family == "dvd")
+                                {
+                                    shell.Calibration.StepOneExpanded = true;
+                                    Pump();
+                                    if (!Descendants(window).OfType<CheckBox>().Any(box => box.IsVisible
+                                        && box.Name == "VisualSelectorPatternCheckBox"))
+                                        throw new InvalidOperationException($"Visual selector option is missing for {language}.");
+                                    shell.Calibration.UseVisualSelectorPattern = true;
+                                    shell.Calibration.CreateTargetCommand.Execute(null);
+                                    shell.Calibration.StepOneExpanded = true;
+                                    Pump();
+                                    if (shell.Calibration.Target?.IsVisualSelectorPattern != true
+                                        || !shell.Calibration.ShowTargetPreview || shell.Calibration.UsePhotoWorkflow
+                                        || shell.Calibration.ExportPngCommand.CanExecute(null))
+                                        throw new InvalidOperationException("The visual selector did not enter its direct-output preview workflow.");
+                                    Capture(window, name + "-visual-target");
+                                    shell.Calibration.SelectedInnerVisualBand = 10;
+                                    shell.Calibration.SelectedOuterVisualBand = 12;
+                                    shell.Calibration.StepTwoExpanded = true;
+                                    Pump();
+                                    var bandSelectors = Descendants(window).OfType<ComboBox>()
+                                        .Where(combo => combo.IsVisible
+                                            && ReferenceEquals(combo.ItemsSource, shell.Calibration.VisualSelectorBandChoices)).ToArray();
+                                    if (!shell.Calibration.ComputeVisualSelectorEstimateCommand.CanExecute(null)
+                                        || bandSelectors.Length != 2
+                                        || !bandSelectors.Select(combo => combo.SelectedItem).SequenceEqual(new object[] { 10, 12 }))
+                                        throw new InvalidOperationException("The visual selector band controls did not display both choices.");
+                                    Capture(window, name + "-visual-bands");
+                                    shell.Calibration.ComputeVisualSelectorEstimateCommand.Execute(null);
+                                    Pump();
+                                    if (!shell.Calibration.ApplyVisualSelectorEstimateCommand.CanExecute(null)
+                                        || !shell.Calibration.StepThreeExpanded
+                                        || string.IsNullOrWhiteSpace(shell.Calibration.VisualSelectorEstimateSummary))
+                                        throw new InvalidOperationException("The visual selector did not display an applicable coarse estimate.");
+                                    Capture(window, name + "-visual-estimate");
+                                    // Inspect the estimate without applying it or touching a recorder.
+                                    shell.Calibration.UseVisualSelectorPattern = false;
+                                }
                                 shell.Calibration.UseCirclePattern = false;
                                 shell.Calibration.UseCoarsePattern = false;
                                 shell.Calibration.CreateTargetCommand.Execute(null);
@@ -241,8 +279,10 @@ internal static class UiLocalizationLayoutTests
                 }
             }
             // Per project/profile: base workspaces, two preview modes and six calibration modes.
+            // Per DVD/profile: three additional visual-selector states.
             // Per language: three settings categories and two project dialogs.
-            int expectedScenarios = Languages.Length * (3 * Profiles.Length * (Enum.GetValues<Workspace>().Length + 8) + 5);
+            int expectedScenarios = Languages.Length * (3 * Profiles.Length * (Enum.GetValues<Workspace>().Length + 8)
+                + 3 * Profiles.Length + 5);
             if (scenarios.Count != expectedScenarios || scenarios.Any(scenario => scenario.TextBlocks < 5))
                 throw new InvalidOperationException($"The expected {expectedScenarios} UI layout scenarios did not all render meaningful text.");
             if (issues.Count != 0)

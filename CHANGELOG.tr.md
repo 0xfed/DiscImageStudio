@@ -4,6 +4,10 @@
 
 ## Henüz yayımlanmayan
 
+## [1.8.0] - 2026-11-04
+
+- Deneysel DVD görsel seçici eklendi: cetvel veya fotoğraf olmadan kaba iç/dış yarıçap başlangıç değerlerini tahmin etmek için 21 I bandı ve 21 O bandından en az dolanan siyah/beyaz sınırları seçin. ISO ve akış çıktısı, raster faz aliasing sorununu önlemek için DVD kod sözcüğü konumlarını doğrudan örnekler; önizleme numaraları yazılmaz ve bu desen için PNG dışa aktarma devre dışıdır. Şema 9 test aralığını ve bant seçimlerini kaydeder; yeniden açma veya düzenleme sonrasında tekrar hesaplama gerekir ve uçtaki seçimlerin uygulanması engellenir. Beş dilde arayüz ve belgeler güncellendi; kodlama, tahmin, eski kayıtlar ve geçersizleştirme kuralları denetlendi. Fiziksel diskte okunabilirlik ve nihai doğruluk henüz doğrulanmadı.
+
 ## [1.7.0] - 2026-11-04
 
 - Eş merkezli halka çaplarıyla kalibrasyon eklendi: 7 ayrı halka çizgisinden en az üç tanımlı halkanın ölçülen çapları girilerek kayıtlı sektör sayısı, yoğunluk ve iz aralığı şekli altında iç/dış yarıçaplar tahmin edilir. Şema 6/7 özgün artı kayıtlarının tam halkaları, görünür artı veya fotoğraf olmadan kullanılabilir. Halka başına ve genel çap kalıntıları gösterilir; tolerans ve kimlik onayıyla uygulanır, düzenlemede geçersizleşir, ölçüm/yöntem/tolerans şema 8 içinde saklanır. CD/DVD/BD dışa aktarma ve akış ortak deseni kullanır; beş dilde arayüz ve belgeler güncellenmiştir. 2 mm iç yarıçap, 1 mm dış yarıçap hataları, 0.01 mm yuvarlama, değişken DVD iz aralığı ve hatalı girişler yapay olarak doğrulandı; fiziksel görünürlük ve doğruluk donanım doğrulaması gerektirir.

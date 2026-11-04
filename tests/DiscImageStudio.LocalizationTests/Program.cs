@@ -10,6 +10,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 MediaUdfTests.Run();
 CalibrationPatternTests.Run();
 CalibrationRingTests.Run();
+CalibrationVisualSelectorTests.Run();
+CalibrationVisualEncodingTests.Run();
 
 string root = AppContext.BaseDirectory;
 while (!File.Exists(Path.Combine(root, "DiscImageStudio.slnx")))

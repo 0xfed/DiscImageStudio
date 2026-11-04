@@ -4,6 +4,16 @@
 
 ## Unreleased
 
+## [1.8.0] - 2026-11-04
+
+### 中文
+
+- 新增实验性 DVD 目视选择器：在 21 条 I 带和 21 条 O 带中分别选择绕行最少的黑白边界，无需量尺或照片即可估算内外半径的粗略初始值。ISO 与串流直接在 DVD 码字位置采样，避免栅格相位混叠；预览编号不刻录，禁用此图案的 PNG 导出。schema 9 保存测试范围和条带选择，重新打开或编辑后须重新计算，范围端部选择不能应用。更新五语界面与说明，并覆盖编码、估算、兼容记录和失效规则；实体光盘可辨识度及最终精度仍未验证。
+
+### English
+
+- Add an experimental DVD visual selector: choose the least-winding black/white boundary from 21 I bands and 21 O bands to estimate coarse inner/outer radius starting values without a ruler or photo. ISO and streaming output sample DVD codeword positions directly to avoid raster phase aliasing; preview numbers are not burned, and PNG export is disabled for this pattern. Schema 9 saves the test range and band choices, requires recalculation after reopening or editing, and blocks applying edge selections. Update all five interface/documentation languages and cover encoding, estimation, legacy records and invalidation rules; physical-disc readability and final accuracy remain unverified.
+
 ## [1.7.0] - 2026-11-04
 
 ### 中文

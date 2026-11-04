@@ -94,7 +94,7 @@
     {
       "source": "docs/CALIBRATION.md",
       "source_language": "zh-CN",
-      "source_sha256": "6949aa0e8921d959db343e370682d451e76a7510f7eaf4e871f1012451360889",
+      "source_sha256": "2af1bfd03104adab4634ae754332190e47431a060b9759c28238e532fe4ff6a3",
       "translations": {
         "zh-CN": "docs/CALIBRATION.md",
         "zh-TW": "docs/CALIBRATION.zh-TW.md",
@@ -276,7 +276,7 @@
     {
       "source": "CHANGELOG.md",
       "source_language": "zh-CN",
-      "source_sha256": "ad52598c5741a31f9fa6db674817564e115e6f7dbc7e6b3c0ab6e89ebb3ad22e",
+      "source_sha256": "d149e73a25ed47eaa550346bac7cebd3b0135962e46b85790c8b47c0dc28ccd1",
       "parallel_language_sections": [
         "中文",
         "English"

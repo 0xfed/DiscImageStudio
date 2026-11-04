@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## [1.8.0] - 2026-11-04
+
+- Add an experimental DVD visual selector: choose the least-winding black/white boundary from 21 I bands and 21 O bands to estimate coarse inner/outer radius starting values without a ruler or photo. ISO and streaming output sample DVD codeword positions directly to avoid raster phase aliasing; preview numbers are not burned, and PNG export is disabled for this pattern. Schema 9 saves the test range and band choices, requires recalculation after reopening or editing, and blocks applying edge selections. Update all five interface/documentation languages and cover encoding, estimation, legacy records and invalidation rules; physical-disc readability and final accuracy remain unverified.
+
 ## [1.7.0] - 2026-11-04
 
 - Add concentric-circle diameter calibration: seven separate ring lines and manual diameters from at least three identified circles estimate inner/outer radii under the saved sector count, density and pitch shape. Reuse complete circles from schema 6/7 original-cross records without a visible cross or photo. Show per-ring and overall diameter residuals, gate application on tolerance and checked identities, invalidate edited results, and persist measurements/method/tolerance in schema 8. Share the pattern across CD/DVD/BD export and streaming, with all five interface/documentation languages. Synthetic checks cover 2 mm inner-radius and 1 mm outer-radius errors, readings rounded to 0.01 mm, nonuniform DVD pitch and invalid inputs; physical visibility and accuracy still need hardware validation.

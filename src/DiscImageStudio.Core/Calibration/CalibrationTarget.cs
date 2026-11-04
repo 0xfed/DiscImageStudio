@@ -76,17 +76,20 @@ public sealed record CalibrationParameters(
     }
 }
 
-public enum CalibrationPatternKind { FineCross, WideSectors, ConcentricRings }
+public enum CalibrationPatternKind { FineCross, WideSectors, ConcentricRings, VisualSelector }
 
 /// <summary>Captured pattern identity and legacy geometry options.</summary>
 public sealed record CalibrationPatternOptions(
     double LargeCellMm = 8, double MediumCellMm = 4,
     double SmallCellMm = 2, double SectorGapMm = 1,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-    CalibrationPatternKind PatternKind = CalibrationPatternKind.FineCross)
+    CalibrationPatternKind PatternKind = CalibrationPatternKind.FineCross,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    double? VisualSelectorRangeMm = null)
 {
     public void Validate()
     {
+        if (VisualSelectorRangeMm is { } range) CalibrationVisualSelector.ValidateRange(range);
         if (!Enum.IsDefined(PatternKind))
             throw new ArgumentException(L.T("Unknown calibration pattern."));
         if (!double.IsFinite(LargeCellMm) || !double.IsFinite(MediumCellMm)
@@ -183,7 +186,8 @@ public sealed record CalibrationCell(
 
 public sealed class CalibrationTarget
 {
-    public const int CurrentSchemaVersion = 8;
+    public const int CurrentSchemaVersion = 9;
+    public const int LegacyRingSchemaVersion = 8;
     public const int LegacyPatternSchemaVersion = 7;
     public const int LegacyFineCrossSchemaVersion = 6;
     private readonly Dictionary<string, CalibrationCell> _byId;
@@ -206,17 +210,18 @@ public sealed class CalibrationTarget
         _generatedGeometry = new(Parameters);
         _drawingInnerRadiusMm = _generatedGeometry.AtProgress(Parameters.DrawingStartSector / (double)Parameters.Sectors).Radius;
         _drawingOuterRadiusMm = Parameters.DrawingOuterRadiusMm;
-        Groups = Array.AsReadOnly(IsRingPattern ? [] : BuildGroups(Parameters));
+        VisualSelector = IsVisualSelectorPattern ? new(Parameters, Options.VisualSelectorRangeMm ?? 1) : null;
+        Groups = Array.AsReadOnly(IsRingPattern || IsVisualSelectorPattern ? [] : BuildGroups(Parameters));
         double pixelSizeMm = CalibrationReferencePattern.MillimetresPerPixel(Parameters.OuterRadiusMm, Parameters.Kind);
         RingRadiiMm = Array.AsReadOnly(IsRingPattern
             ? new[] { .06, .18, .34, .50, .66, .82, .94 }.Select(fraction =>
                 _generatedGeometry.AtProgress(Parameters.DrawingStartSector / (double)Parameters.Sectors
                     + fraction * ((Parameters.DrawingEndSectorExclusive == 0 ? Parameters.Sectors
                         : Parameters.DrawingEndSectorExclusive) - Parameters.DrawingStartSector) / Parameters.Sectors).Radius).ToArray()
-            : IsCoarsePattern
+            : IsCoarsePattern || IsVisualSelectorPattern
             ? Array.Empty<double>()
             : CalibrationReferencePattern.RingRadiiPixels.Select(radius => radius * pixelSizeMm).ToArray());
-        _ringThicknessMm = IsCoarsePattern ? 0 : IsRingPattern
+        _ringThicknessMm = IsCoarsePattern || IsVisualSelectorPattern ? 0 : IsRingPattern
             ? Math.Min(.15, RingRadiiMm.Zip(RingRadiiMm.Skip(1), (a, b) => b - a).Min() / 4)
             : CalibrationReferencePattern.NominalLineWidthPixels * pixelSizeMm;
         ControlCells = Array.AsReadOnly(Cells.Concat(BuildSpineCells(Groups)).ToArray());
@@ -263,6 +268,12 @@ public sealed class CalibrationTarget
     public bool IsRingPattern => Options.PatternKind == CalibrationPatternKind.ConcentricRings;
 
     [JsonIgnore]
+    public bool IsVisualSelectorPattern => Options.PatternKind == CalibrationPatternKind.VisualSelector;
+
+    [JsonIgnore]
+    public CalibrationVisualSelector? VisualSelector { get; }
+
+    [JsonIgnore]
     public double RingThicknessMm => _ringThicknessMm;
 
     [JsonIgnore]
@@ -294,6 +305,8 @@ public sealed class CalibrationTarget
         options ??= new(8 * scale, 4 * scale, 2 * scale);
         if (patternKind is { } selected) options = options with { PatternKind = selected };
         options.Validate();
+        if (options.PatternKind == CalibrationPatternKind.VisualSelector)
+            parameters = parameters with { PitchLinear = 0, PitchQuadratic = 0, PitchCubic = 0 };
         return new(CurrentSchemaVersion, Guid.NewGuid().ToString("N"), parameters, options,
             BuildCells(parameters));
     }
@@ -301,13 +314,15 @@ public sealed class CalibrationTarget
     public void Validate()
     {
         if (SchemaVersion != CurrentSchemaVersion
-            && (SchemaVersion != LegacyPatternSchemaVersion || IsRingPattern)
+            && (SchemaVersion != LegacyRingSchemaVersion || IsVisualSelectorPattern)
+            && (SchemaVersion != LegacyPatternSchemaVersion || IsRingPattern || IsVisualSelectorPattern)
             && (SchemaVersion != LegacyFineCrossSchemaVersion
                 || Options.PatternKind != CalibrationPatternKind.FineCross))
             throw new ArgumentException(L.F($"不支持的标定会话版本 {SchemaVersion}。"));
         if (!Guid.TryParseExact(Id, "N", out _)) throw new ArgumentException(L.T("标定图案 ID 无效。"));
         Parameters.Validate();
         Options.Validate();
+        if (IsVisualSelectorPattern) CalibrationVisualSelector.ValidateParameters(Parameters, Options.VisualSelectorRangeMm ?? 1);
         if (Cells.Count > 20_000 || Cells.Any(cell => cell is null))
             throw new ArgumentException(L.T("标定图案控制块数量无效。"));
         if (Cells.Select(cell => cell.Id).Distinct(StringComparer.Ordinal).Count() != Cells.Count)
@@ -394,6 +409,7 @@ public sealed class CalibrationTarget
         if (radiusSquared < DrawingInnerRadiusMm * DrawingInnerRadiusMm - 1e-10
             || radiusSquared > DrawingOuterRadiusMm * DrawingOuterRadiusMm + 1e-10)
             return 255;
+        if (VisualSelector is { } selector) return selector.SampleSource(xMm, yMm);
         if (IsRingPattern)
         {
             double radius = Math.Sqrt(radiusSquared);

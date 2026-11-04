@@ -180,6 +180,22 @@
                                           Style="{StaticResource CompactCheckBox}" Margin="0,0,0,6">
                                     <TextBlock Text="{loc:Text Xaml.CircleCalibrationPattern}" TextWrapping="Wrap" />
                                 </CheckBox>
+                                <controls:VisibilityGate IsOpen="{Binding CanSelectVisualSelectorPattern}">
+                                    <StackPanel Margin="0,4,0,10">
+                                        <CheckBox x:Name="VisualSelectorPatternCheckBox" IsChecked="{Binding UseVisualSelectorPattern, Mode=TwoWay}"
+                                                  Style="{StaticResource CompactCheckBox}" Margin="0,0,0,6">
+                                            <TextBlock Text="{loc:Text VisualSelector.Label}" TextWrapping="Wrap" />
+                                        </CheckBox>
+                                        <controls:VisibilityGate IsOpen="{Binding UseVisualSelectorPattern}">
+                                            <StackPanel>
+                                                <TextBlock Text="{loc:Text VisualSelector.Introduction}" Style="{StaticResource CompactHint}" TextWrapping="Wrap" Margin="0,0,0,8" />
+                                                <TextBlock Text="{loc:Text VisualSelector.Range}" Style="{StaticResource FieldLabel}" Margin="0,0,0,6" />
+                                                <ComboBox ItemsSource="{Binding VisualSelectorRangeChoices}" SelectedItem="{Binding SelectedVisualSelectorRange, Mode=TwoWay}"
+                                                          DisplayMemberPath="Label" Style="{StaticResource CompactComboBox}" />
+                                            </StackPanel>
+                                        </controls:VisibilityGate>
+                                    </StackPanel>
+                                </controls:VisibilityGate>
                                 <Button Command="{Binding CreateTargetCommand}"
                                         Style="{StaticResource CompactPrimaryButton}" HorizontalAlignment="Stretch"
                                         Height="Auto" MinHeight="{StaticResource CompactHeight}" Padding="12,6" Margin="0,0,0,10">
@@ -213,6 +229,9 @@
                                             Style="{StaticResource CompactButton}" />
                                 </WrapPanel>
 
+                                <controls:VisibilityGate IsOpen="{Binding IsVisualSelectorWorkflow}">
+                                    <TextBlock Text="{loc:Text VisualSelector.OutputHelp}" Style="{StaticResource CompactHint}" TextWrapping="Wrap" Margin="0,0,0,10" />
+                                </controls:VisibilityGate>
                                 <Expander Header="{loc:Text Xaml.CalibrationSessionAdvanced}" IsExpanded="False">
                                     <WrapPanel Margin="0,4,0,0">
                                         <Button Content="{loc:Text Xaml.SaveCalibrationSession}" Command="{Binding SaveSessionCommand}"
@@ -228,11 +247,30 @@
                                            State="{Binding StepTwoState}"
                                            IsExpanded="{Binding StepTwoExpanded, Mode=TwoWay}">
                             <StackPanel>
+                                <controls:VisibilityGate IsOpen="{Binding IsConventionalCalibrationWorkflow}">
                                 <CheckBox IsChecked="{Binding UseRingMeasurements, Mode=TwoWay}"
                                           IsEnabled="{Binding CanSelectRingMeasurementMethod}"
                                           Style="{StaticResource CompactCheckBox}" Margin="0,0,0,10">
                                     <TextBlock Text="{loc:Text Xaml.UseMeasuredRingDiameters}" TextWrapping="Wrap" />
                                 </CheckBox>
+                                </controls:VisibilityGate>
+                                <controls:VisibilityGate IsOpen="{Binding IsVisualSelectorWorkflow}">
+                                    <StackPanel>
+                                        <TextBlock Text="{loc:Text VisualSelector.BandHelp}" Style="{StaticResource CompactHint}" TextWrapping="Wrap" Margin="0,0,0,10" />
+                                        <TextBlock Text="{Binding VisualSelectorSnapshotSummary}" Style="{StaticResource CompactHint}" TextWrapping="Wrap" Margin="0,0,0,10" />
+                                        <TextBlock Text="{loc:Text VisualSelector.InnerBank}" Style="{StaticResource FieldLabel}" Margin="0,0,0,6" />
+                                        <ComboBox ItemsSource="{Binding VisualSelectorBandChoices}" SelectedItem="{Binding SelectedInnerVisualBand, Mode=TwoWay}"
+                                                  Style="{StaticResource CompactComboBox}" Margin="0,0,0,12" AutomationProperties.Name="{loc:Text VisualSelector.InnerBank}" />
+                                        <TextBlock Text="{loc:Text VisualSelector.OuterBank}" Style="{StaticResource FieldLabel}" Margin="0,0,0,6" />
+                                        <ComboBox ItemsSource="{Binding VisualSelectorBandChoices}" SelectedItem="{Binding SelectedOuterVisualBand, Mode=TwoWay}"
+                                                  Style="{StaticResource CompactComboBox}" Margin="0,0,0,12" AutomationProperties.Name="{loc:Text VisualSelector.OuterBank}" />
+                                        <Button Command="{Binding ComputeVisualSelectorEstimateCommand}" Style="{StaticResource CompactPrimaryButton}"
+                                                Height="Auto" MinHeight="{StaticResource CompactHeight}" Padding="12,6">
+                                            <TextBlock Text="{loc:Text VisualSelector.Calculate}" TextWrapping="Wrap" TextAlignment="Center" />
+                                        </Button>
+                                        <TextBlock Text="{Binding VisualSelectorEstimateSummary}" Style="{StaticResource CompactHint}" TextWrapping="Wrap" Margin="0,10,0,0" />
+                                    </StackPanel>
+                                </controls:VisibilityGate>
                                 <controls:VisibilityGate IsOpen="{Binding UseRingMeasurements}">
                                     <StackPanel>
                                         <TextBlock Text="{loc:Text Xaml.RingMeasurementHelp}" Style="{StaticResource CompactHint}"
@@ -292,6 +330,16 @@
                                            State="{Binding StepThreeState}"
                                            IsExpanded="{Binding StepThreeExpanded, Mode=TwoWay}">
                             <StackPanel>
+                                <controls:VisibilityGate IsOpen="{Binding IsVisualSelectorWorkflow}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding VisualSelectorEstimateSummary}" Style="{StaticResource CompactHint}" TextWrapping="Wrap" Margin="0,0,0,10" />
+                                        <TextBlock Text="{loc:Text VisualSelector.ApplyHelp}" Style="{StaticResource CompactHint}" TextWrapping="Wrap" Margin="0,0,0,10" />
+                                        <Button Command="{Binding ApplyVisualSelectorEstimateCommand}" Style="{StaticResource CompactPrimaryButton}"
+                                                Height="Auto" MinHeight="{StaticResource CompactHeight}" Padding="12,6">
+                                            <TextBlock Text="{loc:Text VisualSelector.Apply}" TextWrapping="Wrap" TextAlignment="Center" />
+                                        </Button>
+                                    </StackPanel>
+                                </controls:VisibilityGate>
                                 <controls:VisibilityGate IsOpen="{Binding UseRingMeasurements}">
                                     <StackPanel>
                                         <TextBlock Text="{Binding RingFitSummary}" Style="{StaticResource CompactHint}" TextWrapping="Wrap" Margin="0,0,0,10" />

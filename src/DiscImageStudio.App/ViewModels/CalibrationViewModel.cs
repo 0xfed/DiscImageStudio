@@ -40,7 +40,7 @@ public partial class CalibrationViewModel : ObservableObject
         _state = state;
         CreateTargetCommand = new RelayCommand(CreateTarget, () => !IsBusy);
         BrowseOutputCommand = new RelayCommand(BrowseOutput, () => !IsBusy);
-        ExportPngCommand = new AsyncRelayCommand(ExportPngAsync, CanGenerateTarget);
+        ExportPngCommand = new AsyncRelayCommand(ExportPngAsync, () => CanGenerateTarget() && !IsVisualSelectorWorkflow);
         GenerateImageCommand = new AsyncRelayCommand(GenerateImageAsync, CanGenerateTarget);
         StreamBurnCommand = new RelayCommand(PrepareStreamBurn, CanGenerateTarget);
         SaveSessionCommand = new RelayCommand(SaveSession, CanUseTarget);
@@ -50,6 +50,7 @@ public partial class CalibrationViewModel : ObservableObject
         ApplyParametersCommand = new RelayCommand(ApplyParameters, CanApplyParameters);
         InitializePhotoCommands();
         InitializeRingCommands();
+        InitializeVisualSelectorCommands();
         shell.BusyChanged += () => { OnPropertyChanged(nameof(IsBusy)); RefreshCommands(); };
         // The parameter read-out under 从当前参数建新标靶 follows the shared parameter store:
         // presets, project edits and applied calibration results all re-render it.
@@ -61,11 +62,12 @@ public partial class CalibrationViewModel : ObservableObject
 
     public string ActivePatternSummary => _target is null ? string.Empty
         : L.Format("Current target: {0}", PatternLabel(_target))
-            + (_target.Options.PatternKind == SelectedPatternKind ? string.Empty
+            + (IsSelectedPatternCurrent ? string.Empty
                 : "\n" + L.T("Create a new target to use the selected pattern."));
 
     internal static string PatternLabel(CalibrationTarget target) => target.Options.PatternKind switch
     {
+        CalibrationPatternKind.VisualSelector => L.T("VisualSelector.Label"),
         CalibrationPatternKind.ConcentricRings => L.T("Circles (measured diameters)"),
         CalibrationPatternKind.WideSectors => L.T("Wide sectors (coarse)"),
         _ => L.T("Original cross (fine)"),
@@ -73,7 +75,8 @@ public partial class CalibrationViewModel : ObservableObject
 
     partial void OnUseCoarsePatternChanged(bool value)
     {
-        if (value) UseCirclePattern = false;
+        if (value) { UseCirclePattern = false; UseVisualSelectorPattern = false; }
+        InvalidateVisualSelectorEstimate();
         OnPropertyChanged(nameof(ActivePatternSummary));
         RefreshCommands();
     }
@@ -148,6 +151,7 @@ public partial class CalibrationViewModel : ObservableObject
         UpdateFitAssessment();
         RelocalizePhoto();
         RelocalizeRings();
+        RelocalizeVisualSelector();
     }
 
     // ---- Step column: state chips and progressive disclosure ----
@@ -159,10 +163,13 @@ public partial class CalibrationViewModel : ObservableObject
 
     public StepCardState StepTwoState => _target is null
         ? StepCardState.Pending
+        : IsVisualSelectorWorkflow ? (_visualSelectorEstimate is null ? StepCardState.Active : StepCardState.Done)
         : UseRingMeasurements ? (_ringFit is null ? StepCardState.Active : StepCardState.Done)
         : IsPhotoStep ? StepCardState.Active : StepCardState.Done;
 
-    public StepCardState StepThreeState => UseRingMeasurements
+    public StepCardState StepThreeState => IsVisualSelectorWorkflow
+        ? (_visualSelectorEstimate is not null ? StepCardState.Active : StepCardState.Pending)
+        : UseRingMeasurements
         ? (_ringFit is not null ? StepCardState.Active : StepCardState.Pending)
         : IsTraceStep ? StepCardState.Active : StepCardState.Pending;
 
@@ -225,6 +232,7 @@ public partial class CalibrationViewModel : ObservableObject
         _previewCancellation?.Cancel();
         _target = null;
         ResetRingMeasurements();
+        ResetVisualSelector();
         _sessionPath = null;
         OutputPath = string.Empty;
         TargetImage = null;
@@ -243,8 +251,8 @@ public partial class CalibrationViewModel : ObservableObject
 
     internal void OnWindowClosed() { _cancellation?.Cancel(); _previewCancellation?.Cancel(); }
     private bool CanUseTarget() => !IsBusy && _target is not null;
-    private bool CanGenerateTarget() => CanUseTarget() && _target!.Options.PatternKind == SelectedPatternKind;
-    private bool CanApplyParameters() => !IsBusy && !UseRingMeasurements && _target?.IsRingPattern != true
+    private bool CanGenerateTarget() => CanUseTarget() && IsSelectedPatternCurrent;
+    private bool CanApplyParameters() => !IsBusy && UsePhotoWorkflow && !UseRingMeasurements && _target?.IsRingPattern != true
         && IsTraceStep && _photoTransform is not null && _fit?.Succeeded == true
         && SelectedCoarseCandidate is { } selected && ContourConfirmed && _previewReady
         && CandidateResidualAccepted(selected)
@@ -261,6 +269,8 @@ public partial class CalibrationViewModel : ObservableObject
 
     partial void OnSelectedDiscTypeChanged(string value)
     {
+        if (value != "DVD") UseVisualSelectorPattern = false;
+        OnPropertyChanged(nameof(CanSelectVisualSelectorPattern));
         OnPropertyChanged(nameof(CurrentParametersSummary));
     }
 
@@ -282,7 +292,9 @@ public partial class CalibrationViewModel : ObservableObject
                     CdDiscParameters.StandardLinearVelocityMmPerSecond),
             };
             ValidateOutputParameters(p);
-            InstallTarget(CalibrationTarget.Create(p, patternKind: SelectedPatternKind), new(), _state.CdInterleave);
+            InstallTarget(CalibrationTarget.Create(p,
+                options: UseVisualSelectorPattern ? new(VisualSelectorRangeMm: SelectedVisualSelectorRange.RangeMm) : null,
+                patternKind: SelectedPatternKind), new(), _state.CdInterleave);
             _sessionPath = null;
             OutputPath = string.Empty;
         }
@@ -322,9 +334,17 @@ public partial class CalibrationViewModel : ObservableObject
             _previewCancellation?.Cancel();
             ResetPhoto();
             _target = target;
+            SelectedDiscType = target.Parameters.Kind switch
+            {
+                CalibrationDiscKind.Dvd => "DVD",
+                CalibrationDiscKind.BluRay => "BD",
+                _ => "CD",
+            };
             UseCoarsePattern = target.IsCoarsePattern;
             UseCirclePattern = target.IsRingPattern;
+            UseVisualSelectorPattern = target.IsVisualSelectorPattern;
             ResetRingMeasurements();
+            ResetVisualSelector();
             _cdInterleave = interleave;
             _searchCenter = options?.SearchCenter ?? target.Parameters;
             _loadedFitOptions = options ?? new();
@@ -421,7 +441,7 @@ public partial class CalibrationViewModel : ObservableObject
     }
     private CalibrationSession Session() => new(_target ?? throw new InvalidOperationException(L.T("请先创建图案。")),
         [], FitOptions(), _cdInterleave, PhotoSession(), ReadRingMeasurements(), UseRingMeasurements,
-        UseRingMeasurements ? ReadDiameterTolerance() : null);
+        UseRingMeasurements ? ReadDiameterTolerance() : null, ReadVisualSelectorSelection());
 
     private async Task SolveAsync()
     {
@@ -748,7 +768,7 @@ public partial class CalibrationViewModel : ObservableObject
                     else
                     {
                         using FileStream output = new(stagedPath, FileMode.CreateNew, FileAccess.Write, FileShare.None);
-                        DvdStreamingGenerator.GeneratePattern(target.Sample, output, DvdOptions(target), cancellationToken: token);
+                        DvdStreamingGenerator.GenerateCalibrationPattern(target, output, cancellationToken: token);
                     }
                     token.ThrowIfCancellationRequested();
                     CalibrationSessionJson.Save(Path.ChangeExtension(stagedPath, ".calibration.json"), session);
@@ -894,6 +914,7 @@ public partial class CalibrationViewModel : ObservableObject
 
     private void RefreshCommands()
     {
+        OnPropertyChanged(nameof(CanUseCurrentCalibrationSource));
         CreateTargetCommand.NotifyCanExecuteChanged(); BrowseOutputCommand.NotifyCanExecuteChanged();
         ExportPngCommand.NotifyCanExecuteChanged(); GenerateImageCommand.NotifyCanExecuteChanged();
         StreamBurnCommand.NotifyCanExecuteChanged(); SaveSessionCommand.NotifyCanExecuteChanged();
@@ -902,6 +923,8 @@ public partial class CalibrationViewModel : ObservableObject
         RefreshPhotoCommands();
         SolveRingsCommand?.NotifyCanExecuteChanged(); ApplyRingParametersCommand?.NotifyCanExecuteChanged();
         ReviewRingMeasurementsCommand?.NotifyCanExecuteChanged();
+        ComputeVisualSelectorEstimateCommand?.NotifyCanExecuteChanged();
+        ApplyVisualSelectorEstimateCommand?.NotifyCanExecuteChanged();
     }
 
     public sealed record CoarseCandidate(string Label, CalibrationParameters Parameters,

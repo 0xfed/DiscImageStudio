@@ -24,7 +24,7 @@ def check_localization(executable: Path) -> None:
         "Describe nominal BD-R geometry; optionally export JSON.",
         "Export raw user sectors for an explicit scrambled-byte probe (no filesystem).",
         "Encode exactly 65536 payload bytes into 76880 ECC bytes; not a burn image.",
-        "Draw the full user-data area; selecting a files directory adds a UDF 2.01 filesystem at the inner or outer ring.",
+        "Draw the full user-data area; selecting a files directory adds a UDF 2.50 filesystem at the inner or outer ring.",
     ]
 
     def run(*arguments: str, environment: dict | None = None) -> subprocess.CompletedProcess:

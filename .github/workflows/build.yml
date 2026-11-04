@@ -167,6 +167,12 @@ jobs:
       - name: Validate portable image decoder resource limits
         run: dotnet run --project tests/DiscImageStudio.ImageIOTests --configuration Release --no-build
 
+      - name: Validate translated desktop text bounds and capture workspace layouts
+        timeout-minutes: 10
+        env:
+          DISC_IMAGE_STUDIO_UI_SNAPSHOTS: artifacts/ci/localization-layout
+        run: dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release --no-build -- --localization-layout
+
       - name: Validate localization catalogs and source coverage
         run: dotnet run --project tests/DiscImageStudio.LocalizationTests --configuration Release --no-build
 
@@ -199,12 +205,6 @@ jobs:
 
       - name: Validate translated DVD probe and experiment byte consistency
         run: python tests/test_dvd_probe_localization.py tools/DvdGrayProbe/bin/Release/net10.0-windows/DvdGrayProbe.dll
-
-      - name: Validate translated desktop text bounds and capture workspace layouts
-        timeout-minutes: 10
-        env:
-          DISC_IMAGE_STUDIO_UI_SNAPSHOTS: artifacts/ci/localization-layout
-        run: dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release --no-build -- --localization-layout
 
       - name: Test module architecture
         run: dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release --no-build

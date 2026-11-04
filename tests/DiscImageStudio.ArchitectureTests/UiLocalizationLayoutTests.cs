@@ -67,7 +67,7 @@ internal static class UiLocalizationLayoutTests
             application = AppHost.CreateApplication(ShutdownMode.OnExplicitShutdown, AppTheme.Dark, L.Chinese);
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
             TempFiles.TryConfigureCacheDirectory(Path.Combine(temporary, "cache"));
-            CheckInspectionFixtures();
+            CheckInspectionFixtures(issues);
             DiscParametersState state = new(Path.Combine(temporary, "disc-presets.json"));
             shell = new ShellViewModel(Dispatcher.CurrentDispatcher, new OfflineBurner(), state,
                 new RecentProjectStore(Path.Combine(temporary, "recent-projects.json")));
@@ -295,7 +295,7 @@ internal static class UiLocalizationLayoutTests
         return false;
     }
 
-    private static void CheckInspectionFixtures()
+    private static void CheckInspectionFixtures(List<Issue> failures)
     {
         Grid root = new() { Width = 160, Height = 140 };
         TextBlock overflowing = new() { Text = "Long label that must not fit", Width = 40, Height = 18,
@@ -310,24 +310,40 @@ internal static class UiLocalizationLayoutTests
             host.Show(); RenderFixture();
             List<Issue> issues = [];
             int count = Inspect(root, "overflow-fixture", issues);
-            if (issues.Count == 0) throw new InvalidOperationException(
-                $"Text-bound checking missed deliberately overflowing text: inspected={count}, visible={overflowing.IsVisible}, "
-                + $"size={overflowing.ActualWidth}x{overflowing.ActualHeight}, inlines={overflowing.Inlines.Count}.");
+            Require(count > 0 && issues.Any(issue => issue.Reason.Contains("width", StringComparison.Ordinal)),
+                "overflow-fixture", "Text-bound checking missed deliberately overflowing text.");
             overflowing.TextTrimming = TextTrimming.CharacterEllipsis;
             RenderFixture(); issues.Clear(); Inspect(root, "ellipsis-fixture", issues);
-            if (issues.Count != 0) throw new InvalidOperationException("Text-bound checking rejected intentional ellipsis.");
+            Require(issues.Count == 0, "ellipsis-fixture", "Text-bound checking rejected intentional ellipsis.");
             overflowing.TextTrimming = TextTrimming.None;
             overflowing.Text = "A label wrapping onto several lines";
             overflowing.TextWrapping = TextWrapping.Wrap;
             RenderFixture(); issues.Clear(); Inspect(root, "height-fixture", issues);
-            if (!issues.Any(issue => issue.Reason.Contains("height", StringComparison.Ordinal)))
-                throw new InvalidOperationException("Text-bound checking missed deliberately clipped wrapped text.");
+            Require(issues.Any(issue => issue.Reason.Contains("height", StringComparison.Ordinal)),
+                "height-fixture", "Text-bound checking missed deliberately clipped wrapped text.");
             overflowing.Text = "\u0378"; // An unassigned scalar, absent from the normal UI fonts.
             overflowing.Width = 100;
             overflowing.Height = 60;
             RenderFixture(); issues.Clear(); Inspect(root, "missing-glyph-fixture", issues);
-            if (!issues.Any(issue => issue.Reason.Contains("missing glyph", StringComparison.Ordinal)))
-                throw new InvalidOperationException("Glyph checking missed an unrenderable character.");
+            Require(issues.Any(issue => issue.Reason.Contains("missing glyph", StringComparison.Ordinal)),
+                "missing-glyph-fixture", "Glyph checking missed an unrenderable character.");
+
+            void Require(bool condition, string scenario, string reason)
+            {
+                if (condition) return;
+                FormattedText formatted = new(overflowing.Text, CultureInfo.GetCultureInfo("en-US"), FlowDirection.LeftToRight,
+                    new Typeface(overflowing.FontFamily, overflowing.FontStyle, overflowing.FontWeight, overflowing.FontStretch),
+                    overflowing.FontSize, overflowing.Foreground, 1);
+                if (overflowing.TextWrapping != TextWrapping.NoWrap) formatted.MaxTextWidth = overflowing.ActualWidth;
+                string inlines = string.Join("; ", overflowing.Inlines.Select(inline => inline is Run run
+                    ? $"Run(font={run.FontFamily.Source}, size={run.FontSize}, weight={run.FontWeight}, text={run.Text})"
+                    : inline.GetType().Name));
+                failures.Add(new(scenario, "fixture", overflowing.Text,
+                    reason + $" visible={overflowing.IsVisible}, size={overflowing.ActualWidth}x{overflowing.ActualHeight}, "
+                    + $"wrap={overflowing.TextWrapping}, trim={overflowing.TextTrimming}, "
+                    + $"formatted={formatted.WidthIncludingTrailingWhitespace}x{formatted.Height}, inlines=[{inlines}], "
+                    + $"issues=[{string.Join("; ", issues.Select(issue => issue.Reason))}]."));
+            }
         }
         finally { host.Close(); }
 

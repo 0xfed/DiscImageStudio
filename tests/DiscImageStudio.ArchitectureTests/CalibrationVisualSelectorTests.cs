@@ -22,7 +22,8 @@ internal static class CalibrationVisualSelectorTests
         CalibrationParameters original = Parameters() with { PitchLinear = .02, PitchQuadratic = -.01, PitchCubic = .003 };
         CalibrationTarget target = CalibrationTarget.Create(original, patternKind: CalibrationPatternKind.VisualSelector);
         Require(original.PitchLinear == .02 && target.Parameters == Parameters(), "only the saved selector snapshot uses zero pitch shape");
-        Require(target.IsVisualSelectorPattern && target.VisualSelector is not null && target.SchemaVersion == 9,
+        Require(target.IsVisualSelectorPattern && target.VisualSelector is not null
+            && target.SchemaVersion == CalibrationTarget.CurrentSchemaVersion,
             "explicit selector pattern identity and schema");
         Require(target.Groups.Count == 0 && target.ControlCells.Count == 0 && target.ControlPoints.Count == 0
             && target.RingRadiiMm.Count == 0, "selector bands cannot be mistaken for trace arms or measurable rings");
@@ -119,7 +120,7 @@ internal static class CalibrationVisualSelectorTests
             "range, target and choices survive reopening");
         Require(!json.Contains("isAtRangeEdge", StringComparison.OrdinalIgnoreCase)
             && !json.Contains("candidateRadiusMm", StringComparison.OrdinalIgnoreCase), "derived estimates and bands are not persisted as trusted results");
-        foreach (int schema in new[] { 6, 7, 8 })
+        foreach (int schema in new[] { 6, 7, 8, CalibrationTarget.CurrentSchemaVersion + 1 })
         {
             JsonNode forged = JsonNode.Parse(json)!;
             forged["target"]!["schemaVersion"] = schema;

@@ -37,8 +37,13 @@
                 <controls:MonitorCard x:Name="StageCard" Grid.Column="0"
                                       Title="{loc:Text Xaml.CalibrationPhoto}" IconKind="Image"
                                       StatusText="{Binding SelectionDescription, ElementName=PhotoCanvas}">
-                    <controls:MonitorCard.Actions>
-                        <StackPanel Orientation="Horizontal">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" MinHeight="120" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <WrapPanel Margin="12,4">
                             <Button Style="{StaticResource IconButton}" Click="OnZoomOut" ToolTip="{loc:Text Xaml.ZoomOut}"
                                     Margin="0,0,4,0" AutomationProperties.Name="{loc:Text Xaml.ZoomOut}">
                                 <iconPacks:PackIconLucide Kind="Minus" Width="16" Height="16"
@@ -67,14 +72,8 @@
                                 <CheckBox Content="{loc:Text Xaml.OverlayFittedCurves}" IsChecked="{Binding ShowPrediction}"
                                           Style="{StaticResource CompactCheckBox}" VerticalAlignment="Center" />
                             </controls:VisibilityGate>
-                        </StackPanel>
-                    </controls:MonitorCard.Actions>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" MinHeight="120" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <controls:CalibrationPhotoCanvas x:Name="PhotoCanvas" Grid.Row="0" Margin="1,0"
+                        </WrapPanel>
+                        <controls:CalibrationPhotoCanvas x:Name="PhotoCanvas" Grid.Row="1" Margin="1,0"
                             FallbackImage="{Binding TargetImage}" TargetCanvasRadiusMm="{Binding CanvasOuterRadiusMm}"
                             IsPhotoStep="{Binding IsPhotoStep}" IsRectificationPreview="{Binding PreviewRectification}"
                             IsTargetPreview="{Binding ShowTargetPreview}"
@@ -100,7 +99,7 @@
                                 </Style>
                             </controls:CalibrationPhotoCanvas.Style>
                         </controls:CalibrationPhotoCanvas>
-                        <StackPanel Grid.Row="1" Margin="12,8,12,10">
+                        <StackPanel Grid.Row="2" Margin="12,8,12,10">
                             <!-- One legend per step: the colour key lives here and nowhere else,
                                  as swatches instead of colour words. -->
                             <controls:VisibilityGate IsOpen="{Binding IsPhotoStep}">

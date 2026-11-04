@@ -61,6 +61,7 @@ internal static class UiLocalizationLayoutTests
         Application? application = null;
         MainWindow? window = null;
         ShellViewModel? shell = null;
+        Size workspaceSize = new(1366, 900);
         string? fatal = null;
         try
         {
@@ -102,6 +103,10 @@ internal static class UiLocalizationLayoutTests
                         ThemeResolver.Apply(application, profile.Theme);
                         window.Width = profile.Width;
                         window.Height = profile.Height;
+                        workspaceSize = new(profile.Width, profile.Height);
+                        FrameworkElement content = (FrameworkElement)window.Content;
+                        content.Width = profile.Width;
+                        content.Height = profile.Height;
                         foreach (Workspace workspace in Enum.GetValues<Workspace>())
                         {
                             window.ConfigureSnapshot(workspace, null);
@@ -197,11 +202,33 @@ internal static class UiLocalizationLayoutTests
             void Capture(Window target, string name)
             {
                 FrameworkElement root = (FrameworkElement)target.Content;
+                // Page and disclosure transitions take up to 250 ms. Inspect the
+                // settled state instead of sampling a partially revealed panel.
+                DispatcherFrame frame = new();
+                DispatcherTimer timer = new() { Interval = TimeSpan.FromMilliseconds(300) };
+                timer.Tick += (_, _) => { timer.Stop(); frame.Continue = false; };
+                timer.Start();
+                try { Dispatcher.PushFrame(frame); }
+                finally { timer.Stop(); }
                 target.UpdateLayout();
+                if (ReferenceEquals(target, window))
+                {
+                    // CI's virtual monitor can cap the native HWND at 1044x788.
+                    // Lay out the loaded content at the requested viewport size;
+                    // render that visual directly, retaining the real host DPI.
+                    root.Measure(workspaceSize);
+                    root.Arrange(new Rect(workspaceSize));
+                    root.UpdateLayout();
+                    root.Measure(workspaceSize);
+                    root.Arrange(new Rect(workspaceSize));
+                    if (Math.Abs(root.ActualWidth - workspaceSize.Width) > 1
+                        || Math.Abs(root.ActualHeight - workspaceSize.Height) > 1)
+                        throw new InvalidOperationException("The layout viewport did not reach the requested dimensions.");
+                }
                 DpiScale dpi = VisualTreeHelper.GetDpi(root);
-                RenderTargetBitmap bitmap = new((int)Math.Ceiling(target.ActualWidth * dpi.DpiScaleX),
-                    (int)Math.Ceiling(target.ActualHeight * dpi.DpiScaleY), dpi.PixelsPerInchX, dpi.PixelsPerInchY, PixelFormats.Pbgra32);
-                bitmap.Render(target);
+                RenderTargetBitmap bitmap = new((int)Math.Ceiling(root.ActualWidth * dpi.DpiScaleX),
+                    (int)Math.Ceiling(root.ActualHeight * dpi.DpiScaleY), dpi.PixelsPerInchX, dpi.PixelsPerInchY, PixelFormats.Pbgra32);
+                bitmap.Render(root);
                 int count = Inspect(root, name, issues);
                 scenarios.Add(new(name, count, root.ActualWidth, root.ActualHeight, dpi.PixelsPerInchX, dpi.PixelsPerInchY));
                 PngBitmapEncoder encoder = new();
@@ -237,35 +264,27 @@ internal static class UiLocalizationLayoutTests
             string label = string.IsNullOrWhiteSpace(text.Name) ? text.TemplatedParent?.GetType().Name ?? "TextBlock" : text.Name;
             string sample = text.Text.Length > 220 ? text.Text[..220] + "…" : text.Text;
             void Add(string reason) => issues.Add(new(scenario, label, sample, reason));
-            // Ellipsis is intentional for paths and user names. Rich inline formatting uses
-            // its actual glyph drawing below; a single-typeface estimate would mismeasure it.
-            bool uniform = text.Inlines.All(inline => inline is Run run
-                && Matches(run, TextElement.FontSizeProperty, text.FontSize)
-                && Matches(run, TextElement.FontWeightProperty, text.FontWeight)
-                && Matches(run, TextElement.FontStyleProperty, text.FontStyle)
-                && Matches(run, TextElement.FontStretchProperty, text.FontStretch)
-                && Matches(run, TextElement.FontFamilyProperty, text.FontFamily));
-            if (text.TextTrimming == TextTrimming.None && uniform)
+            DrawingGroup? drawing = VisualTreeHelper.GetDrawing(text);
+            // Inspect the actual glyph layout, including mixed runs and layout
+            // rounding. Reformatting at ActualWidth can invent an extra line.
+            // Ellipsis and PathField's scrolling fade are intentional truncation.
+            bool scrollingPath = text.Name == "PART_LocationText" && text.TemplatedParent is PathField;
+            if (text.TextTrimming == TextTrimming.None && !scrollingPath && drawing is not null && !drawing.Bounds.IsEmpty)
             {
-                Thickness padding = text.Padding;
-                double width = Math.Max(1, text.ActualWidth - padding.Left - padding.Right);
-                double height = text.ActualHeight - padding.Top - padding.Bottom;
-                FormattedText formatted = new(text.Text, text.Language.GetSpecificCulture(), text.FlowDirection,
-                    new Typeface(text.FontFamily, text.FontStyle, text.FontWeight, text.FontStretch),
-                    text.FontSize, text.Foreground, VisualTreeHelper.GetDpi(text).PixelsPerDip);
-                if (text.TextWrapping != TextWrapping.NoWrap) formatted.MaxTextWidth = width;
-                if (double.IsFinite(text.LineHeight)) formatted.LineHeight = text.LineHeight;
+                Rect visible = new(text.RenderSize);
+                if (VisualTreeHelper.GetClip(text) is Geometry clip) visible.Intersect(clip.Bounds);
+                if (visible.IsEmpty) continue;
                 const double tolerance = 2;
-                if (formatted.Height > height + tolerance)
-                    Add($"Text requires {formatted.Height:F1} DIP height but has {height:F1}.");
-                if (formatted.WidthIncludingTrailingWhitespace > width + tolerance)
-                    Add($"Text requires {formatted.WidthIncludingTrailingWhitespace:F1} DIP width but has {width:F1}.");
-                Rect atRoot = text.TransformToAncestor(root).TransformBounds(new Rect(text.RenderSize));
+                Rect ink = drawing.Bounds;
+                if (ink.Top < visible.Top - tolerance || ink.Bottom > visible.Bottom + tolerance)
+                    Add($"Rendered text exceeds visible height: ink={ink}, visible={visible}.");
+                if (ink.Left < visible.Left - tolerance || ink.Right > visible.Right + tolerance)
+                    Add($"Rendered text exceeds visible width: ink={ink}, visible={visible}.");
+                Rect atRoot = text.TransformToAncestor(root).TransformBounds(ink);
                 if (atRoot.Bottom > 0 && atRoot.Top < root.ActualHeight
                     && (atRoot.Left < -tolerance || atRoot.Right > root.ActualWidth + tolerance))
                     Add("Text extends horizontally outside the window content.");
             }
-            DrawingGroup? drawing = VisualTreeHelper.GetDrawing(text);
             if (drawing is not null)
                 foreach (GlyphRunDrawing glyphs in Drawings(drawing).OfType<GlyphRunDrawing>())
                     if (HasMissingGlyph(glyphs.GlyphRun))
@@ -273,10 +292,6 @@ internal static class UiLocalizationLayoutTests
         }
         return count;
 
-        // A plain Run inherits the TextBlock's formatting while the formatter
-        // owns its content. Only an explicit override can make it rich text.
-        static bool Matches(Run run, DependencyProperty property, object value)
-            => run.ReadLocalValue(property) == DependencyProperty.UnsetValue || Equals(run.GetValue(property), value);
     }
 
     private static bool HasMissingGlyph(GlyphRun run)
@@ -340,6 +355,8 @@ internal static class UiLocalizationLayoutTests
                     : inline.GetType().Name));
                 failures.Add(new(scenario, "fixture", overflowing.Text,
                     reason + $" visible={overflowing.IsVisible}, size={overflowing.ActualWidth}x{overflowing.ActualHeight}, "
+                    + $"clip={VisualTreeHelper.GetClip(overflowing)?.Bounds}, "
+                    + $"ink={VisualTreeHelper.GetDrawing(overflowing)?.Bounds}, "
                     + $"wrap={overflowing.TextWrapping}, trim={overflowing.TextTrimming}, "
                     + $"formatted={formatted.WidthIncludingTrailingWhitespace}x{formatted.Height}, inlines=[{inlines}], "
                     + $"issues=[{string.Join("; ", issues.Select(issue => issue.Reason))}]."));

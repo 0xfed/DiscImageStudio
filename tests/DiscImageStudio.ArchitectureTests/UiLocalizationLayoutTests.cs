@@ -267,8 +267,8 @@ internal static class UiLocalizationLayoutTests
             DrawingGroup? drawing = VisualTreeHelper.GetDrawing(text);
             // Inspect the actual glyph layout, including mixed runs and layout
             // rounding. Reformatting at ActualWidth can invent an extra line.
-            // Ellipsis and PathField's scrolling fade are intentional truncation.
-            bool scrollingPath = text.Name == "PART_LocationText" && text.TemplatedParent is PathField;
+            // Ellipsis and the recent-project card's scrolling fade are intentional.
+            bool scrollingPath = text.Name == "PART_LocationText" && text.TemplatedParent is RecentProjectCard;
             if (text.TextTrimming == TextTrimming.None && !scrollingPath && drawing is not null && !drawing.Bounds.IsEmpty)
             {
                 Rect visible = new(text.RenderSize);

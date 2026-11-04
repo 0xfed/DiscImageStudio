@@ -220,17 +220,20 @@
                                 <Button Content="{loc:Text Xaml.ImportDiscPhoto}" Command="{Binding ImportPhotoCommand}"
                                         Style="{StaticResource CompactPrimaryButton}" Margin="0,0,0,8"
                                         HorizontalAlignment="Stretch" />
-                                <DockPanel Margin="0,0,0,10">
+                                <StackPanel Margin="0,0,0,10">
                                     <TextBlock Text="{loc:Text Xaml.DiscSize}" Style="{StaticResource CompactText}" VerticalAlignment="Center"
-                                               DockPanel.Dock="Left" Margin="0,0,10,0" />
+                                               Margin="0,0,0,6" />
                                     <ComboBox Style="{StaticResource CompactComboBox}"
                                               ItemsSource="{Binding PhysicalDiscSizeChoices}" SelectedItem="{Binding SelectedPhysicalDiscSize, Mode=TwoWay}" DisplayMemberPath="Label" />
-                                </DockPanel>
+                                </StackPanel>
                                 <Button Content="{loc:Text Xaml.CalculateRectification}" Command="{Binding RectifyPhotoCommand}"
                                         Style="{StaticResource CompactButton}" HorizontalAlignment="Stretch" Margin="0,0,0,8" />
-                                <Button Content="{loc:Text Xaml.ConfirmAndTraceCurves}" Command="{Binding ConfirmRectificationCommand}"
+                                <Button Command="{Binding ConfirmRectificationCommand}"
                                         IsEnabled="{Binding IsRectificationReady}"
-                                        Style="{StaticResource CompactPrimaryButton}" HorizontalAlignment="Stretch" />
+                                        Style="{StaticResource CompactPrimaryButton}" HorizontalAlignment="Stretch"
+                                        Height="Auto" MinHeight="{StaticResource CompactHeight}" Padding="12,6">
+                                    <TextBlock Text="{loc:Text Xaml.ConfirmAndTraceCurves}" TextWrapping="Wrap" TextAlignment="Center" />
+                                </Button>
                                 <TextBlock Text="{Binding RectificationSummary}" Style="{StaticResource CompactHint}" Margin="0,10,0,0" />
                             </StackPanel>
                         </controls:StepCard>
@@ -245,8 +248,10 @@
                                         Style="{StaticResource CompactButton}" HorizontalAlignment="Stretch" Margin="0,0,0,10" />
                                 <controls:VisibilityGate IsOpen="{Binding IsDvdTarget}">
                                     <StackPanel Margin="0,0,0,10">
-                                        <CheckBox IsChecked="{Binding FitDvdPitch, Mode=TwoWay}" Content="{loc:Text Xaml.FitCubicDVDTrackPitch}"
-                                                  Style="{StaticResource CompactCheckBox}" Margin="0,0,0,8" />
+                                        <CheckBox IsChecked="{Binding FitDvdPitch, Mode=TwoWay}"
+                                                  Style="{StaticResource CompactCheckBox}" Margin="0,0,0,8">
+                                            <TextBlock Text="{loc:Text Xaml.FitCubicDVDTrackPitch}" TextWrapping="Wrap" />
+                                        </CheckBox>
                                         <TextBlock Text="{loc:Text Xaml.UseAtLeast16PointsAtDifferentRadiiSpanning}"
                                                    Style="{StaticResource CompactHint}" />
                                     </StackPanel>

@@ -109,9 +109,11 @@
                 </StackPanel>
             </controls:VisibilityGate>
 
-            <CheckBox Margin="0,12,0,0" Content="{loc:Text Xaml.SRGBLinearizationGamma}"
+            <CheckBox Margin="0,12,0,0"
                       IsChecked="{Binding State.ToneSrgbLinearization, Mode=TwoWay}"
-                      AutomationProperties.Name="{loc:Text Xaml.SRGBLinearization}" />
+                      AutomationProperties.Name="{loc:Text Xaml.SRGBLinearization}">
+                <TextBlock Text="{loc:Text Xaml.SRGBLinearizationGamma}" TextWrapping="Wrap" />
+            </CheckBox>
             <TextBlock Style="{StaticResource CompactHint}" Margin="0,4,0,0"
                        Text="{loc:Text Xaml.MayImproveTheVisibilityOfTheDiscArtwork}" />
 

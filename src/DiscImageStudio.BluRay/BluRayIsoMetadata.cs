@@ -34,7 +34,7 @@ public sealed record BluRayIsoMetadata(
     public string Format { get; init; } = FormatName;
 
     [JsonIgnore]
-    public long ContentLength => checked((long)TotalSectors * BluRayDiscParameters.BytesPerSector);
+    public long ContentLength => IsoBytes;
 
     public static BluRayIsoMetadata FromPlan(BluRayIsoPlan plan, string sourceImage,
         string outputIso, bool invertMapping, ToneProfile tone, DateTimeOffset generatedUtc)
@@ -100,7 +100,8 @@ public sealed record BluRayIsoMetadata(
     private void Validate()
     {
         if (TotalSectors == 0 || TotalSectors > BluRayDiscParameters.SectorsPerLayer
-            || TotalSectors % BluRayDiscParameters.SectorsPerCluster != 0)
+            || TotalSectors % BluRayDiscParameters.SectorsPerCluster != 0
+            || IsoBytes <= 0 || IsoBytes % (32 * 2048) != 0 || IsoBytes > (long)TotalSectors * 2048)
         {
             throw new InvalidDataException(L.T("BD sidecar sectors must be a 32-aligned single-layer size."));
         }
@@ -112,7 +113,7 @@ public sealed record BluRayIsoMetadata(
         }
 
         if (DrawingStartSector >= DrawingEndSectorExclusive
-            || DrawingEndSectorExclusive > TotalSectors)
+            || DrawingEndSectorExclusive > IsoBytes / 2048)
         {
             throw new InvalidDataException(L.T("BD sidecar drawing bounds are invalid."));
         }

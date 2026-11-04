@@ -50,7 +50,7 @@ public static class CommandHelp
         Code("  bd-generate --input IMAGE.png --output PICTURE.iso [--invert true]"),
         Code("              [--total-sectors 12219392] [--data-dir FOLDER] [--volume-label BD_IMAGE]"),
         Code("              [--tone-dither 0..1] [--tone-brightness -64..64] [--tone-gamma true]"),
-        Text("Total sectors must align to 32. Without a data folder, output has no filesystem. With a data folder, output uses UDF 2.01 with inner- or outer-ring files. Press Ctrl+C to cancel. See docs/ADDING_BLURAY.md for options and physical-model limitations."),
+        Text("Total sectors must align to 32. Without a data folder, output has no filesystem. With a data folder, output uses UDF 2.50 with inner- or outer-ring files. Press Ctrl+C to cancel. See docs/ADDING_BLURAY.md for options and physical-model limitations."),
     ];
 
     public static string Dvd => Render(DvdLines);

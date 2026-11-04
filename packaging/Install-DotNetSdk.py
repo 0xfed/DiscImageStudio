@@ -59,7 +59,7 @@ def load_manifest(path=MANIFEST, global_json=ROOT / "global.json"):
         raise ValueError("SDK manifest must cover all five supported hosts")
     for rid, entry in data["archives"].items():
         suffix = ".zip" if rid == "win-x64" else ".tar.gz"
-        expected = f"https://builds.dotnet.microsoft.com/dotnet/Sdk/{version}/dotnet-sdk-{version}-{rid}{suffix}"
+        expected = f"https://dotnetcli.blob.core.windows.net/dotnet/Sdk/{version}/dotnet-sdk-{version}-{rid}{suffix}"
         if entry.get("url") != expected or not re.fullmatch(r"[0-9a-f]{128}", entry.get("sha512", "")):
             raise ValueError(f"Invalid official SDK URL or SHA512 for {rid}")
     return data
@@ -72,6 +72,8 @@ def download_verified(entry, destination):
         # No redirect to a different origin, plaintext transport, or latest alias.
         if response.geturl() != entry["url"]:
             raise ValueError("SDK download redirected away from the reviewed URL")
+        if response.headers.get("Content-Range") is not None:
+            raise ValueError("SDK download returned a partial archive")
         length = response.headers.get("Content-Length")
         if length is not None and not 0 < int(length) <= MAX_ARCHIVE_BYTES:
             raise ValueError("SDK download exceeds the archive size limit")
@@ -82,8 +84,10 @@ def download_verified(entry, destination):
                     raise ValueError("SDK download exceeds the archive size limit")
                 digest.update(chunk)
                 output.write(chunk)
+    if length is not None and size != int(length):
+        raise ValueError(f"SDK download was truncated: expected {length} bytes, received {size}")
     if size == 0 or not hmac.compare_digest(digest.hexdigest(), entry["sha512"]):
-        raise ValueError("SDK archive SHA512 does not match the reviewed manifest")
+        raise ValueError(f"SDK archive SHA512 does not match the reviewed manifest ({size} bytes; received {digest.hexdigest()})")
 
 
 class ArchiveBudget:

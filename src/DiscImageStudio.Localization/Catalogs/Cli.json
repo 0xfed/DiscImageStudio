@@ -167,11 +167,11 @@
     "ja": "正確に 65536 バイトのペイロードを 76880 バイトの ECC データに符号化します。書き込み用イメージではありません。",
     "tr": "Tam olarak 65536 bayt yükü 76880 bayt ECC verisine kodlar; yazılabilir bir disk imajı değildir."
   },
-  "Draw the full user-data area; selecting a files directory adds a UDF 2.01 filesystem at the inner or outer ring.": {
-    "en": "Draw the full user-data area; selecting a files directory adds a UDF 2.01 filesystem at the inner or outer ring.",
-    "zh-CN": "绘制完整用户数据区；选择文件目录后，在内圈或外圈添加 UDF 2.01 文件系统。",
-    "zh-TW": "繪製完整使用者資料區；選擇檔案目錄後，在內圈或外圈新增 UDF 2.01 檔案系統。",
-    "ja": "ユーザーデータ領域全体に描画します。ファイルディレクトリを選択すると、内周または外周に UDF 2.01 ファイルシステムを追加します。",
-    "tr": "Kullanıcı veri alanının tamamını çizer; bir dosya dizini seçilirse iç veya dış halkaya UDF 2.01 dosya sistemi ekler."
+  "Draw the full user-data area; selecting a files directory adds a UDF 2.50 filesystem at the inner or outer ring.": {
+    "en": "Draw the full user-data area; selecting a files directory adds a UDF 2.50 filesystem at the inner or outer ring.",
+    "zh-CN": "绘制完整用户数据区；选择文件目录后，在内圈或外圈添加 UDF 2.50 文件系统。",
+    "zh-TW": "繪製完整使用者資料區；選擇檔案目錄後，在內圈或外圈新增 UDF 2.50 檔案系統。",
+    "ja": "ユーザーデータ領域全体に描画します。ファイルディレクトリを選択すると、内周または外周に UDF 2.50 ファイルシステムを追加します。",
+    "tr": "Kullanıcı veri alanının tamamını çizer; bir dosya dizini seçilirse iç veya dış halkaya UDF 2.50 dosya sistemi ekler."
   }
 }

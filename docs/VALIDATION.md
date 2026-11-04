@@ -28,7 +28,7 @@ dotnet run --project src/DiscImageStudio.App --configuration Release --no-build 
 - CD/DVD：黑白映射、抖动、sRGB 伽马、文件与流式一致性、SIMD 与标量采样一致性。
 - CD 文件模式：ISO9660/Joliet 中文文件独立读取、内外圈位置及工程保存、文件区预览、原始扇区几何、文件与前向流输出一致。
 - CD 数据 DAO：Mode 1 EDC 与全部 P/Q 校验方程、主通道字节序、导入区及预间隙地址、数据轨 Q 标识与 CRC、前向 Seek 和短读、内外圈 ISO 完整还原；保留铼德预设 359,845 扇区，并使用模拟刻录机验证与音轨共用的容量限制。原生 IMAPI 测试只构造内存镜像，不创建刻录设备。
-- BD：17PP/EDC/Reed-Solomon、3T/6T 映射与极性、绘图范围清零、UDF 2.01、大于 4 GiB 文件、sidecar 往返与无效边界拒绝。
+- BD：17PP/EDC/Reed-Solomon、3T/6T 映射与极性、绘图范围清零、UDF 2.50、大于 4 GiB 文件、sidecar 往返与无效边界拒绝。
 - DVD/BD 文件位置：默认内圈兼容、外圈 ISO9660/Joliet 与 UDF 目录独立解析、中文文件内容、完整盘面坐标、不可 Seek 流与文件输出一致、容量及取消保护，以及工程中的位置选项往返。
 - 三态模型：工程 schema 2 往返与 schema 1 升级、预设 schema 4 与旧 schema 合并、`ProjectSession` 的 BD apply/capture。
 - 刻录：操作互斥、进度、顺序写入、超时、取消和资源清理，均使用模拟接口而非真实刻录机。

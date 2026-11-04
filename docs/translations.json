@@ -142,7 +142,7 @@
     {
       "source": "docs/VALIDATION.md",
       "source_language": "zh-CN",
-      "source_sha256": "a3c9ede8b3147d06c586b33d215ab25a8f461d97df85645ae1370c243553044f",
+      "source_sha256": "2dfac6a047990ab36a35eec3741da918b752da05aa05bcf11a625a5dd4a52a82",
       "translations": {
         "zh-CN": "docs/VALIDATION.md",
         "en": "docs/VALIDATION.en.md",
@@ -182,7 +182,7 @@
     {
       "source": "docs/ADDING_BLURAY.md",
       "source_language": "zh-CN",
-      "source_sha256": "4217b91c5013ae8b8ff374abd5afc941dd1722e98e5f20505c92693fc85ed20f",
+      "source_sha256": "731f1e62e93baff9bd35396c540f39ede06754c45f7930a3970cc20d24a42176",
       "translations": {
         "zh-CN": "docs/ADDING_BLURAY.md",
         "zh-TW": "docs/ADDING_BLURAY.zh-TW.md",
@@ -236,7 +236,7 @@
     {
       "source": "docs/ARCHITECTURE.md",
       "source_language": "zh-CN",
-      "source_sha256": "1d5de738af7578095d6e5b2507139338afe2bc4c686bbbbed5357013ee8d0854",
+      "source_sha256": "34a57a4ab5a6da758b2470983cfb4771a1116eaac0a5e2e45604dfe544a71289",
       "translated_mermaid_labels": [
         "CdEngine",
         "BdEngine"
@@ -252,7 +252,7 @@
     {
       "source": "README.md",
       "source_language": "zh-CN",
-      "source_sha256": "b99a0d72a841444506fc28f167a9431d2e85143de972fac411b91b8e96085923",
+      "source_sha256": "37695133185ea723f07ee9889c7e24db89a43de7953b7c2e29b9cee741e69ae6",
       "translations": {
         "zh-CN": "README.md",
         "zh-TW": "README.zh-TW.md",
@@ -276,7 +276,7 @@
     {
       "source": "CHANGELOG.md",
       "source_language": "zh-CN",
-      "source_sha256": "d775f23bc06889233352d787a790a0b772b15b33c2eeb5599199b337e241c858",
+      "source_sha256": "340b14dbdfcf43e34cade598290430ae2b0c96599d98990d30d8656da171e4e0",
       "parallel_language_sections": [
         "中文",
         "English"

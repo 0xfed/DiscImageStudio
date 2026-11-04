@@ -65,7 +65,7 @@ Windows では `win-x64.exe` で終わるファイルをダウンロードして
 
 - **CD 対応**：あらゆる CD に対応します。フォーマットヘッダー付きの WAV 音声トラックと対応する CUE をエクスポートでき、cdrecord、ImgBurn などの書き込みソフトと互換性があります。RAW 音声トラックのエクスポートも可能です。詳しくは [CD 書き込み互換性の説明](docs/CD_AUDIO_COMPATIBILITY.ja.md)をご覧ください。
 - **DVD 対応**：あらゆる DVD に対応します。ISO イメージをエクスポートできます。
-- **Blu-ray 対応**：あらゆる片面一層 BD-R 25 GB に対応し、描画のみのモードと UDF 2.01 ファイルをサポートします。詳しくは [ADDING_BLURAY.md](docs/ADDING_BLURAY.ja.md) をご覧ください。
+- **Blu-ray 対応**：あらゆる片面一層 BD-R 25 GB に対応し、描画のみのモードと UDF 2.50 ファイルをサポートします。詳しくは [ADDING_BLURAY.md](docs/ADDING_BLURAY.ja.md) をご覧ください。
 - **ディスク同梱ファイル**：CD／DVD／Blu-ray では、保存するフォルダーと内周／外周の配置をデザインページで直接選択でき、エクスポートページでも調整できます。設定はプロジェクトとともに保存されます。
 - **ファイル領域プレビュー**：ハイブリッドディスクのデザイン投影と完成品の読み戻しでは、ファイル領域（ファイルシステムを含む）が黄色で示されます。
 - **メディア別の階調方式**：CD と DVD はいずれも白黒 2 階調を使用し、CD は `0D / AA`、DVD はスクランブル領域で `A5 / 92` を使用します。詳しくは [PHYSICAL_MODEL_AUDIT.md](docs/PHYSICAL_MODEL_AUDIT.ja.md) をご覧ください。
@@ -164,7 +164,7 @@ CLI は PNG、JPEG、BMP、GIF を読み込み、アニメーション画像に�
 | `src/DiscImageStudio.Cd/` | CD-DA 生成コアと CD モジュール |
 | `src/DiscImageStudio.Dvd/` | DVD エンジンのアダプターモジュール |
 | `src/DiscImageStudio.BluRay/` | BD-R ジオメトリ、17PP/ECC、3T/6T マッピング、ストリーミング生成と ISO |
-| `src/DiscImageStudio.Iso/` | UDF 2.01 / ISO9660 ライター |
+| `src/DiscImageStudio.Iso/` | UDF 2.50 / ISO9660 ライター |
 | `src/DiscImageStudio.App/` | WPF GUI、統合コマンドライン、ストア用リソース |
 | `src/DvdImageSolver/` | 分離を保った DVD エンコード/ソルバーエンジン |
 | `tests/` | サードパーティのテストフレームワークを使わないアーキテクチャ回帰テスト |

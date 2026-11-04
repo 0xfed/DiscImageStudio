@@ -99,7 +99,22 @@ internal sealed class BluRayMmcCommands(IMmcCommandTransport transport)
             BinaryPrimitives.ReadUInt32BigEndian(track.AsSpan(12, 4)),
             BinaryPrimitives.ReadUInt32BigEndian(track.AsSpan(16, 4)),
             BinaryPrimitives.ReadUInt32BigEndian(track.AsSpan(24, 4)),
-            maximumBlocks, returnedTrack);
+            maximumBlocks, returnedTrack,
+            (track[7] & 2) != 0 ? BinaryPrimitives.ReadUInt32BigEndian(track.AsSpan(28, 4)) : null,
+            (disc[2] & 3) == 2);
+    }
+
+    internal byte[] ReadSector(uint lba)
+    {
+        byte[] cdb = new byte[10];
+        cdb[0] = 0x28; // READ(10), one logical user-data sector.
+        BinaryPrimitives.WriteUInt32BigEndian(cdb.AsSpan(2, 4), lba);
+        BinaryPrimitives.WriteUInt16BigEndian(cdb.AsSpan(7, 2), 1);
+        MmcCommandResult result = transport.Execute(cdb, 2048, 30);
+        if (result.HResult < 0 || result.HResult == CommandHasSenseData)
+            throw new MmcCommandException(cdb[0], result);
+        RequireLength(result.Data, 2048, "READ(10)");
+        return result.Data;
     }
 
     internal void PreventRemoval(bool prevent)

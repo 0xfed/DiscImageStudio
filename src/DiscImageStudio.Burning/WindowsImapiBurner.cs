@@ -5,7 +5,7 @@ using System.Runtime.InteropServices.ComTypes;
 
 namespace DiscImageStudio.Burning;
 
-public sealed class WindowsImapiBurner : IOpticalDiscBurner
+public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
 {
     private readonly OpticalBurnOperationGate _operationGate = new();
     private const int CdRawSubcodeIsCooked = 2;
@@ -301,7 +301,8 @@ public sealed class WindowsImapiBurner : IOpticalDiscBurner
 
         progress?.Report(new OpticalBurnProgress(
             "complete",
-            L.T("刻录完成，盘片会话已关闭。"),
+            request.LeaveDiscOpen ? L.T("Files recorded. The disc remains open for file updates.")
+                : L.T("刻录完成，盘片会话已关闭。"),
             request.ContentLength,
             request.ContentLength));
         return result!;
@@ -389,11 +390,16 @@ public sealed class WindowsImapiBurner : IOpticalDiscBurner
 
             // Once finalization starts, finish flushing/closing before releasing
             // the drive. Cancelling an in-flight CLOSE command is not safe.
-            reportOperation?.Invoke(new(L.T("刷新 BD-R 缓存并封盘（请等待完成）"), IsFinalizing: true));
+            reportOperation?.Invoke(new(request.LeaveDiscOpen
+                ? L.T("Flushing the disc cache and committing the file list…")
+                : L.T("刷新 BD-R 缓存并封盘（请等待完成）"), IsFinalizing: true));
             session.Flush();
             flushed = true;
-            session.CloseTrack(media.TrackNumber);
-            session.CloseDisc();
+            if (!request.LeaveDiscOpen)
+            {
+                session.CloseTrack(media.TrackNumber);
+                session.CloseDisc();
+            }
             return speed;
         }
         catch (Exception exception)

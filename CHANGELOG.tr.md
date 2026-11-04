@@ -4,6 +4,8 @@
 
 ## Henüz yayımlanmayan
 
+- UDF 2.50 VAT birimleri üretin; sonraki dosya ekleme, değiştirme ve kaldırma işlemleri için ilk BD-R yazımında alan ayırın. Güncellemeler cihaz kilidi altında yeni bir dosya ağacı ve önceki VAT’a bağlı yeni VAT ekler, özgün çizimi korur ve diski açık bırakır. Eski baytlar kayıtlı kalır; seçilen tüm dosyalar yeniden yazılır. Bağımsız VAT okuma ve sahte yazıcı regresyonları eklendi. İncelenmiş SHA512 değerleri korunarak Microsoft’un doğrudan blob uç noktasına geçildi ve kısmi indirme denetimleriyle SDK önyükleme karma doğrulama hataları giderildi.
+
 ## [1.3.7] - 2026-11-04
 
 - Windows bağımsız EXE yayımlamasındaki yinelenen dosya hatası (`NETSDK1152`) giderildi: uygulamada barındırılan DVD çözücüsünün yinelenen başlatıcıları ve çalışma zamanı bildirimleri dışlandı, `DvdImageSolver.dll` korundu. CI artık çalışma zamanını içeren EXE'yi derler ve duman testinden geçirir.

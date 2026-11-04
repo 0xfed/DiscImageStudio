@@ -28,7 +28,7 @@ dotnet run --project src/DiscImageStudio.App --configuration Release --no-build 
 - CD/DVD：黑白映射、抖動、sRGB 伽瑪、檔案與串流一致性、SIMD 與純量取樣一致性。
 - CD 檔案模式：ISO9660/Joliet 中文檔案獨立讀取、內外圈位置及專案儲存、檔案區預覽、原始磁區幾何、檔案與前向串流輸出一致。
 - CD 資料 DAO：Mode 1 EDC 與全部 P/Q 同位檢查方程式、主通道位元組順序、導入區與預間隙位址、資料軌 Q 識別碼與 CRC、前向 Seek 與短讀、內外圈 ISO 完整還原；保留錸德預設 359,845 磁區，並使用模擬燒錄機驗證與音軌共用的容量限制。原生 IMAPI 測試僅建立記憶體映像，不建立燒錄裝置。
-- BD：17PP/EDC/Reed-Solomon、3T/6T 映射與極性、繪圖範圍外清零、UDF 2.01、大於 4 GiB 檔案、sidecar 往返與無效邊界拒絕。
+- BD：17PP/EDC/Reed-Solomon、3T/6T 映射與極性、繪圖範圍外清零、UDF 2.50、大於 4 GiB 檔案、sidecar 往返與無效邊界拒絕。
 - DVD/BD 檔案位置：預設內圈相容、外圈 ISO9660/Joliet 與 UDF 目錄獨立解析、中文檔案內容、完整碟面座標、不可 Seek 串流與檔案輸出一致、容量與取消保護，以及專案中位置選項往返。
 - 三態模型：專案 schema 2 往返與 schema 1 升級、預設 schema 4 與舊 schema 合併、`ProjectSession` 的 BD apply/capture。
 - 燒錄：操作互斥、進度、循序寫入、逾時、取消與資源清理，皆使用模擬介面而非真實燒錄機。

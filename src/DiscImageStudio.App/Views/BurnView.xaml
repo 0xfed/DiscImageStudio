@@ -85,6 +85,28 @@
                 </StackPanel>
             </controls:SectionCard>
 
+            <controls:VisibilityGate IsOpen="{Binding CanConfigureBluRayFileUpdates}">
+                <controls:SectionCard Header="{loc:Text Xaml.DiscFileUpdates}" IconKind="Folder"
+                                      Margin="0,0,0,24" IsEnabled="{Binding IsSetupEnabled}">
+                    <StackPanel>
+                        <CheckBox Content="{loc:Text Xaml.KeepDiscOpenForFileUpdates}"
+                                  IsChecked="{Binding KeepBluRayDiscOpen}" />
+                        <controls:VisibilityGate IsOpen="{Binding KeepBluRayDiscOpen}">
+                            <StackPanel Margin="0,12,0,0">
+                                <TextBlock Text="{loc:Text Xaml.UpdateReserveMiB}" Style="{StaticResource FieldLabel}" />
+                                <TextBox Text="{Binding BluRayUpdateReserveMiB, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </controls:VisibilityGate>
+                        <TextBlock Text="{loc:Text Xaml.DiscFileUpdateHelp}" Style="{StaticResource HintText}"
+                                   Margin="0,12,0,8" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding State.BdDataDirectory}" Style="{StaticResource HintText}"
+                                   TextWrapping="Wrap" Margin="0,0,0,12" />
+                        <Button Content="{loc:Text Xaml.UpdateDiscFiles}" Style="{StaticResource SecondaryButton}"
+                                HorizontalAlignment="Left" Command="{Binding UpdateBluRayFilesCommand}" />
+                    </StackPanel>
+                </controls:SectionCard>
+            </controls:VisibilityGate>
+
             <!-- Danger zone: the warning, its acknowledgement and the single action that
                  starts the write belong to one card. Progress is reported by the job dock. -->
             <Border Style="{StaticResource DangerCard}">

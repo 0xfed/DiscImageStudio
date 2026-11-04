@@ -20,7 +20,7 @@ flowchart LR
     DVD --> Engine[DvdImageSolver]
     CD --> CdEngine[CD-DA 核心]
     BD --> BdEngine[BD 编码器 / 17PP / ECC]
-    BD --> Iso[DiscImageStudio.Iso / UDF 2.01]
+    BD --> Iso[DiscImageStudio.Iso / UDF 2.50]
 ```
 
 `DiscImageStudio.Cli` 和 Windows 桌面程序从同一份模块目录执行离线命令。`DiscImageStudio.ImageIO` 在 Windows 桌面目标使用 WIC，在通用 `net10.0` 目标使用 StbImageSharp 读图，并用基于 .NET `ZLibStream` 的内置 PNG 编码器写图。两个后端都向生成器提供相同顺序的 BGRA 像素。蓝光共用透明度合成和灰度转换代码，CD 和 DVD 也分别共用各自原有的采样算法。
@@ -92,7 +92,7 @@ CD 的 `OpticalBurnRequest.ProduceContent` 明确要求无头的 44.1 kHz、16 �
 
 DVD 混合文件夹模式采用两阶段顺序生成：第一阶段扫描目录，确定 ISO9660/Joliet 元数据、文件 extent 及绘图起止 LBA；第二阶段按规划的盘面顺序输出，内圈模式为“元数据 → 文件 → 图案”，外圈模式为“元数据 → 图案 → 文件”。图案按 16 扇区 ECC Block 对齐。布局计划只保存元数据，不缓存文件内容，支持不可 Seek 的流。
 
-BD-R 复用同一刻录契约：`BluRayIsoGenerator` 在一个前向流里写入 UDF 2.01、图案区与盘尾备份元数据；外圈模式将完整文件分区移至尾部备份区前，图案始终保持 32 扇区对齐且位于分区之外。刻录页把该流直接喂给 MMC 顺序写入会话，不落盘完整 25 GB 镜像。BD 不提供备用区重映射；中断后盘片通常不可继续写入。
+BD-R 复用同一刻录契约：`BluRayIsoGenerator` 在一个前向流里写入 UDF 2.50、图案区与盘尾备份元数据；外圈模式将完整文件分区移至尾部备份区前，图案始终保持 32 扇区对齐且不在虚拟元数据映射中。刻录页把该流直接喂给 MMC 顺序写入会话，不落盘完整 25 GB 镜像。BD 不提供备用区重映射；中断后盘片通常不可继续写入。
 
 `ProjectOutputs.FilesAtOuterRing` 为可选字段，默认 `false`，DVD/BD 各自通过共享参数状态同步导出、预览与刻录。文件区在 GUI 预览中按绘图起止边界标黄，包含必要的文件系统保留区；该配色不进入生成器。已有成品依赖其 sidecar 的固定范围，不使用当前目录重新猜测布局。
 
@@ -108,7 +108,7 @@ BD-R 复用同一刻录契约：`BluRayIsoGenerator` 在一个前向流里写入
 
 ### Blu-ray
 
-`DiscImageStudio.BluRay` 拥有 BD 几何、17PP、EDC/Reed-Solomon/LDC-BIS、3T/6T run-count 映射、流式生成和 ISO 计划，并引用 `DiscImageStudio.Iso` 写 UDF 2.01。它只通过 Core 契约向 GUI 暴露任务，不引用或修改 CD/DVD 内部类型。BD 的 `ToneProfile` 在源图分辨率量化，`BluRayRunLengthMapping` 只做 128 阈值和极性交换；生成时在 ISO 旁写出 `bd-r-image-v1` sidecar，记录扇区、半径、绘图起止、极性、影调与 UDF 时间戳。
+`DiscImageStudio.BluRay` 拥有 BD 几何、17PP、EDC/Reed-Solomon/LDC-BIS、3T/6T run-count 映射、流式生成和 ISO 计划，并引用 `DiscImageStudio.Iso` 写 UDF 2.50。它只通过 Core 契约向 GUI 暴露任务，不引用或修改 CD/DVD 内部类型。BD 的 `ToneProfile` 在源图分辨率量化，`BluRayRunLengthMapping` 只做 128 阈值和极性交换；生成时在 ISO 旁写出 `bd-r-image-v1` sidecar，记录扇区、半径、绘图起止、极性、影调与 UDF 时间戳。
 
 ## 扩展规则
 

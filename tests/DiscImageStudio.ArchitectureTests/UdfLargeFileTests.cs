@@ -174,15 +174,16 @@ internal static class UdfLargeFileTests
     private static FileEntry ReadEntry(byte[] prefix, uint partitionStart, uint relativeSector)
     {
         ReadOnlySpan<byte> entry = Sector(prefix, checked(partitionStart + relativeSector));
-        Require(U16(entry, 0) == 261 && (U16(entry, 34) & 7) == 0,
-            "a standard file entry uses short allocation descriptors");
+        int allocationSize = (U16(entry, 34) & 7) == 0 ? 8 : 16;
+        Require(U16(entry, 0) == 261 && (U16(entry, 34) & 7) is 0 or 1,
+            "a standard file entry uses short or long allocation descriptors");
         long informationLength = checked((long)BinaryPrimitives.ReadUInt64LittleEndian(entry.Slice(56, 8)));
         ulong recordedBlocks = BinaryPrimitives.ReadUInt64LittleEndian(entry.Slice(64, 8));
         int attributesLength = checked((int)U32(entry, 168));
         int descriptorsLength = checked((int)U32(entry, 172));
-        Require(descriptorsLength % 8 == 0, "short allocation descriptor table has the correct element size");
+        Require(descriptorsLength % allocationSize == 0, "short allocation descriptor table has the correct element size");
         List<Extent> extents = [];
-        for (int offset = 176 + attributesLength; offset < 176 + attributesLength + descriptorsLength; offset += 8)
+        for (int offset = 176 + attributesLength; offset < 176 + attributesLength + descriptorsLength; offset += allocationSize)
         {
             uint length = U32(entry, offset);
             Require((length & 0xc0000000) == 0, "file allocations are recorded and allocated");

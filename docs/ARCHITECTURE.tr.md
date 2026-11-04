@@ -20,7 +20,7 @@ flowchart LR
     DVD --> Engine[DvdImageSolver]
     CD --> CdEngine[CD-DA çekirdeği]
     BD --> BdEngine[BD kodlayıcısı / 17PP / ECC]
-    BD --> Iso[DiscImageStudio.Iso / UDF 2.01]
+    BD --> Iso[DiscImageStudio.Iso / UDF 2.50]
 ```
 
 `DiscImageStudio.Cli` ve Windows masaüstü uygulaması çevrimdışı komutları aynı modül kataloğundan çalıştırır. `DiscImageStudio.ImageIO`, Windows masaüstü hedefinde WIC kullanır; genel `net10.0` hedefinde görüntüleri StbImageSharp ile okur, PNG dosyalarını .NET `ZLibStream` kullanan yerleşik PNG kodlayıcısıyla yazar. Her iki arka uç da üreticilere aynı sırada BGRA pikselleri sağlar. Blu-ray, alfa birleştirme ve gri tonlama dönüştürme kodunu paylaşır; CD ve DVD de kendi mevcut örnekleme algoritmalarını paylaşır.
@@ -92,7 +92,7 @@ CD için `OpticalBurnRequest.ProduceContent`, açıkça başlıksız 44.1 kHz, 1
 
 DVD karma klasör modu iki aşamalı sıralı üretim kullanır: ilk aşamada dizin taranır, ISO9660/Joliet meta verileri, dosya extent alanları ve çizim başlangıç/bitiş LBA değerleri belirlenir. İkinci aşama, planlanan disk sırasıyla çıktı verir. İç halka modu “meta veriler → dosyalar → desen”, dış halka modu “meta veriler → desen → dosyalar” sırasındadır. Desen 16 sektörlük ECC Block sınırına hizalanır. Yerleşim planı yalnızca meta verileri tutar, dosya içeriğini önbelleğe almaz ve Seek desteklemeyen akışları destekler.
 
-BD-R aynı yazma sözleşmesini kullanır: `BluRayIsoGenerator`, tek bir ileri akışta UDF 2.01, desen alanı ve disk sonundaki yedek meta verileri yazar. Dış halka modunda bütün dosya bölümü sondaki yedek alanın önüne taşınır; desen her zaman 32 sektör hizalıdır ve bölümün dışında kalır. Yazma sayfası bu akışı doğrudan MMC sıralı yazma oturumuna verir; tam 25 GB görüntüyü depolamaya yazmaz. BD yedek alana yeniden eşleme sunmaz; kesinti sonrası diske genellikle devam edilemez.
+BD-R aynı yazma sözleşmesini kullanır: `BluRayIsoGenerator`, tek bir ileri akışta UDF 2.50, desen alanı ve disk sonundaki yedek meta verileri yazar. Dış halka modunda bütün dosya bölümü sondaki yedek alanın önüne taşınır; desen her zaman 32 sektör hizalıdır ve sanal üst veri eşlemesine dahil edilmez. Yazma sayfası bu akışı doğrudan MMC sıralı yazma oturumuna verir; tam 25 GB görüntüyü depolamaya yazmaz. BD yedek alana yeniden eşleme sunmaz; kesinti sonrası diske genellikle devam edilemez.
 
 `ProjectOutputs.FilesAtOuterRing` isteğe bağlıdır ve varsayılanı `false` değeridir. DVD/BD, ortak parametre durumu üzerinden dışa aktarma, önizleme ve yazmayı kendi içinde eşitler. GUI önizlemesinde dosya alanı, gerekli dosya sistemi ayrılmış alanlarını da kapsayarak çizim başlangıç/bitiş sınırlarına göre sarıyla gösterilir; bu renklendirme üreticiye girmez. Mevcut çıktılar sidecar dosyasındaki sabit aralıklara dayanır; yerleşim mevcut dizinden yeniden tahmin edilmez.
 
@@ -108,7 +108,7 @@ BD-R aynı yazma sözleşmesini kullanır: `BluRayIsoGenerator`, tek bir ileri a
 
 ### Blu-ray
 
-`DiscImageStudio.BluRay`, BD geometrisi, 17PP, EDC/Reed-Solomon/LDC-BIS, 3T/6T run-count eşlemesi, akışla üretim ve ISO planını yönetir; UDF 2.01 yazmak için `DiscImageStudio.Iso` kullanır. GUI'ye işleri yalnızca Core sözleşmeleriyle sunar; CD/DVD iç türlerine başvurmaz veya bunları değiştirmez. BD için `ToneProfile`, kaynak görüntü çözünürlüğünde nicemleme yapar; `BluRayRunLengthMapping` yalnızca 128 eşiği ve kutupluluk değişimini uygular. Üretim sırasında ISO'nun yanına `bd-r-image-v1` sidecar dosyası yazılır; sektörler, yarıçaplar, çizim başlangıcı/bitişi, kutupluluk, ton ve UDF zaman damgaları kaydedilir.
+`DiscImageStudio.BluRay`, BD geometrisi, 17PP, EDC/Reed-Solomon/LDC-BIS, 3T/6T run-count eşlemesi, akışla üretim ve ISO planını yönetir; UDF 2.50 yazmak için `DiscImageStudio.Iso` kullanır. GUI'ye işleri yalnızca Core sözleşmeleriyle sunar; CD/DVD iç türlerine başvurmaz veya bunları değiştirmez. BD için `ToneProfile`, kaynak görüntü çözünürlüğünde nicemleme yapar; `BluRayRunLengthMapping` yalnızca 128 eşiği ve kutupluluk değişimini uygular. Üretim sırasında ISO'nun yanına `bd-r-image-v1` sidecar dosyası yazılır; sektörler, yarıçaplar, çizim başlangıcı/bitişi, kutupluluk, ton ve UDF zaman damgaları kaydedilir.
 
 ## Genişletme kuralları
 

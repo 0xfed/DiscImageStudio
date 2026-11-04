@@ -34,12 +34,12 @@
     "ja": "Blu-ray：bd-info はパラメーター、bd-probe は生ペイロードテスト、bd-encode は単一 ECC クラスターを出力します。bd-generate は暗部を 3T、明部を 6T のラン数バイアスにマッピングします。",
     "tr": "Blu-ray: bd-info parametreleri; bd-probe ham yük testlerini; bd-encode bir ECC kümesini dışa aktarır. bd-generate, koyuyu 3T ve açığı 6T geçiş aralığı sayısı ağırlığına eşler."
   },
-  "Total sectors must align to 32. Without a data folder, output has no filesystem. With a data folder, output uses UDF 2.01 with inner- or outer-ring files. Press Ctrl+C to cancel. See docs/ADDING_BLURAY.md for options and physical-model limitations.": {
-    "en": "Total sectors must align to 32. Without a data folder, output has no filesystem. With a data folder, output uses UDF 2.01 with inner- or outer-ring files. Press Ctrl+C to cancel. See docs/ADDING_BLURAY.md for options and physical-model limitations.",
-    "zh-CN": "总扇区数必须按 32 对齐。未选数据文件夹时，输出不含文件系统。选定文件夹时，输出采用 UDF 2.01，文件可位于内圈或外圈。按 Ctrl+C 取消。选项及物理模型限制见 docs/ADDING_BLURAY.md。",
-    "zh-TW": "總磁區數必須按 32 對齊。未選資料夾時，輸出不含檔案系統。選定資料夾時，輸出採用 UDF 2.01，檔案可位於內圈或外圈。按 Ctrl+C 取消。選項及物理模型限制見 docs/ADDING_BLURAY.md。",
-    "ja": "総セクター数は 32 に整列する必要があります。データフォルダーなしでは出力にファイルシステムを含みません。フォルダーありでは UDF 2.01 を使い、ファイルを内周または外周に配置します。Ctrl+C でキャンセルします。オプションと物理モデルの制約は docs/ADDING_BLURAY.md を参照してください。",
-    "tr": "Toplam sektör sayısı 32'ye hizalanmalıdır. Veri klasörü yoksa çıktı dosya sistemi içermez. Klasör varsa iç veya dış halka dosyalarıyla UDF 2.01 kullanılır. İptal için Ctrl+C. Seçenekler ve fiziksel model sınırları için docs/ADDING_BLURAY.md belgesine bakın."
+  "Total sectors must align to 32. Without a data folder, output has no filesystem. With a data folder, output uses UDF 2.50 with inner- or outer-ring files. Press Ctrl+C to cancel. See docs/ADDING_BLURAY.md for options and physical-model limitations.": {
+    "en": "Total sectors must align to 32. Without a data folder, output has no filesystem. With a data folder, output uses UDF 2.50 with inner- or outer-ring files. Press Ctrl+C to cancel. See docs/ADDING_BLURAY.md for options and physical-model limitations.",
+    "zh-CN": "总扇区数必须按 32 对齐。未选数据文件夹时，输出不含文件系统。选定文件夹时，输出采用 UDF 2.50，文件可位于内圈或外圈。按 Ctrl+C 取消。选项及物理模型限制见 docs/ADDING_BLURAY.md。",
+    "zh-TW": "總磁區數必須按 32 對齊。未選資料夾時，輸出不含檔案系統。選定資料夾時，輸出採用 UDF 2.50，檔案可位於內圈或外圈。按 Ctrl+C 取消。選項及物理模型限制見 docs/ADDING_BLURAY.md。",
+    "ja": "総セクター数は 32 に整列する必要があります。データフォルダーなしでは出力にファイルシステムを含みません。フォルダーありでは UDF 2.50 を使い、ファイルを内周または外周に配置します。Ctrl+C でキャンセルします。オプションと物理モデルの制約は docs/ADDING_BLURAY.md を参照してください。",
+    "tr": "Toplam sektör sayısı 32'ye hizalanmalıdır. Veri klasörü yoksa çıktı dosya sistemi içermez. Klasör varsa iç veya dış halka dosyalarıyla UDF 2.50 kullanılır. İptal için Ctrl+C. Seçenekler ve fiziksel model sınırları için docs/ADDING_BLURAY.md belgesine bakın."
   },
   "DVD NRZI image constraint solver": {
     "en": "DVD NRZI image constraint solver",

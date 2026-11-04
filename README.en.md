@@ -65,7 +65,7 @@ Live burning is experimental. Use only expendable test media.
 
 - **CD support**: Supports any CD. Export WAV audio tracks with format headers and accompanying CUE files, compatible with burning software such as cdrecord and ImgBurn; RAW audio track export is also available. See [CD burning compatibility](docs/CD_AUDIO_COMPATIBILITY.en.md).
 - **DVD support**: Supports any DVD. Export ISO images.
-- **Blu-ray support**: Supports any single-layer 25 GB BD-R, with drawing-only mode and UDF 2.01 files. See [ADDING_BLURAY.md](docs/ADDING_BLURAY.en.md).
+- **Blu-ray support**: Supports any single-layer 25 GB BD-R, with drawing-only mode and UDF 2.50 files. See [ADDING_BLURAY.md](docs/ADDING_BLURAY.en.md).
 - **Files on disc**: For CD, DVD, and Blu-ray, select a folder and place its files on the inner or outer ring directly from the Design page, or adjust these options on the Export page. The settings are saved with the project.
 - **File region preview**: Hybrid-disc design projections and artifact readback highlight the file region, including the file system, in yellow.
 - **Media grayscale schemes**: CD and DVD both use two black-and-white levels: `0D / AA` for CD and `A5 / 92` in the DVD scrambled domain. See [PHYSICAL_MODEL_AUDIT.md](docs/PHYSICAL_MODEL_AUDIT.en.md).
@@ -164,7 +164,7 @@ See the corresponding documentation for each command’s complete parameters.
 | `src/DiscImageStudio.Cd/` | CD-DA generation core and CD module |
 | `src/DiscImageStudio.Dvd/` | DVD engine adapter module |
 | `src/DiscImageStudio.BluRay/` | BD-R geometry, 17PP/ECC, 3T/6T mapping, streaming generation, and ISO |
-| `src/DiscImageStudio.Iso/` | UDF 2.01 / ISO9660 writers |
+| `src/DiscImageStudio.Iso/` | UDF 2.50 / ISO9660 writers |
 | `src/DiscImageStudio.App/` | WPF GUI, unified command line, and Store assets |
 | `src/DvdImageSolver/` | Isolated DVD encoding/solving engine |
 | `tests/` | Architecture regression tests without a third-party test framework |

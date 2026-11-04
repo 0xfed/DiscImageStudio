@@ -20,6 +20,7 @@ internal static class BluRaySequentialBurnTests
         TestFullCapacityMetadata();
         TestRejectIncompatibleMedia();
         TestSmallUdfStream();
+        TestLeaveDiscOpen();
         TestFailuresReleaseRecorder();
         TestCancellation();
         TestMmcReadFixtures();
@@ -123,10 +124,13 @@ internal static class BluRaySequentialBurnTests
                 "BD_NOSPARES", plan.DrawingStartSector, plan.DrawingEndSectorExclusive);
             Require(files.Count == 1 && files["readme.bin"].SequenceEqual(innerFile),
                 "the sequential burn stream preserves the UDF inner file");
-            foreach (uint anchor in new[] { 256U, SmallSectors - 257, SmallSectors - 1 })
+            foreach (uint anchor in new[] { 256U, SmallSectors - 257 })
                 Require(BitConverter.ToUInt16(written, checked((int)anchor * 2048)) == 2
                     && BitConverter.ToUInt32(written, checked((int)anchor * 2048 + 12)) == anchor,
-                    "all UDF anchors, including the last sector, reach the recorder unchanged");
+                    "both UDF anchors reach the recorder unchanged");
+            int vatOffset = checked((int)(SmallSectors - 1) * 2048);
+            Require(BitConverter.ToUInt16(written, vatOffset) == 261 && written[vatOffset + 27] == 248,
+                "the VAT ICB is the final recorded sector");
         }
         finally
         {
@@ -224,6 +228,11 @@ internal static class BluRaySequentialBurnTests
         Require(actual == BlankMedia, "MMC parses the unformatted raw track capacity instead of a smaller default formatting proposal");
         Require(transport.Remaining == 0 && transport.Commands.All(cdb => cdb[0] != 0x04),
             "capacity inspection consumes only read commands and never FORMAT UNIT");
+        FakeMmcTransport read = new();
+        byte[] sector = Enumerable.Repeat((byte)0x5a, 2048).ToArray();
+        read.Expect([0x28, 0, 0, 0, 4, 0, 0, 0, 1, 0], 2048, 30, new(0, [], sector));
+        Require(new BluRayMmcCommands(read).ReadSector(1024).SequenceEqual(sector),
+            "VAT inspection issues READ(10) for exactly the requested sector");
 
         foreach (int response in Enumerable.Range(0, 4))
         {
@@ -264,6 +273,17 @@ internal static class BluRaySequentialBurnTests
         Require(formattedMedia.FormatStatus == 2, "the raw format descriptor status is preserved for validation");
         Throws<InvalidOperationException>(() => WindowsImapiBurner.ValidateBluRaySequentialMedia(
             CreateTinyRequest(), formattedMedia), "formatted response cannot pass the no-spares media validator");
+    }
+
+    private static void TestLeaveDiscOpen()
+    {
+        OpticalBurnRequest request = CreateTinyRequest() with { LeaveDiscOpen = true };
+        using GeneratedContentComStream stream = NewStream(request);
+        using FakeSession session = new();
+        stream.WaitUntilPrebuffered(CancellationToken.None);
+        WindowsImapiBurner.BurnBluRay(session, stream, request, CancellationToken.None);
+        Require(session.Operations.SequenceEqual(new[] { "acquire", "read-media", "configure", "write", "flush", "release" }),
+            "an initial appendable burn flushes the VAT without closing the track or disc");
     }
 
     private static void TestMmcFinalizationAndErrors()

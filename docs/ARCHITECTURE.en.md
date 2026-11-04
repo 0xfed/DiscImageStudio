@@ -20,7 +20,7 @@ flowchart LR
     DVD --> Engine[DvdImageSolver]
     CD --> CdEngine[CD-DA core]
     BD --> BdEngine[BD encoder / 17PP / ECC]
-    BD --> Iso[DiscImageStudio.Iso / UDF 2.01]
+    BD --> Iso[DiscImageStudio.Iso / UDF 2.50]
 ```
 
 `DiscImageStudio.Cli` and the Windows desktop application execute offline commands through the same module catalog. `DiscImageStudio.ImageIO` uses WIC for the Windows desktop target, and StbImageSharp for reading images and a built-in PNG encoder using .NET `ZLibStream` for writing PNGs on the general `net10.0` target. Both backends supply BGRA pixels to generators in the same order. Blu-ray shares transparency compositing and grayscale conversion code; CD and DVD each also retain their own shared sampling algorithms.
@@ -92,7 +92,7 @@ For CD, `OpticalBurnRequest.ProduceContent` explicitly requires headerless 44.1 
 
 DVD hybrid-folder output has two sequential stages. First, scan directories and determine ISO9660/Joliet metadata, file extents, and drawing start/end LBAs. Then emit disc order: metadata → files → pattern for inner placement, metadata → pattern → files for outer placement. Drawing aligns to 16-sector ECC Blocks. Plans store only metadata, not file content, and support non-seekable streams.
 
-BD-R reuses the same burning contract. `BluRayIsoGenerator` writes UDF 2.01, pattern, and trailing backup metadata in one forward stream. Outer placement moves the complete file partition before the backup area, with drawing always 32-sector aligned and outside the partition. Burn feeds it directly into MMC sequential writing without saving a full 25 GB image. BD provides no spare-area remapping; interrupted discs usually cannot resume writing.
+BD-R reuses the same burning contract. `BluRayIsoGenerator` writes UDF 2.50, pattern, and trailing backup metadata in one forward stream. Outer placement moves the complete file partition before the backup area, with drawing always 32-sector aligned and excluded from the virtual metadata map. Burn feeds it directly into MMC sequential writing without saving a full 25 GB image. BD provides no spare-area remapping; interrupted discs usually cannot resume writing.
 
 `ProjectOutputs.FilesAtOuterRing` is optional and defaults to `false`. DVD/BD synchronize export, preview, and burning through shared parameter state. GUI previews show the file area in yellow using drawing boundaries, including required filesystem reservations; the color does not enter generators. Existing artifacts rely on fixed sidecar ranges, without guessing layout again from the current directory.
 
@@ -108,7 +108,7 @@ BD-R reuses the same burning contract. `BluRayIsoGenerator` writes UDF 2.01, pat
 
 ### Blu-ray
 
-`DiscImageStudio.BluRay` owns BD geometry, 17PP, EDC/Reed-Solomon/LDC-BIS, 3T/6T run-count mapping, streaming generation, and ISO planning. It references `DiscImageStudio.Iso` for UDF 2.01, exposes jobs to GUI only through Core contracts, and neither references nor modifies CD/DVD internals. BD quantizes `ToneProfile` at source resolution; `BluRayRunLengthMapping` only handles threshold 128 and polarity inversion. Generation writes a `bd-r-image-v1` sidecar beside the ISO with sectors, radii, drawing boundaries, polarity, tone, and UDF timestamp.
+`DiscImageStudio.BluRay` owns BD geometry, 17PP, EDC/Reed-Solomon/LDC-BIS, 3T/6T run-count mapping, streaming generation, and ISO planning. It references `DiscImageStudio.Iso` for UDF 2.50, exposes jobs to GUI only through Core contracts, and neither references nor modifies CD/DVD internals. BD quantizes `ToneProfile` at source resolution; `BluRayRunLengthMapping` only handles threshold 128 and polarity inversion. Generation writes a `bd-r-image-v1` sidecar beside the ISO with sectors, radii, drawing boundaries, polarity, tone, and UDF timestamp.
 
 ## Extension rules
 

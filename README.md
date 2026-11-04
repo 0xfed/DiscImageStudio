@@ -65,7 +65,7 @@ Windows 下载 `win-x64.exe` 后可直接运行。Linux 或 macOS 请下载与 C
 
 - **CD 支持**：支持任何 CD 。您可导出带格式头的 WAV 音轨及配套 CUE，兼容 cdrecord, ImgBurn等刻录软件；也允许导出 RAW 音轨。详见 [CD 刻录兼容说明](docs/CD_AUDIO_COMPATIBILITY.md)。
 - **DVD 支持**：支持任何 DVD。您可导出 ISO 镜像。
-- **蓝光支持**：支持任何单层 BD-R 25 GB，支持纯绘图与 UDF 2.01 文件。详见 [ADDING_BLURAY.md](docs/ADDING_BLURAY.md)。
+- **蓝光支持**：支持任何单层 BD-R 25 GB，支持纯绘图与 UDF 2.50 文件。详见 [ADDING_BLURAY.md](docs/ADDING_BLURAY.md)。
 - **随盘文件**：CD／DVD／蓝光可在设计页直接选择要保存的文件夹及内圈／外圈位置，也可在导出页调整；设置随工程保存。
 - **文件区域预览**：混合盘的设计投影和成品读回用黄色标出文件区（含文件系统）。
 - **介质灰度方案**：CD 与 DVD 均使用黑白二阶，CD 使用 `0D / AA`，DVD 扰码域使用 `A5 / 92`。详见 [PHYSICAL_MODEL_AUDIT.md](docs/PHYSICAL_MODEL_AUDIT.md)。
@@ -164,7 +164,7 @@ CLI 可读取 PNG、JPEG、BMP 和 GIF，使用动画图片的第一帧。下面
 | `src/DiscImageStudio.Cd/` | CD-DA 生成核心与 CD 模块 |
 | `src/DiscImageStudio.Dvd/` | DVD 引擎适配模块 |
 | `src/DiscImageStudio.BluRay/` | BD-R 几何、17PP/ECC、3T/6T 映射、流式生成与 ISO |
-| `src/DiscImageStudio.Iso/` | UDF 2.01 / ISO9660 写入器 |
+| `src/DiscImageStudio.Iso/` | UDF 2.50 / ISO9660 写入器 |
 | `src/DiscImageStudio.App/` | WPF GUI、统一命令行与商店资源 |
 | `src/DvdImageSolver/` | 保持隔离的 DVD 编码/求解引擎 |
 | `tests/` | 无第三方测试框架的架构回归测试 |

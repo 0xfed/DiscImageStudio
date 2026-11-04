@@ -44,7 +44,7 @@ internal static class CommandHelpTranslationTests
                     }
                 }
                 Check(CommandHelp.WindowsDetails.Contains("cd|dvd|bd", StringComparison.Ordinal)
-                      && CommandHelp.WindowsDetails.Contains("UDF 2.01", StringComparison.Ordinal),
+                      && CommandHelp.WindowsDetails.Contains("UDF 2.50", StringComparison.Ordinal),
                     "Windows help lost BD snapshots or the current filesystem description");
                 using StringWriter captured = new();
                 Console.SetOut(captured);

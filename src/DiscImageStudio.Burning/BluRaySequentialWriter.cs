@@ -77,11 +77,12 @@ internal static class BluRaySequentialWriter
     // IMAPI's documented SendCommandSendDataToDevice Timeout is in seconds.
     internal static void Write(IMmcCommandTransport transport, IStream content, uint sectorCount,
         Action<long, long>? reportProgress = null, Func<bool>? isCancellationRequested = null,
-        Func<TimeSpan>? elapsed = null, Action<string>? reportDiagnostics = null)
+        Func<TimeSpan>? elapsed = null, Action<string>? reportDiagnostics = null, uint startLba = 0)
     {
         ArgumentNullException.ThrowIfNull(transport);
         ArgumentNullException.ThrowIfNull(content);
-        if (sectorCount == 0 || sectorCount % SectorsPerWrite != 0 || sectorCount > MaximumSectors)
+        if (sectorCount == 0 || sectorCount % SectorsPerWrite != 0 || startLba % SectorsPerWrite != 0
+            || (ulong)startLba + sectorCount > MaximumSectors)
             throw new ArgumentOutOfRangeException(nameof(sectorCount),
                 L.T("BD-R writes require complete 32-sector clusters within single-layer capacity."));
         ThrowIfCancelled(isCancellationRequested);
@@ -122,7 +123,7 @@ internal static class BluRaySequentialWriter
                 TimeSpan sourceReadElapsed = elapsed() - readStarted;
                 sourceReadTotal += sourceReadElapsed;
                 ThrowIfCancelled(isCancellationRequested);
-                byte[] cdb = CreateWriteCommand(lba);
+                byte[] cdb = CreateWriteCommand(checked(startLba + lba));
                 TimeSpan commandStarted = elapsed();
                 MmcCommandResult result;
                 Exception? transportFailure = null;
@@ -135,7 +136,7 @@ internal static class BluRaySequentialWriter
                 TimeSpan commandEnded = elapsed();
                 TimeSpan commandElapsed = commandEnded - commandStarted;
                 commandTotal += commandElapsed;
-                BluRayWriteTiming timing = new(lba, SectorsPerWrite, sourceReadElapsed, commandElapsed);
+                BluRayWriteTiming timing = new(checked(startLba + lba), SectorsPerWrite, sourceReadElapsed, commandElapsed);
                 if (transportFailure is not null || result.HResult < 0 || result.HResult == BluRayMmcCommands.CommandHasSenseData)
                 {
                     int historyCount = Math.Min(acceptedCommands, DiagnosticHistoryCapacity);
@@ -145,7 +146,7 @@ internal static class BluRaySequentialWriter
                     BluRayWriteDiagnostics diagnostics = new(acceptedBytes, acceptedCommands,
                         sourceReadTotal, commandTotal, commandEnded - sessionStarted,
                         Array.AsReadOnly(recent), timing);
-                    throw new BluRayWriteException(lba, SectorsPerWrite, WriteTimeoutSeconds,
+                    throw new BluRayWriteException(checked(startLba + lba), SectorsPerWrite, WriteTimeoutSeconds,
                         commandElapsed, result, transportFailure, diagnostics);
                 }
 

@@ -4,7 +4,11 @@
 
 ## Unreleased
 
+## [1.3.7] - 2026-11-04
+
 ### 中文
+
+- 修复 Windows 独立 EXE 发布时的重复文件错误（`NETSDK1152`）：排除内嵌 DVD 求解器的重复启动文件及运行清单，保留 `DvdImageSolver.dll`。CI 现会构建并冒烟测试包含运行时的 EXE。
 
 - 升级构建来源证明 Action 至 `actions/attest` `4.2.2`，通过 `.python-version` 将 CI 固定为 CPython `3.14.10`，并使用 `packaging/Install-DotNetSdk.py` 在全新目录安装 SDK，解压前按 `eng/dependencies/dotnet-sdk.json` 中经审查的 SHA512 校验下载归档。
 
@@ -14,9 +18,9 @@
 
 - 修复 PNG 解压输出超出声明图像大小的问题，将 `RasterCodec` 默认输入限制设为 `256 MiB` 和 `64 Mi` 像素；固定并锁定经审查的构建依赖，分离制品检查与发布写权限，并为发布制品配置 SBOM 和构建来源证明。
 
-- 新增独立 Windows CI 布局检查，覆盖五语 325 个工作区、预览、标定及对话框场景，检测文字溢出与缺失字形并保存截图和报告；失败时也上传制品。夹具使用临时存储与不可写盘的假刻录机，检查语言切换后的标题及工程数据不变。已在 Linux 编译，Windows 执行等待推送后的 CI。
+- 新增独立 Windows CI 布局检查，覆盖五语 325 个工作区、预览、标定及对话框场景，检测文字溢出与缺失字形并保存截图和报告；失败时也上传制品。夹具使用临时存储与不可写盘的假刻录机，检查语言切换后的标题及工程数据不变。Windows CI 已通过全部 325 个场景，未检测到文字溢出或缺失字形。
 
-- 补齐 DVD 流式生成的七条错误路径及空白禁用预设的上下文翻译，扩展源码守卫与五语回归；完整构建与 2,042 条资源、2,076 处引用检查通过。补齐土耳其文 README，复核其余 README，并完成 DVD 引擎指南五语全文，保留公式、命令与历史验证限制。
+- 补齐 DVD 流式生成的七条错误路径及空白禁用预设的上下文翻译，扩展源码守卫与五语回归；完整构建与 2,053 条资源、2,077 处引用检查通过。补齐土耳其文 README，复核其余 README，并完成 DVD 引擎指南五语全文，保留公式、命令与历史验证限制。
 
 - 完成工作流、工作区与 XAML 共 595 条既有界面资源的五语语义复核，修正刻录机采用速度、反射亮度、覆盖率边界、标定记录与操作指令；较长标签、标题及标定按钮可换行增高。完成架构指南五语全文，文档检查允许指定图示标签翻译并保留节点、连线与数字。
 
@@ -49,6 +53,8 @@
 
 ### English
 
+- Fix duplicate-file errors (`NETSDK1152`) when publishing the standalone Windows EXE: exclude duplicate launchers and runtime manifests for the hosted DVD solver while retaining `DvdImageSolver.dll`. CI now builds and smoke-tests the EXE with its bundled runtime.
+
 - Upgrade build provenance to `actions/attest` `4.2.2`, pin CI to CPython `3.14.10` through `.python-version`, and install the SDK into a fresh directory with `packaging/Install-DotNetSdk.py`, verifying downloaded archives against the reviewed SHA512 values in `eng/dependencies/dotnet-sdk.json` before extraction.
 
 - Preserve the selected interface language when generating DVD live previews, including calibration previews, and add regression checks for both the language preference and effective language.
@@ -57,9 +63,9 @@
 
 - Reject PNG inflation beyond the declared image size and set `RasterCodec` default input limits to `256 MiB` and `64 Mi` pixels; pin and lock reviewed build dependencies, separate artifact inspection from publication write permissions, and configure release SBOMs and build provenance.
 
-- Added an isolated Windows CI layout check covering 325 five-language workspace, preview, calibration, and dialog scenarios, checking text bounds and missing glyphs and saving screenshots/reports even on failure. Fixtures use temporary stores and a recorder that cannot write, checking switched titles and unchanged project data. Compiled on Linux; Windows execution awaits CI after a push.
+- Added an isolated Windows CI layout check covering 325 five-language workspace, preview, calibration, and dialog scenarios, checking text bounds and missing glyphs and saving screenshots/reports even on failure. Fixtures use temporary stores and a recorder that cannot write, checking switched titles and unchanged project data. All 325 scenarios pass on Windows CI without detected text overflow or missing glyphs.
 
-- Localized seven DVD streaming error paths and blank disabled-preset contexts, expanding source guards and five-language regressions. The full build and checks for 2,042 entries and 2,076 references pass. Added the Turkish README, reconciled the other README versions, and completed the five-language DVD engine guide with formulas, commands, and historical validation limits preserved.
+- Localized seven DVD streaming error paths and blank disabled-preset contexts, expanding source guards and five-language regressions. The full build and checks for 2,053 entries and 2,077 references pass. Added the Turkish README, reconciled the other README versions, and completed the five-language DVD engine guide with formulas, commands, and historical validation limits preserved.
 
 - Reviewed all 595 existing Workflow, Workspace, and XAML UI entries in five languages, correcting recorder-adopted speed settings, reflected brightness, coverage boundaries, calibration records, and action instructions. Long labels, titles, and calibration buttons can wrap and grow. Completed the five-language architecture guide; documentation checks allow specified diagram labels to translate while preserving nodes, edges, and numbers.
 

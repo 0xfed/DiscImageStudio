@@ -40,7 +40,7 @@ Kodlama kararları ve ikili çıktı çevrilmiş metne bağlı değildir; yazma 
 
 Bildirim, ana kaynak karmasını ve dil yollarını kaydeder. Denetim başlıkları, paragrafları, maddeleri, tablo boyut/sayılarını, satır içi kodu, komut/formülü, başvuru hedefini ve yerel bağlantıyı korur. Açık istisnalar önayar örneği ad/açıklaması ile iki görünür Mermaid etiketini çevirir; JSON tür/hassasiyet/ID/katkıcıları ve diyagram düğüm/bağlantı/yön/rakamları korunur. Eksik/boş etiket, yinelenen JSON alanı ve geçersiz sayı başarısız olur.
 
-İki dilli yayın kaynağı günlüğü korunur. Açıkça belirtilen paralel listeler aynı madde sayısı ve teknik belirteçlere sahip olmalıdır; okuma kopyası her değişikliği bir kez gösterir. Tüm 120 farklı girdi, tarih ve özgün doğrulama sınırları korunur. Üretilen rapor kaynak envanterine girmez; yok sayılan artifacts altında, kaynakta başvurulan ve açıkça kaydedilen yalnızca dört çıktı temiz kopyada eksik olabilir. Diğer yerel bağlantılar mevcut olmalıdır.
+İki dilli yayın kaynağı günlüğü korunur. Açıkça belirtilen paralel listeler aynı madde sayısı ve teknik belirteçlere sahip olmalıdır; okuma kopyası her değişikliği bir kez gösterir. Tüm 122 farklı girdi, tarih ve özgün doğrulama sınırları korunur. Üretilen rapor kaynak envanterine girmez; yok sayılan artifacts altında, kaynakta başvurulan ve açıkça kaydedilen yalnızca dört çıktı temiz kopyada eksik olabilir. Diğer yerel bağlantılar mevcut olmalıdır.
 
 Tam belge denetimi 23/23 bildirir, CI için zorunludur. Yedi kural regresyonu bu kısıtları korur. Yapısal denetim dil incelemesini tamamlar; kaynak değişirse yeniden inceleme gerekir. Bakım ve Windows görüntü komutları için [LOCALIZATION.md](LOCALIZATION.tr.md) belgesine bakın.
 

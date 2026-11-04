@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## [1.3.7] - 2026-11-04
+
+- Fix duplicate-file errors (`NETSDK1152`) when publishing the standalone Windows EXE: exclude duplicate launchers and runtime manifests for the hosted DVD solver while retaining `DvdImageSolver.dll`. CI now builds and smoke-tests the EXE with its bundled runtime.
+
 - Upgrade build provenance to `actions/attest` `4.2.2`, pin CI to CPython `3.14.10` through `.python-version`, and install the SDK into a fresh directory with `packaging/Install-DotNetSdk.py`, verifying downloaded archives against the reviewed SHA512 values in `eng/dependencies/dotnet-sdk.json` before extraction.
 
 - Preserve the selected interface language when generating DVD live previews, including calibration previews, and add regression checks for both the language preference and effective language.
@@ -12,10 +16,10 @@
 
 - Reject PNG inflation beyond the declared image size and set `RasterCodec` default input limits to `256 MiB` and `64 Mi` pixels; pin and lock reviewed build dependencies, separate artifact inspection from publication write permissions, and configure release SBOMs and build provenance.
 
-- Added an isolated Windows CI layout check covering 325 five-language workspace, preview, calibration, and dialog scenarios, checking text bounds and missing glyphs and saving screenshots/reports even on failure. Fixtures use temporary stores and a recorder that cannot write, checking switched titles and unchanged project data. Compiled on Linux; Windows execution awaits CI after a push.
+- Added an isolated Windows CI layout check covering 325 five-language workspace, preview, calibration, and dialog scenarios, checking text bounds and missing glyphs and saving screenshots/reports even on failure. Fixtures use temporary stores and a recorder that cannot write, checking switched titles and unchanged project data. All 325 scenarios pass on Windows CI without detected text overflow or missing glyphs.
 
 
-- Localized seven DVD streaming error paths and blank disabled-preset contexts, expanding source guards and five-language regressions. The full build and checks for 2,042 entries and 2,076 references pass. Added the Turkish README, reconciled the other README versions, and completed the five-language DVD engine guide with formulas, commands, and historical validation limits preserved.
+- Localized seven DVD streaming error paths and blank disabled-preset contexts, expanding source guards and five-language regressions. The full build and checks for 2,053 entries and 2,077 references pass. Added the Turkish README, reconciled the other README versions, and completed the five-language DVD engine guide with formulas, commands, and historical validation limits preserved.
 
 - Reviewed all 595 existing Workflow, Workspace, and XAML UI entries in five languages, correcting recorder-adopted speed settings, reflected brightness, coverage boundaries, calibration records, and action instructions. Long labels, titles, and calibration buttons can wrap and grow. Completed the five-language architecture guide; documentation checks allow specified diagram labels to translate while preserving nodes, edges, and numbers.
 

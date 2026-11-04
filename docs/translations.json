@@ -276,7 +276,7 @@
     {
       "source": "CHANGELOG.md",
       "source_language": "zh-CN",
-      "source_sha256": "c9001c90bcd6a8cd76486c8984ac2dea91910e8afb721b5fc4927f656b91321a",
+      "source_sha256": "d775f23bc06889233352d787a790a0b772b15b33c2eeb5599199b337e241c858",
       "parallel_language_sections": [
         "中文",
         "English"
@@ -292,7 +292,7 @@
     {
       "source": "docs/LOCALIZATION_AUDIT.md",
       "source_language": "en",
-      "source_sha256": "0d84f22519fefbe409669c73187782b10adb329d46bf7e74465160debee8ed68",
+      "source_sha256": "cda338f42cac38a62d47b477a1669013f5db5752d2480be8828e04064ef50469",
       "translations": {
         "zh-CN": "docs/LOCALIZATION_AUDIT.zh-CN.md",
         "zh-TW": "docs/LOCALIZATION_AUDIT.zh-TW.md",

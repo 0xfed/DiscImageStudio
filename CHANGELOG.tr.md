@@ -4,6 +4,10 @@
 
 ## Henüz yayımlanmayan
 
+## [1.3.7] - 2026-11-04
+
+- Windows bağımsız EXE yayımlamasındaki yinelenen dosya hatası (`NETSDK1152`) giderildi: uygulamada barındırılan DVD çözücüsünün yinelenen başlatıcıları ve çalışma zamanı bildirimleri dışlandı, `DvdImageSolver.dll` korundu. CI artık çalışma zamanını içeren EXE'yi derler ve duman testinden geçirir.
+
 - Derleme kaynağı kanıtı için `actions/attest` `4.2.2` sürümüne geçildi, CI, `.python-version` ile CPython `3.14.10` sürümüne sabitlendi. SDK, `packaging/Install-DotNetSdk.py` ile yeni bir dizine kurulur; indirilen arşivler açılmadan önce `eng/dependencies/dotnet-sdk.json` içindeki incelenmiş SHA512 değerleriyle doğrulanır.
 
 - Kalibrasyon önizlemeleri dahil DVD canlı önizlemeleri oluşturulurken seçilen arayüz dili korunur; hem dil tercihinin hem de uygulanan dilin değişmediğini doğrulayan regresyon kontrolleri eklendi.
@@ -12,9 +16,9 @@
 
 - PNG açma çıktısının bildirilen görüntü boyutunu aşması sorunu giderildi; `RasterCodec` varsayılan girdi sınırları `256 MiB` ve `64 Mi` piksel olarak belirlendi. İncelenen derleme bağımlılıkları sabitlenip kilitlendi, çıktı denetimi yayımlama yazma izinlerinden ayrıldı ve sürüm dosyaları için SBOM ile derleme kökeni doğrulamaları yapılandırıldı.
 
-- Ayrı Windows CI düzen denetimi eklendi: beş dilde 325 çalışma alanı, önizleme, kalibrasyon ve pencere senaryosunda metin sınırları/eksik glifler denetlenir; hata olsa da görüntü/rapor kaydedilir. Geçici depolar ve yazamayan sahte yazıcı ile değişen başlıklar ve proje verisinin korunması kontrol edilir. Linux üzerinde derlendi; Windows çalışması push sonrası CI bekliyor.
+- Ayrı Windows CI düzen denetimi eklendi: beş dilde 325 çalışma alanı, önizleme, kalibrasyon ve pencere senaryosunda metin sınırları/eksik glifler denetlenir; hata olsa da görüntü/rapor kaydedilir. Geçici depolar ve yazamayan sahte yazıcı ile değişen başlıklar ve proje verisinin korunması kontrol edilir. Windows CI üzerinde 325 senaryonun tamamı geçti; metin taşması veya eksik glif saptanmadı.
 
-- DVD akış üretiminin yedi hata yolu ve boş devre dışı önayar bağlamları çevrildi; kaynak korumaları ve beş dil regresyonları genişletildi. Tam derleme ile 2,042 kaynak ve 2,076 başvuru kontrolü geçti. Türkçe README eklendi, diğer sürümler karşılaştırıldı; DVD motor kılavuzu formüller, komutlar ve tarihsel doğrulama sınırları korunarak beş dilde tamamlandı.
+- DVD akış üretiminin yedi hata yolu ve boş devre dışı önayar bağlamları çevrildi; kaynak korumaları ve beş dil regresyonları genişletildi. Tam derleme ile 2,053 kaynak ve 2,077 başvuru kontrolü geçti. Türkçe README eklendi, diğer sürümler karşılaştırıldı; DVD motor kılavuzu formüller, komutlar ve tarihsel doğrulama sınırları korunarak beş dilde tamamlandı.
 
 - Workflows, Workspace ve XAML içindeki 595 mevcut arayüz girdisi beş dilde anlamsal olarak incelendi. Disk yazıcısının uyguladığı hız ayarı, yansıyan parlaklık, kapsama sınırları, kalibrasyon kayıtları ve eylem talimatları düzeltildi. Uzun etiketler, başlıklar ve kalibrasyon düğmeleri satır kaydırıp büyüyebilir. Mimari kılavuzu beş dilde tamamlandı; belge kontrolü yalnızca belirtilen diyagram etiketlerini çevirirken düğüm, bağlantı ve sayıları korur.
 

@@ -28,6 +28,7 @@ internal static class CalibrationEncoderTests
             TestCd(directory, blackPath, quadrantPath);
             TestDvd(directory, blackPath, quadrantPath);
             TestCircleAndCrossTargets(directory);
+            TestWideSectorExport();
             TestExactReferenceImage(directory);
             TestCancellation();
         }
@@ -42,6 +43,26 @@ internal static class CalibrationEncoderTests
         }
 
         Console.WriteLine("calibration-encoders: passed (exact reference pixels, circle and cross targets, file/stream parity, cancellation)");
+    }
+
+    private static void TestWideSectorExport()
+    {
+        Type renderer = typeof(CalibrationPhotoService).Assembly.GetType("DiscImageStudio.Services.CalibrationPatternRenderer", true)!;
+        MethodInfo export = renderer.GetMethod("RenderEncodingImage", BindingFlags.Static | BindingFlags.NonPublic)!;
+        foreach (CalibrationDiscKind kind in Enum.GetValues<CalibrationDiscKind>())
+        {
+            CalibrationParameters p = new(kind, 24, 58, kind == CalibrationDiscKind.Cd ? 8 : kind == CalibrationDiscKind.Dvd ? 16 : 64,
+                kind == CalibrationDiscKind.Cd ? 1200 : kind == CalibrationDiscKind.Dvd ? 133.3 : 74.5);
+            CalibrationTarget target = CalibrationTarget.Create(p, patternKind: CalibrationPatternKind.WideSectors);
+            BitmapSource image = (BitmapSource)export.Invoke(null, [target, CancellationToken.None])!;
+            byte[] pixels = new byte[2400 * 2400];
+            image.CopyPixels(pixels, 2400, 0);
+            Require(image.PixelWidth == 2400 && image.PixelHeight == 2400 && pixels[1200 * 2400 + 1200] == 255,
+                "coarse PNG keeps the 2400-pixel format and clear center hole");
+            Require(pixels[1750 * 2400 + 1750] == 0 && pixels[650 * 2400 + 650] == 0
+                && pixels[650 * 2400 + 1750] == 255 && pixels[1750 * 2400 + 650] == 255,
+                "exported PNG contains wide sectors rather than the fine reference image");
+        }
     }
 
     private static void TestExactReferenceImage(string directory)
@@ -188,7 +209,7 @@ internal static class CalibrationEncoderTests
                 ? new(kind, 24.5, 56.8, 8, 1200)
                 : new(kind, 24.5, 56.8, 16, 133.3);
             CalibrationTarget target = CalibrationTarget.Create(parameters);
-            Require(target.SchemaVersion == 6 && target.Cells.Count == 0 && target.ControlPoints.Count == 8,
+            Require(target.SchemaVersion == CalibrationTarget.CurrentSchemaVersion && target.Cells.Count == 0 && target.ControlPoints.Count == 8,
                 "new targets contain only radial arm controls and unlabelled concentric guides");
             foreach (double radius in target.RingRadiiMm.Where(radius => radius >= parameters.InnerRadiusMm && radius <= parameters.OuterRadiusMm))
             {
@@ -204,7 +225,7 @@ internal static class CalibrationEncoderTests
 
             string json = CalibrationSessionJson.Serialize(new(target, []));
             CalibrationTarget restored = CalibrationSessionJson.Deserialize(json).Target;
-            Require(restored.SchemaVersion == 6 && restored.Id == target.Id && restored.RingRadiiMm.SequenceEqual(target.RingRadiiMm),
+            Require(restored.SchemaVersion == CalibrationTarget.CurrentSchemaVersion && restored.Id == target.Id && restored.RingRadiiMm.SequenceEqual(target.RingRadiiMm),
                 "saving and reopening retains the complete circle and cross snapshot");
             JsonNode previousVersion = JsonNode.Parse(json)!;
             previousVersion["target"]!["schemaVersion"] = 5;

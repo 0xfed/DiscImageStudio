@@ -23,6 +23,8 @@ internal static class CalibrationBurnWorkflowTests
 
             TestCapturedRequest(directory, CalibrationDiscKind.Dvd, false);
             TestCapturedRequest(directory, CalibrationDiscKind.BluRay, false);
+            foreach (CalibrationDiscKind kind in Enum.GetValues<CalibrationDiscKind>())
+                TestCapturedRequest(directory, kind, false, coarse: true);
         }
         finally
         {
@@ -37,7 +39,7 @@ internal static class CalibrationBurnWorkflowTests
         Console.WriteLine("calibration-burn-workflow: passed (memory-only requests, saved snapshots, reload isolation)");
     }
 
-    private static void TestCapturedRequest(string directory, CalibrationDiscKind kind, bool interleave)
+    private static void TestCapturedRequest(string directory, CalibrationDiscKind kind, bool interleave, bool coarse = false)
     {
         // Constructing the shared parameter store does not enumerate or access a
         // recorder. This test never creates a burner or calls BurnAsync.
@@ -52,17 +54,19 @@ internal static class CalibrationBurnWorkflowTests
             BdImagePath = "unused-bd-image-must-not-be-read.png",
         };
         CalibrationParameters generated = ReadParameters(state, kind);
-        CalibrationTarget target = CalibrationTarget.Create(generated);
-        Require(target.SchemaVersion == 6 && target.ControlCells.Count == 4 && target.ControlPoints.Count == 8,
+        CalibrationTarget target = CalibrationTarget.Create(generated, patternKind: coarse
+            ? CalibrationPatternKind.WideSectors : CalibrationPatternKind.FineCross);
+        Require(target.SchemaVersion == CalibrationTarget.CurrentSchemaVersion && target.ControlCells.Count == 4 && target.ControlPoints.Count == 8,
             "the burn request captures the current concentric-ring and cross geometry");
         CalibrationSession original = new(target, [], CdInterleave: state.CdInterleave);
-        string path = Path.Combine(directory, $"{kind}-{interleave}.calibration.json");
+        string path = Path.Combine(directory, $"{kind}-{interleave}-{coarse}.calibration.json");
         CalibrationSessionJson.Save(path, original);
         string originalJson = File.ReadAllText(path);
         CalibrationSession activeSession = CalibrationSessionJson.Load(path);
-        Require(activeSession.Target.Parameters == generated && activeSession.Target.Id == target.Id,
+        Require(activeSession.Target.Parameters == generated && activeSession.Target.Id == target.Id
+            && activeSession.Target.IsCoarsePattern == coarse,
             "durable session restores original generation parameters and target identity");
-        Require(activeSession.Target.SchemaVersion == 6 && activeSession.Target.Cells.SequenceEqual(target.Cells),
+        Require(activeSession.Target.SchemaVersion == CalibrationTarget.CurrentSchemaVersion && activeSession.Target.Cells.SequenceEqual(target.Cells),
             "durable records retain the exact cross target geometry");
 
         OpticalWriteSpeed speed = new(300, false);
@@ -106,7 +110,7 @@ internal static class CalibrationBurnWorkflowTests
         Require(target.Parameters == generated, "original target parameters remain immutable");
 
         CalibrationSession reloadedOriginal = CalibrationSessionJson.Deserialize(originalJson);
-        Require(reloadedOriginal.Target.SchemaVersion == 6 && reloadedOriginal.Target.Cells.SequenceEqual(target.Cells),
+        Require(reloadedOriginal.Target.SchemaVersion == CalibrationTarget.CurrentSchemaVersion && reloadedOriginal.Target.Cells.SequenceEqual(target.Cells),
             "opening the saved snapshot does not reinterpret its engraving geometry");
         OpticalBurnRequest restoredRequest = CreateRequest(reloadedOriginal.Target, reloadedOriginal.CdInterleave, speed);
         Require(Produce(restoredRequest).AsSpan().SequenceEqual(expected),

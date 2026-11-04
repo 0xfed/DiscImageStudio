@@ -154,6 +154,19 @@ internal static class UiLocalizationLayoutTests
                             }
                             if (workspace == Workspace.Calibration)
                             {
+                                if (!Descendants(window).OfType<CheckBox>().Any(box => box.IsVisible && box.Name == "CoarsePatternCheckBox"))
+                                    throw new InvalidOperationException($"Coarse pattern option is missing for {family}/{language}.");
+                                shell.Calibration.UseCoarsePattern = true;
+                                shell.Calibration.CreateTargetCommand.Execute(null);
+                                shell.Calibration.StepOneExpanded = true;
+                                shell.Calibration.ShowTargetPreview = true;
+                                Pump();
+                                if (shell.Calibration.Target?.IsCoarsePattern != true)
+                                    throw new InvalidOperationException("The coarse pattern option did not create a coarse target.");
+                                Capture(window, name + "-coarse");
+                                shell.Calibration.UseCoarsePattern = false;
+                                shell.Calibration.CreateTargetCommand.Execute(null);
+                                shell.Calibration.ShowTargetPreview = false;
                                 shell.Calibration.StepTwoExpanded = true;
                                 Pump();
                                 Capture(window, name + "-photo");

@@ -4,6 +4,11 @@
 
 ## Henüz yayımlanmayan
 
+## [1.6.0] - 2026-11-04
+
+- Soluk veya sık sarımlı artı çizgileri için isteğe bağlı geniş sektörlü kalibrasyon hedefi ekle. Sırayla siyah ve beyaz dört dolu sektör, kılavuz halkalarla karışmayan kesintisiz radyal kenarlar sağlar; özgün ince artı varsayılan olarak kalır. Kaydedilen deseni önizleme, PNG dışa aktarma, CD/DVD/BD üretimi ve akışlı yazmada paylaş; beş dilde geçerli hedefi göster. Deseni schema 7 ile kaydet ve schema 6 ince artı kayıtlarını okumaya devam et. ±0.1 mm iç yarıçap ve ±512 sektör hatalarında dijital kontrastı, kaba kenar uydurmasını, dışa aktarılan pikselleri ve kayıtlı yazım anlık görüntülerini doğrula. Fiziksel disk görünürlüğü henüz doğrulanmadı; yazma gücü, ön alan veya üzerine yazma davranışı değişmedi.
+
+
 ## [1.5.0] - 2026-11-04
 
 - UDF 2.50 VAT kalıplarını ve açık disk dosya güncellemelerini CD/DVD veri projelerine genişlet; 4.7 GB M-DISC DVD-R/+R desteği ekle. Tasarımda biçim seçimi, ortak yazdırma rezervi/güncelleme paneli, proje ve yan dosyalarda ayar kaydı ve CLI `--file-system iso9660|udf250` ekle. DVD+R uyumluluk sonlandırmasını devre dışı bırakan yerel CD/DVD oturumları, oturum birim tanımlayıcıları, CD son boşluğu, kilit altında ortam/kapasite kontrolü, iptal ve eşlenmiş temizleme kullan. Değişmeyen dosya alanlarını doğrulayıp yeniden kullan; önceki sektörleri ve çizimi koruyarak değişen verileri, üstveriyi ve bağlantılı VAT tablolarını ekle. BD-R yolunu ve ISO9660/Joliet varsayılanlarını koru. Bağımsız çapraz ortam okuma, tekrarlı güncelleme ve sahte yazıcı testleri ekle. Rastgele üzerine yazılabilen ortamlar, sonlandırılmış diskler ve başka yazılımların birimleri desteklenmez; fiziksel yazım donanım doğrulaması gerektirir.

@@ -49,6 +49,7 @@ public partial class CalibrationViewModel : ObservableObject
         CancelCommand = new RelayCommand(() => _cancellation?.Cancel(), () => _cancellation is not null);
         ApplyParametersCommand = new RelayCommand(ApplyParameters, CanApplyParameters);
         InitializePhotoCommands();
+        InitializeRingCommands();
         shell.BusyChanged += () => { OnPropertyChanged(nameof(IsBusy)); RefreshCommands(); };
         // The parameter read-out under 从当前参数建新标靶 follows the shared parameter store:
         // presets, project edits and applied calibration results all re-render it.
@@ -60,14 +61,19 @@ public partial class CalibrationViewModel : ObservableObject
 
     public string ActivePatternSummary => _target is null ? string.Empty
         : L.Format("Current target: {0}", PatternLabel(_target))
-            + (_target.IsCoarsePattern == UseCoarsePattern ? string.Empty
+            + (_target.Options.PatternKind == SelectedPatternKind ? string.Empty
                 : "\n" + L.T("Create a new target to use the selected pattern."));
 
-    internal static string PatternLabel(CalibrationTarget target) => L.T(target.IsCoarsePattern
-        ? "Wide sectors (coarse)" : "Original cross (fine)");
+    internal static string PatternLabel(CalibrationTarget target) => target.Options.PatternKind switch
+    {
+        CalibrationPatternKind.ConcentricRings => L.T("Circles (measured diameters)"),
+        CalibrationPatternKind.WideSectors => L.T("Wide sectors (coarse)"),
+        _ => L.T("Original cross (fine)"),
+    };
 
     partial void OnUseCoarsePatternChanged(bool value)
     {
+        if (value) UseCirclePattern = false;
         OnPropertyChanged(nameof(ActivePatternSummary));
         RefreshCommands();
     }
@@ -141,6 +147,7 @@ public partial class CalibrationViewModel : ObservableObject
         OnPropertyChanged(nameof(ActivePatternSummary));
         UpdateFitAssessment();
         RelocalizePhoto();
+        RelocalizeRings();
     }
 
     // ---- Step column: state chips and progressive disclosure ----
@@ -152,9 +159,12 @@ public partial class CalibrationViewModel : ObservableObject
 
     public StepCardState StepTwoState => _target is null
         ? StepCardState.Pending
+        : UseRingMeasurements ? (_ringFit is null ? StepCardState.Active : StepCardState.Done)
         : IsPhotoStep ? StepCardState.Active : StepCardState.Done;
 
-    public StepCardState StepThreeState => IsTraceStep ? StepCardState.Active : StepCardState.Pending;
+    public StepCardState StepThreeState => UseRingMeasurements
+        ? (_ringFit is not null ? StepCardState.Active : StepCardState.Pending)
+        : IsTraceStep ? StepCardState.Active : StepCardState.Pending;
 
     [ObservableProperty] private bool _stepOneExpanded = true;
     [ObservableProperty] private bool _stepTwoExpanded;
@@ -214,6 +224,7 @@ public partial class CalibrationViewModel : ObservableObject
         _cancellation?.Cancel();
         _previewCancellation?.Cancel();
         _target = null;
+        ResetRingMeasurements();
         _sessionPath = null;
         OutputPath = string.Empty;
         TargetImage = null;
@@ -232,8 +243,9 @@ public partial class CalibrationViewModel : ObservableObject
 
     internal void OnWindowClosed() { _cancellation?.Cancel(); _previewCancellation?.Cancel(); }
     private bool CanUseTarget() => !IsBusy && _target is not null;
-    private bool CanGenerateTarget() => CanUseTarget() && _target!.IsCoarsePattern == UseCoarsePattern;
-    private bool CanApplyParameters() => !IsBusy && IsTraceStep && _photoTransform is not null && _fit?.Succeeded == true
+    private bool CanGenerateTarget() => CanUseTarget() && _target!.Options.PatternKind == SelectedPatternKind;
+    private bool CanApplyParameters() => !IsBusy && !UseRingMeasurements && _target?.IsRingPattern != true
+        && IsTraceStep && _photoTransform is not null && _fit?.Succeeded == true
         && SelectedCoarseCandidate is { } selected && ContourConfirmed && _previewReady
         && CandidateResidualAccepted(selected)
         && CoarseCandidates.Contains(selected)
@@ -270,8 +282,7 @@ public partial class CalibrationViewModel : ObservableObject
                     CdDiscParameters.StandardLinearVelocityMmPerSecond),
             };
             ValidateOutputParameters(p);
-            InstallTarget(CalibrationTarget.Create(p, patternKind: UseCoarsePattern
-                ? CalibrationPatternKind.WideSectors : CalibrationPatternKind.FineCross), new(), _state.CdInterleave);
+            InstallTarget(CalibrationTarget.Create(p, patternKind: SelectedPatternKind), new(), _state.CdInterleave);
             _sessionPath = null;
             OutputPath = string.Empty;
         }
@@ -312,6 +323,8 @@ public partial class CalibrationViewModel : ObservableObject
             ResetPhoto();
             _target = target;
             UseCoarsePattern = target.IsCoarsePattern;
+            UseCirclePattern = target.IsRingPattern;
+            ResetRingMeasurements();
             _cdInterleave = interleave;
             _searchCenter = options?.SearchCenter ?? target.Parameters;
             _loadedFitOptions = options ?? new();
@@ -407,7 +420,8 @@ public partial class CalibrationViewModel : ObservableObject
         if (!_installing) InvalidateFit();
     }
     private CalibrationSession Session() => new(_target ?? throw new InvalidOperationException(L.T("请先创建图案。")),
-        [], FitOptions(), _cdInterleave, PhotoSession());
+        [], FitOptions(), _cdInterleave, PhotoSession(), ReadRingMeasurements(), UseRingMeasurements,
+        UseRingMeasurements ? ReadDiameterTolerance() : null);
 
     private async Task SolveAsync()
     {
@@ -535,6 +549,11 @@ public partial class CalibrationViewModel : ObservableObject
     private void ApplyParameters()
     {
         if (!CanApplyParameters() || SelectedCoarseCandidate?.Parameters is not { } p) return;
+        ApplyCalibrationParameters(p);
+    }
+
+    private void ApplyCalibrationParameters(CalibrationParameters p)
+    {
         string ri = p.InnerRadiusMm.ToString("G17", CultureInfo.InvariantCulture);
         string ro = p.OuterRadiusMm.ToString("G17", CultureInfo.InvariantCulture);
         switch (p.Kind)
@@ -881,6 +900,8 @@ public partial class CalibrationViewModel : ObservableObject
         OpenSessionCommand.NotifyCanExecuteChanged(); SolveCommand.NotifyCanExecuteChanged();
         CancelCommand.NotifyCanExecuteChanged(); ApplyParametersCommand.NotifyCanExecuteChanged();
         RefreshPhotoCommands();
+        SolveRingsCommand?.NotifyCanExecuteChanged(); ApplyRingParametersCommand?.NotifyCanExecuteChanged();
+        ReviewRingMeasurementsCommand?.NotifyCanExecuteChanged();
     }
 
     public sealed record CoarseCandidate(string Label, CalibrationParameters Parameters,

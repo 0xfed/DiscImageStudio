@@ -29,6 +29,7 @@ internal static class CalibrationEncoderTests
             TestDvd(directory, blackPath, quadrantPath);
             TestCircleAndCrossTargets(directory);
             TestWideSectorExport();
+            TestCircleExport();
             TestExactReferenceImage(directory);
             TestCancellation();
         }
@@ -43,6 +44,30 @@ internal static class CalibrationEncoderTests
         }
 
         Console.WriteLine("calibration-encoders: passed (exact reference pixels, circle and cross targets, file/stream parity, cancellation)");
+    }
+
+    private static void TestCircleExport()
+    {
+        Type renderer = typeof(CalibrationPhotoService).Assembly.GetType("DiscImageStudio.Services.CalibrationPatternRenderer", true)!;
+        MethodInfo export = renderer.GetMethod("RenderEncodingImage", BindingFlags.Static | BindingFlags.NonPublic)!;
+        foreach (CalibrationDiscKind kind in Enum.GetValues<CalibrationDiscKind>())
+        {
+            CalibrationParameters p = new(kind, 24, 58, kind == CalibrationDiscKind.Cd ? 359849 : kind == CalibrationDiscKind.Dvd ? 2295104 : 12219392,
+                kind == CalibrationDiscKind.Cd ? 1200 : kind == CalibrationDiscKind.Dvd ? 133.3 : 74.5);
+            var target = CalibrationTarget.Create(p, patternKind: CalibrationPatternKind.ConcentricRings);
+            var image = (BitmapSource)export.Invoke(null, [target, CancellationToken.None])!;
+            byte[] pixels = new byte[2400 * 2400];
+            image.CopyPixels(pixels, 2400, 0);
+            double centre = kind == CalibrationDiscKind.Cd ? 1200 : 1199.5;
+            double scale = CalibrationReferencePattern.MillimetresPerPixel(58, kind);
+            foreach (double radius in target.RingRadiiMm)
+            {
+                int x = (int)Math.Round(centre + radius / scale), y = (int)Math.Round(centre);
+                Require(pixels[y * 2400 + x] == 0, "circle PNG preserves the recorded ring centre positions");
+            }
+            int between = (int)Math.Round(centre + (target.RingRadiiMm[0] + target.RingRadiiMm[1]) / (2 * scale));
+            Require(pixels[(int)Math.Round(centre) * 2400 + between] == 255, "circle PNG has no radial cross between the rings");
+        }
     }
 
     private static void TestWideSectorExport()

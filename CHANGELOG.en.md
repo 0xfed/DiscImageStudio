@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## [1.7.0] - 2026-11-04
+
+- Add concentric-circle diameter calibration: seven separate ring lines and manual diameters from at least three identified circles estimate inner/outer radii under the saved sector count, density and pitch shape. Reuse complete circles from schema 6/7 original-cross records without a visible cross or photo. Show per-ring and overall diameter residuals, gate application on tolerance and checked identities, invalidate edited results, and persist measurements/method/tolerance in schema 8. Share the pattern across CD/DVD/BD export and streaming, with all five interface/documentation languages. Synthetic checks cover 2 mm inner-radius and 1 mm outer-radius errors, readings rounded to 0.01 mm, nonuniform DVD pitch and invalid inputs; physical visibility and accuracy still need hardware validation.
+
 ## [1.6.0] - 2026-11-04
 
 - Add an optional wide-sector calibration target for faint or tightly wound cross lines. Four alternating filled sectors provide continuous radial edges without guide-ring ambiguity; the original fine cross remains the default. Share the saved pattern across preview, PNG export, CD/DVD/BD generation and streaming, show the active target in all five interface languages, and record the pattern in schema 7 while retaining schema 6 fine-cross records. Validate digital contrast under ±0.1 mm inner-radius and ±512-sector errors, coarse-edge fitting, exported pixels and saved burn snapshots. Physical-disc visibility remains unverified; no recording power, preamble or overwrite behavior changes.

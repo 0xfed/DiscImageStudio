@@ -76,7 +76,7 @@ public sealed record CalibrationParameters(
     }
 }
 
-public enum CalibrationPatternKind { FineCross, WideSectors }
+public enum CalibrationPatternKind { FineCross, WideSectors, ConcentricRings }
 
 /// <summary>Captured pattern identity and legacy geometry options.</summary>
 public sealed record CalibrationPatternOptions(
@@ -183,13 +183,15 @@ public sealed record CalibrationCell(
 
 public sealed class CalibrationTarget
 {
-    public const int CurrentSchemaVersion = 7;
+    public const int CurrentSchemaVersion = 8;
+    public const int LegacyPatternSchemaVersion = 7;
     public const int LegacyFineCrossSchemaVersion = 6;
     private readonly Dictionary<string, CalibrationCell> _byId;
     private readonly Dictionary<(string CellId, int CornerIndex), CalibrationControlPoint> _controlPointByReference;
     private readonly CalibrationGeometry _generatedGeometry;
     private readonly double _drawingInnerRadiusMm;
     private readonly double _drawingOuterRadiusMm;
+    private readonly double _ringThicknessMm;
 
     [JsonConstructor]
     public CalibrationTarget(int schemaVersion, string id, CalibrationParameters parameters,
@@ -204,11 +206,19 @@ public sealed class CalibrationTarget
         _generatedGeometry = new(Parameters);
         _drawingInnerRadiusMm = _generatedGeometry.AtProgress(Parameters.DrawingStartSector / (double)Parameters.Sectors).Radius;
         _drawingOuterRadiusMm = Parameters.DrawingOuterRadiusMm;
-        Groups = Array.AsReadOnly(BuildGroups(Parameters));
+        Groups = Array.AsReadOnly(IsRingPattern ? [] : BuildGroups(Parameters));
         double pixelSizeMm = CalibrationReferencePattern.MillimetresPerPixel(Parameters.OuterRadiusMm, Parameters.Kind);
-        RingRadiiMm = Array.AsReadOnly(IsCoarsePattern
+        RingRadiiMm = Array.AsReadOnly(IsRingPattern
+            ? new[] { .06, .18, .34, .50, .66, .82, .94 }.Select(fraction =>
+                _generatedGeometry.AtProgress(Parameters.DrawingStartSector / (double)Parameters.Sectors
+                    + fraction * ((Parameters.DrawingEndSectorExclusive == 0 ? Parameters.Sectors
+                        : Parameters.DrawingEndSectorExclusive) - Parameters.DrawingStartSector) / Parameters.Sectors).Radius).ToArray()
+            : IsCoarsePattern
             ? Array.Empty<double>()
             : CalibrationReferencePattern.RingRadiiPixels.Select(radius => radius * pixelSizeMm).ToArray());
+        _ringThicknessMm = IsCoarsePattern ? 0 : IsRingPattern
+            ? Math.Min(.15, RingRadiiMm.Zip(RingRadiiMm.Skip(1), (a, b) => b - a).Min() / 4)
+            : CalibrationReferencePattern.NominalLineWidthPixels * pixelSizeMm;
         ControlCells = Array.AsReadOnly(Cells.Concat(BuildSpineCells(Groups)).ToArray());
         _byId = ControlCells.ToDictionary(cell => cell.Id, StringComparer.Ordinal);
         _controlPointByReference = new();
@@ -250,10 +260,10 @@ public sealed class CalibrationTarget
     public bool IsCoarsePattern => Options.PatternKind == CalibrationPatternKind.WideSectors;
 
     [JsonIgnore]
-    public double RingThicknessMm => IsCoarsePattern
-        ? 0
-        : CalibrationReferencePattern.NominalLineWidthPixels
-        * CalibrationReferencePattern.MillimetresPerPixel(Parameters.OuterRadiusMm, Parameters.Kind);
+    public bool IsRingPattern => Options.PatternKind == CalibrationPatternKind.ConcentricRings;
+
+    [JsonIgnore]
+    public double RingThicknessMm => _ringThicknessMm;
 
     [JsonIgnore]
     public IReadOnlyList<CalibrationCell> ControlCells { get; }
@@ -291,6 +301,7 @@ public sealed class CalibrationTarget
     public void Validate()
     {
         if (SchemaVersion != CurrentSchemaVersion
+            && (SchemaVersion != LegacyPatternSchemaVersion || IsRingPattern)
             && (SchemaVersion != LegacyFineCrossSchemaVersion
                 || Options.PatternKind != CalibrationPatternKind.FineCross))
             throw new ArgumentException(L.F($"不支持的标定会话版本 {SchemaVersion}。"));
@@ -383,6 +394,14 @@ public sealed class CalibrationTarget
         if (radiusSquared < DrawingInnerRadiusMm * DrawingInnerRadiusMm - 1e-10
             || radiusSquared > DrawingOuterRadiusMm * DrawingOuterRadiusMm + 1e-10)
             return 255;
+        if (IsRingPattern)
+        {
+            double radius = Math.Sqrt(radiusSquared);
+            double halfWidth = RingThicknessMm / 2;
+            for (int index = 0; index < RingRadiiMm.Count; index++)
+                if (Math.Abs(radius - RingRadiiMm[index]) <= halfWidth) return 0;
+            return 255;
+        }
         if (IsCoarsePattern)
         {
             // Four 90-degree sectors retain a 50% dark duty cycle when angular

@@ -25,6 +25,8 @@ public sealed class CalibrationPhotoCanvas : FrameworkElement
     public static readonly DependencyProperty IsPhotoStepProperty = DependencyProperty.Register(nameof(IsPhotoStep), typeof(bool), typeof(CalibrationPhotoCanvas), new FrameworkPropertyMetadata(true, Render, OnViewportChanged));
     public static readonly DependencyProperty IsRectificationPreviewProperty = DependencyProperty.Register(nameof(IsRectificationPreview), typeof(bool), typeof(CalibrationPhotoCanvas), new FrameworkPropertyMetadata(false, Render, OnViewportChanged));
     public static readonly DependencyProperty IsTargetPreviewProperty = DependencyProperty.Register(nameof(IsTargetPreview), typeof(bool), typeof(CalibrationPhotoCanvas), new FrameworkPropertyMetadata(false, Render, OnViewportChanged));
+    public static readonly DependencyProperty TargetPreviewCaptionProperty = DependencyProperty.Register(nameof(TargetPreviewCaption), typeof(string), typeof(CalibrationPhotoCanvas),
+        new FrameworkPropertyMetadata(null, Render, (sender, _) => ((CalibrationPhotoCanvas)sender).RefreshSelectionDescription()));
     public static readonly DependencyProperty CanvasRadiusMmProperty = DependencyProperty.Register(nameof(CanvasRadiusMm), typeof(double), typeof(CalibrationPhotoCanvas), new FrameworkPropertyMetadata(63.0, Render, OnViewportChanged));
     public static readonly DependencyProperty TargetCanvasRadiusMmProperty = DependencyProperty.Register(nameof(TargetCanvasRadiusMm), typeof(double), typeof(CalibrationPhotoCanvas), new FrameworkPropertyMetadata(60.0, Render));
     public static readonly DependencyProperty BoundaryPointsProperty = DependencyProperty.Register(nameof(BoundaryPoints), typeof(IEnumerable<CalibrationPhotoBoundaryPoint>), typeof(CalibrationPhotoCanvas), new FrameworkPropertyMetadata(null, Render, OnCollectionChanged));
@@ -48,6 +50,7 @@ public sealed class CalibrationPhotoCanvas : FrameworkElement
     public bool IsPhotoStep { get => (bool)GetValue(IsPhotoStepProperty); set => SetValue(IsPhotoStepProperty, value); }
     public bool IsRectificationPreview { get => (bool)GetValue(IsRectificationPreviewProperty); set => SetValue(IsRectificationPreviewProperty, value); }
     public bool IsTargetPreview { get => (bool)GetValue(IsTargetPreviewProperty); set => SetValue(IsTargetPreviewProperty, value); }
+    public string? TargetPreviewCaption { get => (string?)GetValue(TargetPreviewCaptionProperty); set => SetValue(TargetPreviewCaptionProperty, value); }
     public double CanvasRadiusMm { get => (double)GetValue(CanvasRadiusMmProperty); set => SetValue(CanvasRadiusMmProperty, value); }
     public double TargetCanvasRadiusMm { get => (double)GetValue(TargetCanvasRadiusMmProperty); set => SetValue(TargetCanvasRadiusMmProperty, value); }
     public IEnumerable<CalibrationPhotoBoundaryPoint>? BoundaryPoints { get => (IEnumerable<CalibrationPhotoBoundaryPoint>?)GetValue(BoundaryPointsProperty); set => SetValue(BoundaryPointsProperty, value); }
@@ -136,6 +139,11 @@ public sealed class CalibrationPhotoCanvas : FrameworkElement
 
     private void RefreshSelectionDescription()
     {
+        if (ShowingTarget && TargetPreviewCaption is { Length: > 0 } caption)
+        {
+            SetValue(SelectionDescriptionPropertyKey, caption);
+            return;
+        }
         if (_boundaryDrag is { } boundary)
         {
             SetValue(SelectionDescriptionPropertyKey, boundary.Boundary == CalibrationPhotoBoundaryKind.OuterEdge
@@ -299,7 +307,7 @@ public sealed class CalibrationPhotoCanvas : FrameworkElement
             }
         }
         if (ShowingTarget)
-            DrawCaption(dc, Image is null ? L.T("标靶预览 · 导入照片后开始矫正") : L.T("刻录图案预览 · 关闭预览后继续照片标定"));
+            DrawCaption(dc, TargetPreviewCaption ?? (Image is null ? L.T("标靶预览 · 导入照片后开始矫正") : L.T("刻录图案预览 · 关闭预览后继续照片标定")));
         else if (IsRectificationPreview) DrawCaption(dc, L.T("矫正预览 · 确认后开始描线"));
     }
 
@@ -389,9 +397,7 @@ public sealed class CalibrationPhotoCanvas : FrameworkElement
         canvas._selectedTrace = null;
         canvas._selectedBoundary = null;
         canvas.ResetView();
-        canvas.SetValue(SelectionDescriptionPropertyKey, canvas.IsPhotoStep
-            ? L.T("滚轮缩放，右键平移；拖动控制点贴合边缘。")
-            : L.T("滚轮缩放，右键平移；点击添加点，拖动已有点修正位置。") );
+        canvas.RefreshSelectionDescription();
     }
     private static void OnCollectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

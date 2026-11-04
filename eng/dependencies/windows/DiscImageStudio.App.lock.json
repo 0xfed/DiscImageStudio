@@ -25,54 +25,54 @@
       "discimagestudio.bluray": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Core": "[1.6.0, )",
-          "DiscImageStudio.Iso": "[1.6.0, )"
+          "DiscImageStudio.Core": "[1.7.0, )",
+          "DiscImageStudio.Iso": "[1.7.0, )"
         }
       },
       "discimagestudio.burning": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.6.0, )"
+          "DiscImageStudio.Localization": "[1.7.0, )"
         }
       },
       "discimagestudio.cd": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Core": "[1.6.0, )",
-          "DiscImageStudio.ImageIO": "[1.6.0, )",
-          "DiscImageStudio.Iso": "[1.6.0, )"
+          "DiscImageStudio.Core": "[1.7.0, )",
+          "DiscImageStudio.ImageIO": "[1.7.0, )",
+          "DiscImageStudio.Iso": "[1.7.0, )"
         }
       },
       "discimagestudio.core": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.6.0, )"
+          "DiscImageStudio.Localization": "[1.7.0, )"
         }
       },
       "discimagestudio.dvd": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Core": "[1.6.0, )",
-          "DiscImageStudio.Localization": "[1.6.0, )",
-          "DvdImageSolver": "[1.6.0, )"
+          "DiscImageStudio.Core": "[1.7.0, )",
+          "DiscImageStudio.Localization": "[1.7.0, )",
+          "DvdImageSolver": "[1.7.0, )"
         }
       },
       "discimagestudio.imageio": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.6.0, )"
+          "DiscImageStudio.Localization": "[1.7.0, )"
         }
       },
       "discimagestudio.imaging": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.6.0, )"
+          "DiscImageStudio.Localization": "[1.7.0, )"
         }
       },
       "discimagestudio.iso": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.6.0, )"
+          "DiscImageStudio.Localization": "[1.7.0, )"
         }
       },
       "discimagestudio.localization": {
@@ -81,10 +81,10 @@
       "dvdimagesolver": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Core": "[1.6.0, )",
-          "DiscImageStudio.ImageIO": "[1.6.0, )",
-          "DiscImageStudio.Iso": "[1.6.0, )",
-          "DiscImageStudio.Localization": "[1.6.0, )"
+          "DiscImageStudio.Core": "[1.7.0, )",
+          "DiscImageStudio.ImageIO": "[1.7.0, )",
+          "DiscImageStudio.Iso": "[1.7.0, )",
+          "DiscImageStudio.Localization": "[1.7.0, )"
         }
       }
     }

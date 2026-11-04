@@ -26,6 +26,18 @@ Tek bir kesintisiz siyah/beyaz kenarı içten dışa izleyin ve her dönüşü t
 
 Bu tasarım, test edilen geometri benzetimlerinde görünürlüğü artırır; her ofseti düzeltmez, düz çizgi garanti etmez veya fiziksel disk kontrastını doğrulamaz. Testler ±0.1 mm iç yarıçap hatalarını, ±512 sektör ofsetini ve 0.1 mm radyal gözlem aralığındaki ortalamayı kapsar. Fiziksel yazım donanım doğrulaması gerektirir.
 
+### Ölçülen halka çaplarından kalibrasyon
+
+Kalibrasyon içinde Kalibrasyon diski oluştur bölümünü açın, **Çap kalibrasyonu için eş merkezli halkalar kullan** seçeneğini seçip geçerli parametrelerden hedef oluşturun. Yeni hedef, artı içermeyen 7 eş merkezli çizgiden oluşur. Çizgi genişliği normalde 0.15 mm olup çok dar çizim halkalarında küçülür. Halkalar, kaydedilen çizilebilir kayıt ilerlemesinin %6, %18, %34, %50, %66, %82, %94 noktalarındadır ve açısal faza bağlı değildir.
+
+1. Bu sayfadan oluşturun veya akışla yazın ve eşleşen `.calibration.json` dosyasını saklayın. Eşleşen özgün artı kaydını açıp **Ölçülen halka çaplarını kullan** seçeneğiyle, artıyı görmeden mevcut tam halkaları da kullanabilirsiniz. Geniş sektör hedeflerinde halka yoktur.
+2. Tam halkaları en içten dışa numaralandırın; kayıt alanı kenarlarını saymayın. Çapı merkezden geçerek karşılıklı çizgi ortaları arasında ölçün. Tablodaki oluşturulan çaplar yalnızca tanımaya yardımcıdır; gerçek ölçümleri mm cinsinden ondalık noktayla girin, ölçülmeyenleri boş bırakın.
+3. İç ve dış halkalar dahil, kayıt ilerlemesinin en az %50 kısmını kapsayan en az 3 halka ölçün. İdeal modelde iki bilinen konum iki uç noktayı belirler; ek halkalar tutarlılığı denetler.
+4. **Halkalardan iç ve dış yarıçapları hesapla** düğmesine basın. Tahmini yarıçapları, her çap kalıntısını ve RMS/en büyük kalıntıları inceleyin. Varsayılan en büyük çap kalıntısı 0.10 mm değerindedir; bu bir uyum tutarlılığı eşiğidir, ölçüm doğruluğu değildir.
+5. Halka numaraları ve ölçülen çapları kontrol edip onay kutusunu seçin, parametreleri uygulayın ve projeyi kaydedin. Çap veya tolerans değişikliği eski sonucu ve onayı geçersiz kılar; kayıt yeniden açıldığında da tekrar hesaplama gerekir.
+
+Hesaplama, kayıtlı sektör sayısını, doğrusal yoğunluğu ve iz aralığı şeklini sabit tutup yalnızca iç ve dış yarıçapları uydurur; açıyı veya yeni iz aralığı şeklini uydurmaz. Sabit iz aralığı yaklaşık olarak `r(q)^2 = ri^2 + q*(ro^2-ri^2)` bağıntısını sağlar; program sonucu kayıtlı tam iz modeliyle iyileştirir. Yapay kontroller 2 mm iç yarıçap hatasını, 1 mm dış yarıçap hatasını ve 0.01 mm değerine yuvarlanmış çapları kapsar; fiziksel disk doğruluğunu garanti etmez. Ölçüm aracı hatası, çizgi genişliği, yanlış halka eşleşmeleri ve bilinmeyen iz aralığı değişimleri sonucu etkiler.
+
 ## Birinci adım: fotoğraf düzeltme
 
 1. Fotoğrafı veya taramayı içe aktarın; standart 12 cm disk veya 8 cm mini disk seçin. Görsel, etkileşime uygun boyuta küçültülüp kayıtta saklanır.
@@ -58,7 +70,7 @@ Birinci adıma dönerek özgün fotoğraf incelenebilir. Sınırlar veya disk bo
 
 Kalibrasyon kaydı oluşturma anlık görüntüsünü, küçültülmüş özgün fotoğrafı, kontur kontrol noktalarını, disk boyutunu ve tüm eğri noktalarını saklar; özgün fotoğraf yoluna bağımlı değildir. Yeniden açıldığında kaydedilen sınırlardan düzeltme geri yüklenir; izlemeye devam edilebilir veya yeniden hesaplanabilir. Uydurma adayları yeniden hesaplanmalıdır.
 
-Yeni kayıtlar seçilen deseni schema 7 ile saklar. Schema 6 ince artı kayıtları okunabilir ve özgün desenini korur. Daha eski tarak desenleri taşınmaz. Her yazılmış diski kendi kayıtlı dosyasıyla kullanın.
+Yeni kayıtlar şema 8 kullanır; deseni, ölçülen halka çaplarını, ölçüm yöntemini ve çap toleransını saklar. Şema 7 ince artı/geniş sektör ve şema 6 ince artı kayıtları okunabilir. Eski tarak kayıtları taşınmaz. Her yazılmış disk için kendi özgün kaydını kullanın.
 
 ## Doğrulama kapsamı
 

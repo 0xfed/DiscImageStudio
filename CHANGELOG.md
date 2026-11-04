@@ -4,6 +4,16 @@
 
 ## Unreleased
 
+## [1.7.0] - 2026-11-04
+
+### 中文
+
+- 新增同心圆直径标定：7 条独立圆线，可输入至少三个已知圆环的实测直径，在保存的扇区数、线密度与轨距形状下估计内外半径。也可利用 schema 6/7 原始十字记录中的完整圆环，无需可见十字或照片。显示逐环与整体直径残差，以容差和核对确认控制应用；编辑后失效，schema 8 保存测量方式、数值和容差。五语界面、说明及 CD/DVD/BD 导出/串流共用图案。合成测试覆盖 2 mm 内半径和 1 mm 外半径误差、0.01 mm 舍入读数、非均匀 DVD 轨距及错误输入；实体光盘可见度和精度仍需实测。
+
+### English
+
+- Add concentric-circle diameter calibration: seven separate ring lines and manual diameters from at least three identified circles estimate inner/outer radii under the saved sector count, density and pitch shape. Reuse complete circles from schema 6/7 original-cross records without a visible cross or photo. Show per-ring and overall diameter residuals, gate application on tolerance and checked identities, invalidate edited results, and persist measurements/method/tolerance in schema 8. Share the pattern across CD/DVD/BD export and streaming, with all five interface/documentation languages. Synthetic checks cover 2 mm inner-radius and 1 mm outer-radius errors, readings rounded to 0.01 mm, nonuniform DVD pitch and invalid inputs; physical visibility and accuracy still need hardware validation.
+
 ## [1.6.0] - 2026-11-04
 
 ### 中文

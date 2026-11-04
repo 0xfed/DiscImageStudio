@@ -23,6 +23,7 @@ public partial class BurnViewModel : ObservableObject
     private readonly DesignViewModel _design;
     private readonly IOpticalDiscBurner _opticalDiscBurner;
     private CancellationTokenSource? _burnCancellation;
+    private int _burnDeviceRefreshRevision;
     private int _burnWriteSpeedRefreshRevision;
     private int _burnPreparationRevision;
     private string? _sourceIdentity;
@@ -37,6 +38,7 @@ public partial class BurnViewModel : ObservableObject
     private string? _speedStatusError;
     private bool _isRefreshingDevices;
     private bool _isRefreshingSpeeds;
+    private bool _isUpdatingDeviceChoices;
 
     [ObservableProperty]
     private IReadOnlyList<OpticalBurnDevice>? _devices;
@@ -219,6 +221,8 @@ public partial class BurnViewModel : ObservableObject
     private bool CanStartBurn()
         => !_shell.IsBusy
             && !_isPreparingBurn
+            && !_isRefreshingDevices
+            && !_isRefreshingSpeeds
             && SelectedDevice is not null
             && ConfirmChecked
             && (!UseCalibrationPattern || _shell.Calibration.IsSelectedPatternCurrent);
@@ -246,6 +250,7 @@ public partial class BurnViewModel : ObservableObject
 
     partial void OnSelectedDeviceChanged(OpticalBurnDevice? value)
     {
+        if (_isUpdatingDeviceChoices) return;
         InvalidateConfirmation();
         _ = RefreshWriteSpeedsAsync();
     }
@@ -445,22 +450,35 @@ public partial class BurnViewModel : ObservableObject
             return;
         }
 
-        Devices = null;
+        int revision = ++_burnDeviceRefreshRevision;
         _deviceStatusError = null;
         _isRefreshingDevices = true;
+        InvalidateConfirmation();
         DeviceStatusText = L.T("正在检测刻录机…");
         try
         {
             IReadOnlyList<OpticalBurnDevice> devices =
                 await _opticalDiscBurner.GetDevicesAsync();
-            Devices = devices;
-            SelectedDevice = devices.Count == 0 ? null : devices[0];
+            if (revision != _burnDeviceRefreshRevision) return;
+            OpticalBurnDevice? selected = devices.FirstOrDefault(device => device.Id == SelectedDevice?.Id)
+                ?? devices.FirstOrDefault();
+            // Replacing ItemsSource can briefly clear the two-way SelectedItem binding.
+            // Keep that transient null from erasing the speed before the same drive is restored.
+            _isUpdatingDeviceChoices = true;
+            try
+            {
+                Devices = devices;
+                SelectedDevice = selected;
+            }
+            finally { _isUpdatingDeviceChoices = false; }
             DeviceStatusText = devices.Count == 0
                 ? L.T("未检测到支持 IMAPI2 的 CD/DVD/BD 刻录机。")
                 : L.F($"检测到 {devices.Count} 台刻录机");
+            await RefreshWriteSpeedsAsync();
         }
         catch (Exception exception)
         {
+            if (revision != _burnDeviceRefreshRevision) return;
             Devices = null;
             SelectedDevice = null;
             _deviceStatusError = exception.Message;
@@ -468,8 +486,11 @@ public partial class BurnViewModel : ObservableObject
         }
         finally
         {
-            _isRefreshingDevices = false;
-            UpdateActionState();
+            if (revision == _burnDeviceRefreshRevision)
+            {
+                _isRefreshingDevices = false;
+                UpdateActionState();
+            }
         }
     }
 
@@ -481,9 +502,6 @@ public partial class BurnViewModel : ObservableObject
         }
 
         int revision = ++_burnWriteSpeedRefreshRevision;
-        OpticalWriteSpeed? previousSpeed = SelectedSpeed?.Speed;
-        Speeds = [BurnWriteSpeedOption.Automatic];
-        SelectedSpeed = BurnWriteSpeedOption.Automatic;
         _supportedSpeeds = null;
         _speedStatusError = null;
 
@@ -492,6 +510,8 @@ public partial class BurnViewModel : ObservableObject
             // This call owns the latest revision, so it also clears the in-flight marker the
             // superseded probe will no longer clear.
             _isRefreshingSpeeds = false;
+            Speeds = [BurnWriteSpeedOption.Automatic];
+            SelectedSpeed = BurnWriteSpeedOption.Automatic;
             IsSpeedComboEnabled = false;
             IsSpeedRefreshEnabled = false;
             SpeedStatusText = L.T("请先选择刻录机。");
@@ -500,6 +520,9 @@ public partial class BurnViewModel : ObservableObject
 
         OpticalBurnMediaKind mediaKind = CurrentMediaKind;
         _isRefreshingSpeeds = true;
+        // Leave the current choice visible while checking it. Clearing it here made a
+        // second overlapping query mistake a deliberate speed for Automatic.
+        InvalidateConfirmation();
         IsSpeedComboEnabled = false;
         IsSpeedRefreshEnabled = false;
         SpeedStatusText = L.T("正在读取当前盘片支持的刻录速度…");
@@ -518,11 +541,12 @@ public partial class BurnViewModel : ObservableObject
             options.AddRange(speeds.Select(speed => new BurnWriteSpeedOption(
                 speed,
                 FormatBurnWriteSpeed(speed, mediaKind))));
-            Speeds = options;
-            _supportedSpeeds = speeds;
+            OpticalWriteSpeed? previousSpeed = SelectedSpeed?.Speed;
             int selectedIndex = previousSpeed is null
                 ? 0
                 : options.FindIndex(option => option.Speed == previousSpeed);
+            Speeds = options;
+            _supportedSpeeds = speeds;
             SelectedSpeed = selectedIndex < 0 ? options[0] : options[selectedIndex];
             SpeedStatusText = speeds.Count == 0
                 ? L.T("当前盘片未报告可选速度，将使用刻录接口的保守回退设置。")
@@ -533,6 +557,8 @@ public partial class BurnViewModel : ObservableObject
         {
             if (revision == _burnWriteSpeedRefreshRevision)
             {
+                Speeds = [BurnWriteSpeedOption.Automatic];
+                SelectedSpeed = BurnWriteSpeedOption.Automatic;
                 _speedStatusError = exception.Message;
                 SpeedStatusText =
                     L.T("未能读取当前盘片速度，将使用刻录接口的保守回退设置：") + exception.Message;
@@ -545,6 +571,7 @@ public partial class BurnViewModel : ObservableObject
                 _isRefreshingSpeeds = false;
                 IsSpeedComboEnabled = true;
                 IsSpeedRefreshEnabled = true;
+                InvalidateConfirmation();
             }
         }
     }
@@ -953,10 +980,19 @@ public partial class BurnViewModel : ObservableObject
     /// <summary>One selectable write speed. The automatic entry names itself in the current
     /// language, so the label is computed and can notify without replacing the list (which
     /// would disturb the selection and the burn confirmation).</summary>
-    public sealed record BurnWriteSpeedOption(
-        OpticalWriteSpeed? Speed,
-        string? SpeedLabel) : INotifyPropertyChanged
+    public sealed class BurnWriteSpeedOption : INotifyPropertyChanged
     {
+        public BurnWriteSpeedOption(OpticalWriteSpeed? speed, string? speedLabel)
+        {
+            Speed = speed;
+            SpeedLabel = speedLabel;
+        }
+
+        // WPF subscribes to PropertyChanged as it renders labels. Reference identity keeps
+        // those subscriptions from changing the equality/hash used by ComboBox selection.
+        public OpticalWriteSpeed? Speed { get; }
+        public string? SpeedLabel { get; }
+
         public static BurnWriteSpeedOption Automatic { get; } = new(null, null);
 
         public string DisplayName => Speed is null

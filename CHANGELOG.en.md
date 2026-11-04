@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## [1.8.1] - 2026-11-04
+
+- Prevent the speed dropdown from reverting when labels bind, and preserve the selected speed when refreshing disc or recorder information, including calibration burns. Keep the Automatic fallback when the current drive and disc do not report the chosen speed. Add regressions for stable option identity, delayed recorder responses and speed selection.
+
 ## [1.8.0] - 2026-11-04
 
 - Add an experimental DVD visual selector: choose the least-winding black/white boundary from 21 I bands and 21 O bands to estimate coarse inner/outer radius starting values without a ruler or photo. ISO and streaming output sample DVD codeword positions directly to avoid raster phase aliasing; preview numbers are not burned, and PNG export is disabled for this pattern. Schema 9 saves the test range and band choices, requires recalculation after reopening or editing, and blocks applying edge selections. Update all five interface/documentation languages and cover encoding, estimation, legacy records and invalidation rules; physical-disc readability and final accuracy remain unverified.

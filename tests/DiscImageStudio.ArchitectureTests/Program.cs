@@ -119,6 +119,7 @@ CalibrationPhotoCanvasTests.Run();
 DesignCanvasZoomTests.Run();
 CalibrationBurnWorkflowTests.Run();
 CalibrationBurnSourceTests.Run();
+BurnWriteSpeedSelectionTests.Run();
 CalibrationOutputPublisherTests.Run();
 CalibrationPhotoViewModelTests.Run();
 CalibrationRingViewModelTests.Run();

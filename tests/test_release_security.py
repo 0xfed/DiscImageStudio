@@ -117,6 +117,17 @@ class ReleaseSecurityTests(unittest.TestCase):
         self.assertIn("RELEASE_MANIFEST: ${{ needs.inspect.outputs.manifest }}", publisher)
         self.assertIn("actions: read", publisher)
 
+    def test_windows_no_build_validations_follow_the_solution_build(self):
+        workflow = (ROOT / ".github/workflows/build.yml").read_text()
+        windows = workflow.split("  windows:\n", 1)[1]
+        steps = re.split(r"^      - ", windows, flags=re.MULTILINE)
+        builds = [i for i, step in enumerate(steps)
+                  if re.search(r"run:\s+dotnet build DiscImageStudio\.slnx\b", step)]
+        self.assertEqual(len(builds), 1, "Windows CI must build the solution once before executing it")
+        for index, step in enumerate(steps):
+            if "--no-build" in step:
+                self.assertGreater(index, builds[0], "A --no-build validation runs before its executable exists")
+
     def publisher_scenario(self, *, published=False, tag_sha=None, different_run=False, failure=None):
         """All API, storage and upload transports are mocked; never use the network."""
         with tempfile.TemporaryDirectory() as directory:

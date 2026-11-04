@@ -64,7 +64,6 @@ internal static class UiLocalizationLayoutTests
         string? fatal = null;
         try
         {
-            Application.ResourceAssembly = typeof(MainWindow).Assembly;
             application = AppHost.CreateApplication(ShutdownMode.OnExplicitShutdown, AppTheme.Dark, L.Chinese);
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
             TempFiles.TryConfigureCacheDirectory(Path.Combine(temporary, "cache"));

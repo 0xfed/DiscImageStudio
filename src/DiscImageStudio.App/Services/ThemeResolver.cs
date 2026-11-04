@@ -48,7 +48,7 @@ internal static class ThemeResolver
             int index = merged.Count == 0 ? 0 : 1;
             merged.Insert(index, new ResourceDictionary
             {
-                Source = new Uri("/Themes/" + LightPaletteName, UriKind.Relative),
+                Source = new Uri("pack://application:,,,/DiscImageStudio;component/Themes/" + LightPaletteName),
             });
         }
         else if (!wantsLight && wasLight)

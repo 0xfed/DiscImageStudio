@@ -166,19 +166,19 @@
     <!-- Fonts: embedded HarmonyOS Sans SC covers Latin + CJK for the whole UI; Cascadia Mono stays
          the terminal/log face with Microsoft YaHei UI kept as the last system fallback. -->
     <FontFamily x:Key="AppFontFamily">
-        pack://application:,,,/Assets/Fonts/HarmonyOS_Sans_SC_Regular.ttf#HarmonyOS Sans SC,
-        pack://application:,,,/Assets/Fonts/HarmonyOS_Sans_SC_Medium.ttf#HarmonyOS Sans SC,
-        pack://application:,,,/Assets/Fonts/HarmonyOS_Sans_SC_Bold.ttf#HarmonyOS Sans SC,
+        pack://application:,,,/DiscImageStudio;component/Assets/Fonts/HarmonyOS_Sans_SC_Regular.ttf#HarmonyOS Sans SC,
+        pack://application:,,,/DiscImageStudio;component/Assets/Fonts/HarmonyOS_Sans_SC_Medium.ttf#HarmonyOS Sans SC,
+        pack://application:,,,/DiscImageStudio;component/Assets/Fonts/HarmonyOS_Sans_SC_Bold.ttf#HarmonyOS Sans SC,
         Microsoft YaHei UI, Segoe UI
     </FontFamily>
     <FontFamily x:Key="MonoFontFamily">
         Cascadia Mono, Consolas,
-        pack://application:,,,/Assets/Fonts/HarmonyOS_Sans_SC_Regular.ttf#HarmonyOS Sans SC,
+        pack://application:,,,/DiscImageStudio;component/Assets/Fonts/HarmonyOS_Sans_SC_Regular.ttf#HarmonyOS Sans SC,
         Microsoft YaHei UI
     </FontFamily>
 
     <!-- App icon art -->
-    <ImageSource x:Key="AppIconSource">pack://application:,,,/Assets/DiscImageStudio-256.png</ImageSource>
+    <ImageSource x:Key="AppIconSource">pack://application:,,,/DiscImageStudio;component/Assets/DiscImageStudio-256.png</ImageSource>
 
     <!-- Window control glyphs (10x10, 1px strokes, aligned to the reference chrome).
          Every content icon (navigation, cards, dialogs) comes from the Lucide set via

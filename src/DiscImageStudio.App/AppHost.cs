@@ -32,12 +32,12 @@ internal static class AppHost
         };
         application.Resources.MergedDictionaries.Add(new ResourceDictionary
         {
-            Source = new Uri("/Themes/Tokens.xaml", UriKind.Relative),
+            Source = new Uri("pack://application:,,,/DiscImageStudio;component/Themes/Tokens.xaml"),
         });
         ThemeResolver.Apply(application, theme);
         application.Resources.MergedDictionaries.Add(new ResourceDictionary
         {
-            Source = new Uri("/Themes/Controls.xaml", UriKind.Relative),
+            Source = new Uri("pack://application:,,,/DiscImageStudio;component/Themes/Controls.xaml"),
         });
         return application;
     }

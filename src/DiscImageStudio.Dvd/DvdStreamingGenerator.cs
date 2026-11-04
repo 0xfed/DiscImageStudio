@@ -1,6 +1,7 @@
 using DiscImageStudio.Localization;
 using System.Diagnostics;
 using DiscImageStudio.Core;
+using DiscImageStudio.Core.Calibration;
 using DvdImageSolver;
 using DvdImageSolver.Encoding;
 using DvdImageSolver.Solver;
@@ -245,6 +246,38 @@ public static class DvdStreamingGenerator
             summary.BytesWritten,
             summary.ControlledWords,
             summary.Elapsed);
+    }
+
+    /// <summary>Encodes the immutable calibration record. Visual selectors are sampled
+    /// directly at payload codeword positions, avoiding raster aliasing and layout scaling.</summary>
+    public static DvdStreamingSummary GenerateCalibrationPattern(
+        CalibrationTarget target,
+        Stream output,
+        Action<DvdStreamingProgress>? progress = null,
+        int fastParallelism = 0,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(target);
+        ArgumentNullException.ThrowIfNull(output);
+        target.Validate();
+        CalibrationParameters p = target.Parameters;
+        if (p.Kind != CalibrationDiscKind.Dvd)
+            throw new ArgumentException(L.T("DVD calibration requires a DVD target."), nameof(target));
+        DvdStreamingOptions options = new(checked((uint)p.Sectors), p.InnerRadiusMm, p.OuterRadiusMm,
+            p.LinearDensity, FastParallelism: fastParallelism,
+            PitchLinear: p.PitchLinear, PitchQuadratic: p.PitchQuadratic, PitchCubic: p.PitchCubic);
+        options.Validate();
+        if (target.VisualSelector is not { } selector)
+            return GeneratePattern(target.Sample, output, options, progress, cancellationToken);
+
+        double totalChannelBits = p.Sectors * (double)CalibrationParameters.DvdChannelBitsPerSector;
+        FastDvdStreamSummary summary = FastDispersionImageWriter.WriteCodewordPatternStream(
+            sample => selector.SampleRecordingProgress((sample.GlobalCodewordIndex * 16.0 + 8) / totalChannelBits),
+            output, CreateSolveOptions(options, 0, options.TotalSectors),
+            value => progress?.Invoke(new DvdStreamingProgress(value.BytesWritten, value.TotalBytes,
+                value.CompletedBlocks, value.TotalBlocks, value.Elapsed)), cancellationToken);
+        return new DvdStreamingSummary("calibration", summary.SectorsWritten, summary.BytesWritten,
+            summary.ControlledWords, summary.Elapsed);
     }
 
     public static DvdStreamingSummary GenerateHybrid(

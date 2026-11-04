@@ -5,19 +5,19 @@
       "discimagestudio.core": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.7.0, )"
+          "DiscImageStudio.Localization": "[1.8.0, )"
         }
       },
       "discimagestudio.imageio": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.7.0, )"
+          "DiscImageStudio.Localization": "[1.8.0, )"
         }
       },
       "discimagestudio.iso": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.7.0, )"
+          "DiscImageStudio.Localization": "[1.8.0, )"
         }
       },
       "discimagestudio.localization": {

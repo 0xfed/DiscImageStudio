@@ -25,67 +25,67 @@
         "type": "Project",
         "dependencies": {
           "CommunityToolkit.Mvvm": "[8.4.0, )",
-          "DiscImageStudio.BluRay": "[1.7.0, )",
-          "DiscImageStudio.Burning": "[1.7.0, )",
-          "DiscImageStudio.Cd": "[1.7.0, )",
-          "DiscImageStudio.Core": "[1.7.0, )",
-          "DiscImageStudio.Dvd": "[1.7.0, )",
-          "DiscImageStudio.ImageIO": "[1.7.0, )",
-          "DiscImageStudio.Imaging": "[1.7.0, )",
+          "DiscImageStudio.BluRay": "[1.8.0, )",
+          "DiscImageStudio.Burning": "[1.8.0, )",
+          "DiscImageStudio.Cd": "[1.8.0, )",
+          "DiscImageStudio.Core": "[1.8.0, )",
+          "DiscImageStudio.Dvd": "[1.8.0, )",
+          "DiscImageStudio.ImageIO": "[1.8.0, )",
+          "DiscImageStudio.Imaging": "[1.8.0, )",
           "MahApps.Metro.IconPacks.Lucide": "[6.2.1, )"
         }
       },
       "discimagestudio.bluray": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Core": "[1.7.0, )",
-          "DiscImageStudio.Iso": "[1.7.0, )"
+          "DiscImageStudio.Core": "[1.8.0, )",
+          "DiscImageStudio.Iso": "[1.8.0, )"
         }
       },
       "discimagestudio.burning": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.7.0, )"
+          "DiscImageStudio.Localization": "[1.8.0, )"
         }
       },
       "discimagestudio.cd": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Core": "[1.7.0, )",
-          "DiscImageStudio.ImageIO": "[1.7.0, )",
-          "DiscImageStudio.Iso": "[1.7.0, )"
+          "DiscImageStudio.Core": "[1.8.0, )",
+          "DiscImageStudio.ImageIO": "[1.8.0, )",
+          "DiscImageStudio.Iso": "[1.8.0, )"
         }
       },
       "discimagestudio.core": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.7.0, )"
+          "DiscImageStudio.Localization": "[1.8.0, )"
         }
       },
       "discimagestudio.dvd": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Core": "[1.7.0, )",
-          "DiscImageStudio.Localization": "[1.7.0, )",
-          "DvdImageSolver": "[1.7.0, )"
+          "DiscImageStudio.Core": "[1.8.0, )",
+          "DiscImageStudio.Localization": "[1.8.0, )",
+          "DvdImageSolver": "[1.8.0, )"
         }
       },
       "discimagestudio.imageio": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.7.0, )"
+          "DiscImageStudio.Localization": "[1.8.0, )"
         }
       },
       "discimagestudio.imaging": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.7.0, )"
+          "DiscImageStudio.Localization": "[1.8.0, )"
         }
       },
       "discimagestudio.iso": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.7.0, )"
+          "DiscImageStudio.Localization": "[1.8.0, )"
         }
       },
       "discimagestudio.localization": {
@@ -94,18 +94,18 @@
       "dvdimagesolver": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Core": "[1.7.0, )",
-          "DiscImageStudio.ImageIO": "[1.7.0, )",
-          "DiscImageStudio.Iso": "[1.7.0, )",
-          "DiscImageStudio.Localization": "[1.7.0, )"
+          "DiscImageStudio.Core": "[1.8.0, )",
+          "DiscImageStudio.ImageIO": "[1.8.0, )",
+          "DiscImageStudio.Iso": "[1.8.0, )",
+          "DiscImageStudio.Localization": "[1.8.0, )"
         }
       },
       "fourleveldither": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Core": "[1.7.0, )",
-          "DiscImageStudio.Imaging": "[1.7.0, )",
-          "DiscImageStudio.Localization": "[1.7.0, )"
+          "DiscImageStudio.Core": "[1.8.0, )",
+          "DiscImageStudio.Imaging": "[1.8.0, )",
+          "DiscImageStudio.Localization": "[1.8.0, )"
         }
       }
     }

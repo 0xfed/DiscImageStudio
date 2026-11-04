@@ -38,6 +38,18 @@ In Calibration, expand Create calibration disc, select **Use concentric circles 
 
 The calculation holds the saved sector count, linear density and pitch shape fixed, fitting only the inner and outer radii; it does not fit angle or a new pitch shape. Constant pitch approximately satisfies `r(q)^2 = ri^2 + q*(ro^2-ri^2)`; the program refines the result using the exact saved track model. Synthetic checks cover a 2 mm inner-radius error, a 1 mm outer-radius error and diameter readings rounded to 0.01 mm; they cannot guarantee physical-disc accuracy. Instrument error, line width, mistaken circle identities and unknown pitch variation affect results.
 
+### Visual selection without measuring diameters (experimental, DVD)
+
+Choose **Visual selector (experimental, DVD)** under Create calibration disc, choose a test range, and create a new target. Generate its ISO or use streaming burn from this page. The target records the current inner/outer radii, sector count and test range, using constant pitch for this coarse search. It does not change the project until you apply an estimate.
+
+The disc has two groups of 21 circular test bands. Each band tests a different local radius correction. In each group, look for the black/white boundary with the least winding. Count bands from inside to outside: **I1–I21** in the inner group and **O1–O21** in the outer group. A wider gap separates the groups; additional spacing around bands 5, 10, 15 and 20 helps counting. The numbers on the app preview are guides only and are not burned onto the disc.
+
+Select the two band numbers and calculate the estimate. If a choice is unclear, do not guess. An end band (1 or 21) prevents applying the result because the match may lie outside the tested range; create a new target with a wider range. Otherwise, **Apply as starting values** writes estimated inner/outer radii and resets the DVD pitch corrections to zero. Create a narrower-range selector or a wide-sector target from these parameters for refinement. The range describes local-radius corrections, not a guaranteed error bound on either endpoint. Existing burned discs must always be interpreted using their original saved target and range.
+
+This is an experimental visual comparison, not a precise physical measurement. Two selections give two local-radius hypotheses under a constant-pitch model. Adjacent bands can look similar, and unknown pitch variation, physical bit length, drive offsets and limited optical contrast affect the estimate. Neither the preview nor the numerical result establishes naked-eye readability or final alignment. No successful burn or fixed number of attempts is guaranteed.
+
+Both ISO output and streaming burn sample the selector directly at DVD payload codeword positions, including the intervening headers, ECC and synchronization fields in the recording position. A normal raster image can alias its phase, so PNG export is unavailable for this pattern. The preview is filtered for display and includes labels; it is never used as burn input. Saved sessions retain both band choices but require a fresh calculation after reopening. Changing either choice, pattern or range invalidates the previous estimate.
+
 ## Step one: photo rectification
 
 1. Import a photograph or scan and select a standard 12 cm disc or an 8 cm mini disc. The image is reduced to a size suitable for interaction and stored in the record.
@@ -70,7 +82,7 @@ Return to step one to inspect the original photograph. Changing boundaries or di
 
 Calibration records save the generation snapshot, reduced original photograph, boundary control points, disc size, and all curve points; they do not depend on the original photo path. Reopening restores rectification from the saved boundaries so you can continue tracing or recompute. Fit candidates must be recalculated.
 
-New records use schema 8 and retain the pattern, measured circle diameters, measurement method and diameter tolerance. Schema 7 fine-cross/wide-sector records and schema 6 fine-cross records remain readable. Older comb records are not migrated. Use each burned disc with its own original record.
+New records use schema 9 and retain the pattern, measured circle diameters, measurement method, diameter tolerance, and optional visual-selector range and band choices. Schema 8 circle/fine-cross/wide-sector records, schema 7 fine-cross/wide-sector records and schema 6 fine-cross records remain readable. Older comb records are not migrated. Use each burned disc with its own original record.
 
 ## Validation scope
 

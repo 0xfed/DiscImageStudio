@@ -1,7 +1,10 @@
 using System.IO;
+using System.Globalization;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using DiscImageStudio.Core;
+using DiscImageStudio.Localization;
 using DiscImageStudio.Core.Calibration;
 
 namespace DiscImageStudio.Services;
@@ -31,8 +34,9 @@ internal static class CalibrationPatternRenderer
                     CalibrationPoint? p = inverse is null ? new(xm, ym) : inverse(new(xm, ym));
                     if (p is not null)
                     {
-                        byte sampled = target.Sample(p.X, p.Y);
-                        value = BinaryGrayscale.Quantize(sampled);
+                        value = target.VisualSelector is { } selector
+                            ? selector.SamplePreview(p.X, p.Y, step)
+                            : BinaryGrayscale.Quantize(target.Sample(p.X, p.Y));
                     }
                 }
                 pixels[y * size + x] = value;
@@ -40,12 +44,49 @@ internal static class CalibrationPatternRenderer
         });
         BitmapSource image = BitmapSource.Create(size, size, 96, 96, PixelFormats.Gray8, null, pixels, size);
         image.Freeze();
-        return image;
+        return target.VisualSelector is { } visualSelector
+            ? AddVisualSelectorLabels(image, visualSelector, canvasRadius, size) : image;
+    }
+
+    // These labels are preview guides, never part of the encoded payload. Fan the
+    // labels out so all 21 thin bands remain identifiable without overlapping text.
+    private static BitmapSource AddVisualSelectorLabels(BitmapSource image,
+        CalibrationVisualSelector selector, double canvasRadius, int size)
+    {
+        var visual = new DrawingVisual();
+        using (DrawingContext drawing = visual.RenderOpen())
+        {
+            drawing.DrawImage(image, new Rect(0, 0, size, size));
+            double scale = size / (2 * canvasRadius);
+            var textBrush = new SolidColorBrush(Color.FromRgb(15, 48, 80));
+            var background = new SolidColorBrush(Color.FromArgb(235, 255, 255, 255));
+            var outline = new Pen(textBrush, 1);
+            foreach (CalibrationVisualBand band in selector.Bands)
+            {
+                double angle = (band.Bank == "I" ? -150 : 30) + (band.Index - 1) * 6;
+                double radians = angle * Math.PI / 180;
+                double x = size / 2.0 + band.CenterRadiusMm * Math.Cos(radians) * scale;
+                double y = size / 2.0 + band.CenterRadiusMm * Math.Sin(radians) * scale;
+                var label = new FormattedText(band.Bank + band.Index.ToString(CultureInfo.InvariantCulture),
+                    CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"),
+                    Math.Max(10, size / 75.0), textBrush, 1);
+                var box = new Rect(x - label.Width / 2 - 2, y - label.Height / 2,
+                    label.Width + 4, label.Height);
+                drawing.DrawRoundedRectangle(background, outline, box, 2, 2);
+                drawing.DrawText(label, new Point(x - label.Width / 2, y - label.Height / 2));
+            }
+        }
+        var result = new RenderTargetBitmap(size, size, 96, 96, PixelFormats.Pbgra32);
+        result.Render(visual);
+        result.Freeze();
+        return result;
     }
 
     /// <summary>Original PNG pixels cropped in the ordinary encoder's image coordinates.</summary>
     internal static BitmapSource RenderEncodingImage(CalibrationTarget target, CancellationToken cancellationToken = default)
     {
+        if (target.IsVisualSelectorPattern)
+            throw new ArgumentException(L.T("Visual selector PNG export is unavailable. Generate its ISO or use streaming burn."), nameof(target));
         const int size = CalibrationReferencePattern.PixelSize;
         bool generatedPattern = target.Options.PatternKind != CalibrationPatternKind.FineCross;
         byte[] pixels = generatedPattern

@@ -124,6 +124,14 @@ public partial class BurnViewModel : ObservableObject
                 OnFamilyInputsChanged();
             }
         };
+        _shell.Calibration.PropertyChanged += (_, args) =>
+        {
+            if (UseCalibrationPattern && args.PropertyName == nameof(CalibrationViewModel.CanUseCurrentCalibrationSource))
+            {
+                if (!_shell.Calibration.IsSelectedPatternCurrent) InvalidateConfirmation();
+                UpdateActionState();
+            }
+        };
         _state.PropertyChanged += (_, args) =>
         {
             if (args.PropertyName is nameof(DiscParametersState.BdDataDirectory)
@@ -212,7 +220,8 @@ public partial class BurnViewModel : ObservableObject
         => !_shell.IsBusy
             && !_isPreparingBurn
             && SelectedDevice is not null
-            && ConfirmChecked;
+            && ConfirmChecked
+            && (!UseCalibrationPattern || _shell.Calibration.IsSelectedPatternCurrent);
 
     private bool CanUpdateDiscFiles() => IsSetupEnabled && SelectedDevice is not null
         && !UseCalibrationPattern && Directory.Exists(FileUpdateSourceDirectory);
@@ -585,13 +594,16 @@ public partial class BurnViewModel : ObservableObject
             {
                 CalibrationTarget target = _shell.Calibration.Target
                     ?? throw new ArgumentException(L.T("请先在辅助标定工作区创建图案。"));
+                if (!_shell.Calibration.IsSelectedPatternCurrent)
+                    throw new ArgumentException(L.T("Create a new target to use the selected pattern."));
                 bool interleave = _shell.Calibration.CdInterleave;
                 if (!_shell.Calibration.EnsureSessionSavedForBurn())
                 {
                     return;
                 }
 
-                if (!ReferenceEquals(target, _shell.Calibration.Target)
+                if (!_shell.Calibration.IsSelectedPatternCurrent
+                    || !ReferenceEquals(target, _shell.Calibration.Target)
                     || interleave != _shell.Calibration.CdInterleave)
                 {
                     throw new InvalidOperationException(L.T("标定图案已变化，请重新保存记录并确认刻录。"));
@@ -878,7 +890,7 @@ public partial class BurnViewModel : ObservableObject
             DvdStreamingOptions options = CalibrationViewModel.DvdOptions(target);
             options.Validate();
             return new OpticalBurnRequest(deviceId, OpticalBurnMediaKind.DvdData, options.ContentLength,
-                (output, token) => DvdStreamingGenerator.GeneratePattern(target.Sample, output, options,
+                (output, token) => DvdStreamingGenerator.GenerateCalibrationPattern(target, output,
                     cancellationToken: token), writeSpeed);
         }
 

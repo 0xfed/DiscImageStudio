@@ -38,6 +38,18 @@ Kalibrasyon içinde Kalibrasyon diski oluştur bölümünü açın, **Çap kalib
 
 Hesaplama, kayıtlı sektör sayısını, doğrusal yoğunluğu ve iz aralığı şeklini sabit tutup yalnızca iç ve dış yarıçapları uydurur; açıyı veya yeni iz aralığı şeklini uydurmaz. Sabit iz aralığı yaklaşık olarak `r(q)^2 = ri^2 + q*(ro^2-ri^2)` bağıntısını sağlar; program sonucu kayıtlı tam iz modeliyle iyileştirir. Yapay kontroller 2 mm iç yarıçap hatasını, 1 mm dış yarıçap hatasını ve 0.01 mm değerine yuvarlanmış çapları kapsar; fiziksel disk doğruluğunu garanti etmez. Ölçüm aracı hatası, çizgi genişliği, yanlış halka eşleşmeleri ve bilinmeyen iz aralığı değişimleri sonucu etkiler.
 
+### Çap ölçmeden görsel seçim (deneysel, DVD)
+
+Kalibrasyon diski oluştur bölümünde **Görsel seçici (deneysel, DVD)** seçeneğini ve test aralığını seçip yeni bir hedef oluşturun. Bu sayfadan ISO üretin veya akışlı yazmayı kullanın. Hedef, mevcut iç/dış yarıçapları, sektör sayısını ve test aralığını kaydeder; bu kaba arama için sabit iz aralığı kullanır. Tahmin uygulanana kadar projeyi değiştirmez.
+
+Diskte her biri 21 dairesel test bandından oluşan iki grup bulunur. Her bant farklı bir yerel yarıçap düzeltmesini sınar. Her grupta en az dolanan siyah/beyaz sınırı arayın. Bantları ayrı ayrı içten dışa sayın: iç grupta **I1–I21**, dış grupta **O1–O21**. Daha geniş bir boşluk grupları ayırır; 5, 10, 15 ve 20 numaralı bantların iki yanındaki ek boşluklar saymayı kolaylaştırır. Uygulama önizlemesindeki numaralar yalnızca kılavuzdur; diske yazılmaz.
+
+İki bant numarasını seçip tahmini hesaplayın. Seçim belirgin değilse tahminle seçmeyin. Uçtaki bir bant (1 veya 21), eşleşme test aralığının dışında olabileceği için uygulamayı engeller; daha geniş bir aralıkla yeni hedef oluşturun. Diğer durumlarda **Başlangıç değerleri olarak uygula**, tahmini iç/dış yarıçapları yazar ve DVD iz aralığı düzeltmelerini sıfırlar. İyileştirmek için bu parametrelerden daha dar aralıklı bir seçici veya geniş sektörlü hedef oluşturun. Aralık, yerel yarıçap düzeltmelerini tanımlar; iki uçtan herhangi biri için garantili hata sınırı değildir. Önceden yazılmış diskler her zaman özgün kayıtlı hedefleri ve aralıklarıyla yorumlanmalıdır.
+
+Bu, deneysel bir görsel karşılaştırmadır; hassas fiziksel ölçüm değildir. İki seçim, sabit iz aralığı modeli altında iki yerel yarıçap varsayımı verir. Bitişik bantlar benzer görünebilir; bilinmeyen iz aralığı değişimi, fiziksel bit uzunluğu, sürücü ofsetleri ve sınırlı optik kontrast tahmini etkiler. Ne önizleme ne de sayısal sonuç, çıplak gözle okunabilirliği veya son hizalamayı kanıtlar. Başarılı yazım veya sabit sayıda denemede tamamlanma garanti edilmez.
+
+Hem ISO çıktısı hem de akışlı yazma, seçiciyi DVD veri yükü kod sözcüğü konumlarında doğrudan örnekler; kayıt konumuna aradaki başlıklar, ECC ve eşzamanlama alanları da dahildir. Normal bir raster görüntü fazda aliasing oluşturabileceğinden bu desen için PNG dışa aktarma kullanılamaz. Önizleme gösterim için filtrelenir ve etiketler içerir; hiçbir zaman yazma girdisi olarak kullanılmaz. Kayıtlı oturumlar iki bant seçimini de korur, ancak yeniden açıldığında tekrar hesaplama gerekir. Seçimlerden biri, desen veya aralık değiştirildiğinde önceki tahmin geçersiz olur.
+
 ## Birinci adım: fotoğraf düzeltme
 
 1. Fotoğrafı veya taramayı içe aktarın; standart 12 cm disk veya 8 cm mini disk seçin. Görsel, etkileşime uygun boyuta küçültülüp kayıtta saklanır.
@@ -70,7 +82,7 @@ Birinci adıma dönerek özgün fotoğraf incelenebilir. Sınırlar veya disk bo
 
 Kalibrasyon kaydı oluşturma anlık görüntüsünü, küçültülmüş özgün fotoğrafı, kontur kontrol noktalarını, disk boyutunu ve tüm eğri noktalarını saklar; özgün fotoğraf yoluna bağımlı değildir. Yeniden açıldığında kaydedilen sınırlardan düzeltme geri yüklenir; izlemeye devam edilebilir veya yeniden hesaplanabilir. Uydurma adayları yeniden hesaplanmalıdır.
 
-Yeni kayıtlar şema 8 kullanır; deseni, ölçülen halka çaplarını, ölçüm yöntemini ve çap toleransını saklar. Şema 7 ince artı/geniş sektör ve şema 6 ince artı kayıtları okunabilir. Eski tarak kayıtları taşınmaz. Her yazılmış disk için kendi özgün kaydını kullanın.
+Yeni kayıtlar şema 9 kullanır; deseni, ölçülen halka çaplarını, ölçüm yöntemini, çap toleransını ve isteğe bağlı görsel seçici aralığı ile bant seçimlerini saklar. Şema 8 halka/ince artı/geniş sektör, şema 7 ince artı/geniş sektör ve şema 6 ince artı kayıtları okunabilir. Eski tarak kayıtları taşınmaz. Her yazılmış disk için kendi özgün kaydını kullanın.
 
 ## Doğrulama kapsamı
 

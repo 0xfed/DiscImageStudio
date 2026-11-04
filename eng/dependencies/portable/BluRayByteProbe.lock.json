@@ -5,20 +5,20 @@
       "discimagestudio.bluray": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Core": "[1.7.0, )",
-          "DiscImageStudio.Iso": "[1.7.0, )"
+          "DiscImageStudio.Core": "[1.8.0, )",
+          "DiscImageStudio.Iso": "[1.8.0, )"
         }
       },
       "discimagestudio.core": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.7.0, )"
+          "DiscImageStudio.Localization": "[1.8.0, )"
         }
       },
       "discimagestudio.iso": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.7.0, )"
+          "DiscImageStudio.Localization": "[1.8.0, )"
         }
       },
       "discimagestudio.localization": {

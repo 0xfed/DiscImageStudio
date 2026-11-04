@@ -65,37 +65,37 @@ public partial class CalibrationViewModel
 
     private void InitializePhotoCommands()
     {
-        ImportPhotoCommand = new AsyncRelayCommand(ImportPhotoAsync, CanUseTarget);
+        ImportPhotoCommand = new AsyncRelayCommand(ImportPhotoAsync, () => CanUseTarget() && UsePhotoWorkflow);
         RectifyPhotoCommand = new AsyncRelayCommand(RectifyPhotoAsync,
-            () => CanUseTarget() && PhotoImage is not null && IsPhotoStep && PhotoBoundaryPoints.Count >= 10);
+            () => CanUseTarget() && UsePhotoWorkflow && PhotoImage is not null && IsPhotoStep && PhotoBoundaryPoints.Count >= 10);
         ConfirmRectificationCommand = new RelayCommand(ConfirmRectification,
-            () => !IsBusy && IsPhotoStep && IsRectificationReady && _photoTransform is not null);
+            () => !IsBusy && UsePhotoWorkflow && IsPhotoStep && IsRectificationReady && _photoTransform is not null);
         BackToPhotoCommand = new RelayCommand(() =>
         {
             IsPhotoStep = true;
             PreviewRectification = false;
             ContourConfirmed = false;
-        }, () => !IsBusy && IsTraceStep);
-        ClearTracesCommand = new RelayCommand(ClearTraces, () => !IsBusy && TracePoints.Count > 0);
-        ClearSelectedTraceCommand = new RelayCommand(ClearTraces, () => !IsBusy && TracePoints.Count > 0);
+        }, () => !IsBusy && UsePhotoWorkflow && IsTraceStep);
+        ClearTracesCommand = new RelayCommand(ClearTraces, () => !IsBusy && UsePhotoWorkflow && TracePoints.Count > 0);
+        ClearSelectedTraceCommand = new RelayCommand(ClearTraces, () => !IsBusy && UsePhotoWorkflow && TracePoints.Count > 0);
         BoundaryEditedCommand = new RelayCommand<CalibrationBoundaryEdit>(EditBoundary,
-            _ => !IsBusy && IsPhotoStep && !PreviewRectification && PhotoImage is not null);
+            _ => !IsBusy && UsePhotoWorkflow && IsPhotoStep && !PreviewRectification && PhotoImage is not null);
         TraceEditedCommand = new RelayCommand<CalibrationTraceEdit>(EditTrace,
-            _ => !IsBusy && IsTraceStep && _photoTransform is not null);
+            _ => !IsBusy && UsePhotoWorkflow && IsTraceStep && _photoTransform is not null);
     }
 
-    private bool CanSolveTrace() => CanUseTarget() && !UseRingMeasurements && _target?.IsRingPattern != true
+    private bool CanSolveTrace() => CanUseTarget() && UsePhotoWorkflow && !UseRingMeasurements && _target?.IsRingPattern != true
         && IsTraceStep && _photoTransform is not null && TracePoints.Count >= 6;
 
     // A new (or reset) picture always lands in boundary-editing view: the burn-pattern
     // overlay belongs to inspecting the target, not the photo.
-    partial void OnPhotoImageChanged(BitmapSource? value) => ShowTargetPreview = false;
+    partial void OnPhotoImageChanged(BitmapSource? value) => ShowTargetPreview = IsVisualSelectorWorkflow;
 
     partial void OnIsPhotoStepChanged(bool value)
     {
         OnPropertyChanged(nameof(ShowPhotoBoundaryTools)); OnPropertyChanged(nameof(ShowPhotoTraceTools));
         RefreshCommands();
-        ShowTargetPreview = false;
+        ShowTargetPreview = IsVisualSelectorWorkflow;
         OnPropertyChanged(nameof(StepTwoState));
         OnPropertyChanged(nameof(StepThreeState));
         // The step column discloses one stage at a time: entering the trace step collapses
@@ -362,6 +362,7 @@ public partial class CalibrationViewModel
                     : string.Empty;
             }
             RestoreRingMeasurements(session);
+            RestoreVisualSelectorSelection(session);
             _sessionPath = path; OutputPath = string.Empty;
             _statusMessage = L.T("已恢复标定图案、照片和曲线点，可继续编辑或重新反推。");
             RefreshCommands();

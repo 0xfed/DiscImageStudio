@@ -22,6 +22,7 @@ internal static class CalibrationBurnWorkflowTests
             }
 
             TestCapturedRequest(directory, CalibrationDiscKind.Dvd, false);
+            TestCapturedRequest(directory, CalibrationDiscKind.Dvd, false, visual: true);
             TestCapturedRequest(directory, CalibrationDiscKind.BluRay, false);
             foreach (CalibrationDiscKind kind in Enum.GetValues<CalibrationDiscKind>())
             {
@@ -42,7 +43,7 @@ internal static class CalibrationBurnWorkflowTests
         Console.WriteLine("calibration-burn-workflow: passed (memory-only requests, saved snapshots, reload isolation)");
     }
 
-    private static void TestCapturedRequest(string directory, CalibrationDiscKind kind, bool interleave, bool coarse = false, bool circles = false)
+    private static void TestCapturedRequest(string directory, CalibrationDiscKind kind, bool interleave, bool coarse = false, bool circles = false, bool visual = false)
     {
         // Constructing the shared parameter store does not enumerate or access a
         // recorder. This test never creates a burner or calls BurnAsync.
@@ -57,17 +58,18 @@ internal static class CalibrationBurnWorkflowTests
             BdImagePath = "unused-bd-image-must-not-be-read.png",
         };
         CalibrationParameters generated = ReadParameters(state, kind);
-        CalibrationTarget target = CalibrationTarget.Create(generated, patternKind: circles ? CalibrationPatternKind.ConcentricRings : coarse
+        CalibrationTarget target = CalibrationTarget.Create(generated, patternKind: visual ? CalibrationPatternKind.VisualSelector : circles ? CalibrationPatternKind.ConcentricRings : coarse
             ? CalibrationPatternKind.WideSectors : CalibrationPatternKind.FineCross);
-        Require(target.SchemaVersion == CalibrationTarget.CurrentSchemaVersion && target.ControlCells.Count == (circles ? 0 : 4) && target.ControlPoints.Count == (circles ? 0 : 8),
+        Require(target.SchemaVersion == CalibrationTarget.CurrentSchemaVersion && target.ControlCells.Count == (circles || visual ? 0 : 4) && target.ControlPoints.Count == (circles || visual ? 0 : 8),
             "the burn request captures the current concentric-ring and cross geometry");
         CalibrationSession original = new(target, [], CdInterleave: state.CdInterleave);
-        string path = Path.Combine(directory, $"{kind}-{interleave}-{coarse}-{circles}.calibration.json");
+        string path = Path.Combine(directory, $"{kind}-{interleave}-{coarse}-{circles}-{visual}.calibration.json");
         CalibrationSessionJson.Save(path, original);
         string originalJson = File.ReadAllText(path);
         CalibrationSession activeSession = CalibrationSessionJson.Load(path);
         Require(activeSession.Target.Parameters == generated && activeSession.Target.Id == target.Id
-            && activeSession.Target.IsCoarsePattern == coarse && activeSession.Target.IsRingPattern == circles,
+            && activeSession.Target.IsCoarsePattern == coarse && activeSession.Target.IsRingPattern == circles
+            && activeSession.Target.IsVisualSelectorPattern == visual,
             "durable session restores original generation parameters and target identity");
         Require(activeSession.Target.SchemaVersion == CalibrationTarget.CurrentSchemaVersion && activeSession.Target.Cells.SequenceEqual(target.Cells),
             "durable records retain the exact cross target geometry");
@@ -185,7 +187,8 @@ internal static class CalibrationBurnWorkflowTests
         {
             DvdStreamingOptions dvd = new(checked((uint)p.Sectors), p.InnerRadiusMm, p.OuterRadiusMm,
                 p.LinearDensity, StartAngleDegrees: 0);
-            DvdStreamingGenerator.GeneratePattern(target.Sample, output, dvd);
+            if (target.IsVisualSelectorPattern) DvdStreamingGenerator.GenerateCalibrationPattern(target, output);
+            else DvdStreamingGenerator.GeneratePattern(target.Sample, output, dvd);
         }
 
         return output.ToArray();

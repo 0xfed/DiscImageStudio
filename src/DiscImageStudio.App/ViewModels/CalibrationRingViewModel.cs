@@ -19,18 +19,19 @@ public partial class CalibrationViewModel
     public ObservableCollection<RingDiameterRow> RingDiameters { get; } = [];
     public bool HasMeasurableRings => RingDiameters.Count >= 3;
     public bool CanSelectRingMeasurementMethod => HasMeasurableRings && _target?.IsRingPattern != true;
-    public bool UsePhotoWorkflow => !UseRingMeasurements;
+    public bool UsePhotoWorkflow => !UseRingMeasurements && !IsVisualSelectorWorkflow;
     public bool ShowPhotoBoundaryTools => UsePhotoWorkflow && IsPhotoStep;
     public bool ShowPhotoTraceTools => UsePhotoWorkflow && IsTraceStep;
-    public string CalibrationStageTitle => UseRingMeasurements ? L.T("Calibration circles") : L.T("Xaml.CalibrationPhoto");
-    public string? RingStageInstruction => UseRingMeasurements ? L.T("Circle preview · enter measured diameters.") : null;
-    public string CalibrationCanvasHint => L.T(UseRingMeasurements ? "Xaml.RingMeasurementHelp" : "Xaml.ScrollToZoomRightDragToPanDragPoints");
-    public string SecondStepTitle => UseRingMeasurements ? L.T("Measure ring diameters") : L.T("Xaml.RectifyPhoto");
-    public string ThirdStepTitle => UseRingMeasurements ? L.T("Check and apply radii") : L.T("Xaml.TraceAndSolve");
+    public string CalibrationStageTitle => IsVisualSelectorWorkflow ? L.T("VisualSelector.Label") : UseRingMeasurements ? L.T("Calibration circles") : L.T("Xaml.CalibrationPhoto");
+    public string? RingStageInstruction => IsVisualSelectorWorkflow ? L.T("VisualSelector.PreviewCaption") : UseRingMeasurements ? L.T("Circle preview · enter measured diameters.") : null;
+    public string CalibrationCanvasHint => L.T(IsVisualSelectorWorkflow ? "VisualSelector.BandHelp" : UseRingMeasurements ? "Xaml.RingMeasurementHelp" : "Xaml.ScrollToZoomRightDragToPanDragPoints");
+    public string SecondStepTitle => IsVisualSelectorWorkflow ? L.T("VisualSelector.SelectBands") : UseRingMeasurements ? L.T("Measure ring diameters") : L.T("Xaml.RectifyPhoto");
+    public string ThirdStepTitle => IsVisualSelectorWorkflow ? L.T("VisualSelector.ReviewEstimate") : UseRingMeasurements ? L.T("Check and apply radii") : L.T("Xaml.TraceAndSolve");
     public RelayCommand SolveRingsCommand { get; private set; } = null!;
     public RelayCommand ApplyRingParametersCommand { get; private set; } = null!;
     public RelayCommand ReviewRingMeasurementsCommand { get; private set; } = null!;
-    private CalibrationPatternKind SelectedPatternKind => UseCirclePattern ? CalibrationPatternKind.ConcentricRings
+    private CalibrationPatternKind SelectedPatternKind => UseVisualSelectorPattern ? CalibrationPatternKind.VisualSelector
+        : UseCirclePattern ? CalibrationPatternKind.ConcentricRings
         : UseCoarsePattern ? CalibrationPatternKind.WideSectors : CalibrationPatternKind.FineCross;
 
     private void InitializeRingCommands()
@@ -45,15 +46,17 @@ public partial class CalibrationViewModel
 
     partial void OnUseCirclePatternChanged(bool value)
     {
-        if (value) UseCoarsePattern = false;
+        if (value) { UseCoarsePattern = false; UseVisualSelectorPattern = false; }
+        InvalidateVisualSelectorEstimate();
         OnPropertyChanged(nameof(ActivePatternSummary));
         RefreshCommands();
     }
 
     partial void OnUseRingMeasurementsChanged(bool value)
     {
+        if (value && IsVisualSelectorWorkflow) { UseRingMeasurements = false; return; }
         RingMeasurementsConfirmed = false;
-        ShowTargetPreview = value;
+        ShowTargetPreview = value || IsVisualSelectorWorkflow;
         OnPropertyChanged(nameof(UsePhotoWorkflow));
         OnPropertyChanged(nameof(ShowPhotoBoundaryTools)); OnPropertyChanged(nameof(ShowPhotoTraceTools));
         OnPropertyChanged(nameof(CalibrationStageTitle));

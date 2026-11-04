@@ -8,7 +8,7 @@ Güncelleme: 2026-11-04. Denetim; depoya ait arayüz, CLI, tanılar ve belgeleri
 
 | Alan | Kanıt |
 | --- | --- |
-| Ortak kaynaklar | 2042 girdinin beş dilde metni dolu; yinelenen anahtar/alan yok, gömülü kaynaklar kaynak dosyayla aynı |
+| Ortak kaynaklar | 2053 girdinin beş dilde metni dolu; yinelenen anahtar/alan yok, gömülü kaynaklar kaynak dosyayla aynı |
 | Kaynak başvuruları | Önayarlar, aşamalar, önizleme başlıkları, kalibrasyon ve dosya filtreleri dahil 2076 statik/dinamik C#/XAML başvurusu çözülür |
 | Arayüz anlamı | Mevcut 749 girdi beş dilde incelendi: Common 154, Workflows 239, Workspace 151, Xaml 205 |
 | CLI ve tanılar | Masaüstü/taşınabilir CLI, bağımsız DVD motoru, Core, CD/DVD/BD, ImageIO, Imaging, ISO/UDF ve yazma katmanı, projeye ait yardım/hata/ilerleme/sonuç için ortak kaynak kullanır |
@@ -48,7 +48,7 @@ Tam belge denetimi 23/23 bildirir, CI için zorunludur. Yedi kural regresyonu bu
 
 Windows hedeflemesi açık Release çözümü sıfır uyarı/hata ile derlenir. Gerçek beş dil DVD akış hataları, özel durum tür/parametreleri, kayıtlı veri, katalog hata kaynaklarının bırakılması ve sayısal kültür dahil ortak regresyonlar geçer. Taşınabilir CLI paket duman testi, DVD öz sınama ve C# Blu-ray probu geçti; prob 256 bağımsız bayt vektörü ve sonlu desenle eşleşir. Sahte yazıcılar donanıma erişmeden bayt, MMC komut/zaman aşımı, ilerleme, iptal ve temizliği korur.
 
-PowerShell, 45 eski yayın testi ve 69 güvenli dil ön kontrolünden geçti; 47 anahtar, değişmeyen meta veri, Unicode yollar ve alt süreç dili kapsanır. Paket derlenmez, imzalanmaz, kurulmaz, yetki yükseltilmez. Python 123 anahtarı denetler; altı araç özgün sayı/şema referanslarıyla entegrasyonu geçer. Referans aramaları periyot 8'e kadar, üç grafik türü beş dilde glif/metin sınırını geçer; beş örnek grafik incelendi. Kasıtlı geçersiz atlas dahil veriler sentetiktir; fiziksel ölçüm veya tam üretim prob taraması değildir.
+PowerShell, 45 eski yayın testi ve 69 güvenli dil ön kontrolünden geçti; 47 anahtar, değişmeyen meta veri, Unicode yollar ve alt süreç dili kapsanır. Paket derlenmez, imzalanmaz, kurulmaz, yetki yükseltilmez. Python 134 anahtarı denetler; altı araç özgün sayı/şema referanslarıyla entegrasyonu geçer. Referans aramaları periyot 8'e kadar, üç grafik türü beş dilde glif/metin sınırını geçer; beş örnek grafik incelendi. Kasıtlı geçersiz atlas dahil veriler sentetiktir; fiziksel ölçüm veya tam üretim prob taraması değildir.
 
 Windows WPF dil değişimi, glif/düzen görüntüleri, renk taklidi UI/PNG, DVD atlas/önizleme, Windows PowerShell/paket kurulum yolları uygun olduğu ölçüde derlenmiş veya yapılandırılmıştır; bu Linux çalışma alanında çalıştırılmadı. Testler gerçek yazıcı performansını veya optik parlaklığı kanıtlamaz. Bunlar doğrulama sınırlarıdır, ek donanım doğrulaması iddiası değildir.
 

@@ -811,6 +811,83 @@
     "ja": "引数「%(argument_name)s」は非推奨です",
     "tr": "'%(argument_name)s' bağımsız değişkeni kullanım dışıdır"
   },
+  "%r is not callable": {
+    "en": "%r is not callable",
+    "zh-CN": "%r 不可调用",
+    "zh-TW": "%r 無法呼叫",
+    "ja": "%r は呼び出せません",
+    "tr": "%r çağrılabilir değil"
+  },
+  "'required' is an invalid argument for positionals": {
+    "en": "'required' is an invalid argument for positionals",
+    "zh-CN": "位置参数不能使用 'required' 参数",
+    "zh-TW": "位置引數不能使用 'required' 參數",
+    "ja": "位置引数に 'required' は指定できません",
+    "tr": "Konumsal bağımsız değişkenler için 'required' geçersizdir"
+  },
+  ".__call__() not defined": {
+    "en": ".__call__() not defined",
+    "zh-CN": "未定义 .__call__()",
+    "zh-TW": "未定義 .__call__()",
+    "ja": ".__call__() が定義されていません",
+    "tr": ".__call__() tanımlanmamış"
+  },
+  "cannot have multiple subparser arguments": {
+    "en": "cannot have multiple subparser arguments",
+    "zh-CN": "不能包含多个子解析器参数",
+    "zh-TW": "不能包含多個子剖析器引數",
+    "ja": "複数のサブパーサー引数は指定できません",
+    "tr": "Birden fazla alt ayrıştırıcı bağımsız değişkeni olamaz"
+  },
+  "cannot merge actions - two groups are named %r": {
+    "en": "cannot merge actions - two groups are named %r",
+    "zh-CN": "无法合并操作：两个组均名为 %r",
+    "zh-TW": "無法合併動作：兩個群組均名為 %r",
+    "ja": "アクションを統合できません：%r という名前のグループが 2 つあります",
+    "tr": "Eylemler birleştirilemiyor: iki grubun da adı %r"
+  },
+  "conflicting subparser alias: %s": {
+    "en": "conflicting subparser alias: %s",
+    "zh-CN": "子解析器别名冲突：%s",
+    "zh-TW": "子剖析器別名衝突：%s",
+    "ja": "サブパーサーの別名が競合しています：%s",
+    "tr": "Çakışan alt ayrıştırıcı diğer adı: %s"
+  },
+  "conflicting subparser: %s": {
+    "en": "conflicting subparser: %s",
+    "zh-CN": "子解析器冲突：%s",
+    "zh-TW": "子剖析器衝突：%s",
+    "ja": "サブパーサーが競合しています：%s",
+    "tr": "Çakışan alt ayrıştırıcı: %s"
+  },
+  "dest= is required for options like %r": {
+    "en": "dest= is required for options like %r",
+    "zh-CN": "%r 这类选项必须指定 dest=",
+    "zh-TW": "%r 這類選項必須指定 dest=",
+    "ja": "%r のようなオプションには dest= の指定が必要です",
+    "tr": "%r gibi seçenekler için dest= gereklidir"
+  },
+  "invalid conflict_resolution value: %r": {
+    "en": "invalid conflict_resolution value: %r",
+    "zh-CN": "无效的 conflict_resolution 值：%r",
+    "zh-TW": "無效的 conflict_resolution 值：%r",
+    "ja": "conflict_resolution の値が無効です：%r",
+    "tr": "Geçersiz conflict_resolution değeri: %r"
+  },
+  "invalid option string %(option)r: must start with a character %(prefix_chars)r": {
+    "en": "invalid option string %(option)r: must start with a character %(prefix_chars)r",
+    "zh-CN": "无效的选项字符串 %(option)r：必须以 %(prefix_chars)r 中的字符开头",
+    "zh-TW": "無效的選項字串 %(option)r：必須以 %(prefix_chars)r 中的字元開頭",
+    "ja": "オプション文字列 %(option)r が無効です：%(prefix_chars)r に含まれる文字で始めてください",
+    "tr": "Geçersiz seçenek dizgesi %(option)r: %(prefix_chars)r içindeki bir karakterle başlamalıdır"
+  },
+  "mutually exclusive arguments must be optional": {
+    "en": "mutually exclusive arguments must be optional",
+    "zh-CN": "互斥参数必须为可选参数",
+    "zh-TW": "互斥引數必須為選用引數",
+    "ja": "相互排他的な引数は省略可能である必要があります",
+    "tr": "Birbirini dışlayan bağımsız değişkenler isteğe bağlı olmalıdır"
+  },
   "optional arguments": {
     "en": "optional arguments",
     "zh-CN": "可选参数",

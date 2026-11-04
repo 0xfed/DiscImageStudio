@@ -6,6 +6,7 @@ from collections import Counter
 import contextlib
 import inspect
 import io
+import json
 import locale
 import os
 from pathlib import Path
@@ -72,10 +73,15 @@ class PythonLocalization(unittest.TestCase):
                    if not any(part in ("bin", "obj", ".venv", "__pycache__") for part in path.parts)}
         self.assertEqual(sources, set(TOOLS), "Audit new Python tools before declaring their translations complete")
         percent = re.compile(r"%(?:\([^)]+\))?[-+# 0]*\d*(?:\.\d+)?[diouxXeEfFgGcrsa%]")
+        catalog = loc.catalog()
         keys = source_keys()
-        for key in keys:
-            self.assertIn(key, loc.catalog())
-            values = loc.catalog()[key]
+        self.assertFalse(keys - catalog.keys(), f"Missing Python translations: {sorted(keys - catalog.keys())}")
+        # Older argparse versions use additional gettext messages. Validate
+        # every Python catalog entry even when the current interpreter no longer
+        # emits it, so all CI platforms retain placeholder and language parity.
+        keys.update(json.loads((ROOT / "src/DiscImageStudio.Localization/Catalogs/PythonTools.json").read_text(encoding="utf-8")))
+        for key in sorted(keys):
+            values = catalog[key]
             for language in loc.LANGUAGES:
                 with self.subTest(key=key, language=language):
                     text = values[language]

@@ -8,7 +8,7 @@ Updated 2026-11-04. This audit covers repository-owned UI, CLI, diagnostics, and
 
 | Area | Evidence |
 | --- | --- |
-| Shared resources | 2042 entries have nonempty text in all five languages, without duplicate keys or fields; embedded resources match source |
+| Shared resources | 2053 entries have nonempty text in all five languages, without duplicate keys or fields; embedded resources match source |
 | Source references | 2076 static/dynamic C# and XAML references resolve, including presets, stages, preview titles, calibration guidance, and dialog filters |
 | UI semantics | All 749 legacy UI entries reviewed in five languages: Common 154, Workflows 239, Workspace 151, Xaml 205 |
 | CLI and diagnostics | Desktop/portable CLI, standalone DVD engine, Core, CD/DVD/BD, ImageIO, Imaging, ISO/UDF, and burning use shared resources for project-owned help, errors, progress, and results |
@@ -48,7 +48,7 @@ The full documentation gate reports 23/23 and is required in CI. Seven rule regr
 
 The Release solution builds with Windows targeting and zero warnings/errors. Shared localization regressions pass, including actual five-language DVD streaming failures, exception types/parameter names, saved data, catalog failure disposal, and numeric-culture preservation. Portable CLI package smoke, DVD selftests, and C# Blu-ray probes pass; the probe matches 256 independent byte vectors and finite patterns. Fake-recorder burning checks preserve bytes, MMC commands/timeouts, progress, cancellation, and cleanup without accessing hardware.
 
-PowerShell passes 45 existing release-tooling and 69 safe localization preflight cases, covering 47 keys, unchanged metadata, Unicode paths, and child-language forwarding. No package is built, signed, installed, or elevated by those checks. Python checks cover 123 keys; all six tools pass integration against original numerical/schema baselines. Reference searches run through period 8, and all three plot types in five languages pass glyph/text-bound checks. Five representative plots were inspected. Fixtures are synthetic, including an intentionally invalid atlas, not physical measurements or a full production probe sweep.
+PowerShell passes 45 existing release-tooling and 69 safe localization preflight cases, covering 47 keys, unchanged metadata, Unicode paths, and child-language forwarding. No package is built, signed, installed, or elevated by those checks. Python checks cover 134 keys; all six tools pass integration against original numerical/schema baselines. Reference searches run through period 8, and all three plot types in five languages pass glyph/text-bound checks. Five representative plots were inspected. Fixtures are synthetic, including an intentionally invalid atlas, not physical measurements or a full production probe sweep.
 
 Windows WPF language switching, glyph/layout screenshots, dithering UI/PNG integration, DVD atlas/preview integration, and Windows PowerShell/package installation paths are compiled or configured where applicable but not executed in this Linux workspace. The tests do not establish real recorder performance or optical brightness. These are verification limits, not claims of additional hardware validation.
 

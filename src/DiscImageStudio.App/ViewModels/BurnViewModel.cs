@@ -718,7 +718,7 @@ public partial class BurnViewModel : ObservableObject
                 }
             }
 
-            if (request.LeaveDiscOpen && !Directory.Exists(FileUpdateSourceDirectory))
+            if (KeepDiscOpenForFileUpdates && !UseCalibrationPattern && !Directory.Exists(FileUpdateSourceDirectory))
                 throw new ArgumentException(L.T("Select the complete disc files folder on the Design page first."));
 
             // In-app danger modal; default focus sits on the refusing button.
@@ -832,6 +832,8 @@ public partial class BurnViewModel : ObservableObject
         ToneProfile capturedTone = tone.Normalized();
         if (string.IsNullOrWhiteSpace(dataDirectory))
         {
+            if (leaveDiscOpen)
+                throw new ArgumentException(L.T("Select the complete disc files folder on the Design page first."));
             return new OpticalBurnRequest(deviceId, OpticalBurnMediaKind.CdAudio, parameters.TotalBytes,
                 (output, token) => CdTrackGenerator.GenerateToStream(imagePath, output, parameters,
                     interleave, cancellationToken: token, audioByteOrder: CdAudioByteOrder.LittleEndian,

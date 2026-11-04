@@ -27,6 +27,9 @@ internal static class CdDataBurnTests
             CdDiscParameters parameters = new(24.5, 25.5, 128);
             ToneProfile tone = new(0.75, ToneProfile.TwoLevels, 7);
             OpticalWriteSpeed speed = new(300, false);
+            Throws<ArgumentException>(() => BurnViewModel.CreateCdBurnRequest(imagePath, parameters,
+                string.Empty, "CD_FILES", false, true, tone, "memory-only-device", speed, leaveDiscOpen: true),
+                "file updates without a folder must not silently fall back to finalized CD audio");
             foreach (bool outer in new[] { false, true })
             {
                 OpticalBurnRequest request = BurnViewModel.CreateCdBurnRequest(imagePath, parameters,

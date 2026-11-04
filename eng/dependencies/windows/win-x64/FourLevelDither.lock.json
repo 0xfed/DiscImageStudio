@@ -11,13 +11,13 @@
       "discimagestudio.core": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.4.0, )"
+          "DiscImageStudio.Localization": "[1.5.0, )"
         }
       },
       "discimagestudio.imaging": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.4.0, )"
+          "DiscImageStudio.Localization": "[1.5.0, )"
         }
       },
       "discimagestudio.localization": {

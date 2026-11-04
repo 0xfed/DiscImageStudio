@@ -11,7 +11,8 @@ public sealed record CdDataImageMetadata(
     uint DrawingStartLba,
     uint DrawingEndLbaExclusive,
     bool FilesAtOuterRing,
-    ToneProfile Tone)
+    ToneProfile Tone,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] bool UseUdf250 = false)
 {
     [JsonRequired]
     public string Format { get; init; } = "cd-rom-mode1-v1";

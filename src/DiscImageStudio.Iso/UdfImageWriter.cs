@@ -24,11 +24,15 @@ public static class UdfImageWriter
     private const string ImplementationId = "*DiscImageStudio";
 
     public sealed record SequentialSnapshot(uint PartitionStartLba, uint CapacitySectors,
-        uint RecordedSectors, string VolumeLabel, uint VatIcb, ulong LastUniqueId, uint ReserveVdsLba);
+        uint RecordedSectors, string VolumeLabel, uint VatIcb, ulong LastUniqueId, uint ReserveVdsLba,
+        uint BlockAlignment = 32, IReadOnlyList<byte[]>? VolumeDescriptors = null,
+        Func<uint, byte[]>? ReadSector = null, uint VatDataLba = 0, uint VatLength = 0,
+        Func<uint, ushort, byte[]>? ReadSectors = null);
 
     /// <summary>Reads only committed Disc Image Studio VAT volumes. The caller supplies
     /// exact 2048-byte sectors and the drive's last recorded address while holding its lock.</summary>
-    public static SequentialSnapshot ReadSequentialSnapshot(Func<uint, byte[]> readSector, uint lastRecordedLba)
+    public static SequentialSnapshot ReadSequentialSnapshot(Func<uint, byte[]> readSector, uint lastRecordedLba,
+        uint blockAlignment = 32, Func<uint, ushort, byte[]>? readSectors = null)
     {
         ArgumentNullException.ThrowIfNull(readSector);
         byte[] anchor = Read(256, 2, 256);
@@ -37,12 +41,14 @@ public static class UdfImageWriter
             throw InvalidVolume();
         byte[]? partition = null;
         byte[]? logical = null;
+        List<byte[]> descriptors = [];
         for (uint index = 0; index < count; index++)
         {
             byte[] descriptor = readSector(checked(sequence + index));
             if (descriptor.Length != LogicalSectorBytes) throw InvalidVolume();
             ushort type = Read16(descriptor, 0);
-            Read(checked(sequence + index), type, checked(sequence + index));
+            descriptor = Read(checked(sequence + index), type, checked(sequence + index));
+            descriptors.Add(descriptor);
             if (type == 5) partition = descriptor;
             if (type == 6) logical = descriptor;
             if (type == 8) break;
@@ -58,6 +64,23 @@ public static class UdfImageWriter
         uint capacity = checked(start + Read32(partition, 192));
         if (start < FirstPartitionLba || lastRecordedLba < start || lastRecordedLba >= capacity)
             throw InvalidVolume();
+        // IMAPI adds a 150-sector CD postgap after the supplied Mode 1 stream.
+        // Only accept an all-zero postgap; never search past an incomplete update.
+        if (blockAlignment == 1)
+        {
+            byte[] final = readSector(lastRecordedLba);
+            if (final.Length != LogicalSectorBytes) throw InvalidVolume();
+            if (final.AsSpan().IndexOfAnyExcept((byte)0) < 0)
+            {
+                for (uint offset = 0; offset < 150; offset++)
+                {
+                    byte[] gap = readSector(lastRecordedLba - offset);
+                    if (gap.Length != LogicalSectorBytes || gap.AsSpan().IndexOfAnyExcept((byte)0) >= 0)
+                        throw InvalidVolume();
+                }
+                lastRecordedLba -= 150;
+            }
+        }
         byte[] entry = Read(lastRecordedLba, 261, lastRecordedLba - start);
         ulong length = BinaryPrimitives.ReadUInt64LittleEndian(entry.AsSpan(56, 8));
         uint position = Read32(entry, 180);
@@ -75,55 +98,208 @@ public static class UdfImageWriter
         string label = header[4] == 8 ? Encoding.Latin1.GetString(header, 5, labelLength - 1)
             : Encoding.BigEndianUnicode.GetString(header, 5, labelLength - 1);
         return new(start, capacity, checked(lastRecordedLba + 1), label, lastRecordedLba - start,
-            BinaryPrimitives.ReadUInt64LittleEndian(entry.AsSpan(160, 8)), Read32(anchor, 28));
+            BinaryPrimitives.ReadUInt64LittleEndian(entry.AsSpan(160, 8)), Read32(anchor, 28),
+            blockAlignment, descriptors, readSector, checked(start + position), checked((uint)length), readSectors);
 
         byte[] Read(uint sector, ushort type, uint location)
-        {
-            if (sector > lastRecordedLba) throw InvalidVolume();
-            byte[] bytes = readSector(sector);
-            if (bytes.Length != LogicalSectorBytes || Read16(bytes, 0) != type || Read16(bytes, 2) != 3
-                || Read32(bytes, 12) != location || Read16(bytes, 10) > LogicalSectorBytes - 16)
-                throw InvalidVolume();
-            int checksum = 0;
-            for (int index = 0; index < 16; index++) if (index != 4) checksum += bytes[index];
-            if ((byte)checksum != bytes[4] || Crc(bytes.AsSpan(16, Read16(bytes, 10))) != Read16(bytes, 8))
-                throw InvalidVolume();
-            return bytes;
-        }
+            => ReadTaggedSector(readSector, lastRecordedLba, sector, type, location);
+    }
+
+    private static byte[] ReadTaggedSector(Func<uint, byte[]> readSector, uint lastRecordedLba,
+        uint sector, ushort type, uint location)
+    {
+        if (sector > lastRecordedLba) throw InvalidVolume();
+        byte[] bytes = readSector(sector);
+        if (bytes.Length != LogicalSectorBytes || Read16(bytes, 0) != type || Read16(bytes, 2) != 3
+            || Read32(bytes, 12) != location || Read16(bytes, 10) > LogicalSectorBytes - 16)
+            throw InvalidVolume();
+        int checksum = 0;
+        for (int index = 0; index < 16; index++) if (index != 4) checksum += bytes[index];
+        if ((byte)checksum != bytes[4] || Crc(bytes.AsSpan(16, Read16(bytes, 10))) != Read16(bytes, 8))
+            throw InvalidVolume();
+        return bytes;
     }
 
     /// <summary>The source folder is the complete desired file tree. Old sectors,
     /// including the original drawing, are preserved; removed files consume no new data.</summary>
     public static LayoutPlan PlanAppend(string sourceDirectory, SequentialSnapshot previous,
-        uint nextWritableLba, DateTimeOffset? timestamp = null)
+        uint nextWritableLba, DateTimeOffset? timestamp = null, bool newSession = false, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(previous);
-        if (nextWritableLba < previous.RecordedSectors || nextWritableLba % 32 != 0
+        uint alignment = previous.BlockAlignment;
+        if (alignment is not (1 or 16 or 32) || nextWritableLba < previous.RecordedSectors || nextWritableLba % alignment != 0
             || nextWritableLba >= previous.CapacitySectors)
             throw new ArgumentOutOfRangeException(nameof(nextWritableLba));
-        LayoutPlan scanned = Plan(sourceDirectory, previous.CapacitySectors, previous.VolumeLabel, timestamp);
-        uint shift = checked(nextWritableLba - FirstPartitionLba);
+        if (newSession && previous.VolumeDescriptors is not { Count: >= 6 }) throw InvalidVolume();
+        LayoutPlan scanned = Plan(sourceDirectory, previous.CapacitySectors, previous.VolumeLabel, timestamp,
+            blockAlignment: alignment);
+        uint metadataStart = checked(nextWritableLba + (newSession ? FirstPartitionLba : 0));
+        Dictionary<string, RecordedFile> recordedFiles = ReadRecordedFiles(previous, cancellationToken);
+        uint shift = checked(metadataStart - FirstPartitionLba);
+        uint dataEnd = checked(metadataStart + scanned.MetadataSectors);
         foreach (Node node in scanned.Nodes)
         {
             node.EntryLba = checked(node.EntryLba + shift);
-            node.DataLba = checked(node.DataLba + shift);
+            if (node.IsDirectory) node.DataLba = checked(node.DataLba + shift);
+            else
+            {
+                string relative = Path.GetRelativePath(scanned.SourceDirectory, node.SourcePath).Replace(Path.DirectorySeparatorChar, '/');
+                if (recordedFiles.TryGetValue(relative, out RecordedFile? old) && old.Length == node.DataLength
+                    && MatchesRecordedFile(node, old, previous, cancellationToken))
+                {
+                    node.DataLba = old.StartLba;
+                    node.ReusesRecordedData = true;
+                }
+                else
+                {
+                    node.DataLba = dataEnd;
+                    dataEnd = checked(dataEnd + SectorCount(node.DataLength));
+                }
+            }
             if (node.UniqueId != 0)
                 node.UniqueId = checked(previous.LastUniqueId + node.UniqueId - 15);
         }
-        uint dataEnd = checked(scanned.DataEndLbaExclusive + shift);
-        uint end = checked((dataEnd + scanned.VatSectors + 257 + 31) / 32 * 32);
+        uint end = checked((dataEnd + scanned.VatSectors + 257 + alignment - 1) / alignment * alignment);
         if (end > previous.CapacitySectors)
             throw new ArgumentException(L.T("Not enough unrecorded disc space for the files and VAT update."));
         return new LayoutPlan(scanned.SourceDirectory, end, previous.VolumeLabel, scanned.Timestamp,
             scanned.Nodes, previous.PartitionStartLba, dataEnd, dataEnd, dataEnd, false,
-            scanned.MetadataSectors, previous.CapacitySectors)
+            scanned.MetadataSectors, previous.CapacitySectors, alignment)
         {
             StartLba = nextWritableLba,
-            MetadataStartLba = nextWritableLba,
+            MetadataStartLba = metadataStart,
             PreviousVatIcb = previous.VatIcb,
             PreviousLastUniqueId = previous.LastUniqueId,
             OriginalReserveVdsLba = previous.ReserveVdsLba,
+            StartsNewSession = newSession,
+            OriginalVolumeDescriptors = previous.VolumeDescriptors,
         };
+    }
+
+    private sealed record RecordedFile(uint StartLba, long Length);
+
+    // Only our committed, contiguous physical file extents are eligible for reuse.
+    // Compare actual user bytes before retaining them; timestamps alone are not
+    // reliable enough to decide whether a source file has changed.
+    private static bool MatchesRecordedFile(Node node, RecordedFile old, SequentialSnapshot previous, CancellationToken cancellationToken)
+    {
+        if (previous.ReadSector is null) return false;
+        using FileStream source = new(node.SourcePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        byte[] buffer = new byte[32 * LogicalSectorBytes];
+        long remaining = node.DataLength;
+        for (uint sector = old.StartLba; remaining > 0;)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ushort blocks = checked((ushort)Math.Min(32, SectorCount(remaining)));
+            int count = (int)Math.Min(remaining, blocks * LogicalSectorBytes);
+            source.ReadExactly(buffer.AsSpan(0, count));
+            if (previous.ReadSectors is { } readSectors)
+            {
+                byte[] recorded = readSectors(sector, blocks);
+                if (recorded.Length != blocks * LogicalSectorBytes) throw InvalidVolume();
+                if (!buffer.AsSpan(0, count).SequenceEqual(recorded.AsSpan(0, count))) return false;
+            }
+            else
+            {
+                for (uint block = 0; block < blocks; block++)
+                {
+                    byte[] recorded = previous.ReadSector(sector + block);
+                    int offset = (int)block * LogicalSectorBytes;
+                    int bytes = Math.Min(LogicalSectorBytes, count - offset);
+                    if (recorded.Length != LogicalSectorBytes) throw InvalidVolume();
+                    if (!buffer.AsSpan(offset, bytes).SequenceEqual(recorded.AsSpan(0, bytes))) return false;
+                }
+            }
+            remaining -= count;
+            sector += blocks;
+        }
+        return true;
+    }
+
+    private static Dictionary<string, RecordedFile> ReadRecordedFiles(SequentialSnapshot previous, CancellationToken cancellationToken)
+    {
+        Dictionary<string, RecordedFile> result = new(StringComparer.Ordinal);
+        if (previous.ReadSector is not { } readSector) return result;
+        Dictionary<uint, byte[]> vatCache = [];
+        uint Translate(uint block)
+        {
+            ulong offset = 152UL + 4UL * block;
+            if (offset + 4 > previous.VatLength) throw InvalidVolume();
+            uint vatSector = checked(previous.VatDataLba + (uint)(offset / LogicalSectorBytes));
+            if (!vatCache.TryGetValue(vatSector, out byte[]? bytes))
+            {
+                bytes = readSector(vatSector);
+                if (bytes.Length != LogicalSectorBytes) throw InvalidVolume();
+                vatCache.Add(vatSector, bytes);
+            }
+            uint physical = checked(previous.PartitionStartLba + Read32(bytes, (int)(offset % LogicalSectorBytes)));
+            if (physical >= previous.RecordedSectors) throw InvalidVolume();
+            return physical;
+        }
+        byte[] Virtual(uint block, ushort type)
+            => ReadTaggedSector(readSector, previous.RecordedSectors - 1, Translate(block), type, block);
+        byte[] fsd = Virtual(0, 256);
+        if (Read16(fsd, 408) != 1) throw InvalidVolume();
+        Queue<(string Path, uint Block)> pending = new();
+        pending.Enqueue((string.Empty, Read32(fsd, 404)));
+        HashSet<uint> visited = [];
+        while (pending.TryDequeue(out var item))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (!visited.Add(item.Block)) throw InvalidVolume();
+            byte[] entry = Virtual(item.Block, 261);
+            ulong length = BinaryPrimitives.ReadUInt64LittleEndian(entry.AsSpan(56, 8));
+            uint ads = Read32(entry, 172);
+            if (Read32(entry, 168) != 0 || ads > LogicalSectorBytes - 176) throw InvalidVolume();
+            if (entry[27] == 5)
+            {
+                if (Read16(entry, 34) != 1 || ads % 16 != 0 || length > long.MaxValue) throw InvalidVolume();
+                uint first = ads == 0 ? 0 : checked(previous.PartitionStartLba + Read32(entry, 180));
+                ulong remaining = length; uint cursor = first;
+                for (int offset = 176; offset < 176 + ads; offset += 16)
+                {
+                    uint count = Read32(entry, offset);
+                    if (count > MaximumExtentBytes || count > remaining || Read16(entry, offset + 8) != 0
+                        || (ulong)previous.PartitionStartLba + Read32(entry, offset + 4) != cursor
+                        || (ulong)cursor + SectorCount(count) > previous.RecordedSectors) throw InvalidVolume();
+                    remaining -= count; cursor = checked(cursor + SectorCount(count));
+                }
+                if (remaining != 0 || !result.TryAdd(item.Path, new(first, (long)length))) throw InvalidVolume();
+                continue;
+            }
+            if (entry[27] != 4 || Read16(entry, 34) != 0 || ads % 8 != 0
+                || length > (ulong)(LogicalSectorBytes - 176) / 8 * LogicalSectorBytes) throw InvalidVolume();
+            byte[] directory = new byte[checked((int)length)];
+            int filled = 0;
+            for (int offset = 176; offset < 176 + ads; offset += 8)
+            {
+                uint count = Read32(entry, offset);
+                uint block = Read32(entry, offset + 4);
+                if (count > LogicalSectorBytes || count > directory.Length - filled) throw InvalidVolume();
+                byte[] bytes = readSector(Translate(block));
+                if (bytes.Length != LogicalSectorBytes) throw InvalidVolume();
+                bytes.AsSpan(0, (int)count).CopyTo(directory.AsSpan(filled));
+                filled += (int)count;
+            }
+            if (filled != directory.Length) throw InvalidVolume();
+            for (int offset = 0; offset < directory.Length;)
+            {
+                if (directory.Length - offset < 38 || Read16(directory, offset) != 257) throw InvalidVolume();
+                int nameLength = directory[offset + 19], implementation = Read16(directory, offset + 36);
+                int size = checked((38 + implementation + nameLength + 3) / 4 * 4);
+                if (size > directory.Length - offset || Read16(directory, offset + 28) != 1) throw InvalidVolume();
+                if ((directory[offset + 18] & 8) == 0)
+                {
+                    ReadOnlySpan<byte> name = directory.AsSpan(offset + 38 + implementation, nameLength);
+                    if (name.Length < 2 || name[0] is not (8 or 16)) throw InvalidVolume();
+                    string decoded = name[0] == 8 ? Encoding.Latin1.GetString(name[1..]) : Encoding.BigEndianUnicode.GetString(name[1..]);
+                    if (decoded is "." or ".." || decoded.IndexOfAny(['/', '\\', '\0']) >= 0) throw InvalidVolume();
+                    pending.Enqueue((item.Path.Length == 0 ? decoded : item.Path + "/" + decoded, Read32(directory, offset + 24)));
+                }
+                offset += size;
+            }
+        }
+        return result;
     }
 
     public static void WriteAppend(LayoutPlan plan, Stream output, CancellationToken cancellationToken = default)
@@ -132,12 +308,34 @@ public static class UdfImageWriter
         if (plan.StartLba == 0) throw new ArgumentException(nameof(plan));
         ValidateSources(plan, cancellationToken);
         SequentialWriter writer = new(output, plan.StartLba, cancellationToken);
+        if (plan.StartsNewSession)
+        {
+            writer.WriteAtLba(plan.StartLba + 16, VolumeRecognition("BEA01"));
+            writer.WriteAtLba(plan.StartLba + 17, VolumeRecognition("NSR03"));
+            writer.WriteAtLba(plan.StartLba + 18, VolumeRecognition("TEA01"));
+            CopySequence(plan.MainDescriptorLba);
+            CopySequence(plan.ReserveVdsLba);
+            writer.WriteAtLba(plan.StartLba + 256, Anchor(plan, plan.StartLba + 256));
+        }
         WritePartition(plan, writer);
         writer.WriteAtLba(plan.VatDataLba, VirtualAllocationTable(plan));
         writer.WriteAtLba(plan.VolumeSectors - 257, Anchor(plan, plan.VolumeSectors - 257));
         ValidateSources(plan, cancellationToken);
         writer.WriteAtLba(plan.VolumeSectors - 1, VatFileEntry(plan));
         writer.PadToLba(plan.VolumeSectors);
+
+        void CopySequence(uint start)
+        {
+            int index = 0;
+            foreach (byte[] original in plan.OriginalVolumeDescriptors!)
+            {
+                byte[] descriptor = (byte[])original.Clone();
+                uint location = checked(start + (uint)index++);
+                SetTag(descriptor, Read16(original, 0), location, Read16(original, 10) + 16);
+                writer.WriteAtLba(location, descriptor);
+            }
+            writer.PadToLba(start + VdsSectors);
+        }
     }
 
     private static ushort Read16(byte[] data, int offset) => BinaryPrimitives.ReadUInt16LittleEndian(data.AsSpan(offset, 2));
@@ -149,7 +347,7 @@ public static class UdfImageWriter
         internal LayoutPlan(string sourceDirectory, uint volumeSectors, string volumeLabel,
             DateTimeOffset timestamp, List<Node> nodes, uint partitionStart, uint dataEnd,
             uint drawingStart, uint drawingEnd, bool filesAtOuterRing, uint metadataSectors,
-            uint capacitySectors)
+            uint capacitySectors, uint blockAlignment = 32)
         {
             SourceDirectory = sourceDirectory;
             VolumeSectors = volumeSectors;
@@ -164,6 +362,7 @@ public static class UdfImageWriter
             MetadataStartLba = partitionStart;
             MetadataSectors = metadataSectors;
             CapacitySectors = capacitySectors;
+            BlockAlignment = blockAlignment;
             FileCount = nodes.Count(node => !node.IsDirectory);
             DirectoryCount = nodes.Count - FileCount;
             FileBytes = nodes.Where(node => !node.IsDirectory).Sum(node => node.DataLength);
@@ -173,6 +372,9 @@ public static class UdfImageWriter
         public uint VolumeSectors { get; internal set; }
         public uint CapacitySectors { get; }
         public uint StartLba { get; internal set; }
+        public uint BlockAlignment { get; }
+        internal bool StartsNewSession { get; set; }
+        internal IReadOnlyList<byte[]>? OriginalVolumeDescriptors { get; set; }
         public uint PreviousVatIcb { get; internal set; } = uint.MaxValue;
         internal ulong PreviousLastUniqueId { get; set; } = 15;
         internal uint? OriginalReserveVdsLba { get; set; }
@@ -186,7 +388,9 @@ public static class UdfImageWriter
         public string VolumeLabel { get; }
         public DateTimeOffset Timestamp { get; }
         internal List<Node> Nodes { get; }
-        internal uint ReserveVdsLba => OriginalReserveVdsLba ?? UdfImageWriter.ReserveVdsLba;
+        internal uint MainDescriptorLba => StartsNewSession ? StartLba + MainVdsLba : MainVdsLba;
+        internal uint ReserveVdsLba => StartsNewSession ? StartLba + UdfImageWriter.ReserveVdsLba
+            : OriginalReserveVdsLba ?? UdfImageWriter.ReserveVdsLba;
         internal uint PartitionStartLba { get; }
         internal uint PartitionSectors => CapacitySectors - PartitionStartLba;
         internal uint MetadataStartLba { get; set; }
@@ -196,13 +400,15 @@ public static class UdfImageWriter
     }
 
     public static LayoutPlan Plan(string? sourceDirectory, uint volumeSectors, string volumeLabel,
-        DateTimeOffset? timestamp = null, bool filesAtOuterRing = false, uint? capacitySectors = null)
+        DateTimeOffset? timestamp = null, bool filesAtOuterRing = false, uint? capacitySectors = null,
+        uint blockAlignment = 32)
     {
-        if (volumeSectors < MinimumVolumeSectors || volumeSectors % 32 != 0)
+        if (blockAlignment is not (1 or 16 or 32)) throw new ArgumentOutOfRangeException(nameof(blockAlignment));
+        if (volumeSectors < MinimumVolumeSectors || volumeSectors % blockAlignment != 0)
             throw new ArgumentOutOfRangeException(nameof(volumeSectors),
-                L.F($"UDF drawing volumes need at least {MinimumVolumeSectors} sectors and a multiple of 32 sectors."));
+                L.F($"UDF drawing volumes need at least {MinimumVolumeSectors} sectors and a multiple of {blockAlignment} sectors."));
         uint capacity = capacitySectors ?? volumeSectors;
-        if (capacity < volumeSectors || capacity % 32 != 0)
+        if (capacity < volumeSectors || capacity % blockAlignment != 0)
             throw new ArgumentOutOfRangeException(nameof(capacitySectors));
         ArgumentNullException.ThrowIfNull(volumeLabel);
         DateTimeOffset recorded = timestamp ?? DateTimeOffset.UtcNow;
@@ -272,8 +478,8 @@ public static class UdfImageWriter
             cursor = checked(cursor + SectorCount(node.DataLength));
         }
         uint vatSectors = SectorCount(checked(152L + 4L * metadataSectors));
-        uint drawingEnd = (volumeSectors - 257 - vatSectors) / 32 * 32;
-        uint drawingStart = checked((cursor + 31) / 32 * 32);
+        uint drawingEnd = (volumeSectors - 257 - vatSectors) / blockAlignment * blockAlignment;
+        uint drawingStart = checked((cursor + blockAlignment - 1) / blockAlignment * blockAlignment);
         if (drawingStart >= drawingEnd)
             throw new ArgumentException(L.F($"Files and UDF metadata need {cursor} sectors, leaving no complete drawing cluster before the backup metadata at sector {drawingEnd}."));
         uint partitionStart = FirstPartitionLba;
@@ -283,7 +489,7 @@ public static class UdfImageWriter
             // Its relative addresses stay identical; only the descriptor's partition
             // origin and the absolute sequential write positions change.
             uint partitionSectors = cursor - FirstPartitionLba;
-            partitionStart = (drawingEnd - partitionSectors) / 32 * 32;
+            partitionStart = (drawingEnd - partitionSectors) / blockAlignment * blockAlignment;
             uint shift = partitionStart - FirstPartitionLba;
             foreach (Node node in nodes)
             {
@@ -298,7 +504,7 @@ public static class UdfImageWriter
         // All descriptors use precisely the same logical volume identifier.
         label = FitDstring(label, 128);
         return new LayoutPlan(sourcePath, volumeSectors, label, recorded, nodes, partitionStart,
-            cursor, drawingStart, drawingEnd, filesAtOuterRing, metadataSectors, capacity);
+            cursor, drawingStart, drawingEnd, filesAtOuterRing, metadataSectors, capacity, blockAlignment);
     }
 
     public static void WriteSequentialPrefix(LayoutPlan plan, Stream output, uint endLbaExclusive,
@@ -347,7 +553,7 @@ public static class UdfImageWriter
                 directoryOffset += record.Length;
             }
         }
-        foreach (Node file in plan.Nodes.Where(node => !node.IsDirectory))
+        foreach (Node file in plan.Nodes.Where(node => !node.IsDirectory && !node.ReusesRecordedData))
             writer.WriteFile(file);
     }
 
@@ -494,7 +700,7 @@ public static class UdfImageWriter
     private static byte[] Anchor(LayoutPlan plan, uint location)
     {
         byte[] data = new byte[LogicalSectorBytes];
-        Extent(data.AsSpan(16, 8), VdsSectors * LogicalSectorBytes, MainVdsLba);
+        Extent(data.AsSpan(16, 8), VdsSectors * LogicalSectorBytes, plan.MainDescriptorLba);
         Extent(data.AsSpan(24, 8), VdsSectors * LogicalSectorBytes, plan.ReserveVdsLba);
         SetTag(data, 2, location, 512);
         return data;
@@ -867,5 +1073,6 @@ public static class UdfImageWriter
         internal uint EntryLba { get; set; }
         internal uint DataLba { get; set; }
         internal long DataLength { get; set; }
+        internal bool ReusesRecordedData { get; set; }
     }
 }

@@ -252,7 +252,7 @@
     {
       "source": "README.md",
       "source_language": "zh-CN",
-      "source_sha256": "37695133185ea723f07ee9889c7e24db89a43de7953b7c2e29b9cee741e69ae6",
+      "source_sha256": "8b2858817840a9170f8b9cc7727e15b0e6282fab77a38b961934295250df3cba",
       "translations": {
         "zh-CN": "README.md",
         "zh-TW": "README.zh-TW.md",
@@ -276,7 +276,7 @@
     {
       "source": "CHANGELOG.md",
       "source_language": "zh-CN",
-      "source_sha256": "4a6a6e3c93a9cfb1a9ec778375ca97c07ae79368226b0fa8384d68ec581f3095",
+      "source_sha256": "5cb5dbcbaff0f8a8a2f5e6b6eb18e465bcf82540292d3edba2ea5ee6f2124880",
       "parallel_language_sections": [
         "中文",
         "English"

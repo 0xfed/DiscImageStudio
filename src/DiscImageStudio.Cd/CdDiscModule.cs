@@ -55,6 +55,7 @@ public sealed class CdDiscModule : IOpticalDiscModule
                     new("output", "Audio track (.wav/.raw) or data image (.iso)", DiscOptionValueType.OutputFile, Required: true),
                     new("data-dir", "Files to include; omitted for audio", DiscOptionValueType.InputFolder),
                     new("volume-label", "Data volume label", DiscOptionValueType.String, DefaultValue: "CD_IMAGE"),
+                    new("file-system", "File system", DiscOptionValueType.Choice, DefaultValue: "iso9660", Choices: ["iso9660", "udf250"]),
                     new("file-position", "File position", DiscOptionValueType.Choice, DefaultValue: "inner", Choices: ["inner", "outer"]),
                     .. GeometryOptions,
                     new("interleave", "CD-DA delay interleave", DiscOptionValueType.Boolean, DefaultValue: "true"),
@@ -74,6 +75,7 @@ public sealed class CdDiscModule : IOpticalDiscModule
                     .. ToneOptions,
                     new("data-dir", "Data files for drawing-range preview", DiscOptionValueType.InputFolder),
                     new("volume-label", "Data volume label", DiscOptionValueType.String, DefaultValue: "CD_IMAGE"),
+                    new("file-system", "File system", DiscOptionValueType.Choice, DefaultValue: "iso9660", Choices: ["iso9660", "udf250"]),
                     new("file-position", "File position", DiscOptionValueType.Choice, DefaultValue: "inner", Choices: ["inner", "outer"]),
                     new("size", "Preview size", DiscOptionValueType.Integer, DefaultValue: "1600", Unit: "px"),
                     new("samples-per-sector", "Samples per sector", DiscOptionValueType.Integer, DefaultValue: "16"),
@@ -128,7 +130,7 @@ public sealed class CdDiscModule : IOpticalDiscModule
         {
             CdDiscParameters parameters = ReadParameters(options);
             CdDataLayoutPlan plan = CdDataImageGenerator.PrepareLayout(dataDirectory, parameters,
-                options.GetString("volume-label", "CD_IMAGE"), outer);
+                options.GetString("volume-label", "CD_IMAGE"), outer, ReadUdf250(options));
             CdGenerationSummary dataSummary = CdDataImageGenerator.Generate(options.Require("input"),
                 output, parameters, plan,
                 value => progress?.Report(new DiscJobProgress(ModuleId, "generate",
@@ -173,7 +175,7 @@ public sealed class CdDiscModule : IOpticalDiscModule
         if (dataDirectory.Length > 0)
         {
             CdDataLayoutPlan plan = CdDataImageGenerator.PrepareLayout(dataDirectory, generated,
-                options.GetString("volume-label", "CD_IMAGE"), outer);
+                options.GetString("volume-label", "CD_IMAGE"), outer, ReadUdf250(options));
             CdDataImageGenerator.PreviewWarp(options.Require("input"), output, generated,
                 ReadMeasuredParameters(options, generated), options.GetInt("size", 1600),
                 options.GetInt("samples-per-sector", 16), ReadTone(options), plan, cancellationToken);
@@ -242,6 +244,14 @@ public sealed class CdDiscModule : IOpticalDiscModule
             startAngleDegrees * Math.PI / 180.0,
             options.GetDouble("outer", fallback?.ImageOuterRadiusMm ?? CdDiscParameters.StandardImageOuterRadiusMm));
     }
+
+    private static bool ReadUdf250(CdCommandOptions options)
+        => options.GetString("file-system", "iso9660").ToLowerInvariant() switch
+        {
+            "iso9660" => false,
+            "udf250" => true,
+            _ => throw new ArgumentException(L.T("--file-system must be iso9660 or udf250.")),
+        };
 
     private static bool ReadFilePosition(CdCommandOptions options)
         => options.GetString("file-position", "inner").ToLowerInvariant() switch

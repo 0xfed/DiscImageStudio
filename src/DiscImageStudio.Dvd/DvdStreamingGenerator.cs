@@ -122,6 +122,10 @@ public sealed class DvdHybridStreamingPlan
 
     public uint TotalSectors => IsoLayout.VolumeSectors;
 
+    public long ContentLength => (long)IsoLayout.RecordedSectors * 2048;
+
+    public bool UseUdf250 => IsoLayout.UseUdf250;
+
     public uint FilesystemEndLbaExclusive => IsoLayout.DataEndLbaExclusive;
 
     public uint DrawingStartLba { get; }
@@ -147,7 +151,7 @@ public static class DvdStreamingGenerator
         string dataDirectory,
         DvdStreamingOptions options,
         string volumeLabel = "DVD_IMAGE",
-        bool filesAtOuterRing = false)
+        bool filesAtOuterRing = false, bool useUdf250 = false, uint updateReserveSectors = 0)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(dataDirectory);
         ArgumentNullException.ThrowIfNull(options);
@@ -156,10 +160,9 @@ public static class DvdStreamingGenerator
             dataDirectory,
             options.TotalSectors,
             volumeLabel,
-            filesAtOuterRing);
-        uint drawingStartLba = AlignToEccBlock(filesAtOuterRing
-            ? isoLayout.MetadataEndLbaExclusive : isoLayout.DataEndLbaExclusive, PsnOffset);
-        uint drawingEndLba = filesAtOuterRing ? isoLayout.FileDataStartLba / 16 * 16 : options.TotalSectors;
+            filesAtOuterRing, useUdf250, updateReserveSectors);
+        uint drawingStartLba = AlignToEccBlock(isoLayout.DrawingStartLba, PsnOffset);
+        uint drawingEndLba = isoLayout.DrawingEndLbaExclusive / 16 * 16;
         if (drawingEndLba < drawingStartLba || drawingEndLba - drawingStartLba < DvdEccBlockEncoder.SectorCount)
         {
             throw new ArgumentException(
@@ -275,7 +278,7 @@ public static class DvdStreamingGenerator
         int totalBlocks = checked((int)(options.TotalSectors / DvdEccBlockEncoder.SectorCount));
         progress?.Invoke(new DvdStreamingProgress(
             prefixBytes,
-            options.ContentLength,
+            plan.ContentLength,
             checked((int)(plan.DrawingStartLba / DvdEccBlockEncoder.SectorCount)),
             totalBlocks,
             stopwatch.Elapsed));
@@ -290,23 +293,23 @@ public static class DvdStreamingGenerator
             solveOptions,
             value => progress?.Invoke(new DvdStreamingProgress(
                 checked(prefixBytes + value.BytesWritten),
-                options.ContentLength,
+                plan.ContentLength,
                 checked((int)(plan.DrawingStartLba / DvdEccBlockEncoder.SectorCount)
                     + value.CompletedBlocks),
                 totalBlocks,
                 stopwatch.Elapsed)),
             cancellationToken);
-        if (plan.FilesAtOuterRing)
+        if (plan.FilesAtOuterRing || plan.UseUdf250)
         {
             HybridIsoImageWriter.WriteOuterRingSuffix(plan.IsoLayout, output, plan.DrawingEndLbaExclusive, cancellationToken);
-            progress?.Invoke(new DvdStreamingProgress(options.ContentLength, options.ContentLength,
+            progress?.Invoke(new DvdStreamingProgress(plan.ContentLength, plan.ContentLength,
                 totalBlocks, totalBlocks, stopwatch.Elapsed));
         }
         stopwatch.Stop();
         return new DvdStreamingSummary(
             sourceFullPath,
             options.TotalSectors,
-            options.ContentLength,
+            plan.ContentLength,
             drawing.ControlledWords,
             stopwatch.Elapsed);
     }

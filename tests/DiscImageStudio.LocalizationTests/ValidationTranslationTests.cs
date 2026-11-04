@@ -72,7 +72,7 @@ internal static class ValidationTranslationTests
                 Expect<ArgumentOutOfRangeException>(() => Iso9660ImageWriter.Plan(source, 1, "My volume"),
                     L.T("Hybrid ISO volume is too small for filesystem metadata."), "volumeSectors");
                 Expect<ArgumentOutOfRangeException>(() => UdfImageWriter.Plan(source, 33, "My volume"),
-                    L.Format("UDF drawing volumes need at least {0} sectors and a multiple of 32 sectors.", UdfImageWriter.MinimumVolumeSectors), "volumeSectors");
+                    L.Format("UDF drawing volumes need at least {0} sectors and a multiple of {1} sectors.", UdfImageWriter.MinimumVolumeSectors, 32), "volumeSectors");
                 CalibrationPhotoFitResult fit = CalibrationPhotoRectifier.Fit([], []);
                 Check(!fit.Succeeded && fit.Message == L.T("外缘和内缘各需要至少 5 个分散的点，且每条轮廓不超过 256 个点。"),
                     "photo rectification guidance in " + language);

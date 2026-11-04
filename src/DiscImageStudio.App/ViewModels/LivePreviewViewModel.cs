@@ -264,6 +264,7 @@ public partial class LivePreviewViewModel : ObservableObject
             _state.CdInnerRadius = FormatNumber(parameters.InnerRadiusMm);
             _state.CdOuterRadius = FormatNumber(parameters.OuterRadiusMm);
             _state.CdFilesAtOuterRing = dataMetadata.FilesAtOuterRing;
+            _state.CdUseUdf250 = dataMetadata.UseUdf250;
             _state.ToneDitherStrength = dataTone.DitherStrength;
             _state.ToneLevels = dataTone.Levels;
             _state.ToneBrightness = dataTone.Brightness;
@@ -338,7 +339,8 @@ public partial class LivePreviewViewModel : ObservableObject
             && state.DvdPitchLinear.Trim() == FormatNumber(metadata.PitchLinear)
             && state.DvdPitchQuadratic.Trim() == FormatNumber(metadata.PitchQuadratic)
             && state.DvdPitchCubic.Trim() == FormatNumber(metadata.PitchCubic)
-            && state.DvdFilesAtOuterRing == metadata.FilesAtOuterRing)
+            && state.DvdFilesAtOuterRing == metadata.FilesAtOuterRing
+            && state.DvdUseUdf250 == metadata.UseUdf250)
         {
             return;
         }
@@ -350,6 +352,7 @@ public partial class LivePreviewViewModel : ObservableObject
         state.DvdPitchQuadratic = FormatNumber(metadata.PitchQuadratic);
         state.DvdPitchCubic = FormatNumber(metadata.PitchCubic);
         state.DvdFilesAtOuterRing = metadata.FilesAtOuterRing;
+        state.DvdUseUdf250 = metadata.UseUdf250;
         _shell.AppendLog(
             L.F($"[{DateTime.Now:HH:mm:ss}] 已按 {System.IO.Path.GetFileName(isoPath)} 的生成参数载入标定几何：")
             + L.F($"r0={innerRadius} mm, r1={outerRadius} mm, {totalSectors} 总扇区；{state.DvdPitchSummary}\n"));
@@ -774,11 +777,12 @@ public partial class LivePreviewViewModel : ObservableObject
             string dataDirectory = _state.CdDataDirectory.Trim();
             string volumeLabel = _state.CdVolumeLabel.Trim();
             bool filesAtOuterRing = _state.CdFilesAtOuterRing;
+            bool useUdf250 = _state.CdUseUdf250;
             CdDataLayoutPlan? plan = await StaWorker.RunAsync(() =>
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 CdDataLayoutPlan? layout = dataDirectory.Length > 0
-                    ? CdDataImageGenerator.PrepareLayout(dataDirectory, generated, volumeLabel, filesAtOuterRing)
+                    ? CdDataImageGenerator.PrepareLayout(dataDirectory, generated, volumeLabel, filesAtOuterRing, useUdf250)
                     : null;
                 cancellationToken.ThrowIfCancellationRequested();
                 if (layout is not null)
@@ -1514,7 +1518,7 @@ public partial class LivePreviewViewModel : ObservableObject
                 DvdStreamingOptions generated = ReadDvdPreviewGeometry(calibration: false);
                 filePlan = DvdStreamingGenerator.PrepareHybrid(dataDirectory, generated,
                     string.IsNullOrWhiteSpace(_state.DvdVolumeLabel) ? "DISC_IMAGE" : _state.DvdVolumeLabel.Trim(),
-                    filesAtOuterRing: _state.DvdFilesAtOuterRing);
+                    filesAtOuterRing: _state.DvdFilesAtOuterRing, useUdf250: _state.DvdUseUdf250);
                 drawingStart = filePlan.DrawingStartLba;
                 drawingSectors = filePlan.DrawingSectors;
             }

@@ -223,6 +223,8 @@
                                                                 ToolTip="{Binding State.CdDataDirectory}"
                                                                 ButtonLabel="{loc:Text Xaml.Browse3}"
                                                                 Command="{Binding BrowseDataCommand}" />
+                                            <CheckBox Content="{loc:Text Xaml.UseUdf250Vat}" Margin="0,12,0,0"
+                                                      IsChecked="{Binding State.CdUseUdf250}" />
                                             <controls:VisibilityGate IsOpen="{Binding State.HasCdFiles}">
                                                 <StackPanel Margin="0,14,0,0">
                                                     <TextBlock Style="{StaticResource FieldLabel}"
@@ -242,6 +244,8 @@
                                                                 ToolTip="{Binding State.DvdDataDirectory}"
                                                                 ButtonLabel="{loc:Text Xaml.Browse3}"
                                                                 Command="{Binding BrowseDataCommand}" />
+                                            <CheckBox Content="{loc:Text Xaml.UseUdf250Vat}" Margin="0,12,0,0"
+                                                      IsChecked="{Binding State.DvdUseUdf250}" />
                                             <controls:VisibilityGate IsOpen="{Binding State.HasDvdFiles}">
                                                 <StackPanel Margin="0,14,0,0">
                                                     <TextBlock Style="{StaticResource FieldLabel}"

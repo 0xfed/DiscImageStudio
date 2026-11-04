@@ -49,6 +49,7 @@ internal static class ProjectSession
                 state.DvdOutputPath = outputs.OutputPath;
                 state.DvdDataDirectory = outputs.DataDirectory;
                 state.DvdFilesAtOuterRing = outputs.FilesAtOuterRing;
+                state.DvdUseUdf250 = outputs.UseUdf250;
                 state.DvdVolumeLabel = outputs.VolumeLabel;
                 state.DvdImagePath = string.Empty;
                 break;
@@ -75,6 +76,7 @@ internal static class ProjectSession
                 state.CdActualOuterRadius = outer;
                 state.CdDataDirectory = outputs.DataDirectory;
                 state.CdFilesAtOuterRing = outputs.FilesAtOuterRing;
+                state.CdUseUdf250 = outputs.UseUdf250;
                 state.CdVolumeLabel = string.IsNullOrWhiteSpace(outputs.VolumeLabel) ? "CD_IMAGE" : outputs.VolumeLabel;
                 state.CdOutputPath = outputs.OutputPath;
                 state.NormalizeCdOutputFormat();
@@ -121,7 +123,7 @@ internal static class ProjectSession
                     state.DvdDataDirectory,
                     state.DvdVolumeLabel,
                     Interleave: false,
-                    FilesAtOuterRing: state.DvdFilesAtOuterRing);
+                    FilesAtOuterRing: state.DvdFilesAtOuterRing, UseUdf250: state.DvdUseUdf250);
             case OpticalDiscFamily.BluRay:
                 return new ProjectOutputs(
                     RequireOutput(state.BdOutputPath, L.T("蓝光 ISO 输出位置")),
@@ -137,7 +139,7 @@ internal static class ProjectSession
                     state.CdDataDirectory,
                     state.CdVolumeLabel,
                     state.CdInterleave,
-                    FilesAtOuterRing: state.CdFilesAtOuterRing);
+                    FilesAtOuterRing: state.CdFilesAtOuterRing, UseUdf250: state.CdUseUdf250);
         }
     }
 

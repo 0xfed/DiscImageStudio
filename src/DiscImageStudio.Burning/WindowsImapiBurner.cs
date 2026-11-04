@@ -166,7 +166,7 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
         try
         {
             currentOperation = L.T("创建刻录格式");
-            format = OpticalBurnMedia.UsesCdDao(request.MediaKind)
+            format = UsesCdDao(request)
                 ? CreateComObject("IMAPI2.MsftDiscFormat2RawCD")
                 : CreateComObject("IMAPI2.MsftDiscFormat2Data");
             currentOperation = L.T("连接刻录机");
@@ -185,6 +185,8 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
             }
 
             ValidateRequestedMedia(request.MediaKind, recorder, format);
+            if (request.MediaKind != OpticalBurnMediaKind.BluRayData && (request.LeaveDiscOpen || request.UseUdf250))
+                ValidateVatMedia(request.MediaKind, Convert.ToInt32(format.CurrentPhysicalMediaType), ReadCurrentProfiles((object)recorder));
             if (request.WriteSpeed is null)
             {
                 currentOperation = L.T("选择最低刻录速度");
@@ -221,9 +223,11 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
             content.WaitUntilPrebuffered(cancellationToken);
             // Preparation may take time. Recheck the loaded medium before writing.
             ValidateRequestedMedia(request.MediaKind, recorder, format);
+            if (request.MediaKind != OpticalBurnMediaKind.BluRayData && (request.LeaveDiscOpen || request.UseUdf250))
+                ValidateVatMedia(request.MediaKind, Convert.ToInt32(format.CurrentPhysicalMediaType), ReadCurrentProfiles((object)recorder));
 
             OpticalWriteSpeed? actualWriteSpeed;
-            if (OpticalBurnMedia.UsesCdDao(request.MediaKind))
+            if (UsesCdDao(request))
             {
                 using ICdRawImageSession imageSession = request.MediaKind == OpticalBurnMediaKind.CdData
                     ? new CdDataRawImageSession() : new DynamicCdRawImageSession();
@@ -456,7 +460,8 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
         if (media.FormatStatus != 1)
             throw new InvalidOperationException(L.T("BD-R 已格式化或格式状态未知；无法保证无备用区的物理位置，请使用未格式化的新盘。"));
 
-        long requiredSectors = request.ContentLength / 2048;
+        long requiredSectors = request.ContentLength / 2048
+            + (request.MediaKind == OpticalBurnMediaKind.CdData && request.LeaveDiscOpen ? 150 : 0);
         if (requiredSectors % 32 != 0 || requiredSectors > BluRaySingleLayerSectors)
             throw new InvalidOperationException(L.T("蓝光绘图总扇区数必须是 32 的倍数，且不超过 12,219,392。"));
         if (media.FreeBlocks < requiredSectors)
@@ -487,7 +492,7 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
         Action<OpticalBurnOperation>? reportOperation = null,
         Action<OpticalWriteSpeed>? reportWriteSpeed = null)
     {
-        if (!OpticalBurnMedia.UsesCdDao(request.MediaKind))
+        if (!UsesCdDao(request))
             throw new ArgumentException(L.T("CD DAO requires an audio or CD data request."), nameof(request));
         string trackDescription = request.MediaKind == OpticalBurnMediaKind.CdData ? L.T("数据轨") : L.T("音轨");
         bool prepared = false;
@@ -587,6 +592,23 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
         }
     }
 
+    internal static void ConfigureDataFormat(object formatObject, bool leaveOpen, bool udfCd = false, bool udfImage = false)
+    {
+        dynamic format = formatObject;
+        format.BufferUnderrunFreeDisabled = false;
+        format.ForceMediaToBeClosed = !leaveOpen;
+        // The default compatibility mode finalizes DVD+R even when ForceMediaToBeClosed is false.
+        if (leaveOpen || udfCd || udfImage) format.DisableConsumerDvdCompatibilityMode = true;
+        format.ForceOverwrite = false;
+        // A VAT ICB must be the last logical data sector. Prevent IMAPI from
+        // appending its optional 150-sector data postgap after the committed VAT.
+        if (udfCd) format.PostgapAlreadyInImage = true;
+    }
+
+    private static bool UsesCdDao(OpticalBurnRequest request)
+        => OpticalBurnMedia.UsesCdDao(request.MediaKind)
+            && !(request.MediaKind == OpticalBurnMediaKind.CdData && request.LeaveDiscOpen);
+
     private static OpticalWriteSpeed BurnData(
         dynamic format,
         GeneratedContentComStream content,
@@ -600,9 +622,11 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
             (int)format.CurrentMediaStatus,
             (long)format.FreeSectorsOnMedia);
 
-        format.BufferUnderrunFreeDisabled = false;
-        format.ForceMediaToBeClosed = true;
-        format.ForceOverwrite = false;
+        if (request.UdfCapacitySectors is { } capacity && capacity > Convert.ToUInt32(format.TotalSectorsOnMedia))
+            throw new InvalidOperationException(L.T("The recorded volume exceeds the current disc capacity."));
+        ConfigureDataFormat((object)format, request.LeaveDiscOpen,
+            request.MediaKind == OpticalBurnMediaKind.CdData && (request.UseUdf250 || request.LeaveDiscOpen),
+            udfImage: request.UseUdf250);
         if (request.WriteSpeed is not null)
         {
             format.SetWriteSpeed(
@@ -707,7 +731,8 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
     internal static void ValidateDataMedia(OpticalBurnRequest request, int mediaState, long freeSectors)
     {
         string mediaName = ValidateWritableDataCapacity(request.MediaKind, mediaState, freeSectors);
-        long requiredSectors = request.ContentLength / 2048;
+        long requiredSectors = request.ContentLength / 2048
+            + (request.MediaKind == OpticalBurnMediaKind.CdData && request.LeaveDiscOpen ? 150 : 0);
         if (freeSectors < requiredSectors)
         {
             long deficit = requiredSectors - freeSectors;

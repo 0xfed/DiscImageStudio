@@ -175,10 +175,94 @@
     "tr": "Disk dosyalarını güncelle"
   },
   "Xaml.DiscFileUpdateHelp": {
-    "en": "For the first burn, select a files folder in Export and reserve space here. To update an open disc, edit that folder and choose Update disc files. Its contents replace the current file list. Removing files does not reclaim space. The drawing stays intact.",
-    "zh-CN": "首次刻录前，请在导出页选择文件夹并在此预留空间。要更新开放的光盘，请编辑该文件夹并选择“更新光盘文件”。文件夹内容将替换当前文件列表。移除文件不会回收空间，原有图案保持不变。",
-    "zh-TW": "首次燒錄前，請在匯出頁選擇資料夾並在此預留空間。要更新開放的光碟，請編輯該資料夾並選擇「更新光碟檔案」。資料夾內容將取代目前檔案清單。移除檔案不會回收空間，原有圖案保持不變。",
-    "ja": "最初の書き込み前に、エクスポートでファイルのフォルダーを選択し、ここで更新用の領域を確保してください。開いたディスクを更新するには、そのフォルダーを編集して「ディスクのファイルを更新」を選びます。フォルダーの内容で現在のファイル一覧を置き換えます。削除しても領域は再利用できません。図柄は保持されます。",
-    "tr": "İlk yazmada Dışa aktar sayfasından bir dosya klasörü seçin ve burada alan ayırın. Açık bir diski güncellemek için bu klasörü düzenleyip Disk dosyalarını güncelle seçeneğini kullanın. Klasörün içeriği mevcut dosya listesinin yerini alır. Dosyaları kaldırmak alanı geri kazandırmaz. Çizim korunur."
+    "en": "Supports sequential CD-R, DVD-R/+R (including M-DISC) and BD-R. Select the complete folder on Design and reserve space on the first burn. Later, use Update disc files to replace the file list. Deleting files does not reclaim space. The drawing is preserved.",
+    "zh-CN": "支持顺序 CD-R、DVD-R/+R（含 M-DISC）和 BD-R。在设计页选择完整文件夹；首次刻录时保留更新空间。以后用“更新光盘文件”替换文件列表。删除文件不会回收空间，原图案保持不变。",
+    "zh-TW": "支援循序 CD-R、DVD-R/+R（含 M-DISC）及 BD-R。在設計頁選擇完整資料夾；首次燒錄時保留更新空間。之後使用「更新光碟檔案」取代檔案清單。刪除檔案不會回收空間，原圖案保持不變。",
+    "ja": "シーケンシャル CD-R、DVD-R/+R（M-DISC を含む）、BD-R に対応します。デザイン画面で全ファイルのフォルダーを選び、初回書き込みで更新用の空きを残してください。その後「ディスクのファイルを更新」で一覧を置き換えます。削除しても空き領域は増えません。元の描画は保持されます。",
+    "tr": "Sıralı CD-R, DVD-R/+R (M-DISC dahil) ve BD-R desteklenir. Tasarım sayfasında tüm dosyaları içeren klasörü seçin; ilk yazımda güncelleme alanı ayırın. Daha sonra dosya listesini değiştirmek için “Disk dosyalarını güncelle”yi kullanın. Silme işlemi alanı geri kazandırmaz; çizim korunur."
+  },
+  "Xaml.UseUdf250Vat": {
+    "en": "Use UDF 2.50 (VAT)",
+    "zh-CN": "使用 UDF 2.50 (VAT)",
+    "zh-TW": "使用 UDF 2.50 (VAT)",
+    "ja": "UDF 2.50 (VAT) を使用",
+    "tr": "UDF 2.50 (VAT) kullan"
+  },
+  "File system": {
+    "en": "File system",
+    "zh-CN": "文件系统",
+    "zh-TW": "檔案系統",
+    "ja": "ファイルシステム",
+    "tr": "Dosya sistemi"
+  },
+  "--file-system must be iso9660 or udf250.": {
+    "en": "--file-system must be iso9660 or udf250.",
+    "zh-CN": "--file-system 必须为 iso9660 或 udf250。",
+    "zh-TW": "--file-system 必須為 iso9660 或 udf250。",
+    "ja": "--file-system は iso9660 または udf250 を指定してください。",
+    "tr": "--file-system iso9660 veya udf250 olmalıdır."
+  },
+  "File updates require a data disc with UDF 2.50 VAT.": {
+    "en": "File updates require a data disc with UDF 2.50 VAT.",
+    "zh-CN": "文件更新需要 UDF 2.50 VAT 数据盘。",
+    "zh-TW": "檔案更新需要 UDF 2.50 VAT 資料碟。",
+    "ja": "ファイル更新には UDF 2.50 VAT データディスクが必要です。",
+    "tr": "Dosya güncellemeleri için UDF 2.50 VAT veri diski gerekir."
+  },
+  "This burner does not support disc file updates.": {
+    "en": "This burner does not support disc file updates.",
+    "zh-CN": "此刻录接口不支持光盘文件更新。",
+    "zh-TW": "此燒錄介面不支援光碟檔案更新。",
+    "ja": "この書き込み機能はディスクのファイル更新に対応していません。",
+    "tr": "Bu yazıcı disk dosyası güncellemelerini desteklemiyor."
+  },
+  "Select the complete disc files folder on the Design page first.": {
+    "en": "Select the complete disc files folder on the Design page first.",
+    "zh-CN": "请先在设计页选择完整的光盘文件夹。",
+    "zh-TW": "請先在設計頁選擇完整的光碟資料夾。",
+    "ja": "先にデザイン画面でディスクに含める全ファイルのフォルダーを選択してください。",
+    "tr": "Önce Tasarım sayfasında tüm disk dosyalarını içeren klasörü seçin."
+  },
+  "Updating disc files…": {
+    "en": "Updating disc files…",
+    "zh-CN": "正在更新光盘文件…",
+    "zh-TW": "正在更新光碟檔案…",
+    "ja": "ディスクのファイルを更新しています…",
+    "tr": "Disk dosyaları güncelleniyor…"
+  },
+  "The recorder cannot update this disc.": {
+    "en": "The recorder cannot update this disc.",
+    "zh-CN": "刻录机无法更新此光盘。",
+    "zh-TW": "燒錄機無法更新此光碟。",
+    "ja": "このドライブではディスクを更新できません。",
+    "tr": "Yazıcı bu diski güncelleyemiyor."
+  },
+  "Insert an open sequential UDF 2.50 VAT disc with unrecorded space.": {
+    "en": "Insert an open sequential UDF 2.50 VAT disc with unrecorded space.",
+    "zh-CN": "请放入仍开放且有未记录空间的顺序 UDF 2.50 VAT 光盘。",
+    "zh-TW": "請放入仍開放且有未記錄空間的循序 UDF 2.50 VAT 光碟。",
+    "ja": "未記録領域のある開いた状態のシーケンシャル UDF 2.50 VAT ディスクを挿入してください。",
+    "tr": "Kaydedilmemiş alanı olan açık, sıralı UDF 2.50 VAT diski takın."
+  },
+  "The disc changed while preparing the file update.": {
+    "en": "The disc changed while preparing the file update.",
+    "zh-CN": "准备文件更新期间光盘已改变。",
+    "zh-TW": "準備檔案更新期間光碟已變更。",
+    "ja": "ファイル更新の準備中にディスクが変更されました。",
+    "tr": "Dosya güncellemesi hazırlanırken disk değişti."
+  },
+  "UDF drawing volumes need at least {0} sectors and a multiple of {1} sectors.": {
+    "en": "UDF drawing volumes need at least {0} sectors and a multiple of {1} sectors.",
+    "zh-CN": "UDF 绘图卷至少需要 {0} 个扇区，且必须为 {1} 个扇区的整数倍。",
+    "zh-TW": "UDF 繪圖磁碟區至少需要 {0} 個磁區，且必須為 {1} 個磁區的整數倍。",
+    "ja": "UDF 描画ボリュームには {0} セクター以上、かつ {1} セクターの倍数が必要です。",
+    "tr": "UDF çizim birimleri en az {0} sektör gerektirir ve {1} sektörün katı olmalıdır."
+  },
+  "VAT file updates require CD-R or single-layer DVD-R/+R media. Rewritable media are not supported by this update path.": {
+    "en": "VAT file updates require CD-R or single-layer DVD-R/+R media. Rewritable media are not supported by this update path.",
+    "zh-CN": "VAT 文件更新需要 CD-R 或单层 DVD-R/+R 介质。此更新流程暂不支持可重写介质。",
+    "zh-TW": "VAT 檔案更新需要 CD-R 或單層 DVD-R/+R 媒體。此更新流程暫不支援可重寫媒體。",
+    "ja": "VAT ファイル更新には CD-R または単層 DVD-R/+R メディアが必要です。この更新手順では書き換え可能メディアは未対応です。",
+    "tr": "VAT dosya güncellemeleri için CD-R veya tek katmanlı DVD-R/+R gerekir. Bu güncelleme yolu yeniden yazılabilir ortamları desteklemez."
   }
 }

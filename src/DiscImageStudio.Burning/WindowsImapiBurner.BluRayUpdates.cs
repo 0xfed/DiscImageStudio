@@ -31,7 +31,7 @@ public sealed partial class WindowsImapiBurner
                 using DynamicBluRaySequentialSession session = new((object)recorder, (object)format,
                     (completed, total) => progress?.Report(new("write", L.T("Updating Blu-ray files…"), completed, total)),
                     cleanupWarnings.Add,
-                    message => progress?.Report(new("diagnostic", message, 0, 0)));
+                    message => progress?.Report(new("diagnostic", message, 0, 0)), forceExclusive: true);
                 result = BurnBluRayAppend(session, deviceId, prepareContent, speed, progress, cancellationToken);
             }
             catch (Exception exception) { failure = exception; }
@@ -69,8 +69,9 @@ public sealed partial class WindowsImapiBurner
                 || media.FreeBlocks > media.MaximumBlocks - media.NextWritableAddress)
                 throw new InvalidOperationException(L.T("Insert an open single-layer BD-R VAT disc with unrecorded space."));
             cancellationToken.ThrowIfCancellationRequested();
+            progress?.Report(new("media", L.T("Preparing file update…"), 0, 0));
             BluRayAppendContent prepared = prepareContent(new(media.NextWritableAddress, last,
-                media.MaximumBlocks, session.ReadSector));
+                media.MaximumBlocks, session.ReadSector, session.ReadSectors));
             OpticalBurnRequest request = new(deviceId, OpticalBurnMediaKind.BluRayData,
                 prepared.ContentLength, prepared.ProduceContent, writeSpeed, LeaveDiscOpen: true);
             request.Validate();

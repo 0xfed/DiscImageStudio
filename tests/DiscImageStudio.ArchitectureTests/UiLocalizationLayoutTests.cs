@@ -129,6 +129,17 @@ internal static class UiLocalizationLayoutTests
                                 if (header.Title != L.T(titleKey))
                                     throw new InvalidOperationException($"Loaded {workspace} header did not follow language {language}.");
                             }
+                            if (workspace == Workspace.Burn)
+                            {
+                                if (!shell.Burn.CanConfigureFileUpdates
+                                    || !Descendants(window).OfType<CheckBox>().Any(box => box.IsVisible
+                                        && Equals(box.Content, L.T("Xaml.KeepDiscOpenForFileUpdates"))))
+                                    throw new InvalidOperationException($"File-update checkbox is missing for {family}/{language}.");
+                            }
+                            if (workspace == Workspace.Design && family != ProjectDocument.BluRayFamily
+                                && !Descendants(window).OfType<CheckBox>().Any(box => box.IsVisible
+                                    && Equals(box.Content, L.T("Xaml.UseUdf250Vat"))))
+                                throw new InvalidOperationException($"UDF format checkbox is missing for {family}/{language}.");
                             string name = $"{language}-{family}-{profile.Width}-{profile.Theme}-{workspace}";
                             Capture(window, name);
                             if (workspace == Workspace.Preview)

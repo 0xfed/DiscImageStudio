@@ -7,6 +7,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
+MediaUdfTests.Run();
+
 string root = AppContext.BaseDirectory;
 while (!File.Exists(Path.Combine(root, "DiscImageStudio.slnx")))
     root = Directory.GetParent(root)?.FullName ?? throw new DirectoryNotFoundException("Repository root not found.");

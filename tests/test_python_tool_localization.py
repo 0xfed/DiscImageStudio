@@ -273,7 +273,10 @@ def check(figure_output):
 
             with warnings.catch_warnings(), patch.object(Figure, "savefig", inspect_figure), patch.object(sys, "argv", ["plot_results.py", str(target), "--language", language]):
                 warnings.filterwarnings("error", message=r"Glyph .* missing from font")
-                plot.main()
+                # Exercise the CLI startup wrapper, including UTF-8 console
+                # configuration on Windows, while retaining figure inspection.
+                if plot.run(plot.main) != 0:
+                    raise AssertionError(f"Plotting failed: {language}")
             if plot_hashes(target) != baseline["plot"]:
                 raise AssertionError(f"Changed original plot numbers/schema: {language}")
             if any(digest((target / name).read_bytes()) != value for name, value in original_inputs.items()):

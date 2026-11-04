@@ -167,12 +167,6 @@ jobs:
       - name: Validate portable image decoder resource limits
         run: dotnet run --project tests/DiscImageStudio.ImageIOTests --configuration Release --no-build
 
-      - name: Validate translated desktop text bounds and capture workspace layouts
-        timeout-minutes: 10
-        env:
-          DISC_IMAGE_STUDIO_UI_SNAPSHOTS: artifacts/ci/localization-layout
-        run: dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release --no-build -- --localization-layout
-
       - name: Validate localization catalogs and source coverage
         run: dotnet run --project tests/DiscImageStudio.LocalizationTests --configuration Release --no-build
 
@@ -238,4 +232,39 @@ jobs:
             artifacts/ci/dither-languages/*.png
             artifacts/ci/python-localization-fixtures/*/*.png
             artifacts/ci/python-localization-fixtures/FIXTURES.txt
-            artifacts/ci/localization-layout/
+
+  windows-localization:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_NUGET_SIGNATURE_VERIFICATION: 'true'
+      DOTNET_NOLOGO: '1'
+      DISC_IMAGE_STUDIO_UI_SNAPSHOTS: artifacts/ci/localization-layout
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+          persist-credentials: false
+
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with:
+          global-json-file: global.json
+          check-latest: false
+          skip-lts-prepass: true
+
+      - name: Restore desktop localization tests
+        run: dotnet restore tests/DiscImageStudio.ArchitectureTests --locked-mode
+
+      - name: Build desktop localization tests
+        run: dotnet build tests/DiscImageStudio.ArchitectureTests --configuration Release --no-restore
+
+      - name: Validate translated desktop text bounds and capture workspace layouts
+        timeout-minutes: 10
+        run: dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release --no-build -- --localization-layout
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: localization-layout-artifacts
+          path: artifacts/ci/localization-layout/

@@ -17,6 +17,7 @@ SPEC = importlib.util.spec_from_file_location("release_artifacts", ROOT / "packa
 RELEASE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(RELEASE)
 TAG, COMMIT = "v1.2.3", "a" * 40
+RELEASE_NOTES = "Reviewed release notes\n已审核发布说明：日本語 Türkçe"
 
 
 class ReleaseSecurityTests(unittest.TestCase):
@@ -27,10 +28,10 @@ class ReleaseSecurityTests(unittest.TestCase):
             path.write_bytes(b"published binary")
             sbom = {"metadata": {"properties": [{"name": "discimagestudio:source-commit", "value": COMMIT}],
                                  "component": {"name": name, "hashes": [{"alg": "SHA-256", "content": hashlib.sha256(path.read_bytes()).hexdigest()}]}}}
-            (root / (name + ".cdx.json")).write_text(json.dumps(sbom))
+            (root / (name + ".cdx.json")).write_text(json.dumps(sbom), encoding="utf-8")
         lines = [hashlib.sha256(p.read_bytes()).hexdigest() + "  " + p.name for p in sorted(root.iterdir())]
-        (root / "SHA256SUMS.txt").write_text("\n".join(lines) + "\n")
-        (root / "release-notes.md").write_text("Reviewed release notes")
+        (root / "SHA256SUMS.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+        (root / "release-notes.md").write_text(RELEASE_NOTES, encoding="utf-8")
         return RELEASE.inspect_directory(root, TAG, COMMIT)
 
     def archive(self, root, mutate=None):
@@ -64,7 +65,7 @@ class ReleaseSecurityTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             manifest = self.fixture(root)
-            (root / "release-notes.md").write_text("changed content")
+            (root / "release-notes.md").write_text("changed content", encoding="utf-8")
             with self.archive(root) as archive:
                 with self.assertRaises(ValueError):
                     RELEASE.validate_archive(archive, manifest, TAG, COMMIT)
@@ -102,7 +103,7 @@ class ReleaseSecurityTests(unittest.TestCase):
 
     def test_workflows_pin_actions_and_keep_actions_out_of_the_write_job(self):
         for path in (ROOT / ".github/workflows").glob("*.yml"):
-            text = path.read_text()
+            text = path.read_text(encoding="utf-8")
             for match in re.finditer(r"uses:\s+(\S+)", text):
                 reference = match[1]
                 if not reference.startswith("./"):
@@ -110,7 +111,7 @@ class ReleaseSecurityTests(unittest.TestCase):
             self.assertNotIn("pip install numpy matplotlib", text)
             for options in re.findall(r"uses: actions/attest@[^\n]+\n        with:\n((?:          .*\n)+)", text):
                 self.assertIn("          push-to-registry: false\n", options)
-        workflow = (ROOT / ".github/workflows/release.yml").read_text()
+        workflow = (ROOT / ".github/workflows/release.yml").read_text(encoding="utf-8")
         publisher = workflow.split("  draft:\n", 1)[1]
         self.assertNotIn("uses:", publisher)
         self.assertNotIn("GH_TOKEN:", workflow.split("  draft:\n", 1)[0])
@@ -118,7 +119,7 @@ class ReleaseSecurityTests(unittest.TestCase):
         self.assertIn("actions: read", publisher)
 
     def test_windows_no_build_validations_follow_the_solution_build(self):
-        workflow = (ROOT / ".github/workflows/build.yml").read_text()
+        workflow = (ROOT / ".github/workflows/build.yml").read_text(encoding="utf-8")
         windows = workflow.split("  windows:\n", 1)[1]
         steps = re.split(r"^      - ", windows, flags=re.MULTILINE)
         builds = [i for i, step in enumerate(steps)
@@ -165,7 +166,7 @@ class ReleaseSecurityTests(unittest.TestCase):
                     result = {"object": {"type": "commit", "sha": COMMIT}}
                 elif path == "/releases" and method == "POST":
                     self.assertTrue(body["draft"])
-                    self.assertEqual(body["body"], "Reviewed release notes")
+                    self.assertEqual(body["body"], RELEASE_NOTES)
                     self.assertEqual(body["target_commitish"], COMMIT)
                     result = {"id": 7, "assets": [], "upload_url": "https://uploads.github.com/repos/owner/repo/releases/7/assets{?name,label}"}
                 else:

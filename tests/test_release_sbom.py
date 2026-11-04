@@ -17,15 +17,15 @@ class ReleaseSbomTests(unittest.TestCase):
     def test_published_dependencies_and_source_are_bound_to_artifact(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / "Directory.Build.props").write_text("<Project><PropertyGroup><VersionPrefix>1.2.3</VersionPrefix></PropertyGroup></Project>")
-            (root / "global.json").write_text('{"sdk":{"version":"10.0.403"}}')
+            (root / "Directory.Build.props").write_text("<Project><PropertyGroup><VersionPrefix>1.2.3</VersionPrefix></PropertyGroup></Project>", encoding="utf-8")
+            (root / "global.json").write_text('{"sdk":{"version":"10.0.403"},"note":"构建信息"}', encoding="utf-8")
             artifact = root / "release.tar.gz"
             artifact.write_bytes(b"published artifact")
             deps = {"runtimeTarget": {"name": ".NETCoreApp,Version=v10.0/linux-x64"},
                     "targets": {".NETCoreApp,Version=v10.0/linux-x64": {"App/1.2.3": {"dependencies": {"Codec": "2.0.0"}}, "Codec/2.0.0": {}, "runtimepack.Microsoft.NETCore.App.Runtime.linux-x64/10.0.14": {}}},
                     "libraries": {"App/1.2.3": {"type": "project"}, "Codec/2.0.0": {"type": "package", "sha512": "sha512-" + base64.b64encode(bytes(64)).decode()}, "BuildOnly/1.0.0": {"type": "package"}, "runtimepack.Microsoft.NETCore.App.Runtime.linux-x64/10.0.14": {"type": "runtimepack"}}}
-            (root / "app.deps.json").write_text(json.dumps(deps))
-            (root / "project.assets.json").write_text('{"libraries":{}}')
+            (root / "app.deps.json").write_text(json.dumps(deps), encoding="utf-8")
+            (root / "project.assets.json").write_text('{"libraries":{}}', encoding="utf-8")
             result = SBOM.write_sbom(artifact, root / "app.deps.json", root / "project.assets.json", "linux-x64", "a" * 40, root / "app.cdx.json", "owner/repo", root)
             self.assertEqual(result["metadata"]["component"]["hashes"][0]["content"], SBOM.digest(artifact))
             self.assertEqual({c["name"] for c in result["components"]}, {"App", "Codec", "runtimepack.Microsoft.NETCore.App.Runtime.linux-x64"})
@@ -45,15 +45,15 @@ class ReleaseSbomTests(unittest.TestCase):
     def test_msix_override_uses_actual_manifest_identity_without_relabeling_code(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / "global.json").write_text('{"sdk":{"version":"10.0.403"}}')
+            (root / "global.json").write_text('{"sdk":{"version":"10.0.403"}}', encoding="utf-8")
             artifact = root / "release.msix"
             with zipfile.ZipFile(artifact, "w") as package:
                 package.writestr("AppxManifest.xml", '<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"><Identity Name="Test.Identity" Version="2.3.4.0" /></Package>')
             deps = {"runtimeTarget": {"name": ".NETCoreApp,Version=v10.0/win-x64"},
                     "targets": {".NETCoreApp,Version=v10.0/win-x64": {"App/1.2.3": {}}},
                     "libraries": {"App/1.2.3": {"type": "project"}}}
-            (root / "app.deps.json").write_text(json.dumps(deps))
-            (root / "project.assets.json").write_text('{"libraries":{}}')
+            (root / "app.deps.json").write_text(json.dumps(deps), encoding="utf-8")
+            (root / "project.assets.json").write_text('{"libraries":{}}', encoding="utf-8")
             result = SBOM.write_sbom(artifact, root / "app.deps.json", root / "project.assets.json", "win-x64", "a" * 40, root / "app.cdx.json", "owner/repo", root)
             self.assertEqual(result["metadata"]["component"]["version"], "2.3.4.0")
             self.assertEqual(result["components"][0]["version"], "1.2.3")

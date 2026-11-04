@@ -78,7 +78,7 @@ def write_sbom(artifact, deps_json, assets_json, rid, source_commit, output, rep
         version = identities[0].get("Version")
         package_properties = [{"name": "discimagestudio:msix-identity-name", "value": identities[0].get("Name", "")},
                               {"name": "discimagestudio:msix-identity-version", "value": version}]
-    sdk = json.loads((workspace / "global.json").read_text())["sdk"]["version"]
+    sdk = json.loads((workspace / "global.json").read_text(encoding="utf-8"))["sdk"]["version"]
     components, references = [], {}
     for key, library in sorted(deps["libraries"].items()):
         if key not in targets:

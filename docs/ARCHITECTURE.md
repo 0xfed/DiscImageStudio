@@ -23,7 +23,7 @@ flowchart LR
     BD --> Iso[DiscImageStudio.Iso / UDF 2.01]
 ```
 
-`DiscImageStudio.Cli` 和 Windows 桌面程序从同一份模块目录执行离线命令。`DiscImageStudio.ImageIO` 在 Windows 桌面目标使用 WIC，在通用 `net10.0` 目标使用 StbImageSharp 读图、StbImageWriteSharp 写 PNG。两个后端都向生成器提供相同顺序的 BGRA 像素。蓝光共用透明度合成和灰度转换代码，CD 和 DVD 也分别共用各自原有的采样算法。
+`DiscImageStudio.Cli` 和 Windows 桌面程序从同一份模块目录执行离线命令。`DiscImageStudio.ImageIO` 在 Windows 桌面目标使用 WIC，在通用 `net10.0` 目标使用 StbImageSharp 读图，并用基于 .NET `ZLibStream` 的内置 PNG 编码器写图。两个后端都向生成器提供相同顺序的 BGRA 像素。蓝光共用透明度合成和灰度转换代码，CD 和 DVD 也分别共用各自原有的采样算法。
 
 `DiscImageStudio.Localization` 是桌面、CLI、Core 与介质模块共用的跨平台文字基础层，提供五种语言的嵌入式资源、语言选择与格式化。WPF 文字扩展留在 App，命令与选项标识、序列化字段及用户内容不随界面语言变化；只切换 UI culture，不改变数值解析或工程参数。动态界面文字跟随语言切换，分类用的原始标定警告在显示时翻译。维护流程见 [LOCALIZATION.md](LOCALIZATION.md)。
 

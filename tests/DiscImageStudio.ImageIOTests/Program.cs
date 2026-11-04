@@ -15,6 +15,63 @@ try
         Require(RasterCodec.LoadBgra32(path).Pixels.SequenceEqual(pixels), "changed output pixels");
     });
 
+    Check("grayscale writer emits valid Gray8 scanlines and chunk CRCs", () =>
+    {
+        string path = Path.Combine(directory, "written-gray.png");
+        byte[] pixels = [0, 85, 170, 255, 0, 127];
+        RasterCodec.SavePng(path, 3, 2, pixels, grayscale: true);
+        byte[] scanlines = ReadWrittenPng(path, 3, 2, grayscale: true, out _);
+        Require(scanlines.SequenceEqual(new byte[] { 0, 0, 85, 170, 0, 255, 0, 127 }), "changed Gray8 scanlines");
+        BgraRaster image = RasterCodec.LoadBgra32(path);
+        for (int i = 0; i < pixels.Length; i++)
+            Require(image.Pixels.AsSpan(i * 4, 4).SequenceEqual(new byte[] { pixels[i], pixels[i], pixels[i], 255 }), "changed grayscale round trip");
+    });
+
+    Check("RGBA writer preserves alpha and never changes the BGRA input", () =>
+    {
+        string path = Path.Combine(directory, "written-rgba.png");
+        byte[] pixels = [3, 2, 1, 0, 6, 5, 4, 1, 9, 8, 7, 128, 12, 11, 10, 255];
+        byte[] original = (byte[])pixels.Clone();
+        RasterCodec.SavePng(path, 2, 2, pixels, grayscale: false);
+        byte[] scanlines = ReadWrittenPng(path, 2, 2, grayscale: false, out _);
+        Require(scanlines.SequenceEqual(new byte[] { 0, 1, 2, 3, 0, 4, 5, 6, 1, 0, 7, 8, 9, 128, 10, 11, 12, 255 }), "changed RGBA scanlines");
+        Require(pixels.SequenceEqual(original), "writer mutated the BGRA input");
+        Require(RasterCodec.LoadBgra32(path).Pixels.SequenceEqual(original), "changed alpha round trip");
+    });
+
+    Check("large grayscale and RGBA writes use consecutive bounded IDAT chunks", () =>
+    {
+        foreach ((int width, int height, bool grayscale) in new[] { (65537, 1, true), (1301, 37, false) })
+        {
+            byte[] pixels = new byte[width * height * (grayscale ? 1 : 4)];
+            new Random(8675309).NextBytes(pixels);
+            string path = Path.Combine(directory, grayscale ? "many-gray-idats.png" : "many-rgba-idats.png");
+            RasterCodec.SavePng(path, width, height, pixels, grayscale);
+            byte[] scanlines = ReadWrittenPng(path, width, height, grayscale, out int[] lengths);
+            Require(lengths.Length >= 2, "fixture did not exercise multiple IDAT chunks");
+            Require(lengths.All(length => length is > 0 and <= 32 * 1024), "IDAT buffer exceeded its bound or emitted an empty chunk");
+            int stride = width * (grayscale ? 1 : 4);
+            for (int y = 0; y < height; y++)
+            {
+                ReadOnlySpan<byte> row = scanlines.AsSpan(y * (stride + 1) + 1, stride);
+                if (grayscale)
+                    Require(row.SequenceEqual(pixels.AsSpan(y * stride, stride)), "changed wide grayscale row");
+                else
+                    for (int i = 0; i < row.Length; i += 4)
+                    {
+                        int source = y * stride + i;
+                        Require(row.Slice(i, 4).SequenceEqual(new byte[] { pixels[source + 2], pixels[source + 1], pixels[source], pixels[source + 3] }), "changed converted row at a buffer boundary");
+                    }
+            }
+            BgraRaster decoded = RasterCodec.LoadBgra32(path);
+            if (!grayscale)
+                Require(decoded.Pixels.SequenceEqual(pixels), "changed multi-IDAT RGBA round trip");
+            else
+                for (int i = 0; i < pixels.Length; i++)
+                    Require(decoded.Pixels.AsSpan(i * 4, 4).SequenceEqual(new byte[] { pixels[i], pixels[i], pixels[i], 255 }), "changed multi-IDAT grayscale round trip");
+        }
+    });
+
     Check("palette PNG with split IDAT", () =>
     {
         string path = Png("palette.png", 2, 1, 1, 3, [0, 0x40], palette: [255, 0, 0, 0, 255, 0], split: true);
@@ -228,6 +285,70 @@ static void Chunk(Stream stream, ReadOnlySpan<byte> type, ReadOnlySpan<byte> pay
     {
         crc ^= b;
         for (int i = 0; i < 8; i++) crc = (crc >> 1) ^ ((crc & 1) == 0 ? 0 : 0xedb88320u);
+        return crc;
+    }
+}
+
+static byte[] ReadWrittenPng(string path, int width, int height, bool grayscale, out int[] lengths)
+{
+    // An independent framing/bitwise-CRC reader checks writer output without
+    // relying only on the production decoder accepting its own files.
+    byte[] png = File.ReadAllBytes(path);
+    ReadOnlySpan<byte> signature = [137, 80, 78, 71, 13, 10, 26, 10];
+    Require(png.AsSpan(0, 8).SequenceEqual(signature), "invalid PNG signature");
+    using MemoryStream compressed = new();
+    List<int> chunks = [];
+    bool header = false, end = false;
+    int position = 8;
+    while (position < png.Length)
+    {
+        Require(png.Length - position >= 12, "truncated chunk header");
+        int length = checked((int)BinaryPrimitives.ReadUInt32BigEndian(png.AsSpan(position, 4)));
+        Require(length <= png.Length - position - 12, "chunk length exceeded file size");
+        ReadOnlySpan<byte> type = png.AsSpan(position + 4, 4);
+        ReadOnlySpan<byte> payload = png.AsSpan(position + 8, length);
+        uint crc = uint.MaxValue;
+        foreach (byte value in type) crc = Add(crc, value);
+        foreach (byte value in payload) crc = Add(crc, value);
+        Require(~crc == BinaryPrimitives.ReadUInt32BigEndian(png.AsSpan(position + 8 + length, 4)), "invalid chunk CRC");
+        if (type.SequenceEqual("IHDR"u8))
+        {
+            Require(position == 8 && !header && length == 13, "invalid IHDR placement or length");
+            Require(BinaryPrimitives.ReadInt32BigEndian(payload) == width && BinaryPrimitives.ReadInt32BigEndian(payload[4..]) == height, "changed image dimensions");
+            Require(payload[8] == 8 && payload[9] == (grayscale ? 0 : 6) && payload[10] == 0 && payload[11] == 0 && payload[12] == 0, "unexpected color/compression/filter/interlace format");
+            header = true;
+        }
+        else if (type.SequenceEqual("IDAT"u8))
+        {
+            Require(header && !end, "invalid IDAT placement");
+            chunks.Add(length);
+            compressed.Write(payload);
+        }
+        else
+        {
+            Require(type.SequenceEqual("IEND"u8) && length == 0 && header && chunks.Count != 0, "unexpected PNG chunk");
+            end = true;
+        }
+        position += length + 12;
+        if (end) break;
+    }
+    Require(end && position == png.Length, "missing IEND or trailing data");
+    compressed.Position = 0;
+    using ZLibStream inflater = new(compressed, CompressionMode.Decompress);
+    using MemoryStream raw = new();
+    inflater.CopyTo(raw);
+    byte[] result = raw.ToArray();
+    int stride = width * (grayscale ? 1 : 4);
+    Require(result.Length == (stride + 1) * height, "unexpected decompressed scanline size");
+    for (int y = 0; y < height; y++)
+        Require(result[y * (stride + 1)] == 0, "unexpected scanline filter");
+    lengths = chunks.ToArray();
+    return result;
+
+    static uint Add(uint crc, byte value)
+    {
+        crc ^= value;
+        for (int bit = 0; bit < 8; bit++) crc = (crc >> 1) ^ ((crc & 1) == 0 ? 0 : 0xedb88320u);
         return crc;
     }
 }

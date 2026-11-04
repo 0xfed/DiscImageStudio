@@ -23,7 +23,7 @@ flowchart LR
     BD --> Iso[DiscImageStudio.Iso / UDF 2.01]
 ```
 
-`DiscImageStudio.Cli` と Windows デスクトップアプリは、同じモジュールカタログからオフラインコマンドを実行します。`DiscImageStudio.ImageIO` は Windows デスクトップターゲットでは WIC を使い、汎用の `net10.0` ターゲットでは StbImageSharp で画像を読み、StbImageWriteSharp で PNG を書き出します。どちらのバックエンドも同じ順序の BGRA ピクセルを生成器に渡します。Blu-ray はアルファ合成とグレースケール変換のコードを共有し、CD と DVD もそれぞれ既存のサンプリングアルゴリズムを共有します。
+`DiscImageStudio.Cli` と Windows デスクトップアプリは、同じモジュールカタログからオフラインコマンドを実行します。`DiscImageStudio.ImageIO` は Windows デスクトップターゲットでは WIC を使い、汎用の `net10.0` ターゲットでは StbImageSharp で画像を読み、.NET の `ZLibStream` を使う内蔵 PNG エンコーダーで書き出します。どちらのバックエンドも同じ順序の BGRA ピクセルを生成器に渡します。Blu-ray はアルファ合成とグレースケール変換のコードを共有し、CD と DVD もそれぞれ既存のサンプリングアルゴリズムを共有します。
 
 `DiscImageStudio.Localization` はデスクトップ、CLI、Core、メディアモジュールで共有するクロスプラットフォームのテキスト基盤で、5 言語の埋め込みリソース、言語選択、書式設定を提供します。WPF のテキスト拡張は App に残し、コマンドやオプションの識別子、シリアライズするフィールド、ユーザーの内容は UI 言語で変更しません。切り替えるのは UI culture のみで、数値の解析やプロジェクトのパラメーターには影響しません。動的な UI テキストも言語切り替えに追従し、分類に使う元のキャリブレーション警告は表示時に翻訳します。保守手順は [LOCALIZATION.md](LOCALIZATION.ja.md) を参照してください。
 

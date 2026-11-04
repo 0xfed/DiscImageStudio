@@ -7,17 +7,11 @@
         "resolved": "2.30.16",
         "contentHash": "qg1i+NHihXVKLKYacGKrauhSQIGL31eBWcTC4Vc7jnGmBFj87LkRuCdXB5aDZisWMRnB6x2mcfwYXQxMWEG/lw=="
       },
-      "StbImageWriteSharp": {
-        "type": "Transitive",
-        "resolved": "1.16.7",
-        "contentHash": "NF9kOxi0iS9VunklnRKgOpAWC2knCGKRjdy7RT6XAqYNyb7LQfyPHPdl4l1fJw7TFYKrGQzQOmK1XpBONC2MoA=="
-      },
       "discimagestudio.imageio": {
         "type": "Project",
         "dependencies": {
           "DiscImageStudio.Localization": "[1.3.6, )",
-          "StbImageSharp": "[2.30.16, )",
-          "StbImageWriteSharp": "[1.16.7, )"
+          "StbImageSharp": "[2.30.16, )"
         }
       },
       "discimagestudio.localization": {

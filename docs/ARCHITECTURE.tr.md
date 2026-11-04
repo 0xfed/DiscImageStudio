@@ -23,7 +23,7 @@ flowchart LR
     BD --> Iso[DiscImageStudio.Iso / UDF 2.01]
 ```
 
-`DiscImageStudio.Cli` ve Windows masaüstü uygulaması çevrimdışı komutları aynı modül kataloğundan çalıştırır. `DiscImageStudio.ImageIO`, Windows masaüstü hedefinde WIC kullanır; genel `net10.0` hedefinde görüntüleri StbImageSharp ile okur, PNG dosyalarını StbImageWriteSharp ile yazar. Her iki arka uç da üreticilere aynı sırada BGRA pikselleri sağlar. Blu-ray, alfa birleştirme ve gri tonlama dönüştürme kodunu paylaşır; CD ve DVD de kendi mevcut örnekleme algoritmalarını paylaşır.
+`DiscImageStudio.Cli` ve Windows masaüstü uygulaması çevrimdışı komutları aynı modül kataloğundan çalıştırır. `DiscImageStudio.ImageIO`, Windows masaüstü hedefinde WIC kullanır; genel `net10.0` hedefinde görüntüleri StbImageSharp ile okur, PNG dosyalarını .NET `ZLibStream` kullanan yerleşik PNG kodlayıcısıyla yazar. Her iki arka uç da üreticilere aynı sırada BGRA pikselleri sağlar. Blu-ray, alfa birleştirme ve gri tonlama dönüştürme kodunu paylaşır; CD ve DVD de kendi mevcut örnekleme algoritmalarını paylaşır.
 
 `DiscImageStudio.Localization`, masaüstü, CLI, Core ve ortam modüllerinin paylaştığı platformlar arası metin altyapısıdır; beş dilde gömülü kaynak, dil seçimi ve biçimlendirme sağlar. WPF metin uzantısı App içinde kalır. Komut ve seçenek tanımlayıcıları, serileştirilen alanlar ve kullanıcı içeriği arayüz diliyle değişmez; yalnızca UI culture değiştirilir, sayısal ayrıştırma veya proje parametreleri değiştirilmez. Dinamik arayüz metinleri dil değişimini izler; sınıflandırmada kullanılan özgün kalibrasyon uyarıları görüntülenirken çevrilir. Bakım süreci için [LOCALIZATION.md](LOCALIZATION.tr.md) belgesine bakın.
 

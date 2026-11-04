@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Replace the obsolete `StbImageWriteSharp` dependency with a PNG writer built on .NET `ZLibStream` and fixed-size buffers, preserving decoded pixels and keeping strict package signature verification enabled on macOS.
+
 - Reject PNG inflation beyond the declared image size and set `RasterCodec` default input limits to `256 MiB` and `64 Mi` pixels; pin and lock reviewed build dependencies, separate artifact inspection from publication write permissions, and configure release SBOMs and build provenance.
 
 - Added an isolated Windows CI layout check covering 325 five-language workspace, preview, calibration, and dialog scenarios, checking text bounds and missing glyphs and saving screenshots/reports even on failure. Fixtures use temporary stores and a recorder that cannot write, checking switched titles and unchanged project data. Compiled on Linux; Windows execution awaits CI after a push.

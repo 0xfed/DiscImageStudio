@@ -236,7 +236,7 @@
     {
       "source": "docs/ARCHITECTURE.md",
       "source_language": "zh-CN",
-      "source_sha256": "fad2a136705816770ffa01c681bd2f72177e9d84a44de1d67560c25336b43685",
+      "source_sha256": "f32a53d9b9bc7a34e9aa79c309af975fc5759296d9614ad2b73d8dd594fba20c",
       "translated_mermaid_labels": [
         "CdEngine",
         "BdEngine"
@@ -276,7 +276,7 @@
     {
       "source": "CHANGELOG.md",
       "source_language": "zh-CN",
-      "source_sha256": "a8198c1714d4f23acfab8afc28fee0050ac1b385dc7cf19238f87534d67f0e06",
+      "source_sha256": "8e4a45d5511531f19abd3e8c8c5bac9b26acf952e131bda857369fd8e07cff67",
       "parallel_language_sections": [
         "中文",
         "English"

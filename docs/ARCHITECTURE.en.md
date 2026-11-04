@@ -23,7 +23,7 @@ flowchart LR
     BD --> Iso[DiscImageStudio.Iso / UDF 2.01]
 ```
 
-`DiscImageStudio.Cli` and the Windows desktop application execute offline commands through the same module catalog. `DiscImageStudio.ImageIO` uses WIC for the Windows desktop target, and StbImageSharp for reading images and StbImageWriteSharp for writing PNGs on the general `net10.0` target. Both backends supply BGRA pixels to generators in the same order. Blu-ray shares transparency compositing and grayscale conversion code; CD and DVD each also retain their own shared sampling algorithms.
+`DiscImageStudio.Cli` and the Windows desktop application execute offline commands through the same module catalog. `DiscImageStudio.ImageIO` uses WIC for the Windows desktop target, and StbImageSharp for reading images and a built-in PNG encoder using .NET `ZLibStream` for writing PNGs on the general `net10.0` target. Both backends supply BGRA pixels to generators in the same order. Blu-ray shares transparency compositing and grayscale conversion code; CD and DVD each also retain their own shared sampling algorithms.
 
 `DiscImageStudio.Localization` is the cross-platform text foundation shared by desktop, CLI, Core, and media modules, providing embedded resources in five languages, language selection, and formatting. The WPF text extension stays in App. Command/option identifiers, serialized fields, and user content do not change with UI language. Only UI culture changes; numeric parsing and project parameters do not. Dynamic UI text follows language switches, while original calibration warnings used for classification are translated at display time. See [LOCALIZATION.md](LOCALIZATION.en.md) for maintenance.
 

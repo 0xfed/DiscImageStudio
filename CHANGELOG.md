@@ -6,6 +6,8 @@
 
 ### 中文
 
+- 替换过时的 `StbImageWriteSharp` 依赖，改用基于 .NET `ZLibStream` 和固定大小缓冲区的 PNG 写入器；保持解码后像素不变，并在 macOS 上继续强制验证包签名。
+
 - 修复 PNG 解压输出超出声明图像大小的问题，将 `RasterCodec` 默认输入限制设为 `256 MiB` 和 `64 Mi` 像素；固定并锁定经审查的构建依赖，分离制品检查与发布写权限，并为发布制品配置 SBOM 和构建来源证明。
 
 - 新增独立 Windows CI 布局检查，覆盖五语 325 个工作区、预览、标定及对话框场景，检测文字溢出与缺失字形并保存截图和报告；失败时也上传制品。夹具使用临时存储与不可写盘的假刻录机，检查语言切换后的标题及工程数据不变。已在 Linux 编译，Windows 执行等待推送后的 CI。
@@ -42,6 +44,8 @@
 - 侧栏工程头卡片右侧新增软盘保存按钮。
 
 ### English
+
+- Replace the obsolete `StbImageWriteSharp` dependency with a PNG writer built on .NET `ZLibStream` and fixed-size buffers, preserving decoded pixels and keeping strict package signature verification enabled on macOS.
 
 - Reject PNG inflation beyond the declared image size and set `RasterCodec` default input limits to `256 MiB` and `64 Mi` pixels; pin and lock reviewed build dependencies, separate artifact inspection from publication write permissions, and configure release SBOMs and build provenance.
 

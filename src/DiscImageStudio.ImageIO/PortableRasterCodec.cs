@@ -1,7 +1,5 @@
 using DiscImageStudio.Localization;
 using StbImageSharp;
-using StbImageWriteSharp;
-using WriteComponents = StbImageWriteSharp.ColorComponents;
 
 namespace DiscImageStudio.ImageIO;
 
@@ -26,14 +24,8 @@ public static partial class RasterCodec
 
     private static void WritePng(string path, int width, int height, byte[] pixels, bool grayscale)
     {
-        if (!grayscale)
-        {
-            pixels = (byte[])pixels.Clone();
-            SwapRedAndBlue(pixels);
-        }
         using FileStream output = File.Create(path);
-        new ImageWriter().WritePng(pixels, width, height,
-            grayscale ? WriteComponents.Grey : WriteComponents.RedGreenBlueAlpha, output);
+        PortablePngWriter.Write(output, width, height, pixels, grayscale);
     }
 
     private static void SwapRedAndBlue(byte[] pixels)

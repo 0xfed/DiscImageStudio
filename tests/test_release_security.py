@@ -21,7 +21,7 @@ RELEASE_NOTES = "Reviewed release notes\n已审核发布说明：日本語 Türk
 
 
 class ReleaseSecurityTests(unittest.TestCase):
-    def fixture(self, root):
+    def fixture(self, root, notes=RELEASE_NOTES):
         binaries, _ = RELEASE.expected_names(TAG)
         for name in binaries:
             path = root / name
@@ -31,7 +31,7 @@ class ReleaseSecurityTests(unittest.TestCase):
             (root / (name + ".cdx.json")).write_text(json.dumps(sbom), encoding="utf-8")
         lines = [hashlib.sha256(p.read_bytes()).hexdigest() + "  " + p.name for p in sorted(root.iterdir())]
         (root / "SHA256SUMS.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
-        (root / "release-notes.md").write_text(RELEASE_NOTES, encoding="utf-8")
+        (root / "release-notes.md").write_bytes(notes.encode("utf-8"))
         return RELEASE.inspect_directory(root, TAG, COMMIT)
 
     def archive(self, root, mutate=None):
@@ -129,11 +129,11 @@ class ReleaseSecurityTests(unittest.TestCase):
             if "--no-build" in step:
                 self.assertGreater(index, builds[0], "A --no-build validation runs before its executable exists")
 
-    def publisher_scenario(self, *, published=False, tag_sha=None, different_run=False, failure=None):
+    def publisher_scenario(self, *, published=False, tag_sha=None, different_run=False, failure=None, notes=RELEASE_NOTES):
         """All API, storage and upload transports are mocked; never use the network."""
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            manifest = self.fixture(root)
+            manifest = self.fixture(root, notes)
             files = {p.name: p.read_bytes() for p in root.iterdir()}
             with self.archive(root) as archive:
                 zipped = archive.fp.getvalue()
@@ -166,7 +166,7 @@ class ReleaseSecurityTests(unittest.TestCase):
                     result = {"object": {"type": "commit", "sha": COMMIT}}
                 elif path == "/releases" and method == "POST":
                     self.assertTrue(body["draft"])
-                    self.assertEqual(body["body"], RELEASE_NOTES)
+                    self.assertEqual(body["body"], notes)
                     self.assertEqual(body["target_commitish"], COMMIT)
                     result = {"id": 7, "assets": [], "upload_url": "https://uploads.github.com/repos/owner/repo/releases/7/assets{?name,label}"}
                 else:
@@ -230,6 +230,15 @@ class ReleaseSecurityTests(unittest.TestCase):
                 self.assertFalse(any(method != "GET" for method, _, _ in calls))
                 if options.get("different_run"):
                     self.assertFalse(storage)
+
+    def test_publisher_preserves_utf8_release_notes_with_lf_and_crlf(self):
+        for newline in ("\n", "\r\n"):
+            with self.subTest(newline=repr(newline)):
+                notes = RELEASE_NOTES.replace("\n", newline)
+                calls, _, _, files = self.publisher_scenario(notes=notes)
+                self.assertEqual(files["release-notes.md"], notes.encode("utf-8"))
+                options = next(body for method, path, body in calls if method == "POST" and path == "/releases")
+                self.assertEqual(options["body"], notes)
 
 
 if __name__ == "__main__":

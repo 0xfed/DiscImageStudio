@@ -28,7 +28,7 @@ Mimari regresyonların kapsamı:
 - CD/DVD: siyah/beyaz eşleme, renk taklidi, sRGB gama, dosya/akış tutarlılığı ve SIMD/skaler örnekleme tutarlılığı.
 - CD dosya modu: ISO9660/Joliet Çince dosyaların bağımsız okunması, iç/dış halka konumu ve proje kaydı, dosya bölgesi önizlemeleri, ham sektör geometrisi ve dosya/ileri akış çıktısı eşitliği.
 - CD veri DAO: Mode 1 EDC ve tüm P/Q eşlik denklemleri, ana kanal bayt sırası, lead-in ve pregap adresleri, veri izi Q tanımlayıcıları ve CRC, ileri Seek ve kısa okumalar, iç/dış halka ISO'nun tam geri elde edilmesi. Ritek ön ayarının 359.845 sektörü korunur; ses izleriyle paylaşılan kapasite sınırı benzetilmiş yazıcıyla doğrulanır. Yerel IMAPI testleri yalnızca bellek içi imaj oluşturur, yazma aygıtı oluşturmaz.
-- BD: 17PP/EDC/Reed-Solomon, 3T/6T eşleme ve kutupluluk, çizim aralığı dışını sıfırlama, UDF 2.01, 4 GiB'den büyük dosyalar, sidecar gidiş dönüşü ve geçersiz sınırların reddi.
+- BD: 17PP/EDC/Reed-Solomon, 3T/6T eşleme ve kutupluluk, çizim aralığı dışını sıfırlama, UDF 2.50, 4 GiB'den büyük dosyalar, sidecar gidiş dönüşü ve geçersiz sınırların reddi.
 - DVD/BD dosya konumu: varsayılan iç halka uyumluluğu, dış halka ISO9660/Joliet ve UDF dizinlerinin bağımsız ayrıştırılması, Çince dosya içerikleri, tam disk koordinatları, Seek yapılamayan akış/dosya çıktısı eşitliği, kapasite ve iptal korumaları, projedeki konum seçeneklerinin gidiş dönüşü.
 - Üç disk türü modeli: proje schema 2 gidiş dönüşü ve schema 1 yükseltmesi, ön ayar schema 4 ile eski schema birleştirmesi, `ProjectSession` BD apply/capture işlemleri.
 - Disk yazma: işlem dışlama, ilerleme, sıralı yazma, zaman aşımı, iptal ve kaynak temizleme; gerçek yazıcılar yerine benzetilmiş arayüzlerle.

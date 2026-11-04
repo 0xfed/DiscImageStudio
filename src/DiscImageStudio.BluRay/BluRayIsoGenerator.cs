@@ -51,7 +51,8 @@ public sealed class BluRayIsoPlan
     public bool FilesAtOuterRing => _filesystem?.FilesAtOuterRing ?? false;
     public BluRayDiscParameters Disc { get; }
     public uint TotalSectors => Disc.TotalSectors;
-    public long ContentLength => Disc.ContentLength;
+    public uint RecordedSectors => _filesystem?.VolumeSectors ?? Disc.TotalSectors;
+    public long ContentLength => (long)RecordedSectors * UdfImageWriter.LogicalSectorBytes;
     public string? DataDirectory => _filesystem?.SourceDirectory is { Length: > 0 } source ? source : null;
     public string? VolumeLabel => _filesystem?.VolumeLabel;
     public DateTimeOffset? UdfTimestamp => _filesystem?.Timestamp;
@@ -77,27 +78,33 @@ public static class BluRayIsoGenerator
         => new(disc, drawingStartSector, drawingEndSectorExclusive);
 
     public static BluRayIsoPlan PrepareDrawing(BluRayDiscParameters disc, string? dataDirectory = null,
-        string volumeLabel = "BD_IMAGE", DateTimeOffset? timestamp = null, bool filesAtOuterRing = false)
+        string volumeLabel = "BD_IMAGE", DateTimeOffset? timestamp = null, bool filesAtOuterRing = false,
+        uint updateReserveSectors = 0)
     {
         ArgumentNullException.ThrowIfNull(disc);
         disc.Validate();
         if (filesAtOuterRing && string.IsNullOrWhiteSpace(dataDirectory))
             throw new ArgumentException(L.T("Outer-ring files require a data directory."), nameof(dataDirectory));
+        if (updateReserveSectors != 0 && string.IsNullOrWhiteSpace(dataDirectory))
+            throw new ArgumentException(L.T("File updates require a data directory."), nameof(dataDirectory));
         return string.IsNullOrWhiteSpace(dataDirectory)
             ? new BluRayIsoPlan(disc)
-            : Prepare(disc, dataDirectory, volumeLabel, timestamp, filesAtOuterRing);
+            : Prepare(disc, dataDirectory, volumeLabel, timestamp, filesAtOuterRing, updateReserveSectors);
     }
 
     // Explicit UDF preparation remains available for existing saved calibration
     // records whose captured drawing bounds exclude filesystem metadata.
     public static BluRayIsoPlan Prepare(BluRayDiscParameters disc, string? dataDirectory = null,
-        string volumeLabel = "BD_IMAGE", DateTimeOffset? timestamp = null, bool filesAtOuterRing = false)
+        string volumeLabel = "BD_IMAGE", DateTimeOffset? timestamp = null, bool filesAtOuterRing = false,
+        uint updateReserveSectors = 0)
     {
         ArgumentNullException.ThrowIfNull(disc);
         disc.Validate();
         if (dataDirectory is not null) ArgumentException.ThrowIfNullOrWhiteSpace(dataDirectory);
-        UdfImageWriter.LayoutPlan filesystem = UdfImageWriter.Plan(dataDirectory, disc.TotalSectors,
-            volumeLabel, timestamp, filesAtOuterRing);
+        if (updateReserveSectors % 32 != 0 || updateReserveSectors >= disc.TotalSectors)
+            throw new ArgumentOutOfRangeException(nameof(updateReserveSectors));
+        UdfImageWriter.LayoutPlan filesystem = UdfImageWriter.Plan(dataDirectory, disc.TotalSectors - updateReserveSectors,
+            volumeLabel, timestamp, filesAtOuterRing, disc.TotalSectors);
         uint drawingStart = filesystem.DrawingStartLba;
         if (drawingStart >= filesystem.DrawingEndLbaExclusive)
             throw new ArgumentException(L.T("UDF metadata and files must leave at least 32 sectors for drawing."), nameof(dataDirectory));
@@ -129,7 +136,7 @@ public static class BluRayIsoGenerator
         cancellationToken.ThrowIfCancellationRequested();
         if (destination.BytesWritten != plan.ContentLength)
             throw new IOException(L.T("Blu-ray ISO generation did not produce the planned byte length."));
-        return new(0, plan.TotalSectors, destination.BytesWritten, stopwatch.Elapsed);
+        return new(0, plan.RecordedSectors, destination.BytesWritten, stopwatch.Elapsed);
     }
 
     /// <summary>Publishes only a complete ISO; cancellation or failure preserves an existing file.</summary>

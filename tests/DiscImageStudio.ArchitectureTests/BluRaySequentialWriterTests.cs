@@ -9,6 +9,7 @@ internal static class BluRaySequentialWriterTests
     internal static void Run()
     {
         TestOrderedWritesAndPartialReads();
+        TestAppendAddresses();
         TestFailureNeverRetries();
         TestBoundedFailureTimingDiagnostics();
         TestThrownTransportFailureDiagnostics();
@@ -88,6 +89,20 @@ internal static class BluRaySequentialWriterTests
             secondFailure, new FakeStream(MakeData(BluRaySequentialWriter.BytesPerWrite * 3)), 96));
         Require(secondFailure.Commands.Count == 2 && second.StartLba == 32,
             "a later failure preserves acknowledged earlier data and does not resend or skip ahead");
+    }
+
+    private static void TestAppendAddresses()
+    {
+        byte[] bytes = MakeData(BluRaySequentialWriter.BytesPerWrite * 2);
+        FakeTransport transport = new();
+        List<(long Done, long Total)> progress = [];
+        BluRaySequentialWriter.Write(transport, new FakeStream(bytes), 64,
+            (done, total) => progress.Add((done, total)), startLba: 1024);
+        Require(transport.Commands.Select(command => BinaryPrimitives.ReadUInt32BigEndian(command.Cdb.AsSpan(2, 4)))
+            .SequenceEqual(new uint[] { 1024, 1056 }), "append writes start at the drive's next writable LBA");
+        Require(progress[^1] == (bytes.Length, bytes.Length), "append progress counts only new bytes");
+        Throws<ArgumentOutOfRangeException>(() => BluRaySequentialWriter.Write(new FakeTransport(),
+            new FakeStream(bytes), 64, startLba: 12_219_360));
     }
 
     private static void TestBoundedFailureTimingDiagnostics()

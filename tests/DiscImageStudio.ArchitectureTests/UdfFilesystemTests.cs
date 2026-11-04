@@ -84,7 +84,7 @@ internal static class UdfFilesystemTests
         finally { Directory.Delete(directory, recursive: true); }
     }
 
-    // This reader follows ECMA-167 byte layouts and UDF 2.01 constraints, rather than
+    // This reader follows ECMA-167 byte layouts and UDF 2.50 constraints, rather than
     // calling the writer's planner, descriptor builders, checksum or Unicode helpers.
     internal static Dictionary<string, byte[]> Inspect(byte[] image, uint sectors, string? label = null,
         uint? drawingStartSector = null, uint? drawingEndSector = null)
@@ -98,6 +98,9 @@ internal static class UdfFilesystemTests
         private uint _partitionStart;
         private uint _partitionLength;
         private ushort _partitionNumber;
+        private uint[] _vat = [];
+        private uint _fileCount;
+        private uint _directoryCount;
         private readonly Dictionary<string, byte[]> _files = new(StringComparer.Ordinal);
         private readonly HashSet<uint> _visited = [];
 
@@ -113,7 +116,7 @@ internal static class UdfFilesystemTests
             }
 
             uint mainStart = 0, mainLength = 0, reserveStart = 0, reserveLength = 0;
-            foreach (uint sector in new uint[] { 256, sectors - 257, sectors - 1 })
+            foreach (uint sector in new uint[] { 256, sectors - 257 })
             {
                 ReadOnlySpan<byte> anchor = Block(sector);
                 CheckTag(anchor, 2, sector);
@@ -124,8 +127,12 @@ internal static class UdfFilesystemTests
                     mainStart = currentMainStart; mainLength = currentMainLength;
                     reserveStart = currentReserveStart; reserveLength = currentReserveLength;
                 }
-                else Require(currentMainStart == mainStart && currentMainLength == mainLength
-                    && currentReserveStart == reserveStart && currentReserveLength == reserveLength, "all three anchors refer to identical descriptor sequences");
+                else
+                {
+                    Require(currentMainStart == mainStart && currentMainLength == mainLength,
+                        "both anchors reference the immutable main descriptors");
+                    reserveStart = currentReserveStart; reserveLength = currentReserveLength;
+                }
             }
             Dictionary<ushort, byte[]> main = ReadSequence(mainStart, mainLength);
             Dictionary<ushort, byte[]> reserve = ReadSequence(reserveStart, reserveLength);
@@ -141,23 +148,27 @@ internal static class UdfFilesystemTests
             CheckCharacterSet(pvd.Slice(200, 64));
             ReadOnlySpan<byte> partition = main[5];
             _partitionNumber = U16(partition, 22);
-            Require((U16(partition, 20) & 1) != 0 && U32(partition, 184) == 1, "allocated read-only UDF partition");
+            Require((U16(partition, 20) & 1) != 0 && U32(partition, 184) == 2, "allocated write-once UDF partition");
             Require(Encoding.ASCII.GetString(partition.Slice(25, 23)).TrimEnd('\0') == "+NSR03", "ECMA-167 third-edition partition contents");
             _partitionStart = U32(partition, 188);
             _partitionLength = U32(partition, 192);
-            Require(_partitionLength > 0 && (ulong)_partitionStart + _partitionLength <= sectors, "partition extent lies within physical image");
-            if (drawingStart is { } beginning)
-                Require((ulong)_partitionStart + _partitionLength <= beginning, "entire UDF partition ends before the drawing region");
+            Require(_partitionLength > 0 && (ulong)_partitionStart + _partitionLength >= sectors,
+                "write-once partition includes the recording and any reserved update capacity");
             if (drawingEnd is { } end)
-                Require(reserveStart >= end && sectors - 257 >= end, "reserve descriptors and tail anchors lie after drawing");
+                Require(reserveStart + reserveLength / SectorSize <= _partitionStart && sectors - 257 >= end,
+                    "reserve descriptors precede the physical partition and the tail anchor follows drawing");
 
             ReadOnlySpan<byte> logical = main[6];
             CheckCharacterSet(logical.Slice(20, 64));
             Require(U32(logical, 212) == SectorSize, "logical block size equals payload sector size");
             CheckDomain(logical.Slice(216, 32));
-            Require(U32(logical, 264) == 6 && U32(logical, 268) == 1
+            Require(U32(logical, 264) == 70 && U32(logical, 268) == 2
                 && logical[440] == 1 && logical[441] == 6 && U16(logical, 442) == 1
-                && U16(logical, 444) == _partitionNumber, "one physical type-1 partition map");
+                && U16(logical, 444) == _partitionNumber, "physical type-1 partition map");
+            Require(logical[446] == 2 && logical[447] == 64 && U16(logical, 482) == 1
+                && U16(logical, 484) == _partitionNumber && U16(logical, 474) == 0x0250
+                && Encoding.ASCII.GetString(logical.Slice(451, 23)).TrimEnd('\0') == "*UDF Virtual Partition",
+                "UDF 2.50 virtual type-2 map references the same physical partition");
             string logicalName = DecodeDString(logical.Slice(84, 128));
             if (label is not null) Require(logicalName == label, "UDF logical volume label round trips through CS0");
 
@@ -166,9 +177,11 @@ internal static class UdfFilesystemTests
                 "integrity sequence extent is in volume");
             ReadOnlySpan<byte> integrity = Block(integrityStart);
             CheckTag(integrity, 9, integrityStart);
-            Require(U32(integrity, 28) == 1 && U32(integrity, 72) == 1, "closed logical volume with one partition");
-            Require(U32(integrity, 80) == 0 && U32(integrity, 84) == _partitionLength, "integrity size/free tables match the tightly allocated inner partition");
+            Require(U32(integrity, 28) == 0 && U32(integrity, 72) == 2, "open sequential volume with physical and virtual partitions");
+            Require(U32(integrity, 84) == uint.MaxValue && U32(integrity, 88) == _partitionLength
+                && U32(integrity, 92) == uint.MaxValue, "virtual size and free-space table values are unspecified");
             CheckTag(Block(integrityStart + 1), 8, integrityStart + 1);
+            ReadVat();
 
             uint fileSetBlock = ReadLongAllocation(logical.Slice(248, 16), out uint fileSetLength);
             Require(fileSetLength >= 512, "file set descriptor referenced with sufficient extent length");
@@ -181,9 +194,29 @@ internal static class UdfFilesystemTests
             uint root = ReadLongAllocation(fileSet.Slice(400, 16), out uint rootLength);
             Require(rootLength == SectorSize, "root ICB covers one logical block");
             ReadEntry(root, "", expectedDirectory: true);
-            Require(U32(integrity, 120) == _files.Count && U32(integrity, 124) == _visited.Count - _files.Count,
-                "integrity implementation data matches the traversed file and directory counts");
+            Require(_fileCount == _files.Count && _directoryCount == _visited.Count - _files.Count,
+                "VAT file and directory counts match the current tree");
             return _files;
+        }
+
+        private void ReadVat()
+        {
+            ReadOnlySpan<byte> entry = Block(sectors - 1);
+            CheckTag(entry, 261, sectors - 1 - _partitionStart);
+            Require(entry[27] == 248 && (U16(entry, 34) & 7) == 0 && U32(entry, 172) == 8,
+                "last recorded block is the VAT ICB with a physical allocation");
+            uint size = U32(entry, 176), position = U32(entry, 180);
+            Require(U64(entry, 56) == size && size >= 164 && size <= image.Length
+                && U64(entry, 64) == (size + SectorSize - 1) / SectorSize, "VAT information length and blocks recorded");
+            ReadOnlySpan<byte> table = image.AsSpan(checked((int)(_partitionStart + position) * SectorSize), checked((int)size));
+            int header = U16(table, 0);
+            Require(header == 152 + U16(table, 2) && header <= table.Length && (table.Length - header) % 4 == 0
+                && U16(table, 144) == 0x0250 && U16(table, 146) == 0x0250 && U16(table, 148) == 0x0250,
+                "UDF 2.50 VAT header and revisions");
+            _fileCount = U32(table, 136); _directoryCount = U32(table, 140);
+            _vat = Enumerable.Range(0, (table.Length - header) / 4)
+                .Select(index => U32(image, checked((int)(_partitionStart + position) * SectorSize + header + index * 4))).ToArray();
+            Require(_vat.All(block => block < _partitionLength), "VAT maps metadata into the physical partition");
         }
 
         private Dictionary<ushort, byte[]> ReadSequence(uint start, uint length)
@@ -211,6 +244,7 @@ internal static class UdfFilesystemTests
             bool isDirectory = entry[27] == 4;
             Require(isDirectory == expectedDirectory && (isDirectory || entry[27] == 5), "FID and ICB file type agree");
             Require(U16(entry, 20) == 4 && U16(entry, 24) == 1, "ICB uses strategy type 4 with one entry");
+            Require((U32(entry, 44) & 0x0842) == 0x0842, "VAT files and directories grant write permissions");
             int allocationType = U16(entry, 34) & 7;
             Require(allocationType is 0 or 1, "regular UDF allocation descriptor kind");
             ulong informationLength = U64(entry, 56);
@@ -227,11 +261,21 @@ internal static class UdfFilesystemTests
                 uint position = U32(entry, cursor + 4);
                 Require((encodedLength >> 30) == 0 && extentLength is > 0 and <= 0x3ffff800,
                     "data extent is recorded and respects the UDF maximum length");
-                if (size == 16) Require(U16(entry, cursor + 8) == 0, "data extent maps to physical partition zero");
+                if (size == 16) Require(U16(entry, cursor + 8) == 0, "file data extent maps to physical partition zero");
                 uint blocks = (extentLength + SectorSize - 1) / SectorSize;
                 Require((ulong)position + blocks <= _partitionLength, "file data extent is contained in the inner partition");
                 Require((ulong)contents.Length + extentLength <= informationLength, "extent chain does not overrun the information length");
-                contents.Write(image.AsSpan(checked((int)(_partitionStart + position) * SectorSize), checked((int)extentLength)));
+                if (isDirectory)
+                {
+                    Require(size == 8 && blocks == 1, "directory extents occupy individual virtual blocks");
+                    contents.Write(PartitionBlock(position)[..checked((int)extentLength)]);
+                }
+                else
+                {
+                    Require(size == 16, "ordinary file data uses physical long allocations");
+                    CheckOutsideDrawing(_partitionStart + position, blocks);
+                    contents.Write(image.AsSpan(checked((int)(_partitionStart + position) * SectorSize), checked((int)extentLength)));
+                }
                 for (uint index = 0; index < blocks; index++) contentBlocks.Add(position + index);
                 recordedBlocks += blocks;
             }
@@ -272,10 +316,10 @@ internal static class UdfFilesystemTests
         private uint ReadLongAllocation(ReadOnlySpan<byte> data, out uint length)
         {
             uint rawLength = U32(data, 0);
-            Require((rawLength >> 30) == 0 && U16(data, 8) == 0, "long allocation descriptor references recorded partition-zero data");
+            Require((rawLength >> 30) == 0 && U16(data, 8) == 1, "metadata long allocation references the virtual partition");
             length = rawLength & 0x3fffffff;
             uint block = U32(data, 4);
-            Require((ulong)block + (length + SectorSize - 1) / SectorSize <= _partitionLength,
+            Require((ulong)block + (length + SectorSize - 1) / SectorSize <= (ulong)_vat.Length,
                 "long allocation descriptor lies inside the partition");
             return block;
         }
@@ -288,8 +332,16 @@ internal static class UdfFilesystemTests
 
         private ReadOnlySpan<byte> PartitionBlock(uint block)
         {
-            Require(block < _partitionLength, "metadata block lies within partition");
-            return Block(checked(_partitionStart + block));
+            Require(block < _vat.Length, "metadata block lies within virtual partition");
+            uint sector = checked(_partitionStart + _vat[block]);
+            CheckOutsideDrawing(sector, 1);
+            return Block(sector);
+        }
+
+        private void CheckOutsideDrawing(uint sector, uint count)
+        {
+            if (drawingStart is { } start && drawingEnd is { } end)
+                Require((ulong)sector + count <= start || sector >= end, "allocated filesystem data excludes drawing sectors");
         }
     }
 
@@ -298,7 +350,7 @@ internal static class UdfFilesystemTests
 
     private static void CheckDomain(ReadOnlySpan<byte> data) => Require(data[0] == 0
         && Encoding.ASCII.GetString(data.Slice(1, 23)).TrimEnd('\0') == "*OSTA UDF Compliant"
-        && U16(data, 24) == 0x0201, "OSTA UDF 2.01 domain identifier");
+        && U16(data, 24) == 0x0250 && data[26] == 0, "writable OSTA UDF 2.50 domain identifier");
 
     private static string DecodeDString(ReadOnlySpan<byte> data)
     {

@@ -74,8 +74,8 @@ internal static class BluRayFilePlacementTests
         ReadOnlySpan<byte> partition = FindDescriptor(image, 5);
         uint partitionStart = U32(partition, 188), partitionLength = U32(partition, 192);
         Require(partitionStart == outer.DrawingEndSectorExclusive
-            && (ulong)partitionStart + partitionLength <= disc.TotalSectors - 257,
-            "entire file partition is outside the drawing interval and before the tail anchor");
+            && (ulong)partitionStart + partitionLength == disc.TotalSectors,
+            "outer write-once partition begins after drawing and includes the committed VAT tail");
         Require(partitionStart > U32(FindDescriptor(innerImage, 5), 188), "file partition moved outward");
 
         string output = Path.Combine(directory, "outer.iso");
@@ -170,13 +170,13 @@ internal static class BluRayFilePlacementTests
         ReadOnlySpan<byte> entry = bytes.AsSpan(checked((int)fileEntry * SectorBytes), SectorBytes);
         Require(U16(entry, 0) == 261 && BinaryPrimitives.ReadUInt64LittleEndian(entry.Slice(56, 8)) == (ulong)length,
             "outer file entry retains 64-bit information length");
-        int count = checked((int)U32(entry, 172) / 8);
+        int count = checked((int)U32(entry, 172) / 16);
         Require(count == 5, "large outer file retains five allocation descriptors");
         long described = 0;
         uint previousEnd = 0;
         for (int index = 0; index < count; index++)
         {
-            uint extentLength = U32(entry, 176 + index * 8), block = U32(entry, 180 + index * 8);
+            uint extentLength = U32(entry, 176 + index * 16), block = U32(entry, 180 + index * 16);
             Require(extentLength is > 0 and <= 0x3ffff800, "recorded extent respects 30-bit length");
             Require(index == 0 || block == previousEnd, "large-file extents remain contiguous after relocation");
             previousEnd = checked(block + (extentLength + SectorBytes - 1) / SectorBytes);

@@ -46,7 +46,7 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
                     new("output", "ECC cluster", DiscOptionValueType.OutputFile, Required: true),
                     new("psn", "First physical sector", DiscOptionValueType.String, DefaultValue: "0x100000")]),
             new("bd-generate", "BD-R picture generation",
-                "Draw the full user-data area; selecting a files directory adds a UDF 2.01 filesystem at the inner or outer ring.",
+                "Draw the full user-data area; selecting a files directory adds a UDF 2.50 filesystem at the inner or outer ring.",
                 DiscModuleCapabilities.DataImageGeneration,
                 [.. GeometryOptions, new("input", "Source image", DiscOptionValueType.InputFile, Required: true),
                     new("output", "ISO output", DiscOptionValueType.OutputFile, Required: true),
@@ -222,7 +222,7 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
 
         return new(Descriptor.Id, command.Name, 0,
             isPicture
-                ? L.F($"BD {(isoPlan!.HasFileSystem ? "UDF 2.01" : L.T("full-area drawing, no filesystem"))}: {summary.BytesWritten} bytes, {disc.TotalSectors} sectors; {isoPlan.FileCount} {(isoPlan.FilesAtOuterRing ? L.T("BluRay.OuterFilePosition") : L.T("BluRay.InnerFilePosition"))} files; drawing sectors {isoPlan.DrawingStartSector}..{isoPlan.DrawingEndSectorExclusive - 1}; {interpretation}.")
+                ? L.F($"BD {(isoPlan!.HasFileSystem ? "UDF 2.50" : L.T("full-area drawing, no filesystem"))}: {summary.BytesWritten} bytes, {disc.TotalSectors} sectors; {isoPlan.FileCount} {(isoPlan.FilesAtOuterRing ? L.T("BluRay.OuterFilePosition") : L.T("BluRay.InnerFilePosition"))} files; drawing sectors {isoPlan.DrawingStartSector}..{isoPlan.DrawingEndSectorExclusive - 1}; {interpretation}.")
                 : L.F($"BD probe: {summary.BytesWritten} raw payload bytes, sectors {start}..{start + count - 1}; {interpretation}. No filesystem."),
             Path.GetFullPath(output!));
     }

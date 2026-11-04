@@ -65,7 +65,7 @@ Anlık yazma deneysel bir özelliktir. Yalnızca gözden çıkarılabilir test o
 
 - **CD desteği**: Herhangi bir CD'yi destekler. cdrecord ve ImgBurn gibi yazma yazılımlarıyla uyumlu, biçim başlıklı WAV ses izi ve eşlik eden CUE dosyası dışa aktarabilirsiniz; RAW ses izi de dışa aktarılabilir. [CD yazma uyumluluğu](docs/CD_AUDIO_COMPATIBILITY.tr.md) belgesine bakın.
 - **DVD desteği**: Herhangi bir DVD'yi destekler. ISO görüntüsü dışa aktarabilirsiniz.
-- **Blu-ray desteği**: Herhangi bir tek katmanlı 25 GB BD-R'yi, yalnızca çizim ve UDF 2.01 dosyalarıyla birlikte çizim modlarında destekler. [ADDING_BLURAY.md](docs/ADDING_BLURAY.tr.md) belgesine bakın.
+- **Blu-ray desteği**: Herhangi bir tek katmanlı 25 GB BD-R'yi, yalnızca çizim ve UDF 2.50 dosyalarıyla birlikte çizim modlarında destekler. [ADDING_BLURAY.md](docs/ADDING_BLURAY.tr.md) belgesine bakın.
 - **Diskle birlikte dosyalar**: CD/DVD/Blu-ray için kaydedilecek klasör ve iç/dış halka konumu Tasarım sayfasında doğrudan seçilebilir, Dışa aktarma sayfasında da değiştirilebilir; ayarlar projeyle kaydedilir.
 - **Dosya alanı önizlemesi**: Karma disklerin tasarım izdüşümü ve üretilmiş çıktıyı geri okuma önizlemesi, dosya sistemini de içeren dosya alanını sarı gösterir.
 - **Ortama göre gri tonlama**: CD ve DVD siyah beyaz iki seviye kullanır; CD için `0D / AA`, DVD'nin karıştırılmış alanında `A5 / 92` kullanılır. [PHYSICAL_MODEL_AUDIT.md](docs/PHYSICAL_MODEL_AUDIT.tr.md) belgesine bakın.
@@ -164,7 +164,7 @@ Her komutun tüm parametreleri için ilgili belgelere bakın.
 | `src/DiscImageStudio.Cd/` | CD-DA üretim çekirdeği ve CD modülü |
 | `src/DiscImageStudio.Dvd/` | DVD motoru uyarlayıcı modülü |
 | `src/DiscImageStudio.BluRay/` | BD-R geometrisi, 17PP/ECC, 3T/6T eşlemesi, akış üretimi ve ISO |
-| `src/DiscImageStudio.Iso/` | UDF 2.01 / ISO9660 yazıcıları |
+| `src/DiscImageStudio.Iso/` | UDF 2.50 / ISO9660 yazıcıları |
 | `src/DiscImageStudio.App/` | WPF GUI, ortak komut satırı ve mağaza kaynakları |
 | `src/DvdImageSolver/` | Yalıtılmış DVD kodlama/çözüm motoru |
 | `tests/` | Üçüncü taraf test çatısı kullanmayan mimari regresyon testleri |

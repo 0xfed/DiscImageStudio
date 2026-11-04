@@ -59,6 +59,8 @@ BluRaySidecarTests.Run();
 BluRayFilePlacementTests.Run();
 BluRayPatternRangeTests.Run();
 UdfFilesystemTests.Run();
+UdfVatUpdateTests.Run();
+BluRayFileUpdateBurnTests.Run();
 UdfLargeFileTests.Run();
 GeneratedContentProgressTests.Run();
 OpticalWriteProgressTests.Run();

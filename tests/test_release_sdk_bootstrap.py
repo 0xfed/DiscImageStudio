@@ -192,6 +192,27 @@ class SdkBootstrapTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "redirected"):
             SDK.NoRedirects().redirect_request(None, None, 302, "Found", {}, "http://unreviewed.test/sdk")
 
+    def test_partial_and_truncated_downloads_are_rejected_before_extraction(self):
+        body = b"reviewed archive"
+        entry = {"url": "https://dotnetcli.blob.core.windows.net/dotnet/Sdk/reviewed.zip",
+                 "sha512": hashlib.sha512(body).hexdigest()}
+        partial = response(body, entry["url"])
+        partial.headers["Content-Range"] = "bytes 0-14/300745255"
+        truncated = response(body, entry["url"], len(body) + 1)
+        for stream, message in ((partial, "partial archive"), (truncated, "truncated")):
+            with self.subTest(message), tempfile.TemporaryDirectory() as temporary, patch.object(SDK, "open_download", return_value=stream):
+                with self.assertRaisesRegex(ValueError, message):
+                    SDK.download_verified(entry, Path(temporary) / "archive")
+
+    def test_verified_complete_download(self):
+        body = b"reviewed archive"
+        entry = {"url": "https://dotnetcli.blob.core.windows.net/dotnet/Sdk/reviewed.zip",
+                 "sha512": hashlib.sha512(body).hexdigest()}
+        with tempfile.TemporaryDirectory() as temporary, patch.object(SDK, "open_download", return_value=response(body, entry["url"], len(body))):
+            archive = Path(temporary) / "archive"
+            SDK.download_verified(entry, archive)
+            self.assertEqual(archive.read_bytes(), body)
+
     def test_missing_expected_sdk_host_or_compiler_rejected(self):
         with tempfile.TemporaryDirectory() as temporary, patch.object(SDK, "extract_archive"):
             with self.assertRaisesRegex(ValueError, "host/compiler"):

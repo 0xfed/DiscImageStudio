@@ -20,7 +20,7 @@ flowchart LR
     DVD --> Engine[DvdImageSolver]
     CD --> CdEngine[CD-DA コア]
     BD --> BdEngine[BD エンコーダー / 17PP / ECC]
-    BD --> Iso[DiscImageStudio.Iso / UDF 2.01]
+    BD --> Iso[DiscImageStudio.Iso / UDF 2.50]
 ```
 
 `DiscImageStudio.Cli` と Windows デスクトップアプリは、同じモジュールカタログからオフラインコマンドを実行します。`DiscImageStudio.ImageIO` は Windows デスクトップターゲットでは WIC を使い、汎用の `net10.0` ターゲットでは StbImageSharp で画像を読み、.NET の `ZLibStream` を使う内蔵 PNG エンコーダーで書き出します。どちらのバックエンドも同じ順序の BGRA ピクセルを生成器に渡します。Blu-ray はアルファ合成とグレースケール変換のコードを共有し、CD と DVD もそれぞれ既存のサンプリングアルゴリズムを共有します。
@@ -92,7 +92,7 @@ CD の `OpticalBurnRequest.ProduceContent` は、ヘッダーなしの 44.1 kHz�
 
 DVD の混合フォルダーモードは 2 段階で順次生成します。第 1 段階ではディレクトリを走査し、ISO9660/Joliet メタデータ、ファイル extent、描画開始/終了 LBA を決めます。第 2 段階では計画したディスク面の順序で出力します。内周モードは「メタデータ → ファイル → パターン」、外周モードは「メタデータ → パターン → ファイル」です。パターンは 16 セクターの ECC Block に揃えます。配置計画はメタデータだけを保持し、ファイル内容をキャッシュせず、Seek 不可のストリームにも対応します。
 
-BD-R も同じ書き込み契約を使います。`BluRayIsoGenerator` は単一の前方向ストリームで UDF 2.01、パターン領域、末尾のバックアップメタデータを書き込みます。外周モードでは完全なファイルパーティションを末尾バックアップ領域の直前へ移し、パターンは常に 32 セクター境界に揃えてパーティションの外に置きます。書き込みページはこのストリームを MMC 順次書き込みセッションへ直接渡し、完全な 25 GB イメージをディスク上に保存しません。BD は予備領域への再マッピングを提供せず、中断後のディスクは通常書き込みを続けられません。
+BD-R も同じ書き込み契約を使います。`BluRayIsoGenerator` は単一の前方向ストリームで UDF 2.50、パターン領域、末尾のバックアップメタデータを書き込みます。外周モードでは完全なファイルパーティションを末尾バックアップ領域の直前へ移し、パターンは常に 32 セクター境界に揃え、仮想メタデータマップには含めません。書き込みページはこのストリームを MMC 順次書き込みセッションへ直接渡し、完全な 25 GB イメージをディスク上に保存しません。BD は予備領域への再マッピングを提供せず、中断後のディスクは通常書き込みを続けられません。
 
 `ProjectOutputs.FilesAtOuterRing` は省略可能なフィールドで既定は `false` です。DVD/BD はそれぞれ共有パラメーター状態を通してエクスポート、プレビュー、書き込みを同期します。GUI プレビューでは描画の開始/終了境界に基づき、必要なファイルシステム予約領域を含むファイル領域を黄色で表示します。この配色は生成器には入りません。既存の生成物は sidecar の固定範囲を使い、現在のディレクトリから配置を推測し直しません。
 
@@ -108,7 +108,7 @@ BD-R も同じ書き込み契約を使います。`BluRayIsoGenerator` は単一
 
 ### Blu-ray
 
-`DiscImageStudio.BluRay` は BD の幾何、17PP、EDC/Reed-Solomon/LDC-BIS、3T/6T run-count マッピング、ストリーミング生成、ISO 計画を管理し、`DiscImageStudio.Iso` を参照して UDF 2.01 を書き出します。GUI には Core 契約だけを通してジョブを公開し、CD/DVD の内部型を参照も変更もしません。BD の `ToneProfile` は元画像の解像度で量子化し、`BluRayRunLengthMapping` は 128 のしきい値と極性交換だけを行います。生成時には ISO の隣に `bd-r-image-v1` sidecar を書き、セクター、半径、描画開始/終了、極性、階調、UDF タイムスタンプを記録します。
+`DiscImageStudio.BluRay` は BD の幾何、17PP、EDC/Reed-Solomon/LDC-BIS、3T/6T run-count マッピング、ストリーミング生成、ISO 計画を管理し、`DiscImageStudio.Iso` を参照して UDF 2.50 を書き出します。GUI には Core 契約だけを通してジョブを公開し、CD/DVD の内部型を参照も変更もしません。BD の `ToneProfile` は元画像の解像度で量子化し、`BluRayRunLengthMapping` は 128 のしきい値と極性交換だけを行います。生成時には ISO の隣に `bd-r-image-v1` sidecar を書き、セクター、半径、描画開始/終了、極性、階調、UDF タイムスタンプを記録します。
 
 ## 拡張の規則
 

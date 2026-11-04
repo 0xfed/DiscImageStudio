@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Generate UDF 2.50 VAT volumes and support reserving space on the first BD-R burn for later file additions, replacements, and removals. File updates append a new tree and linked VAT under the drive lock, preserve the original drawing, and leave the disc open. Old bytes remain recorded and all selected files are rewritten. Add independent VAT traversal and fake-recorder regressions. Fix SDK bootstrap hash failures by using Microsoft’s direct blob endpoint with unchanged reviewed SHA512 values and explicit partial-download checks.
+
 ## [1.3.7] - 2026-11-04
 
 - Fix duplicate-file errors (`NETSDK1152`) when publishing the standalone Windows EXE: exclude duplicate launchers and runtime manifests for the hosted DVD solver while retaining `DvdImageSolver.dll`. CI now builds and smoke-tests the EXE with its bundled runtime.

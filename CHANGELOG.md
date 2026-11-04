@@ -4,6 +4,14 @@
 
 ## Unreleased
 
+### 中文
+
+- 生成 UDF 2.50 VAT 卷，支持首次 BD-R 刻录预留空间，以便后续添加、替换和移除文件。文件更新在设备锁内追加新的文件树与链接的 VAT，保留原始图案并使光盘保持开放。旧字节仍保留，所选文件将全部重写。新增独立 VAT 遍历与假刻录机回归。SDK 引导改用 Microsoft 直接 blob 端点，保持经审查的 SHA512 不变并显式检查部分下载，修复哈希校验失败。
+
+### English
+
+- Generate UDF 2.50 VAT volumes and support reserving space on the first BD-R burn for later file additions, replacements, and removals. File updates append a new tree and linked VAT under the drive lock, preserve the original drawing, and leave the disc open. Old bytes remain recorded and all selected files are rewritten. Add independent VAT traversal and fake-recorder regressions. Fix SDK bootstrap hash failures by using Microsoft’s direct blob endpoint with unchanged reviewed SHA512 values and explicit partial-download checks.
+
 ## [1.3.7] - 2026-11-04
 
 ### 中文

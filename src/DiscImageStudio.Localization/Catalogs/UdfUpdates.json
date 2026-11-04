@@ -1,0 +1,184 @@
+{
+  "Only Blu-ray VAT recordings can be left open for file updates.": {
+    "en": "Only Blu-ray VAT recordings can be left open for file updates.",
+    "zh-CN": "仅蓝光 VAT 记录可保持开放以更新文件。",
+    "zh-TW": "僅藍光 VAT 記錄可保持開放以更新檔案。",
+    "ja": "ファイル更新のために開いたままにできるのは Blu-ray VAT 記録のみです。",
+    "tr": "Dosya güncellemeleri için yalnızca Blu-ray VAT kayıtları açık bırakılabilir."
+  },
+  "This burner does not support Blu-ray file updates.": {
+    "en": "This burner does not support Blu-ray file updates.",
+    "zh-CN": "此刻录接口不支持蓝光文件更新。",
+    "zh-TW": "此燒錄介面不支援藍光檔案更新。",
+    "ja": "この書き込み機能は Blu-ray のファイル更新に対応していません。",
+    "tr": "Bu yazıcı Blu-ray dosya güncellemelerini desteklemiyor."
+  },
+  "Updating Blu-ray files…": {
+    "en": "Updating Blu-ray files…",
+    "zh-CN": "正在更新蓝光文件…",
+    "zh-TW": "正在更新藍光檔案…",
+    "ja": "Blu-ray のファイルを更新しています…",
+    "tr": "Blu-ray dosyaları güncelleniyor…"
+  },
+  "Insert an open single-layer BD-R VAT disc with unrecorded space.": {
+    "en": "Insert an open single-layer BD-R VAT disc with unrecorded space.",
+    "zh-CN": "请放入仍开放且有未记录空间的单层 BD-R VAT 光盘。",
+    "zh-TW": "請放入仍開放且有未記錄空間的單層 BD-R VAT 光碟。",
+    "ja": "未記録領域のある、開いた状態の単層 BD-R VAT ディスクを挿入してください。",
+    "tr": "Kaydedilmemiş alanı olan açık, tek katmanlı bir BD-R VAT diski takın."
+  },
+  "Not enough unrecorded disc space for the files and VAT update.": {
+    "en": "Not enough unrecorded disc space for the files and VAT update.",
+    "zh-CN": "光盘未记录空间不足以写入文件和 VAT 更新。",
+    "zh-TW": "光碟未記錄空間不足以寫入檔案和 VAT 更新。",
+    "ja": "ファイルと VAT 更新を書き込む未記録領域が不足しています。",
+    "tr": "Dosyalar ve VAT güncellemesi için diskte yeterli kaydedilmemiş alan yok."
+  },
+  "Preparing file update…": {
+    "en": "Preparing file update…",
+    "zh-CN": "正在准备文件更新…",
+    "zh-TW": "正在準備檔案更新…",
+    "ja": "ファイル更新を準備しています…",
+    "tr": "Dosya güncellemesi hazırlanıyor…"
+  },
+  "Files updated. The disc remains open for further updates.": {
+    "en": "Files updated. The disc remains open for further updates.",
+    "zh-CN": "文件已更新。光盘保持开放，可继续更新。",
+    "zh-TW": "檔案已更新。光碟保持開放，可繼續更新。",
+    "ja": "ファイルを更新しました。ディスクは引き続き更新できる状態です。",
+    "tr": "Dosyalar güncellendi. Disk sonraki güncellemeler için açık kalır."
+  },
+  "File updates require a data directory.": {
+    "en": "File updates require a data directory.",
+    "zh-CN": "文件更新需要选择数据文件夹。",
+    "zh-TW": "檔案更新需要選擇資料夾。",
+    "ja": "ファイル更新にはデータフォルダーが必要です。",
+    "tr": "Dosya güncellemeleri için bir veri klasörü gerekir."
+  },
+  "The disc is not a committed Disc Image Studio UDF 2.50 VAT volume.": {
+    "en": "The disc is not a committed Disc Image Studio UDF 2.50 VAT volume.",
+    "zh-CN": "光盘不是已完整提交的 Disc Image Studio UDF 2.50 VAT 卷。",
+    "zh-TW": "光碟不是已完整提交的 Disc Image Studio UDF 2.50 VAT 磁碟區。",
+    "ja": "このディスクは、コミットが完了した Disc Image Studio UDF 2.50 VAT ボリュームではありません。",
+    "tr": "Disk, kaydı tamamlanmış bir Disc Image Studio UDF 2.50 VAT birimi değil."
+  },
+  "The recorded volume exceeds the current disc capacity.": {
+    "en": "The recorded volume exceeds the current disc capacity.",
+    "zh-CN": "已记录卷超出当前光盘容量。",
+    "zh-TW": "已記錄磁碟區超出目前光碟容量。",
+    "ja": "記録済みボリュームが現在のディスク容量を超えています。",
+    "tr": "Kaydedilen birim mevcut disk kapasitesini aşıyor."
+  },
+  "Update files on this disc?": {
+    "en": "Update files on this disc?",
+    "zh-CN": "更新此光盘上的文件？",
+    "zh-TW": "更新此光碟上的檔案？",
+    "ja": "このディスクのファイルを更新しますか？",
+    "tr": "Bu diskteki dosyalar güncellensin mi?"
+  },
+  "Update disc files": {
+    "en": "Update disc files",
+    "zh-CN": "更新光盘文件",
+    "zh-TW": "更新光碟檔案",
+    "ja": "ディスクのファイルを更新",
+    "tr": "Disk dosyalarını güncelle"
+  },
+  "Disc files updated": {
+    "en": "Disc files updated",
+    "zh-CN": "光盘文件已更新",
+    "zh-TW": "光碟檔案已更新",
+    "ja": "ディスクのファイルを更新しました",
+    "tr": "Disk dosyaları güncellendi"
+  },
+  "Disc file update completed: {0:N0} new bytes recorded.\n": {
+    "en": "Disc file update completed: {0:N0} new bytes recorded.\n",
+    "zh-CN": "光盘文件更新完成：新写入 {0:N0} 字节。\n",
+    "zh-TW": "光碟檔案更新完成：新寫入 {0:N0} 位元組。\n",
+    "ja": "ディスクのファイル更新完了：{0:N0} バイトを追記しました。\n",
+    "tr": "Disk dosya güncellemesi tamamlandı: {0:N0} yeni bayt kaydedildi.\n"
+  },
+  "File update cancelled": {
+    "en": "File update cancelled",
+    "zh-CN": "文件更新已取消",
+    "zh-TW": "檔案更新已取消",
+    "ja": "ファイル更新をキャンセルしました",
+    "tr": "Dosya güncellemesi iptal edildi"
+  },
+  "File update failed": {
+    "en": "File update failed",
+    "zh-CN": "文件更新失败",
+    "zh-TW": "檔案更新失敗",
+    "ja": "ファイル更新に失敗しました",
+    "tr": "Dosya güncellemesi başarısız oldu"
+  },
+  "Update reserve (MiB)": {
+    "en": "Update reserve (MiB)",
+    "zh-CN": "更新预留空间（MiB）",
+    "zh-TW": "更新預留空間（MiB）",
+    "ja": "更新用の予約領域（MiB）",
+    "tr": "Güncellemeler için ayrılan alan (MiB)"
+  },
+  "Files recorded. The disc remains open for file updates.": {
+    "en": "Files recorded. The disc remains open for file updates.",
+    "zh-CN": "文件已记录。光盘保持开放，可更新文件。",
+    "zh-TW": "檔案已記錄。光碟保持開放，可更新檔案。",
+    "ja": "ファイルを記録しました。ディスクはファイル更新が可能な状態です。",
+    "tr": "Dosyalar kaydedildi. Disk dosya güncellemeleri için açık kalır."
+  },
+  "Flushing the disc cache and committing the file list…": {
+    "en": "Flushing the disc cache and committing the file list…",
+    "zh-CN": "正在刷新光盘缓存并提交文件列表…",
+    "zh-TW": "正在排清光碟快取並提交檔案清單…",
+    "ja": "ディスクのキャッシュをフラッシュし、ファイル一覧を確定しています…",
+    "tr": "Disk önbelleği boşaltılıyor ve dosya listesi kaydediliyor…"
+  },
+  "The disc will remain open for file updates.": {
+    "en": "The disc will remain open for file updates.",
+    "zh-CN": "光盘将保持开放以便更新文件。",
+    "zh-TW": "光碟將保持開放以便更新檔案。",
+    "ja": "ファイル更新のためディスクを開いたままにします。",
+    "tr": "Disk dosya güncellemeleri için açık bırakılacak."
+  },
+  "The selected folder becomes the complete file list on {0}:\n{1}\n\nFiles missing from this folder will disappear from the disc's current file list. Old data stays recorded and its space cannot be reclaimed. The original drawing is preserved.": {
+    "en": "The selected folder becomes the complete file list on {0}:\n{1}\n\nFiles missing from this folder will disappear from the disc's current file list. Old data stays recorded and its space cannot be reclaimed. The original drawing is preserved.",
+    "zh-CN": "所选文件夹将成为 {0} 上的完整文件列表：\n{1}\n\n此文件夹中不存在的文件将从光盘当前文件列表中移除。旧数据仍保留且无法回收空间。原有图案保持不变。",
+    "zh-TW": "所選資料夾將成為 {0} 上的完整檔案清單：\n{1}\n\n此資料夾中不存在的檔案將從光碟目前檔案清單中移除。舊資料仍保留且無法回收空間。原有圖案保持不變。",
+    "ja": "選択したフォルダーを {0} の完全なファイル一覧として記録します：\n{1}\n\nこのフォルダーに存在しないファイルは、ディスクの現在のファイル一覧から除かれます。古いデータは記録されたままとなり、領域は再利用できません。元の図柄は保持されます。",
+    "tr": "Seçilen klasör {0} üzerindeki tam dosya listesi olur:\n{1}\n\nBu klasörde olmayan dosyalar diskin mevcut dosya listesinden kaldırılır. Eski veriler kayıtlı kalır ve kapladıkları alan geri kazanılamaz. İlk çizim korunur."
+  },
+  "Xaml.DiscFileUpdates": {
+    "en": "Files after burning",
+    "zh-CN": "刻录后的文件更新",
+    "zh-TW": "燒錄後的檔案更新",
+    "ja": "書き込み後のファイル更新",
+    "tr": "Yazma sonrası dosyalar"
+  },
+  "Xaml.KeepDiscOpenForFileUpdates": {
+    "en": "Keep space for later file updates",
+    "zh-CN": "为后续文件更新保留空间",
+    "zh-TW": "為後續檔案更新保留空間",
+    "ja": "後からファイルを更新するため領域を確保",
+    "tr": "Sonraki dosya güncellemeleri için alan ayır"
+  },
+  "Xaml.UpdateReserveMiB": {
+    "en": "Space for updates (MiB)",
+    "zh-CN": "更新预留空间（MiB）",
+    "zh-TW": "更新預留空間（MiB）",
+    "ja": "更新用の領域（MiB）",
+    "tr": "Güncellemeler için alan (MiB)"
+  },
+  "Xaml.UpdateDiscFiles": {
+    "en": "Update disc files",
+    "zh-CN": "更新光盘文件",
+    "zh-TW": "更新光碟檔案",
+    "ja": "ディスクのファイルを更新",
+    "tr": "Disk dosyalarını güncelle"
+  },
+  "Xaml.DiscFileUpdateHelp": {
+    "en": "For the first burn, select a files folder in Export and reserve space here. To update an open disc, edit that folder and choose Update disc files. Its contents replace the current file list. Removing files does not reclaim space. The drawing stays intact.",
+    "zh-CN": "首次刻录前，请在导出页选择文件夹并在此预留空间。要更新开放的光盘，请编辑该文件夹并选择“更新光盘文件”。文件夹内容将替换当前文件列表。移除文件不会回收空间，原有图案保持不变。",
+    "zh-TW": "首次燒錄前，請在匯出頁選擇資料夾並在此預留空間。要更新開放的光碟，請編輯該資料夾並選擇「更新光碟檔案」。資料夾內容將取代目前檔案清單。移除檔案不會回收空間，原有圖案保持不變。",
+    "ja": "最初の書き込み前に、エクスポートでファイルのフォルダーを選択し、ここで更新用の領域を確保してください。開いたディスクを更新するには、そのフォルダーを編集して「ディスクのファイルを更新」を選びます。フォルダーの内容で現在のファイル一覧を置き換えます。削除しても領域は再利用できません。図柄は保持されます。",
+    "tr": "İlk yazmada Dışa aktar sayfasından bir dosya klasörü seçin ve burada alan ayırın. Açık bir diski güncellemek için bu klasörü düzenleyip Disk dosyalarını güncelle seçeneğini kullanın. Klasörün içeriği mevcut dosya listesinin yerini alır. Dosyaları kaldırmak alanı geri kazandırmaz. Çizim korunur."
+  }
+}

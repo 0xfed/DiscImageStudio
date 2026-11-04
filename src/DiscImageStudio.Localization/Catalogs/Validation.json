@@ -944,12 +944,12 @@
     "ja": "UDF サフィックスは DrawingEndLbaExclusive から始まる必要があります。",
     "tr": "UDF son eki DrawingEndLbaExclusive konumunda başlamalıdır."
   },
-  "UDF 2.01 filenames must use CS0 Unicode BMP characters without byte-order marks: {0}": {
-    "zh-CN": "UDF 2.01 文件名必须使用不含字节序标记的 CS0 Unicode BMP 字符：{0}",
-    "zh-TW": "UDF 2.01 檔名必須使用不含位元組順序標記的 CS0 Unicode BMP 字元：{0}",
-    "en": "UDF 2.01 filenames must use CS0 Unicode BMP characters without byte-order marks: {0}",
-    "ja": "UDF 2.01 のファイル名はバイトオーダーマークを含まない CS0 Unicode BMP 文字である必要があります：{0}",
-    "tr": "UDF 2.01 dosya adları bayt sırası işareti içermeyen CS0 Unicode BMP karakterleri kullanmalıdır: {0}"
+  "UDF 2.50 filenames must use CS0 Unicode BMP characters without byte-order marks: {0}": {
+    "zh-CN": "UDF 2.50 文件名必须使用不含字节序标记的 CS0 Unicode BMP 字符：{0}",
+    "zh-TW": "UDF 2.50 檔名必須使用不含位元組順序標記的 CS0 Unicode BMP 字元：{0}",
+    "en": "UDF 2.50 filenames must use CS0 Unicode BMP characters without byte-order marks: {0}",
+    "ja": "UDF 2.50 のファイル名はバイトオーダーマークを含まない CS0 Unicode BMP 文字である必要があります：{0}",
+    "tr": "UDF 2.50 dosya adları bayt sırası işareti içermeyen CS0 Unicode BMP karakterleri kullanmalıdır: {0}"
   },
   "Filename exceeds the UDF CS0 identifier limit (254 single-byte or 127 two-byte characters): {0}": {
     "zh-CN": "文件名超出 UDF CS0 标识符限制（254 个单字节或 127 个双字节字符）：{0}",

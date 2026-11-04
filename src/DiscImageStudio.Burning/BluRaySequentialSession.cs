@@ -14,7 +14,9 @@ internal sealed record BluRaySequentialMediaInfo(
     uint FreeBlocks,
     uint TrackSize,
     uint MaximumBlocks,
-    int TrackNumber);
+    int TrackNumber,
+    uint? LastRecordedAddress = null,
+    bool DiscIsClosed = false);
 
 internal interface IBluRaySequentialSession : IDisposable
 {
@@ -22,6 +24,9 @@ internal interface IBluRaySequentialSession : IDisposable
     BluRaySequentialMediaInfo ReadMedia();
     OpticalWriteSpeed ConfigureWrite(OpticalWriteSpeed? requested);
     void Write(IStream content, uint sectorCount);
+    void WriteAppend(IStream content, uint sectorCount, uint startLba)
+        => throw new NotSupportedException();
+    byte[] ReadSector(uint lba) => throw new NotSupportedException();
     void CancelWrite();
     void Flush();
     void CloseTrack(int trackNumber);
@@ -106,6 +111,15 @@ internal sealed class DynamicBluRaySequentialSession : IBluRaySequentialSession
     }
 
     public void Write(IStream content, uint sectorCount)
+        => WriteAppend(content, sectorCount, 0);
+
+    public byte[] ReadSector(uint lba)
+    {
+        RequireAcquired();
+        return _commands.ReadSector(lba);
+    }
+
+    public void WriteAppend(IStream content, uint sectorCount, uint startLba)
     {
         RequireAcquired();
         if (!_configured)
@@ -114,7 +128,7 @@ internal sealed class DynamicBluRaySequentialSession : IBluRaySequentialSession
         // The first WRITE initializes a blank BD-R in SRM without allocating
         // spare areas. No FORMAT UNIT, RESERVE TRACK, page 05 or OPC is issued.
         BluRaySequentialWriter.Write(_transport, content, sectorCount, _reportWriteProgress,
-            () => Volatile.Read(ref _cancelRequested) != 0, reportDiagnostics: _reportDiagnostics);
+            () => Volatile.Read(ref _cancelRequested) != 0, reportDiagnostics: _reportDiagnostics, startLba: startLba);
     }
 
     public void CancelWrite()

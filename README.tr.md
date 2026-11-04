@@ -95,7 +95,7 @@ Süreç ve parametreler için [yardımcı kalibrasyon kılavuzuna](docs/CALIBRAT
 CD ve DVD veri projelerinde **Tasarım → Disk dosyaları** altında **UDF 2.50 (VAT) kullan** seçeneği bulunur; Blu-ray otomatik olarak UDF 2.50 kullanır. CD/DVD için varsayılan biçim ISO9660/Joliet olarak kalır.
 
 1. Diskte olmasını istediğiniz tüm dosyaları içeren klasörü seçin.
-2. İlk kayıttan önce **Yazdırma** sayfasında **Dosya güncellemeleri için diski açık bırak** seçeneğini işaretleyin ve **Güncelleme rezervi (MiB)** değerini ayarlayın. CD/DVD için UDF otomatik seçilir ve ayrılan alana yazılmaz.
+2. İlk kayıttan önce **Yazdırma** sayfasında **Tasarım birleşik görseli** kaynağını seçin, **Sonraki dosya güncellemeleri için alan ayır** seçeneğini işaretleyin ve **Güncellemeler için alan (MiB)** değerini ayarlayın. CD/DVD için UDF otomatik seçilir ve ayrılan alana yazılmaz.
 3. Sonraki değişiklikler için bu klasörü düzenleyin, özgün açık diski takın ve Yazdırma sayfasında **Disk dosyalarını güncelle** seçeneğini kullanın. Eksik dosyalar geçerli listeden kaldırılır; eklenen ve değiştirilen dosyalar yeni sektörlere yazılır.
 4. Güncellemeler değişmeyen dosya verilerini doğrulayıp yeniden kullanır, yeni üstveri ile bağlantılı VAT ekler ve özgün çizimi korur. İptal edilen veya başarısız güncellemeler otomatik tekrarlanmaz.
 

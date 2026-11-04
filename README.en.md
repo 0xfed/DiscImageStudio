@@ -95,7 +95,7 @@ See the [assisted calibration guide](docs/CALIBRATION.en.md) for the workflow an
 CD and DVD data projects offer **Use UDF 2.50 (VAT)** in **Design → Disc files**; Blu-ray uses UDF 2.50 automatically. ISO9660/Joliet remains the CD/DVD default.
 
 1. Select a folder containing the complete file list you want on the disc.
-2. On **Burn**, select **Keep disc open for file updates** and set **Update reserve (MiB)** before the first recording. This selects UDF automatically for CD/DVD and leaves the reserved area unrecorded.
+2. On **Burn**, choose **Design composite**, select **Keep space for later file updates** and set **Space for updates (MiB)** before the first recording. This selects UDF automatically for CD/DVD and leaves the reserved area unrecorded.
 3. For later changes, edit that folder, insert the original open disc, then choose **Update disc files** on Burn. Missing files disappear from the current list; additions and replacements use new sectors.
 4. Updates verify and reuse unchanged file data, append new metadata and a linked VAT, and preserve the original drawing. Cancelled or failed updates are not retried automatically.
 

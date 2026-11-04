@@ -4,6 +4,8 @@
 
 ## Henüz yayımlanmayan
 
+- PNG açma çıktısının bildirilen görüntü boyutunu aşması sorunu giderildi; `RasterCodec` varsayılan girdi sınırları `256 MiB` ve `64 Mi` piksel olarak belirlendi. İncelenen derleme bağımlılıkları sabitlenip kilitlendi, çıktı denetimi yayımlama yazma izinlerinden ayrıldı ve sürüm dosyaları için SBOM ile derleme kökeni doğrulamaları yapılandırıldı.
+
 - Ayrı Windows CI düzen denetimi eklendi: beş dilde 325 çalışma alanı, önizleme, kalibrasyon ve pencere senaryosunda metin sınırları/eksik glifler denetlenir; hata olsa da görüntü/rapor kaydedilir. Geçici depolar ve yazamayan sahte yazıcı ile değişen başlıklar ve proje verisinin korunması kontrol edilir. Linux üzerinde derlendi; Windows çalışması push sonrası CI bekliyor.
 
 - DVD akış üretiminin yedi hata yolu ve boş devre dışı önayar bağlamları çevrildi; kaynak korumaları ve beş dil regresyonları genişletildi. Tam derleme ile 2,042 kaynak ve 2,076 başvuru kontrolü geçti. Türkçe README eklendi, diğer sürümler karşılaştırıldı; DVD motor kılavuzu formüller, komutlar ve tarihsel doğrulama sınırları korunarak beş dilde tamamlandı.

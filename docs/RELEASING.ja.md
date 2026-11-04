@@ -97,6 +97,19 @@ SHA256SUMS.txt
 Get-FileHash .\DiscImageStudio-v1.3.6-win-x64.exe -Algorithm SHA256
 ```
 
+### ビルドの来歴証明と SBOM
+
+リリースワークフローは、五つのリリース用バイナリ／アーカイブそれぞれに `<artifact>.cdx.json` という名前の CycloneDX SBOM を生成し、コミットに固定した `actions/attest` でビルドの来歴と SBOM の証明を作成するよう構成されています。SBOM 内のパッケージとランタイムのバージョンをコミット済みのロックファイルと照合してください。ファイルの整合性は `SHA256SUMS.txt`、ビルド主体の身元は証明で検証します。
+
+公開済みの Release では、成果物とその SBOM をダウンロードし、GitHub CLI で両方を検証してください。以下の例は本リポジトリのリリースワークフローを信頼します。Fork では二か所のリポジトリ名を自分の所有者／リポジトリ名に置き換えてください。
+
+```powershell
+gh attestation verify DiscImageStudio-v1.3.6-win-x64.exe --repo JiaFeiMiao-K-Cat/DiscImageStudio --signer-workflow JiaFeiMiao-K-Cat/DiscImageStudio/.github/workflows/release.yml
+gh attestation verify DiscImageStudio-v1.3.6-win-x64.exe.cdx.json --repo JiaFeiMiao-K-Cat/DiscImageStudio --signer-workflow JiaFeiMiao-K-Cat/DiscImageStudio/.github/workflows/release.yml
+```
+
+ローカルビルドに成功しても GitHub の証明は作成されません。構成済みの GitHub リリースワークフローが正常に実行された後でのみ取得できます。証明はプラットフォームのコード署名の代わりにはなりません。実際の資格情報と署名手順を構成するまでは、Windows EXE に Authenticode 署名はなく、macOS パッケージも未公証です。
+
 ### 失敗時の再試行と訂正
 
 失敗した Actions 実行を再実行するか、GitHub Actions で `main` から `release` ワークフローを手動実行できます。手動起動にタグ入力はなく、現在の `main` の設定と履歴を読み、全リリース検査を行います。再試行だけのために版ファイルを変更する必要はありません。

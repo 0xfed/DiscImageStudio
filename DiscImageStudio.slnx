@@ -13,6 +13,7 @@
   <Project Path="src/DvdImageSolver/DvdImageSolver.csproj" />
   <Project Path="tests/DiscImageStudio.ArchitectureTests/DiscImageStudio.ArchitectureTests.csproj" />
   <Project Path="tests/DiscImageStudio.LocalizationTests/DiscImageStudio.LocalizationTests.csproj" />
+  <Project Path="tests/DiscImageStudio.ImageIOTests/DiscImageStudio.ImageIOTests.csproj" />
   <Project Path="tests/DiscImageStudio.Burning.LocalizationTests/DiscImageStudio.Burning.LocalizationTests.csproj" />
   <Project Path="tools/FourLevelDither/FourLevelDither.csproj" />
   <Project Path="tools/DvdGrayProbe/DvdGrayProbe.csproj" />

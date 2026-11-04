@@ -19,8 +19,9 @@
     <Company>Disc Image Studio</Company>
     <Copyright>Copyright © 2026</Copyright>
     <NeutralLanguage>zh-CN</NeutralLanguage>
-    <PublishSingleFile>true</PublishSingleFile>
+    <PublishSingleFile Condition="'$(RuntimeIdentifier)' != ''">true</PublishSingleFile>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
     <DebugType>embedded</DebugType>
   </PropertyGroup>
   <ItemGroup>

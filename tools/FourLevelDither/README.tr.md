@@ -74,7 +74,7 @@ Depo kökünde .NET 10 SDK kullanın:
 ```powershell
 dotnet run --project tools/FourLevelDither --configuration Release
 
-dotnet publish tools/FourLevelDither/FourLevelDither.csproj --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --output artifacts/FourLevelDither/win-x64
+dotnet publish tools/FourLevelDither/FourLevelDither.csproj --configuration Release --runtime win-x64 --self-contained true --output artifacts/FourLevelDither/win-x64
 ```
 
 Kendi kendine yeterli `FourLevelDither.exe`, .NET 10 çalışma zamanını içerir. Kendi kendine yeterli olmayan derleme doğrudan kullanılacaksa .NET 10 Windows Masaüstü Çalışma Zamanı yüklenmelidir.

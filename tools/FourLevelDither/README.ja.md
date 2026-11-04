@@ -74,7 +74,7 @@ PNG、JPEG、BMP、TIFF、GIF など、システムの画像デコーダーが�
 ```powershell
 dotnet run --project tools/FourLevelDither --configuration Release
 
-dotnet publish tools/FourLevelDither/FourLevelDither.csproj --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --output artifacts/FourLevelDither/win-x64
+dotnet publish tools/FourLevelDither/FourLevelDither.csproj --configuration Release --runtime win-x64 --self-contained true --output artifacts/FourLevelDither/win-x64
 ```
 
 自己完結型の `FourLevelDither.exe` には .NET 10 ランタイムが含まれます。非自己完結型のビルドを直接使用する場合は、.NET 10 Windows Desktop Runtime をインストールする必要があります。

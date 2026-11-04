@@ -4,5 +4,22 @@
     <VersionSuffix></VersionSuffix>
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+    <RuntimeFrameworkVersion>10.0.14</RuntimeFrameworkVersion>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RestoreLockedMode Condition="'$(RestoreLockedMode)' == ''">true</RestoreLockedMode>
+    <NuGetAudit>true</NuGetAudit>
+    <NuGetAuditMode>all</NuGetAuditMode>
+    <NuGetAuditLevel>low</NuGetAuditLevel>
+    <WarningsAsErrors>$(WarningsAsErrors);NU1900;NU1901;NU1902;NU1903;NU1904;NU1905</WarningsAsErrors>
+    <!-- Keep the portable and Windows project graphs independently locked.
+         The override lets maintainers regenerate Windows locks on another host. -->
+    <DiscImageStudioWindowsTargeting Condition="'$(DiscImageStudioWindowsTargeting)' == ''">$([MSBuild]::IsOSPlatform('Windows'))</DiscImageStudioWindowsTargeting>
+    <DiscImageStudioDependencyGraph>portable</DiscImageStudioDependencyGraph>
+    <DiscImageStudioDependencyGraph Condition="'$(DiscImageStudioWindowsTargeting)' == 'true'">windows</DiscImageStudioDependencyGraph>
+    <!-- The restore runtime option supplies RuntimeIdentifiers, whereas publish
+         supplies RuntimeIdentifier. Normalize a single RID before SDK inference
+         so both operations select the same dependency lock. -->
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' and '$(RuntimeIdentifiers)' != '' and !$([System.String]::Copy('$(RuntimeIdentifiers)').Contains(';'))">$(RuntimeIdentifiers)</RuntimeIdentifier>
+    <NuGetLockFilePath>$(MSBuildThisFileDirectory)eng/dependencies/$(DiscImageStudioDependencyGraph)/$(RuntimeIdentifier)/$(MSBuildProjectName).lock.json</NuGetLockFilePath>
   </PropertyGroup>
 </Project>

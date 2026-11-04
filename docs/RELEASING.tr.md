@@ -97,6 +97,19 @@ Bakımcı GitHub [Releases sayfasında](https://github.com/JiaFeiMiao-K-Cat/Disc
 Get-FileHash .\DiscImageStudio-v1.3.6-win-x64.exe -Algorithm SHA256
 ```
 
+### Derleme kökeni ve SBOM'lar
+
+Yayımlama iş akışı, beş sürüm ikili dosyası/arşivinin her biri için `<artifact>.cdx.json` adlı bir CycloneDX SBOM oluşturacak ve commit'e sabitlenmiş `actions/attest` üzerinden derleme kökeni ve SBOM doğrulamaları üretecek şekilde yapılandırılmıştır. SBOM'daki paket ve çalışma zamanı sürümlerini kaydedilmiş kilitlerle karşılaştırın; dosya bütünlüğü için `SHA256SUMS.txt`, üretici kimliği için köken doğrulamalarını kullanın.
+
+Yayımlanmış bir Release için dosyayı ve SBOM'unu indirin, ardından GitHub CLI ile her iki dosyayı doğrulayın. Örnek, bu deponun yayımlama iş akışına güvenir; fork'larda iki depo adını da kendi sahip/depo adınızla değiştirin:
+
+```powershell
+gh attestation verify DiscImageStudio-v1.3.6-win-x64.exe --repo JiaFeiMiao-K-Cat/DiscImageStudio --signer-workflow JiaFeiMiao-K-Cat/DiscImageStudio/.github/workflows/release.yml
+gh attestation verify DiscImageStudio-v1.3.6-win-x64.exe.cdx.json --repo JiaFeiMiao-K-Cat/DiscImageStudio --signer-workflow JiaFeiMiao-K-Cat/DiscImageStudio/.github/workflows/release.yml
+```
+
+Başarılı bir yerel derleme GitHub köken doğrulamaları oluşturmaz; bunlar yalnızca yapılandırılmış GitHub yayımlama iş akışı başarıyla çalıştıktan sonra kullanılabilir. Platform kod imzalamanın yerini almazlar: gerçek kimlik bilgileri ve imzalama adımları yapılandırılana kadar Windows EXE'leri Authenticode imzasız, macOS paketleri ise noter onaysız kalır.
+
 ### Yeniden deneme ve düzeltme
 
 Başarısız Actions çalışması yeniden yürütülebilir veya GitHub Actions içinden `main` üzerinde `release` elle başlatılabilir. Elle başlatma etiket girdisi almaz; güncel `main` yapılandırması ve notlarını okuyup tüm sürüm denetimlerini yapar. Yeniden denemek için sürüm dosyasını tekrar değiştirmek gerekmez.

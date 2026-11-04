@@ -93,7 +93,7 @@ Disc Image Studio 提供了一套智能且精准的辅助标定流程，相较�
 ## 系统与设备要求
 
 - 桌面版需要 Windows 10 2004（2004/20H1，19041）及以上，或 Windows 11。
-- 构建：.NET 10 SDK（`global.json` 锁定 10.0.x）；自行构建的非自包含 GUI 需要 .NET 10 Windows 桌面运行时。Release EXE 已包含运行时，无需另行安装 .NET。
+- 构建：.NET 10 SDK（`global.json` 锁定 10.0.403）；自行构建的非自包含 GUI 需要 .NET 10 Windows 桌面运行时。Release EXE 已包含运行时，无需另行安装 .NET。
 - “即时刻录”功能需要一台 Windows 可识别的 CD / DVD / BD 刻录机与空白盘片；BD-R 需要支持顺序写入的单层空白盘。
 
 ## 界面语言

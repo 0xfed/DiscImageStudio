@@ -1,0 +1,5 @@
+# Direct dependencies for the Python tool integration tests.
+# After reviewing version changes, regenerate and verify the complete wheel lock:
+#   python packaging/Update-PythonLock.py
+numpy==2.5.4
+matplotlib==3.11.2

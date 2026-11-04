@@ -21,7 +21,7 @@ Kötüye kullanılabilecek güvenlik sorunlarını herkese açık Issue kayıtla
 ## Geliştirme ortamı
 
 - Windows 10 2004+ veya Windows 11.
-- .NET 10 SDK. Depo, `global.json` ile `10.0.x` sürümüne sabitlenmiştir; kurulumdan sonra `dotnet` eşleşen SDK'yı otomatik olarak seçer.
+- .NET 10 SDK. Depo, `global.json` ile `10.0.403` sürümüne sabitlenmiştir; kurulumdan sonra `dotnet` eşleşen SDK'yı otomatik olarak seçer.
 - Testlerin üçüncü taraf çatı bağımlılığı yoktur; tümü depoyla gelen konsol regresyon programlarıdır.
 
 ```powershell
@@ -30,6 +30,21 @@ cd DiscImageStudio
 dotnet build DiscImageStudio.slnx --configuration Release
 dotnet run --project src/DiscImageStudio.App --configuration Release
 ```
+
+## Bağımlılık ve derleme girdilerinin incelenmesi
+
+Derlemeler SDK `10.0.403` ve çalışma zamanı `10.0.14` kullanır; kilitli geri yükleme varsayılan olarak etkindir. İncelenen NuGet bağımlılık grafikleri `eng/dependencies/{portable|windows}/{optionalRID}/{ProjectName}.lock.json` altında tutulur. `VersionPrefix`, proje başvuruları, paket sürümleri veya SDK/çalışma zamanı değiştiğinde, kilit dosyalarını aynı değişiklik içinde yeniden oluşturup inceleyin.
+
+Beş CI platformunun tamamı için yalnızca wheel içeren eksiksiz Python kilidini yenilemek üzere Python `3.14` kullanın; desteklenen tüm hedef ve RID grafiklerini yenilemek için NuGet güncelleme betiğini çalıştırın. Depo kökünde çalıştırın:
+
+```powershell
+python packaging/Update-NuGetLocks.py
+python packaging/Update-NuGetLocks.py --check
+python packaging/Update-PythonLock.py
+python packaging/Update-PythonLock.py --check
+```
+
+`NuGet.Config` yalnızca resmî NuGet kaynağına ve onaylanmış depo imzalama sertifikalarına izin verir. Paket kaynağı veya sertifika değişimlerini açıkça inceleyin ve mevcut kilitli paketleri doğrulamak için gereken sertifikaları koruyun. CI, kaydedilmiş kilitleri denetler; bunları otomatik olarak yeniden yazmamalıdır.
 
 ## Modül sınırları
 
@@ -56,6 +71,7 @@ Pull Request öncesinde aşağıdakilerin tümü geçmelidir:
 dotnet build DiscImageStudio.slnx --configuration Release
 dotnet run --project src/DvdImageSolver --configuration Release -- selftest
 dotnet run --project tests/DiscImageStudio.LocalizationTests --configuration Release
+dotnet run --project tests/DiscImageStudio.ImageIOTests --configuration Release
 dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release
 ```
 

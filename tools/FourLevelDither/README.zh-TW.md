@@ -74,7 +74,7 @@
 ```powershell
 dotnet run --project tools/FourLevelDither --configuration Release
 
-dotnet publish tools/FourLevelDither/FourLevelDither.csproj --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --output artifacts/FourLevelDither/win-x64
+dotnet publish tools/FourLevelDither/FourLevelDither.csproj --configuration Release --runtime win-x64 --self-contained true --output artifacts/FourLevelDither/win-x64
 ```
 
 自包含發佈的 `FourLevelDither.exe` 內建 .NET 10 執行階段；直接使用非自包含組建時，需要安裝 .NET 10 Windows 桌面執行階段。

@@ -97,6 +97,19 @@ A maintainer checks the version, notes, platform attachments, and checksums on G
 Get-FileHash .\DiscImageStudio-v1.3.6-win-x64.exe -Algorithm SHA256
 ```
 
+### Build provenance and SBOMs
+
+The release workflow is configured to generate a CycloneDX SBOM named `<artifact>.cdx.json` for each of the five release binaries/archives and create build-provenance and SBOM attestations through commit-pinned `actions/attest`. Compare the SBOM's package and runtime versions with the committed locks; use `SHA256SUMS.txt` for file integrity and attestations for producer identity.
+
+For a published Release, download the artifact and its SBOM, then verify both files using GitHub CLI. The example trusts this repository's release workflow; forks must replace both repository names with their own owner/repository:
+
+```powershell
+gh attestation verify DiscImageStudio-v1.3.6-win-x64.exe --repo JiaFeiMiao-K-Cat/DiscImageStudio --signer-workflow JiaFeiMiao-K-Cat/DiscImageStudio/.github/workflows/release.yml
+gh attestation verify DiscImageStudio-v1.3.6-win-x64.exe.cdx.json --repo JiaFeiMiao-K-Cat/DiscImageStudio --signer-workflow JiaFeiMiao-K-Cat/DiscImageStudio/.github/workflows/release.yml
+```
+
+A successful local build does not create GitHub attestations; these become available only after the configured GitHub release workflow runs successfully. They do not replace platform code signing: Windows EXEs remain Authenticode-unsigned and macOS packages remain unnotarized until real credentials and signing steps are configured.
+
 ### Retry and correction
 
 Rerun a failed Actions run, or manually run the `release` workflow from `main` in GitHub Actions. Manual dispatch has no tag input; it reads current `main` configuration and notes and runs all release checks, so retrying requires no further version-file edit.

@@ -21,7 +21,7 @@
 ## 开发环境
 
 - Windows 10 2004+ 或 Windows 11。
-- .NET 10 SDK；仓库用 `global.json` 锁定 `10.0.x`，安装后 `dotnet` 会自动匹配。
+- .NET 10 SDK；仓库用 `global.json` 锁定 `10.0.403`，安装后 `dotnet` 会自动匹配。
 - 测试没有第三方框架依赖，全部是仓库自带的控制台回归程序。
 
 ```powershell
@@ -30,6 +30,21 @@ cd DiscImageStudio
 dotnet build DiscImageStudio.slnx --configuration Release
 dotnet run --project src/DiscImageStudio.App --configuration Release
 ```
+
+## 依赖与构建输入审查
+
+构建使用 SDK `10.0.403` 和运行时 `10.0.14`，默认启用锁定还原。已审查的 NuGet 依赖图保存在 `eng/dependencies/{portable|windows}/{optionalRID}/{ProjectName}.lock.json`。修改 `VersionPrefix`、项目引用、包版本或 SDK/运行时后，应在同一次改动中重新生成并审查锁文件。
+
+使用 Python `3.14` 更新覆盖五个 CI 平台、仅允许 wheel 的完整 Python 锁文件；使用 NuGet 更新脚本更新所有受支持目标和 RID 的依赖图。在仓库根目录运行：
+
+```powershell
+python packaging/Update-NuGetLocks.py
+python packaging/Update-NuGetLocks.py --check
+python packaging/Update-PythonLock.py
+python packaging/Update-PythonLock.py --check
+```
+
+`NuGet.Config` 仅允许官方 NuGet 源和已批准的仓库签名证书。包源或证书轮换必须经过明确审查，并保留验证现有锁定包所需的证书。CI 检查已提交的锁文件，不应自动改写它们。
 
 ## 模块边界
 
@@ -56,6 +71,7 @@ Pull Request 前必须全部通过：
 dotnet build DiscImageStudio.slnx --configuration Release
 dotnet run --project src/DvdImageSolver --configuration Release -- selftest
 dotnet run --project tests/DiscImageStudio.LocalizationTests --configuration Release
+dotnet run --project tests/DiscImageStudio.ImageIOTests --configuration Release
 dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release
 ```
 

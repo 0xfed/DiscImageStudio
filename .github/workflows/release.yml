@@ -30,7 +30,7 @@ jobs:
       commit: ${{ steps.release.outputs.commit }}
       prerelease: ${{ steps.release.outputs.prerelease }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.sha }}
           fetch-depth: 0
@@ -102,25 +102,47 @@ jobs:
     needs: [metadata, validate]
     runs-on: windows-latest
     timeout-minutes: 30
+    outputs:
+      artifact_id: ${{ steps.release_artifact.outputs.artifact-id }}
     env:
+      DOTNET_NUGET_SIGNATURE_VERIFICATION: 'true'
       DOTNET_CLI_TELEMETRY_OPTOUT: '1'
       DOTNET_NOLOGO: '1'
       RELEASE_TAG: ${{ needs.metadata.outputs.tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ needs.metadata.outputs.commit }}
           persist-credentials: false
 
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
         with:
-          dotnet-version: 10.0.x
+          global-json-file: global.json
+          check-latest: false
+          skip-lts-prepass: true
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.14'
 
       - name: Build and verify standalone EXE
         run: ./packaging/Build-Release.ps1 -Tag $env:RELEASE_TAG
 
+      - name: Generate the Windows artifact SBOM
+        env:
+          RELEASE_COMMIT: ${{ needs.metadata.outputs.commit }}
+        run: |
+          $directory = Join-Path 'artifacts/release' $env:RELEASE_TAG
+          $artifact = Join-Path $directory "DiscImageStudio-$env:RELEASE_TAG-win-x64.exe"
+          python packaging/Write-ReleaseSbom.py --artifact $artifact `
+            --deps-json src/DiscImageStudio.App/bin/Release/net10.0-windows/win-x64/DiscImageStudio.deps.json `
+            --assets-json src/DiscImageStudio.App/obj/project.assets.json `
+            --rid win-x64 --source-commit $env:RELEASE_COMMIT --repository $env:GITHUB_REPOSITORY `
+            --output "$artifact.cdx.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Windows SBOM generation failed.' }
+
       - name: Collect tested CLI archives
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: cli-${{ needs.metadata.outputs.tag }}-*
           path: artifacts/release/${{ needs.metadata.outputs.tag }}
@@ -141,6 +163,11 @@ jobs:
               throw "Downloaded CLI checksum does not match for $archive."
             }
             $hashes += $line
+          }
+          $sboms = @(Get-ChildItem -LiteralPath $directory -Filter '*.cdx.json' -File)
+          if ($sboms.Count -ne 5) { throw 'Exactly five artifact SBOMs are required.' }
+          foreach ($sbom in $sboms) {
+            $hashes += "$((Get-FileHash -LiteralPath $sbom.FullName -Algorithm SHA256).Hash.ToLowerInvariant())  $($sbom.Name)"
           }
           $checksum = $hashes -join "`n"
           [IO.File]::WriteAllText($manifest, "$checksum`n", [Text.UTF8Encoding]::new($false))
@@ -170,6 +197,18 @@ jobs:
             $checksum
             '```'
             ''
+            '### 构建来源验证 / Verify build provenance'
+            ''
+            '使用 GitHub CLI 检查下载文件的构建来源、仓库、工作流与源代码提交。'
+            'Use GitHub CLI to verify the downloaded artifact against this repository, release workflow and source commit.'
+            ''
+            '```text'
+            "gh attestation verify DiscImageStudio-$($metadata.Tag)-win-x64.exe --repo $env:GITHUB_REPOSITORY --signer-workflow $env:GITHUB_REPOSITORY/.github/workflows/release.yml --source-digest $env:RELEASE_COMMIT"
+            '```'
+            ''
+            '每个可执行文件和压缩包均附带 CycloneDX SBOM；SHA256SUMS.txt 包含文件及其 SBOM 的校验值。'
+            'Each executable/archive includes a CycloneDX SBOM; SHA256SUMS.txt covers the artifacts and their SBOMs.'
+            ''
             '### 源代码与构建 / Source and build'
             ''
             '从本页的 Source code (zip / tar.gz) 下载完整对应源代码；构建说明见下方 README 链接。'
@@ -183,7 +222,8 @@ jobs:
         env:
           RELEASE_COMMIT: ${{ needs.metadata.outputs.commit }}
 
-      - uses: actions/upload-artifact@v4
+      - id: release_artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: release-${{ needs.metadata.outputs.tag }}
           if-no-files-found: error
@@ -191,76 +231,100 @@ jobs:
           path: |
             artifacts/release/${{ needs.metadata.outputs.tag }}/*.exe
             artifacts/release/${{ needs.metadata.outputs.tag }}/*.tar.gz
+            artifacts/release/${{ needs.metadata.outputs.tag }}/*.cdx.json
             artifacts/release/${{ needs.metadata.outputs.tag }}/SHA256SUMS.txt
             artifacts/release/${{ needs.metadata.outputs.tag }}/release-notes.md
 
-  draft:
+  inspect:
     needs: [metadata, package]
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     permissions:
-      contents: write
+      contents: read
+      id-token: write
+      attestations: write
+    outputs:
+      manifest: ${{ steps.inspect.outputs.manifest }}
     env:
-      GH_TOKEN: ${{ github.token }}
-      GH_REPO: ${{ github.repository }}
       RELEASE_TAG: ${{ needs.metadata.outputs.tag }}
       RELEASE_COMMIT: ${{ needs.metadata.outputs.commit }}
-      IS_PRERELEASE: ${{ needs.metadata.outputs.prerelease }}
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          name: release-${{ needs.metadata.outputs.tag }}
+          ref: ${{ needs.metadata.outputs.commit }}
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.14'
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ needs.package.outputs.artifact_id }}
           path: release
-
-      - name: Verify release attachments
-        working-directory: release
+      - name: Inspect exact attachment names, hashes, and SBOM identities
+        id: inspect
         shell: bash
-        run: sha256sum --strict --check SHA256SUMS.txt
-
-      - name: Create or refresh draft with all release attachments
         run: |
-          # Never replace assets on an already published release.
-          $pages = gh api --paginate --slurp "repos/$env:GH_REPO/releases?per_page=100"
-          if ($LASTEXITCODE -ne 0) { throw 'Cannot inspect existing releases.' }
-          $existing = @($pages | ConvertFrom-Json | ForEach-Object { $_ } |
-            Where-Object { $_.tag_name -ceq $env:RELEASE_TAG })
-          if ($existing.Count -gt 1) { throw 'Multiple releases have the requested tag.' }
-          if ($existing.Count -eq 1 -and -not $existing[0].draft) {
-            throw 'This release is already public. Publish fixes under a new version.'
-          }
+          python packaging/ReleaseArtifacts.py inspect --directory release --tag "$RELEASE_TAG" \
+            --commit "$RELEASE_COMMIT" --output "$RUNNER_TEMP/release-manifest.json"
+          printf 'manifest=%s\n' "$(cat "$RUNNER_TEMP/release-manifest.json")" >> "$GITHUB_OUTPUT"
+      - name: Attest build provenance for binaries and their SBOMs
+        uses: actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d # v4.2.1
+        with:
+          push-to-registry: false
+          subject-checksums: release/SHA256SUMS.txt
+      - name: Attest SBOM for win-x64
+        uses: actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d # v4.2.1
+        with:
+          push-to-registry: false
+          subject-path: release/DiscImageStudio-${{ needs.metadata.outputs.tag }}-win-x64.exe
+          sbom-path: release/DiscImageStudio-${{ needs.metadata.outputs.tag }}-win-x64.exe.cdx.json
+      - name: Attest SBOM for linux-x64
+        uses: actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d # v4.2.1
+        with:
+          push-to-registry: false
+          subject-path: release/DiscImageStudio-CLI-${{ needs.metadata.outputs.tag }}-linux-x64.tar.gz
+          sbom-path: release/DiscImageStudio-CLI-${{ needs.metadata.outputs.tag }}-linux-x64.tar.gz.cdx.json
+      - name: Attest SBOM for linux-arm64
+        uses: actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d # v4.2.1
+        with:
+          push-to-registry: false
+          subject-path: release/DiscImageStudio-CLI-${{ needs.metadata.outputs.tag }}-linux-arm64.tar.gz
+          sbom-path: release/DiscImageStudio-CLI-${{ needs.metadata.outputs.tag }}-linux-arm64.tar.gz.cdx.json
+      - name: Attest SBOM for osx-x64
+        uses: actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d # v4.2.1
+        with:
+          push-to-registry: false
+          subject-path: release/DiscImageStudio-CLI-${{ needs.metadata.outputs.tag }}-osx-x64.tar.gz
+          sbom-path: release/DiscImageStudio-CLI-${{ needs.metadata.outputs.tag }}-osx-x64.tar.gz.cdx.json
+      - name: Attest SBOM for osx-arm64
+        uses: actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d # v4.2.1
+        with:
+          push-to-registry: false
+          subject-path: release/DiscImageStudio-CLI-${{ needs.metadata.outputs.tag }}-osx-arm64.tar.gz
+          sbom-path: release/DiscImageStudio-CLI-${{ needs.metadata.outputs.tag }}-osx-arm64.tar.gz.cdx.json
 
-          $refsJson = gh api "repos/$env:GH_REPO/git/matching-refs/tags/$env:RELEASE_TAG"
-          if ($LASTEXITCODE -ne 0) { throw 'Cannot inspect the release tag.' }
-          $matchingTags = @($refsJson | ConvertFrom-Json | Where-Object { $_.ref -ceq "refs/tags/$env:RELEASE_TAG" })
-          if ($matchingTags.Count -eq 0) {
-            $createdTag = gh api --method POST "repos/$env:GH_REPO/git/refs" `
-              -f "ref=refs/tags/$env:RELEASE_TAG" -f "sha=$env:RELEASE_COMMIT"
-            if ($LASTEXITCODE -ne 0) { throw 'Cannot create the release tag.' }
-            $remoteTag = $createdTag | ConvertFrom-Json
-          } else {
-            $remoteTag = $matchingTags[0]
-          }
-          $tagObject = $remoteTag.object
-          while ($tagObject.type -eq 'tag') {
-            $annotatedTag = gh api "repos/$env:GH_REPO/git/tags/$($tagObject.sha)" | ConvertFrom-Json
-            if ($LASTEXITCODE -ne 0) { throw 'Cannot resolve the annotated tag.' }
-            $tagObject = $annotatedTag.object
-          }
-          if ($tagObject.type -ne 'commit' -or $tagObject.sha -ne $env:RELEASE_COMMIT) {
-            throw 'The release tag already points to a different commit. Use a new version.'
-          }
-
-          $assets = @(Get-ChildItem -Path 'release/*.exe','release/*.tar.gz' -File | ForEach-Object FullName)
-          $assets += 'release/SHA256SUMS.txt'
-          $options = @('--title', "Disc Image Studio $env:RELEASE_TAG", '--notes-file', 'release/release-notes.md')
-          if ($existing.Count -eq 1) {
-            gh release upload $env:RELEASE_TAG @assets --clobber
-            if ($LASTEXITCODE -ne 0) { throw 'Release asset upload failed.' }
-            gh release edit $env:RELEASE_TAG @options --draft=true "--prerelease=$env:IS_PRERELEASE"
-          } else {
-            $options += @('--draft', '--verify-tag', '--target', $env:RELEASE_COMMIT)
-            if ($env:IS_PRERELEASE -eq 'true') { $options += '--prerelease' }
-            gh release create $env:RELEASE_TAG @assets @options
-          }
-          if ($LASTEXITCODE -ne 0) { throw 'Saving the draft release failed.' }
-          "Draft ready: https://github.com/$env:GH_REPO/releases" >> $env:GITHUB_STEP_SUMMARY
+  draft:
+    needs: [metadata, package, inspect]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      # No third-party action runs with the publication token. The only code
+      # downloaded here is our publisher at the exact validated main commit.
+      - name: Publish inspected entries without extracting the artifact archive
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ needs.metadata.outputs.tag }}
+          RELEASE_COMMIT: ${{ needs.metadata.outputs.commit }}
+          IS_PRERELEASE: ${{ needs.metadata.outputs.prerelease }}
+          RELEASE_ARTIFACT_ID: ${{ needs.package.outputs.artifact_id }}
+          RELEASE_MANIFEST: ${{ needs.inspect.outputs.manifest }}
+        run: |
+          curl --fail --silent --show-error --proto '=https' --tlsv1.2 \
+            "https://raw.githubusercontent.com/$GH_REPO/$RELEASE_COMMIT/packaging/ReleaseArtifacts.py" \
+            --output "$RUNNER_TEMP/release-publisher.py"
+          python3 "$RUNNER_TEMP/release-publisher.py" publish

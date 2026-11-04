@@ -21,7 +21,7 @@ Disc Image Studio へのご参加を歓迎します。まず本書をお読み�
 ## 開発環境
 
 - Windows 10 2004 以降、または Windows 11。
-- .NET 10 SDK。リポジトリは `global.json` で `10.0.x` に固定しており、インストール後は `dotnet` が一致する SDK を自動選択します。
+- .NET 10 SDK。リポジトリは `global.json` で `10.0.403` に固定しており、インストール後は `dotnet` が一致する SDK を自動選択します。
 - テストに第三者フレームワークへの依存はありません。すべてリポジトリに含まれるコンソール回帰プログラムです。
 
 ```powershell
@@ -30,6 +30,21 @@ cd DiscImageStudio
 dotnet build DiscImageStudio.slnx --configuration Release
 dotnet run --project src/DiscImageStudio.App --configuration Release
 ```
+
+## 依存関係とビルド入力のレビュー
+
+ビルドでは SDK `10.0.403` とランタイム `10.0.14` を使用し、既定でロック済みの復元を適用します。レビュー済みの NuGet 依存グラフは `eng/dependencies/{portable|windows}/{optionalRID}/{ProjectName}.lock.json` に保存します。`VersionPrefix`、プロジェクト参照、パッケージのバージョン、SDK／ランタイムを変更したら、同じ変更内でロックファイルを再生成し、レビューしてください。
+
+Python `3.14` を使用して、五つの CI プラットフォームを対象とする wheel のみの完全な Python ロックファイルを更新します。NuGet 更新スクリプトでは、サポート対象のすべてのターゲットと RID の依存グラフを更新します。リポジトリのルートで実行してください。
+
+```powershell
+python packaging/Update-NuGetLocks.py
+python packaging/Update-NuGetLocks.py --check
+python packaging/Update-PythonLock.py
+python packaging/Update-PythonLock.py --check
+```
+
+`NuGet.Config` は公式 NuGet フィードと承認済みのリポジトリ署名証明書のみを許可します。パッケージソースや証明書のローテーションは明示的にレビューし、既存のロック済みパッケージの検証に必要な証明書を残してください。CI はコミット済みのロックファイルを検査し、自動的に書き換えてはいけません。
 
 ## モジュール境界
 
@@ -56,6 +71,7 @@ Pull Request の前に、次のすべてを通過させてください。
 dotnet build DiscImageStudio.slnx --configuration Release
 dotnet run --project src/DvdImageSolver --configuration Release -- selftest
 dotnet run --project tests/DiscImageStudio.LocalizationTests --configuration Release
+dotnet run --project tests/DiscImageStudio.ImageIOTests --configuration Release
 dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release
 ```
 

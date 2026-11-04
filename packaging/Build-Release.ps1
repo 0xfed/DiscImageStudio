@@ -69,9 +69,7 @@ New-Item -ItemType Directory -Path $publishDirectory, $isolatedAppDirectory -For
     "-p:Version=$($metadata.Version)" `
     "-p:AssemblyVersion=$($metadata.FileVersion)" `
     "-p:FileVersion=$($metadata.FileVersion)" `
-    -p:PublishSingleFile=true `
-    -p:IncludeNativeLibrariesForSelfExtract=true `
-    -p:IncludeAllContentForSelfExtract=true
+    -p:RestoreLockedMode=true
 if ($LASTEXITCODE -ne 0) {
     throw (Get-ToolText 'Packaging.CommandFailed' @('dotnet publish', $LASTEXITCODE))
 }

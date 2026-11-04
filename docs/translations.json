@@ -46,7 +46,7 @@
     {
       "source": "CONTRIBUTING.md",
       "source_language": "zh-CN",
-      "source_sha256": "c38462d4b9007aaf16a4773e98053d61af6a2ab5230fd1adb984504edfb96edd",
+      "source_sha256": "26d4dcdf9d845c4489d9ca4c8b2ef963c08ed0d139d1f34c50f56a020d3b0c9c",
       "translations": {
         "zh-CN": "CONTRIBUTING.md",
         "zh-TW": "CONTRIBUTING.zh-TW.md",
@@ -106,7 +106,7 @@
     {
       "source": "tools/FourLevelDither/README.md",
       "source_language": "zh-CN",
-      "source_sha256": "dd730cf4efad6df2944edf15e7c0cd45eef75a251bb79018be3f085f6f750daa",
+      "source_sha256": "9603766abf8ee335f8676cbb67353a2798c84f31295efadfcad8b728b250c302",
       "translations": {
         "zh-CN": "tools/FourLevelDither/README.md",
         "zh-TW": "tools/FourLevelDither/README.zh-TW.md",
@@ -224,7 +224,7 @@
     {
       "source": "docs/RELEASING.md",
       "source_language": "zh-CN",
-      "source_sha256": "9bd61677ab02a7a4dccdcf2de3144caccee8334bab42a38a62e8e3380d009270",
+      "source_sha256": "5cd3fa643c357c1e014d998a124c22c59494bb813a1f773756fad9ae3fde9e47",
       "translations": {
         "zh-CN": "docs/RELEASING.md",
         "zh-TW": "docs/RELEASING.zh-TW.md",
@@ -252,7 +252,7 @@
     {
       "source": "README.md",
       "source_language": "zh-CN",
-      "source_sha256": "bb7e3ea7d35a2140c8f0e0584cbe7b82e5c37eb58ae68e1eee3ccf31585f5ac7",
+      "source_sha256": "b99a0d72a841444506fc28f167a9431d2e85143de972fac411b91b8e96085923",
       "translations": {
         "zh-CN": "README.md",
         "zh-TW": "README.zh-TW.md",
@@ -276,7 +276,7 @@
     {
       "source": "CHANGELOG.md",
       "source_language": "zh-CN",
-      "source_sha256": "31fe1c99b1cf2e641f72d573f33d3c6c47fcb432fbc1fe1584099b647fb5530c",
+      "source_sha256": "a8198c1714d4f23acfab8afc28fee0050ac1b385dc7cf19238f87534d67f0e06",
       "parallel_language_sections": [
         "中文",
         "English"

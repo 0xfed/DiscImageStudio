@@ -33,10 +33,15 @@ jobs:
 
   package:
     needs: validate
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
     runs-on: windows-latest
     timeout-minutes: 30
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+      DOTNET_NUGET_SIGNATURE_VERIFICATION: 'true'
       IDENTITY_NAME: ${{ inputs.identity_name }}
       PUBLISHER: ${{ inputs.publisher }}
       PUBLISHER_DISPLAY_NAME: ${{ inputs.publisher_display_name }}
@@ -44,13 +49,19 @@ jobs:
       PACKAGE_VERSION: ${{ inputs.version }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
         with:
-          dotnet-version: 10.0.x
+          global-json-file: global.json
+          check-latest: false
+          skip-lts-prepass: true
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.14'
 
       - name: Build Store MSIX
         shell: powershell
@@ -63,8 +74,37 @@ jobs:
             -PublisherDisplayName $env:PUBLISHER_DISPLAY_NAME `
             -DisplayName $env:DISPLAY_NAME @versionOverride
 
-      - uses: actions/upload-artifact@v4
+      - name: Generate and bind the MSIX SBOM
+        shell: pwsh
+        run: |
+          $packages = @(Get-ChildItem artifacts/msix/*.msix -File)
+          if ($packages.Count -ne 1) { throw 'Exactly one MSIX package is required.' }
+          python packaging/Write-ReleaseSbom.py --artifact $packages[0].FullName `
+            --deps-json src/DiscImageStudio.App/bin/Release/net10.0-windows/win-x64/DiscImageStudio.deps.json `
+            --assets-json src/DiscImageStudio.App/obj/project.assets.json `
+            --rid win-x64 --source-commit $env:GITHUB_SHA --repository $env:GITHUB_REPOSITORY `
+            --output artifacts/msix/release.cdx.json
+          if ($LASTEXITCODE -ne 0) { throw 'MSIX SBOM generation failed.' }
+
+      - name: Attest the Store submission and SBOM provenance
+        uses: actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d # v4.2.1
+        with:
+          push-to-registry: false
+          subject-path: |
+            artifacts/msix/*.msix
+            artifacts/msix/release.cdx.json
+
+      - name: Attest the Store submission SBOM
+        uses: actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d # v4.2.1
+        with:
+          push-to-registry: false
+          subject-path: artifacts/msix/*.msix
+          sbom-path: artifacts/msix/release.cdx.json
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: DiscImageStudio-x64-msix
-          path: artifacts/msix/*.msix
+          path: |
+            artifacts/msix/*.msix
+            artifacts/msix/release.cdx.json
           if-no-files-found: error

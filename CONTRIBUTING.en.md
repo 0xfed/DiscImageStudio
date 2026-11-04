@@ -21,7 +21,7 @@ Feature requests also go through Issues. Describe the problem to solve, the desi
 ## Development environment
 
 - Windows 10 2004+ or Windows 11.
-- .NET 10 SDK. The repository pins `10.0.x` through `global.json`; after installation, `dotnet` selects a matching SDK automatically.
+- .NET 10 SDK. The repository pins `10.0.403` through `global.json`; after installation, `dotnet` selects a matching SDK automatically.
 - Tests have no third-party framework dependencies; all are console regression programs included in the repository.
 
 ```powershell
@@ -30,6 +30,21 @@ cd DiscImageStudio
 dotnet build DiscImageStudio.slnx --configuration Release
 dotnet run --project src/DiscImageStudio.App --configuration Release
 ```
+
+## Dependency and build-input review
+
+Builds use SDK `10.0.403` and runtime `10.0.14`, with locked restores enabled by default. Reviewed NuGet graphs live under `eng/dependencies/{portable|windows}/{optionalRID}/{ProjectName}.lock.json`. After changing `VersionPrefix`, project references, package versions or the SDK/runtime, regenerate and review the locks in the same change.
+
+Use Python `3.14` to refresh the complete wheel-only Python lock for all five CI platforms, and the NuGet updater to refresh every supported target and RID graph. Run from the repository root:
+
+```powershell
+python packaging/Update-NuGetLocks.py
+python packaging/Update-NuGetLocks.py --check
+python packaging/Update-PythonLock.py
+python packaging/Update-PythonLock.py --check
+```
+
+`NuGet.Config` permits only the official NuGet feed and approved repository signing certificates. Review package-source or certificate rotations explicitly, and retain certificates needed to verify existing locked packages. CI checks the committed locks and must not rewrite them automatically.
 
 ## Module boundaries
 
@@ -56,6 +71,7 @@ All of the following must pass before a Pull Request:
 dotnet build DiscImageStudio.slnx --configuration Release
 dotnet run --project src/DvdImageSolver --configuration Release -- selftest
 dotnet run --project tests/DiscImageStudio.LocalizationTests --configuration Release
+dotnet run --project tests/DiscImageStudio.ImageIOTests --configuration Release
 dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release
 ```
 

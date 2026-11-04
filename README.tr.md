@@ -93,7 +93,7 @@ Süreç ve parametreler için [yardımcı kalibrasyon kılavuzuna](docs/CALIBRAT
 ## Sistem ve aygıt gereksinimleri
 
 - Masaüstü sürümü Windows 10 2004 (2004/20H1, 19041) veya üzerini ya da Windows 11'i gerektirir.
-- Derleme: .NET 10 SDK (`global.json`, 10.0.x sürümünü sabitler). Kaynaktan, çalışma zamanı dahil edilmeden derlenen GUI için .NET 10 Windows Desktop Runtime gerekir. Release EXE çalışma zamanını içerir; ayrıca .NET yüklemek gerekmez.
+- Derleme: .NET 10 SDK (`global.json`, 10.0.403 sürümünü sabitler). Kaynaktan, çalışma zamanı dahil edilmeden derlenen GUI için .NET 10 Windows Desktop Runtime gerekir. Release EXE çalışma zamanını içerir; ayrıca .NET yüklemek gerekmez.
 - Anlık yazma için Windows'un tanıdığı bir CD / DVD / BD disk yazıcısı ve boş disk gerekir. BD-R için sıralı yazmayı destekleyen boş tek katmanlı disk gerekir.
 
 ## Arayüz dili

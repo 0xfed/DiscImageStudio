@@ -21,7 +21,7 @@
 ## 開發環境
 
 - Windows 10 2004+ 或 Windows 11。
-- .NET 10 SDK；儲存庫透過 `global.json` 鎖定 `10.0.x`，安裝後 `dotnet` 會自動選擇相符版本。
+- .NET 10 SDK；儲存庫透過 `global.json` 鎖定 `10.0.403`，安裝後 `dotnet` 會自動選擇相符版本。
 - 測試不相依於第三方框架，全部使用儲存庫內附的主控台回歸程式。
 
 ```powershell
@@ -30,6 +30,21 @@ cd DiscImageStudio
 dotnet build DiscImageStudio.slnx --configuration Release
 dotnet run --project src/DiscImageStudio.App --configuration Release
 ```
+
+## 相依套件與建置輸入審查
+
+建置使用 SDK `10.0.403` 和執行階段 `10.0.14`，預設啟用鎖定還原。已審查的 NuGet 相依圖儲存在 `eng/dependencies/{portable|windows}/{optionalRID}/{ProjectName}.lock.json`。修改 `VersionPrefix`、專案參考、套件版本或 SDK／執行階段後，應在同一次變更中重新產生並審查鎖定檔。
+
+使用 Python `3.14` 更新涵蓋五個 CI 平台、僅允許 wheel 的完整 Python 鎖定檔；使用 NuGet 更新指令碼更新所有支援目標和 RID 的相依圖。在儲存庫根目錄執行：
+
+```powershell
+python packaging/Update-NuGetLocks.py
+python packaging/Update-NuGetLocks.py --check
+python packaging/Update-PythonLock.py
+python packaging/Update-PythonLock.py --check
+```
+
+`NuGet.Config` 僅允許官方 NuGet 來源和已核准的儲存庫簽署憑證。套件來源或憑證輪替必須經過明確審查，並保留驗證現有鎖定套件所需的憑證。CI 檢查已提交的鎖定檔，不應自動改寫它們。
 
 ## 模組邊界
 
@@ -56,6 +71,7 @@ Pull Request 前必須全部通過：
 dotnet build DiscImageStudio.slnx --configuration Release
 dotnet run --project src/DvdImageSolver --configuration Release -- selftest
 dotnet run --project tests/DiscImageStudio.LocalizationTests --configuration Release
+dotnet run --project tests/DiscImageStudio.ImageIOTests --configuration Release
 dotnet run --project tests/DiscImageStudio.ArchitectureTests --configuration Release
 ```
 

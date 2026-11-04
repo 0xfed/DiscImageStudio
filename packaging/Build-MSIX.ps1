@@ -80,7 +80,7 @@ if (Test-Path -LiteralPath $artifactRoot) {
 
 New-Item -ItemType Directory -Path $publishDirectory, $installDirectory, $assetDestination -Force | Out-Null
 
-& dotnet restore $projectPath --runtime win-x64
+& dotnet restore $projectPath --runtime win-x64 --locked-mode
 if ($LASTEXITCODE -ne 0) {
     throw (Get-ToolText 'Packaging.CommandFailed' @('dotnet restore', $LASTEXITCODE))
 }
@@ -97,11 +97,10 @@ if ($LASTEXITCODE -ne 0) {
     --runtime win-x64 `
     --self-contained true `
     --output $publishDirectory `
-    -p:Version="$($versionParts[0]).$($versionParts[1]).$($versionParts[2])" `
+    -p:InformationalVersion="$($versionParts[0]).$($versionParts[1]).$($versionParts[2])" `
     -p:AssemblyVersion=$Version `
     -p:FileVersion=$Version `
-    -p:PublishSingleFile=true `
-    -p:IncludeNativeLibrariesForSelfExtract=true
+    -p:RestoreLockedMode=true
 if ($LASTEXITCODE -ne 0) {
     throw (Get-ToolText 'Packaging.CommandFailed' @('dotnet publish', $LASTEXITCODE))
 }

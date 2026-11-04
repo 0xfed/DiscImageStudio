@@ -97,6 +97,19 @@ SHA256SUMS.txt
 Get-FileHash .\DiscImageStudio-v1.3.6-win-x64.exe -Algorithm SHA256
 ```
 
+### 构建来源证明与 SBOM
+
+发布工作流配置为为五个发布二进制文件／压缩包分别生成名为 `<artifact>.cdx.json` 的 CycloneDX SBOM，并通过固定到提交的 `actions/attest` 创建构建来源和 SBOM 证明。将 SBOM 中的包及运行时版本与已提交的锁文件核对；使用 `SHA256SUMS.txt` 检查文件完整性，使用来源证明验证构建者身份。
+
+对于已公开的 Release，下载制品及其 SBOM，然后使用 GitHub CLI 验证这两个文件。以下示例信任本仓库的发布工作流；Fork 仓库必须将两处仓库名称都替换为自己的所有者／仓库：
+
+```powershell
+gh attestation verify DiscImageStudio-v1.3.6-win-x64.exe --repo JiaFeiMiao-K-Cat/DiscImageStudio --signer-workflow JiaFeiMiao-K-Cat/DiscImageStudio/.github/workflows/release.yml
+gh attestation verify DiscImageStudio-v1.3.6-win-x64.exe.cdx.json --repo JiaFeiMiao-K-Cat/DiscImageStudio --signer-workflow JiaFeiMiao-K-Cat/DiscImageStudio/.github/workflows/release.yml
+```
+
+本地构建成功不会创建 GitHub 来源证明；只有配置的 GitHub 发布工作流成功运行后才能获取这些证明。它们不能替代平台代码签名：在提供真实凭据并配置签名步骤之前，Windows EXE 仍没有 Authenticode 签名，macOS 包仍未经公证。
+
 ### 失败重试与更正
 
 可以重跑失败的 Actions 运行，也可以在 GitHub Actions 从 `main` 手动运行 `release` 工作流。手动触发没有标签输入，读取 `main` 当前配置和发布日志并执行全部发布检查，无需再次修改版本文件来重试。

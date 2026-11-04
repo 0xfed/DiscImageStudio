@@ -74,7 +74,7 @@ Use the .NET 10 SDK from the repository root:
 ```powershell
 dotnet run --project tools/FourLevelDither --configuration Release
 
-dotnet publish tools/FourLevelDither/FourLevelDither.csproj --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --output artifacts/FourLevelDither/win-x64
+dotnet publish tools/FourLevelDither/FourLevelDither.csproj --configuration Release --runtime win-x64 --self-contained true --output artifacts/FourLevelDither/win-x64
 ```
 
 The self-contained `FourLevelDither.exe` includes the .NET 10 runtime. Running a non-self-contained build requires installing the .NET 10 Windows Desktop Runtime.

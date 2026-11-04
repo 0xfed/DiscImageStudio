@@ -97,6 +97,19 @@ SHA256SUMS.txt
 Get-FileHash .\DiscImageStudio-v1.3.6-win-x64.exe -Algorithm SHA256
 ```
 
+### 建置來源證明與 SBOM
+
+發行工作流程設定為替五個發行二進位檔／壓縮檔分別產生名為 `<artifact>.cdx.json` 的 CycloneDX SBOM，並透過固定至提交的 `actions/attest` 建立建置來源和 SBOM 證明。將 SBOM 中的套件與執行階段版本對照已提交的鎖定檔；使用 `SHA256SUMS.txt` 檢查檔案完整性，使用來源證明驗證建置者身分。
+
+對於已公開的 Release，下載產物及其 SBOM，再使用 GitHub CLI 驗證這兩個檔案。以下範例信任本儲存庫的發行工作流程；Fork 儲存庫必須將兩處儲存庫名稱都替換為自己的擁有者／儲存庫：
+
+```powershell
+gh attestation verify DiscImageStudio-v1.3.6-win-x64.exe --repo JiaFeiMiao-K-Cat/DiscImageStudio --signer-workflow JiaFeiMiao-K-Cat/DiscImageStudio/.github/workflows/release.yml
+gh attestation verify DiscImageStudio-v1.3.6-win-x64.exe.cdx.json --repo JiaFeiMiao-K-Cat/DiscImageStudio --signer-workflow JiaFeiMiao-K-Cat/DiscImageStudio/.github/workflows/release.yml
+```
+
+本機建置成功不會建立 GitHub 來源證明；只有設定的 GitHub 發行工作流程成功執行後才能取得這些證明。它們不能取代平台程式碼簽署：在提供真實憑證並設定簽署步驟之前，Windows EXE 仍沒有 Authenticode 簽章，macOS 套件仍未經公證。
+
 ### 失敗重試與更正
 
 可重新執行失敗的 Actions 執行，也可在 GitHub Actions 從 `main` 手動執行 `release` 工作流程。手動觸發不輸入標籤，而是讀取 `main` 目前設定及發行記錄，執行全部發行檢查，不須再次修改版本檔案才能重試。

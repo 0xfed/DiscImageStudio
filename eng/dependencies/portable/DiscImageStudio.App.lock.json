@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net10.0-windows7.0": {
+      "CommunityToolkit.Mvvm": {
+        "type": "Direct",
+        "requested": "[8.4.0, )",
+        "resolved": "8.4.0",
+        "contentHash": "tqVU8yc/ADO9oiTRyTnwhFN68hCwvkliMierptWOudIAvWY1mWCh5VFh+guwHJmpMwfg0J0rY+yyd5Oy7ty9Uw=="
+      },
+      "MahApps.Metro.IconPacks.Lucide": {
+        "type": "Direct",
+        "requested": "[6.2.1, )",
+        "resolved": "6.2.1",
+        "contentHash": "xehG2J/Ljfa6NxlKCqvDxnxUMrApR0xSLGaoaFSVN531jF+WNZNAaUvE9qkxOHKZ+jpH4gUnb2sC3qNcpAGVkA==",
+        "dependencies": {
+          "MahApps.Metro.IconPacks.Core": "6.2.1"
+        }
+      },
+      "MahApps.Metro.IconPacks.Core": {
+        "type": "Transitive",
+        "resolved": "6.2.1",
+        "contentHash": "ySAyax37C045Ef1ufN33yQjn3qPM1MuQLgKdxZKYUAl2uZaIrn9wCeBNvfG46QPNRvBFLR6gVKTs6O3o81LNhQ=="
+      },
+      "StbImageSharp": {
+        "type": "Transitive",
+        "resolved": "2.30.16",
+        "contentHash": "qg1i+NHihXVKLKYacGKrauhSQIGL31eBWcTC4Vc7jnGmBFj87LkRuCdXB5aDZisWMRnB6x2mcfwYXQxMWEG/lw=="
+      },
+      "StbImageWriteSharp": {
+        "type": "Transitive",
+        "resolved": "1.16.7",
+        "contentHash": "NF9kOxi0iS9VunklnRKgOpAWC2knCGKRjdy7RT6XAqYNyb7LQfyPHPdl4l1fJw7TFYKrGQzQOmK1XpBONC2MoA=="
+      },
+      "discimagestudio.bluray": {
+        "type": "Project",
+        "dependencies": {
+          "DiscImageStudio.Core": "[1.3.6, )",
+          "DiscImageStudio.Iso": "[1.3.6, )"
+        }
+      },
+      "discimagestudio.burning": {
+        "type": "Project",
+        "dependencies": {
+          "DiscImageStudio.Localization": "[1.3.6, )"
+        }
+      },
+      "discimagestudio.cd": {
+        "type": "Project",
+        "dependencies": {
+          "DiscImageStudio.Core": "[1.3.6, )",
+          "DiscImageStudio.ImageIO": "[1.3.6, )",
+          "DiscImageStudio.Iso": "[1.3.6, )"
+        }
+      },
+      "discimagestudio.core": {
+        "type": "Project",
+        "dependencies": {
+          "DiscImageStudio.Localization": "[1.3.6, )"
+        }
+      },
+      "discimagestudio.dvd": {
+        "type": "Project",
+        "dependencies": {
+          "DiscImageStudio.Core": "[1.3.6, )",
+          "DiscImageStudio.ImageIO": "[1.3.6, )",
+          "DiscImageStudio.Iso": "[1.3.6, )",
+          "DiscImageStudio.Localization": "[1.3.6, )"
+        }
+      },
+      "discimagestudio.imageio": {
+        "type": "Project",
+        "dependencies": {
+          "DiscImageStudio.Localization": "[1.3.6, )",
+          "StbImageSharp": "[2.30.16, )",
+          "StbImageWriteSharp": "[1.16.7, )"
+        }
+      },
+      "discimagestudio.imaging": {
+        "type": "Project",
+        "dependencies": {
+          "DiscImageStudio.Localization": "[1.3.6, )"
+        }
+      },
+      "discimagestudio.iso": {
+        "type": "Project",
+        "dependencies": {
+          "DiscImageStudio.Localization": "[1.3.6, )"
+        }
+      },
+      "discimagestudio.localization": {
+        "type": "Project"
+      }
+    }
+  }
+}

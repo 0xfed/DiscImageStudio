@@ -8,10 +8,14 @@ public sealed record BgraRaster(int Width, int Height, byte[] Pixels);
 /// <summary>Reads the first frame as straight BGRA32 and writes a Gray8 or BGRA32 PNG.</summary>
 public static partial class RasterCodec
 {
-    public static BgraRaster LoadBgra32(string path, long maxFileBytes = long.MaxValue, long maxPixels = int.MaxValue / 4)
+    public const long DefaultMaxFileBytes = 256L * 1024 * 1024;
+    public const long DefaultMaxPixels = 64L * 1024 * 1024;
+
+    public static BgraRaster LoadBgra32(string path, long maxFileBytes = DefaultMaxFileBytes, long maxPixels = DefaultMaxPixels)
     {
         using FileStream stream = File.OpenRead(Path.GetFullPath(path));
         CheckFileSize(stream, maxFileBytes);
+        ValidatePngInflation(stream, maxPixels);
         return Decode(stream, maxPixels);
     }
 
@@ -19,6 +23,7 @@ public static partial class RasterCodec
     {
         using FileStream stream = File.OpenRead(Path.GetFullPath(path));
         CheckFileSize(stream, maxFileBytes);
+        ValidatePngInflation(stream, maxPixels);
         _ = ReadHeader(stream, maxPixels);
     }
 

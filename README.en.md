@@ -93,7 +93,7 @@ See the [assisted calibration guide](docs/CALIBRATION.en.md) for the workflow an
 ## System and Hardware Requirements
 
 - The desktop app requires Windows 10 2004 (2004/20H1, 19041) or later, or Windows 11.
-- Building: .NET 10 SDK (`global.json` pins 10.0.x). A non-self-contained GUI built from source requires the .NET 10 Windows Desktop Runtime. The Release EXE includes the runtime, so a separate .NET installation is unnecessary.
+- Building: .NET 10 SDK (`global.json` pins 10.0.403). A non-self-contained GUI built from source requires the .NET 10 Windows Desktop Runtime. The Release EXE includes the runtime, so a separate .NET installation is unnecessary.
 - Live burning requires a CD / DVD / BD recorder recognized by Windows and blank media. BD-R requires a blank single-layer disc that supports sequential writing.
 
 ## Interface Language

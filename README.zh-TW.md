@@ -93,7 +93,7 @@ Disc Image Studio 提供一套智慧且精準的輔助校準流程。相較於�
 ## 系統與裝置需求
 
 - 桌面版需要 Windows 10 2004（2004/20H1，19041）以上版本，或 Windows 11。
-- 建置：.NET 10 SDK（`global.json` 鎖定 10.0.x）；自行建置的非獨立部署 GUI 需要 .NET 10 Windows 桌面執行階段。Release EXE 已包含執行階段，無須另外安裝 .NET。
+- 建置：.NET 10 SDK（`global.json` 鎖定 10.0.403）；自行建置的非獨立部署 GUI 需要 .NET 10 Windows 桌面執行階段。Release EXE 已包含執行階段，無須另外安裝 .NET。
 - 「即時燒錄」功能需要 Windows 可辨識的 CD / DVD / BD 燒錄機與空白光碟；BD-R 需要支援循序寫入的單層空白光碟。
 
 ## 介面語言

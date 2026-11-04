@@ -110,7 +110,13 @@ public sealed partial class WindowsImapiBurner
                 (done, total) => progress?.Report(new("transfer", L.T("Preparing file update…"), done, total)),
                 cancellationToken, request.EffectiveBufferOptions);
             content.WaitUntilPrebuffered(cancellationToken);
-            if (session.ReadMedia() != media)
+            SequentialFileMedia current = session.ReadMedia();
+            // Disabling the automatic CD postgap can change the usable free
+            // count. Recorded addresses must stay fixed, and capacity must
+            // still cover the update after applying recording options.
+            if (current with { FreeSectors = media.FreeSectors } != media
+                || required > current.FreeSectors
+                || current.FreeSectors > current.CapacitySectors - current.NextWritableLba)
                 throw new InvalidOperationException(L.T("The disc changed while preparing the file update."));
             using (cancellationToken.Register(session.CancelWrite))
             {

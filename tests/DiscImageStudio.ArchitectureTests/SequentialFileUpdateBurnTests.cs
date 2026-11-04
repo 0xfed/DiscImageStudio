@@ -58,6 +58,11 @@ internal static class SequentialFileUpdateBurnTests
                 Throws<InvalidOperationException>(() => WindowsImapiBurner.BurnFileUpdate(rejected, "fake", kind, Prepare));
                 Require(rejected.Writes == 0 && rejected.Releases == 1, "invalid media rejected under paired lock");
             }
+            Session configured = new(before, alignment) { RestorePostgapSpaceOnConfigure = true };
+            configured.Media = configured.Media with { FreeSectors = configured.Media.FreeSectors - 150 };
+            WindowsImapiBurner.BurnFileUpdate(configured, "fake", kind, Prepare);
+            Require(configured.Writes == 1 && configured.Releases == 1,
+                "recording-option changes to usable free space do not masquerade as a disc swap");
             Session full = new(before, alignment); full.Media = full.Media with { FreeSectors = 1 };
             Throws<InvalidOperationException>(() => WindowsImapiBurner.BurnFileUpdate(full, "fake", kind, Prepare));
             Require(full.Writes == 0 && full.Releases == 1, "insufficient space never starts a write");
@@ -88,7 +93,7 @@ internal static class SequentialFileUpdateBurnTests
         internal byte[] Image;
         internal SequentialFileMedia Media;
         internal int Acquires, Releases, Writes, Reads;
-        internal bool Locked, FailWrite, ChangeOnSecondRead;
+        internal bool Locked, FailWrite, ChangeOnSecondRead, RestorePostgapSpaceOnConfigure;
         internal long WrittenBytes;
         internal Session(byte[] image, uint alignment)
         {
@@ -105,7 +110,11 @@ internal static class SequentialFileUpdateBurnTests
         }
         public byte[] ReadSector(uint sector)
         { Require(Locked, "sector access under lock"); return Image.AsSpan(checked((int)sector * 2048), 2048).ToArray(); }
-        public OpticalWriteSpeed ConfigureWrite(OpticalWriteSpeed? requested) => new(1000, false);
+        public OpticalWriteSpeed ConfigureWrite(OpticalWriteSpeed? requested)
+        {
+            if (RestorePostgapSpaceOnConfigure) Media = Media with { FreeSectors = Media.FreeSectors + 150 };
+            return new(1000, false);
+        }
         public void CancelWrite() { }
         public void Write(IStream content)
         {

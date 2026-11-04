@@ -63,13 +63,17 @@ internal static class CalibrationPatternTests
         CalibrationTarget fine = CalibrationTarget.Create(Parameters());
         CalibrationTarget coarse = CalibrationTarget.Create(Parameters(), patternKind: CalibrationPatternKind.WideSectors);
         List<object> results = [];
-        foreach ((double innerError, double offsetSectors) in new[] { (0.1, 0.0), (-0.1, 0.0), (0.0, 512.0), (0.0, -512.0) })
+        foreach ((double innerError, double outerError, double offsetSectors) in new[]
         {
-            double fineContrast = Contrast(fine, innerError, offsetSectors);
-            double coarseContrast = Contrast(coarse, innerError, offsetSectors);
-            results.Add(new { innerErrorMm = innerError, offsetSectors, fineContrast, coarseContrast });
+            (0.1, 0.0, 0.0), (-0.1, 0.0, 0.0), (0.0, 0.0, 512.0), (0.0, 0.0, -512.0),
+            (0.1, -0.08, 0.0), (-0.08, 0.1, 0.0),
+        })
+        {
+            double fineContrast = Contrast(fine, innerError, offsetSectors, outerError);
+            double coarseContrast = Contrast(coarse, innerError, offsetSectors, outerError);
+            results.Add(new { innerErrorMm = innerError, outerErrorMm = outerError, offsetSectors, fineContrast, coarseContrast });
             Require(coarseContrast > 0.8 && coarseContrast > fineContrast * 4,
-                $"coarse contrast survives the modelled error: inner={innerError}, offset={offsetSectors}, fine={fineContrast:F3}, coarse={coarseContrast:F3}");
+                $"coarse contrast survives the modelled error: inner={innerError}, outer={outerError}, offset={offsetSectors}, fine={fineContrast:F3}, coarse={coarseContrast:F3}");
         }
         Require(Contrast(coarse, 0, 0) == 1, "matching geometry retains full digital contrast");
         if (Environment.GetEnvironmentVariable("DISC_IMAGE_STUDIO_CALIBRATION_FIXTURES") is { Length: > 0 } folder)
@@ -85,11 +89,11 @@ internal static class CalibrationPatternTests
 
     // Average a 0.1 mm radial footprint to model finite observation resolution.
     // This tests digital geometry visibility, not optical reflectance or a real burn.
-    private static double Contrast(CalibrationTarget target, double innerError, double offsetSectors)
+    private static double Contrast(CalibrationTarget target, double innerError, double offsetSectors, double outerError = 0)
     {
         CalibrationParameters p = target.Parameters;
         DvdTrackGeometry generated = DvdTrackGeometry.Create(p.InnerRadiusMm, p.OuterRadiusMm, p.TrackLengthMm);
-        DvdTrackGeometry actual = DvdTrackGeometry.Create(p.InnerRadiusMm + innerError, p.OuterRadiusMm, p.TrackLengthMm);
+        DvdTrackGeometry actual = DvdTrackGeometry.Create(p.InnerRadiusMm + innerError, p.OuterRadiusMm + outerError, p.TrackLengthMm);
         const int samples = 128;
         var coordinates = new (double Radius, double Phase)[samples];
         for (int index = 0; index < samples; index++)
@@ -113,18 +117,29 @@ internal static class CalibrationPatternTests
     private static void TestCoarseEdgeFit()
     {
         CalibrationTarget target = CalibrationTarget.Create(Parameters(), patternKind: CalibrationPatternKind.WideSectors);
-        CalibrationParameters actual = target.Parameters with { InnerRadiusMm = 24.003, OuterRadiusMm = 57.998 };
-        Func<CalibrationPoint, CalibrationPoint> map = target.CreateMapping(actual, 0.41);
-        CalibrationPoint[] points = Enumerable.Range(0, 97).Select(index =>
+        foreach ((double innerError, double outerError, int count) in new[]
         {
-            double radius = 26 + 30.0 * index / 96;
-            return map(new(0, -radius));
-        }).ToArray();
-        CalibrationFitResult fit = CalibrationCrossFitter.Fit(target, [new(0, points)], new(FitDvdPitch: false));
-        Require(fit.Succeeded && fit.BestParameters is not null
-            && Math.Abs(fit.BestParameters.InnerRadiusMm - actual.InnerRadiusMm) < 0.000001
-            && Math.Abs(fit.BestParameters.OuterRadiusMm - actual.OuterRadiusMm) < 0.000001,
-            "a continuous wide-sector boundary fits the existing radius/phase model");
+            (0.003, -0.002, 97), (0.1, -0.08, 769), (-0.08, 0.1, 769),
+        })
+        {
+            CalibrationParameters actual = target.Parameters with
+            {
+                InnerRadiusMm = target.Parameters.InnerRadiusMm + innerError,
+                OuterRadiusMm = target.Parameters.OuterRadiusMm + outerError,
+            };
+            Func<CalibrationPoint, CalibrationPoint> map = target.CreateMapping(actual, 0.41);
+            CalibrationPoint[] points = Enumerable.Range(0, count).Select(index =>
+            {
+                double radius = 26 + 30.0 * index / (count - 1);
+                return map(new(0, -radius));
+            }).ToArray();
+            CalibrationFitResult fit = CalibrationCrossFitter.Fit(target, [new(0, points)],
+                new(RadiusRangeMm: 0.25, FitDvdPitch: false));
+            Require(fit.Succeeded && fit.BestParameters is not null
+                && Math.Abs(fit.BestParameters.InnerRadiusMm - actual.InnerRadiusMm) < 0.000001
+                && Math.Abs(fit.BestParameters.OuterRadiusMm - actual.OuterRadiusMm) < 0.000001,
+                $"a winding sector boundary recovers both radii: inner error={innerError}, outer error={outerError}");
+        }
     }
 
     private static void TestEncodedPatternAndFixtures()

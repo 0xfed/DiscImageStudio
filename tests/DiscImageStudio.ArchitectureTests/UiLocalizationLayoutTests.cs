@@ -228,6 +228,10 @@ internal static class UiLocalizationLayoutTests
                 DpiScale dpi = VisualTreeHelper.GetDpi(root);
                 RenderTargetBitmap bitmap = new((int)Math.Ceiling(root.ActualWidth * dpi.DpiScaleX),
                     (int)Math.Ceiling(root.ActualHeight * dpi.DpiScaleY), dpi.PixelsPerInchX, dpi.PixelsPerInchY, PixelFormats.Pbgra32);
+                DrawingVisual background = new();
+                using (DrawingContext context = background.RenderOpen())
+                    context.DrawRectangle(target.Background ?? Brushes.Transparent, null, new Rect(root.RenderSize));
+                bitmap.Render(background);
                 bitmap.Render(root);
                 int count = Inspect(root, name, issues);
                 scenarios.Add(new(name, count, root.ActualWidth, root.ActualHeight, dpi.PixelsPerInchX, dpi.PixelsPerInchY));

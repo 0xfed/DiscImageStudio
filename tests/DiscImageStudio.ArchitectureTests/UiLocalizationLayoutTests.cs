@@ -198,12 +198,12 @@ internal static class UiLocalizationLayoutTests
             {
                 FrameworkElement root = (FrameworkElement)target.Content;
                 target.UpdateLayout();
-                int count = Inspect(root, name, issues);
                 DpiScale dpi = VisualTreeHelper.GetDpi(root);
-                scenarios.Add(new(name, count, root.ActualWidth, root.ActualHeight, dpi.PixelsPerInchX, dpi.PixelsPerInchY));
                 RenderTargetBitmap bitmap = new((int)Math.Ceiling(target.ActualWidth * dpi.DpiScaleX),
                     (int)Math.Ceiling(target.ActualHeight * dpi.DpiScaleY), dpi.PixelsPerInchX, dpi.PixelsPerInchY, PixelFormats.Pbgra32);
                 bitmap.Render(target);
+                int count = Inspect(root, name, issues);
+                scenarios.Add(new(name, count, root.ActualWidth, root.ActualHeight, dpi.PixelsPerInchX, dpi.PixelsPerInchY));
                 PngBitmapEncoder encoder = new();
                 encoder.Frames.Add(BitmapFrame.Create(bitmap));
                 using FileStream stream = File.Create(Path.Combine(output, name + ".png"));
@@ -239,8 +239,12 @@ internal static class UiLocalizationLayoutTests
             void Add(string reason) => issues.Add(new(scenario, label, sample, reason));
             // Ellipsis is intentional for paths and user names. Rich inline formatting uses
             // its actual glyph drawing below; a single-typeface estimate would mismeasure it.
-            bool uniform = text.Inlines.All(inline => inline is Run run && run.FontSize == text.FontSize
-                && run.FontWeight == text.FontWeight && run.FontStyle == text.FontStyle && run.FontFamily.Equals(text.FontFamily));
+            bool uniform = text.Inlines.All(inline => inline is Run run
+                && Matches(run, TextElement.FontSizeProperty, text.FontSize)
+                && Matches(run, TextElement.FontWeightProperty, text.FontWeight)
+                && Matches(run, TextElement.FontStyleProperty, text.FontStyle)
+                && Matches(run, TextElement.FontStretchProperty, text.FontStretch)
+                && Matches(run, TextElement.FontFamilyProperty, text.FontFamily));
             if (text.TextTrimming == TextTrimming.None && uniform)
             {
                 Thickness padding = text.Padding;
@@ -268,6 +272,11 @@ internal static class UiLocalizationLayoutTests
                         Add("Rendered text contains a missing glyph.");
         }
         return count;
+
+        // A plain Run inherits the TextBlock's formatting while the formatter
+        // owns its content. Only an explicit override can make it rich text.
+        static bool Matches(Run run, DependencyProperty property, object value)
+            => run.ReadLocalValue(property) == DependencyProperty.UnsetValue || Equals(run.GetValue(property), value);
     }
 
     private static bool HasMissingGlyph(GlyphRun run)
@@ -290,33 +299,45 @@ internal static class UiLocalizationLayoutTests
     {
         Grid root = new() { Width = 160, Height = 140 };
         TextBlock overflowing = new() { Text = "Long label that must not fit", Width = 40, Height = 18,
+            FontFamily = new FontFamily("Segoe UI"), FontSize = 14, Foreground = Brushes.Black,
+            TextWrapping = TextWrapping.NoWrap, TextTrimming = TextTrimming.None,
             HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top };
         root.Children.Add(overflowing);
         Window host = new() { Content = root, SizeToContent = SizeToContent.WidthAndHeight,
             Left = -10000, Top = -10000, ShowInTaskbar = false, WindowStartupLocation = WindowStartupLocation.Manual };
         try
         {
-            host.Show(); Pump();
+            host.Show(); RenderFixture();
             List<Issue> issues = [];
-            Inspect(root, "overflow-fixture", issues);
-            if (issues.Count == 0) throw new InvalidOperationException("Text-bound checking missed deliberately overflowing text.");
+            int count = Inspect(root, "overflow-fixture", issues);
+            if (issues.Count == 0) throw new InvalidOperationException(
+                $"Text-bound checking missed deliberately overflowing text: inspected={count}, visible={overflowing.IsVisible}, "
+                + $"size={overflowing.ActualWidth}x{overflowing.ActualHeight}, inlines={overflowing.Inlines.Count}.");
             overflowing.TextTrimming = TextTrimming.CharacterEllipsis;
-            Pump(); issues.Clear(); Inspect(root, "ellipsis-fixture", issues);
+            RenderFixture(); issues.Clear(); Inspect(root, "ellipsis-fixture", issues);
             if (issues.Count != 0) throw new InvalidOperationException("Text-bound checking rejected intentional ellipsis.");
             overflowing.TextTrimming = TextTrimming.None;
             overflowing.Text = "A label wrapping onto several lines";
             overflowing.TextWrapping = TextWrapping.Wrap;
-            Pump(); issues.Clear(); Inspect(root, "height-fixture", issues);
+            RenderFixture(); issues.Clear(); Inspect(root, "height-fixture", issues);
             if (!issues.Any(issue => issue.Reason.Contains("height", StringComparison.Ordinal)))
                 throw new InvalidOperationException("Text-bound checking missed deliberately clipped wrapped text.");
             overflowing.Text = "\u0378"; // An unassigned scalar, absent from the normal UI fonts.
             overflowing.Width = 100;
             overflowing.Height = 60;
-            Pump(); issues.Clear(); Inspect(root, "missing-glyph-fixture", issues);
+            RenderFixture(); issues.Clear(); Inspect(root, "missing-glyph-fixture", issues);
             if (!issues.Any(issue => issue.Reason.Contains("missing glyph", StringComparison.Ordinal)))
                 throw new InvalidOperationException("Glyph checking missed an unrenderable character.");
         }
         finally { host.Close(); }
+
+        void RenderFixture()
+        {
+            Pump();
+            host.UpdateLayout();
+            RenderTargetBitmap bitmap = new(160, 140, 96, 96, PixelFormats.Pbgra32);
+            bitmap.Render(root);
+        }
     }
 
     private static IEnumerable<DependencyObject> Descendants(DependencyObject root)

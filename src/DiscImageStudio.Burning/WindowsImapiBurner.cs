@@ -592,13 +592,13 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
         }
     }
 
-    internal static void ConfigureDataFormat(object formatObject, bool leaveOpen, bool udfCd = false)
+    internal static void ConfigureDataFormat(object formatObject, bool leaveOpen, bool udfCd = false, bool udfImage = false)
     {
         dynamic format = formatObject;
         format.BufferUnderrunFreeDisabled = false;
         format.ForceMediaToBeClosed = !leaveOpen;
         // The default compatibility mode finalizes DVD+R even when ForceMediaToBeClosed is false.
-        if (leaveOpen) format.DisableConsumerDvdCompatibilityMode = true;
+        if (leaveOpen || udfCd || udfImage) format.DisableConsumerDvdCompatibilityMode = true;
         format.ForceOverwrite = false;
         // A VAT ICB must be the last logical data sector. Prevent IMAPI from
         // appending its optional 150-sector data postgap after the committed VAT.
@@ -625,7 +625,8 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
         if (request.UdfCapacitySectors is { } capacity && capacity > Convert.ToUInt32(format.TotalSectorsOnMedia))
             throw new InvalidOperationException(L.T("The recorded volume exceeds the current disc capacity."));
         ConfigureDataFormat((object)format, request.LeaveDiscOpen,
-            request.MediaKind == OpticalBurnMediaKind.CdData && (request.UseUdf250 || request.LeaveDiscOpen));
+            request.MediaKind == OpticalBurnMediaKind.CdData && (request.UseUdf250 || request.LeaveDiscOpen),
+            udfImage: request.UseUdf250);
         if (request.WriteSpeed is not null)
         {
             format.SetWriteSpeed(

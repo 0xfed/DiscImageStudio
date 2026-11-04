@@ -13,6 +13,12 @@ internal static class SequentialFileUpdateBurnTests
         Require(!flags.ForceMediaToBeClosed && flags.DisableConsumerDvdCompatibilityMode
             && !flags.ForceOverwrite && !flags.BufferUnderrunFreeDisabled && flags.PostgapAlreadyInImage,
             "DVD+R compatibility mode is disabled so native Write leaves the disc open");
+        dynamic closedUdf = new System.Dynamic.ExpandoObject();
+        WindowsImapiBurner.ConfigureDataFormat((object)closedUdf, leaveOpen: false, udfImage: true);
+        Require(closedUdf.ForceMediaToBeClosed && closedUdf.DisableConsumerDvdCompatibilityMode,
+            "finalized UDF images also avoid DVD+R compatibility padding after the VAT");
+        WindowsImapiBurner.ValidateVatMedia(OpticalBurnMediaKind.CdData, 2, [0x09]);
+        Throws<InvalidOperationException>(() => WindowsImapiBurner.ValidateVatMedia(OpticalBurnMediaKind.CdData, 3, [0x0a]));
         foreach (OpticalBurnMediaKind kind in new[] { OpticalBurnMediaKind.CdData, OpticalBurnMediaKind.DvdData }) Test(kind);
         foreach ((int type, int profile) in new[] { (6, 0x1b), (9, 0x11) })
             WindowsImapiBurner.ValidateVatMedia(OpticalBurnMediaKind.DvdData, type, [profile]);

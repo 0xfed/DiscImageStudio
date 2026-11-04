@@ -27,7 +27,12 @@ def archive_bytes(rid, extra=(), host_mode=0o755):
     if rid == "win-x64":
         with zipfile.ZipFile(data, "w", compression=zipfile.ZIP_DEFLATED) as archive:
             for name, body in files + list(extra):
-                archive.writestr(name, body)
+                entry = name if isinstance(name, zipfile.ZipInfo) else zipfile.ZipInfo(name)
+                if isinstance(name, str):
+                    # Preserve deliberately invalid bytes even on Windows writers.
+                    entry.filename = name
+                    entry.compress_type = zipfile.ZIP_DEFLATED
+                archive.writestr(entry, body)
     else:
         with tarfile.open(fileobj=data, mode="w:gz") as archive:
             for name, body in files + list(extra):
@@ -131,6 +136,17 @@ class SdkBootstrapTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "link or special"):
                     self.install(Path(temporary), body=archive_bytes("linux-x64", [(entry, b"")]))
                 self.assertEqual(list(Path(temporary).iterdir()), [])
+
+    def test_zip_raw_names_survive_fixture_and_are_rejected_before_normalization(self):
+        for name in ("dir\\outside", "dir\x00outside"):
+            with self.subTest(name=name), patch.object(zipfile, "_sanitize_filename", side_effect=lambda value: value.split("\x00", 1)[0].replace("\\", "/")):
+                body = archive_bytes("win-x64", [(name, b"unapproved")])
+                with zipfile.ZipFile(io.BytesIO(body)) as archive:
+                    self.assertEqual(archive.infolist()[-1].orig_filename, name)
+                    self.assertNotEqual(archive.infolist()[-1].filename, name)
+                with tempfile.TemporaryDirectory() as temporary:
+                    with self.assertRaisesRegex(ValueError, "Unsafe"):
+                        self.install(Path(temporary), "win-x64", body)
 
     def test_zip_symbolic_link_rejected(self):
         entry = zipfile.ZipInfo("linked")

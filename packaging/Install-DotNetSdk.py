@@ -127,7 +127,8 @@ def extract_archive(archive_path, directory, rid):
                 if (stat.S_IFMT(mode) not in (0, stat.S_IFREG, stat.S_IFDIR)
                         or entry.flag_bits & 1):
                     raise ValueError("SDK ZIP contains a link, special or encrypted entry")
-                relative = budget.validate(entry.filename, entry.file_size, entry.is_dir())
+                # filename can already have backslashes normalized or NULs truncated.
+                relative = budget.validate(entry.orig_filename, entry.file_size, entry.is_dir())
                 target = directory.joinpath(*relative.parts)
                 if entry.is_dir():
                     target.mkdir(parents=True, exist_ok=True)

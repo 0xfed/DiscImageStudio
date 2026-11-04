@@ -4,6 +4,16 @@
 
 ## Unreleased
 
+## [1.8.1] - 2026-11-04
+
+### 中文
+
+- 修复速度下拉框在标签绑定时恢复为自动的问题，并在刷新光盘或刻录机信息时保留已选速度，包括标定盘刻录；当前驱动器与光盘未报告所选速度时仍回退到自动。新增选择项身份稳定性、延迟响应刻录机及速度选择回归测试。
+
+### English
+
+- Prevent the speed dropdown from reverting when labels bind, and preserve the selected speed when refreshing disc or recorder information, including calibration burns. Keep the Automatic fallback when the current drive and disc do not report the chosen speed. Add regressions for stable option identity, delayed recorder responses and speed selection.
+
 ## [1.8.0] - 2026-11-04
 
 ### 中文

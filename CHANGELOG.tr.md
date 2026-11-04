@@ -4,6 +4,10 @@
 
 ## Henüz yayımlanmayan
 
+## [1.8.1] - 2026-11-04
+
+- Etiketler bağlanırken hız açılır listesindeki seçimin geri dönmesini önleyin; kalibrasyon yazmaları dahil, disk veya yazıcı bilgileri yenilenirken seçilen hızı koruyun. Geçerli sürücü ve disk seçilen hızı bildirmediğinde Otomatik seçeneğine geri dönmeye devam edin. Seçenek kimliği kararlılığı, gecikmeli yazıcı yanıtları ve hız seçimi için regresyon testleri ekleyin.
+
 ## [1.8.0] - 2026-11-04
 
 - Deneysel DVD görsel seçici eklendi: cetvel veya fotoğraf olmadan kaba iç/dış yarıçap başlangıç değerlerini tahmin etmek için 21 I bandı ve 21 O bandından en az dolanan siyah/beyaz sınırları seçin. ISO ve akış çıktısı, raster faz aliasing sorununu önlemek için DVD kod sözcüğü konumlarını doğrudan örnekler; önizleme numaraları yazılmaz ve bu desen için PNG dışa aktarma devre dışıdır. Şema 9 test aralığını ve bant seçimlerini kaydeder; yeniden açma veya düzenleme sonrasında tekrar hesaplama gerekir ve uçtaki seçimlerin uygulanması engellenir. Beş dilde arayüz ve belgeler güncellendi; kodlama, tahmin, eski kayıtlar ve geçersizleştirme kuralları denetlendi. Fiziksel diskte okunabilirlik ve nihai doğruluk henüz doğrulanmadı.

@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Preserve the selected interface language when generating DVD live previews, including calibration previews, and add regression checks for both the language preference and effective language.
+
 - Replace the obsolete `StbImageWriteSharp` dependency with a PNG writer built on .NET `ZLibStream` and fixed-size buffers, preserving decoded pixels and keeping strict package signature verification enabled on macOS.
 
 - Reject PNG inflation beyond the declared image size and set `RasterCodec` default input limits to `256 MiB` and `64 Mi` pixels; pin and lock reviewed build dependencies, separate artifact inspection from publication write permissions, and configure release SBOMs and build provenance.

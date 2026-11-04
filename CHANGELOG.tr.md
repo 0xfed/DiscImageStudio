@@ -4,6 +4,8 @@
 
 ## Henüz yayımlanmayan
 
+- Kalibrasyon önizlemeleri dahil DVD canlı önizlemeleri oluşturulurken seçilen arayüz dili korunur; hem dil tercihinin hem de uygulanan dilin değişmediğini doğrulayan regresyon kontrolleri eklendi.
+
 - Eski `StbImageWriteSharp` bağımlılığı, .NET `ZLibStream` ve sabit boyutlu arabellekler kullanan bir PNG yazıcısıyla değiştirildi; çözülen pikseller korundu ve macOS üzerinde katı paket imzası doğrulaması sürdürüldü.
 
 - PNG açma çıktısının bildirilen görüntü boyutunu aşması sorunu giderildi; `RasterCodec` varsayılan girdi sınırları `256 MiB` ve `64 Mi` piksel olarak belirlendi. İncelenen derleme bağımlılıkları sabitlenip kilitlendi, çıktı denetimi yayımlama yazma izinlerinden ayrıldı ve sürüm dosyaları için SBOM ile derleme kökeni doğrulamaları yapılandırıldı.

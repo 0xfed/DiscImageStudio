@@ -9,6 +9,7 @@ using DiscImageStudio.BluRay;
 using DiscImageStudio.Cd;
 using DiscImageStudio.Core;
 using DiscImageStudio.Dvd;
+using DiscImageStudio.Localization;
 using DiscImageStudio.Services;
 using DiscImageStudio.ViewModels;
 
@@ -349,6 +350,8 @@ internal static class FilePlacementPreviewTests
 
     private static void RunPreview(LivePreviewViewModel preview)
     {
+        string preferredLanguage = L.PreferredLanguage;
+        string currentLanguage = L.CurrentLanguage;
         FieldInfo revision = typeof(LivePreviewViewModel).GetField("_livePreviewRevision", BindingFlags.Instance | BindingFlags.NonPublic)!;
         revision.SetValue(preview, (int)revision.GetValue(preview)! + 1);
         Task task = (Task)Invoke(preview, "RefreshAsync", [])!;
@@ -358,6 +361,10 @@ internal static class FilePlacementPreviewTests
             CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Default);
         if (!task.IsCompleted) Dispatcher.PushFrame(frame);
         task.GetAwaiter().GetResult();
+        Require(L.PreferredLanguage == preferredLanguage,
+            $"{preview.SelectedFamily} preview preserves the selected language: {preferredLanguage} -> {L.PreferredLanguage}");
+        Require(L.CurrentLanguage == currentLanguage,
+            $"{preview.SelectedFamily} preview preserves the resolved language: {currentLanguage} -> {L.CurrentLanguage}");
     }
 
     private static object? Invoke(object target, string name, object?[] arguments)

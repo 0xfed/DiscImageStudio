@@ -6,6 +6,8 @@
 
 ### 中文
 
+- DVD 实时预览（含标定预览）生成时保留用户选择的界面语言，并增加对语言偏好及实际语言均保持不变的回归检查。
+
 - 替换过时的 `StbImageWriteSharp` 依赖，改用基于 .NET `ZLibStream` 和固定大小缓冲区的 PNG 写入器；保持解码后像素不变，并在 macOS 上继续强制验证包签名。
 
 - 修复 PNG 解压输出超出声明图像大小的问题，将 `RasterCodec` 默认输入限制设为 `256 MiB` 和 `64 Mi` 像素；固定并锁定经审查的构建依赖，分离制品检查与发布写权限，并为发布制品配置 SBOM 和构建来源证明。
@@ -44,6 +46,8 @@
 - 侧栏工程头卡片右侧新增软盘保存按钮。
 
 ### English
+
+- Preserve the selected interface language when generating DVD live previews, including calibration previews, and add regression checks for both the language preference and effective language.
 
 - Replace the obsolete `StbImageWriteSharp` dependency with a PNG writer built on .NET `ZLibStream` and fixed-size buffers, preserving decoded pixels and keeping strict package signature verification enabled on macOS.
 

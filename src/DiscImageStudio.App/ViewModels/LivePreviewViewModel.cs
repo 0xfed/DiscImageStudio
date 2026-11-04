@@ -876,7 +876,8 @@ public partial class LivePreviewViewModel : ObservableObject
             bool overlay = metadata is { HasFileSystem: true };
             int exitCode = await StaWorker.RunAsync(() =>
             {
-                int result = UnifiedCommandRunner.Run(arguments);
+                int result = UnifiedCommandRunner.RunJob(arguments, progress: null,
+                    cancellationToken: CancellationToken.None).ExitCode;
                 if (result == 0 && overlay)
                     FileRegionPreviewOverlay.ApplyDvd(outputPath, actual,
                         metadata!.DrawingStartLba, metadata.DrawingEndLbaExclusive, cancellationToken);
@@ -949,7 +950,8 @@ public partial class LivePreviewViewModel : ObservableObject
             DvdStreamingOptions actual = ReadDvdPreviewGeometry(calibration: true);
             int exitCode = await StaWorker.RunAsync(() =>
             {
-                int result = UnifiedCommandRunner.Run(arguments);
+                int result = UnifiedCommandRunner.RunJob(arguments, progress: null,
+                    cancellationToken: CancellationToken.None).ExitCode;
                 if (result == 0 && filePlan is not null)
                     FileRegionPreviewOverlay.ApplyDvd(outputPath, actual,
                         filePlan.DrawingStartLba, filePlan.DrawingEndLbaExclusive, cancellationToken);

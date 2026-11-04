@@ -118,3 +118,9 @@ BD-R reuses the same burning contract. `BluRayIsoGenerator` writes UDF 2.01, pat
 4. If an algorithm cannot cancel safely, `SupportsCancellation` must be `false`.
 5. Media-specific formats stay in their own modules; only stable, truly shared concepts enter Core.
 6. New modules need catalog-routing tests and a minimal output smoke test.
+
+## Build inputs and CI
+
+The build toolchain pins SDK `10.0.403` through `global.json` and uses runtime `10.0.14`. CI runs `packaging/Install-DotNetSdk.py` with the five official platform archive URLs and SHA512 values in `eng/dependencies/dotnet-sdk.json`, verifies the complete download before extraction, and installs into a fresh directory; it does not reuse an existing SDK by version. SDK upgrades require reviewing the version, archive hashes, and dependency locks together.
+
+CI pins CPython `3.14.10` through `.python-version`, and Python tools use reviewed wheels from `requirements-ci.lock`. Actions pin commits, and build provenance uses `actions/attest` `4.2.2`; attestations and locks do not replace code review or repair every bundled dependency vulnerability. See the [security policy](../SECURITY.en.md) for remaining Python Pillow/Brotli and Actions advisory boundaries.

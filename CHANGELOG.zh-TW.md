@@ -4,6 +4,8 @@
 
 ## 尚未發布
 
+- 升級建置來源證明 Action 至 `actions/attest` `4.2.2`，透過 `.python-version` 將 CI 固定為 CPython `3.14.10`，並使用 `packaging/Install-DotNetSdk.py` 在全新目錄安裝 SDK，解壓縮前依 `eng/dependencies/dotnet-sdk.json` 中經審查的 SHA512 驗證下載封存檔。
+
 - DVD 即時預覽（含校準預覽）產生時保留使用者選擇的介面語言，並新增語言偏好及實際語言皆保持不變的迴歸檢查。
 
 - 取代過時的 `StbImageWriteSharp` 相依套件，改用基於 .NET `ZLibStream` 和固定大小緩衝區的 PNG 寫入器；保持解碼後像素不變，並在 macOS 上繼續強制驗證套件簽章。

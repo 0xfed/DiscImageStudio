@@ -43,15 +43,13 @@ jobs:
           ref: ${{ inputs.ref || github.sha }}
           persist-credentials: false
 
-      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
-        with:
-          global-json-file: global.json
-          check-latest: false
-          skip-lts-prepass: true
-
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
-          python-version: '3.14'
+          python-version-file: .python-version
+          check-latest: false
+
+      - name: Install the verified .NET SDK
+        run: python packaging/Install-DotNetSdk.py
 
       - name: Validate portable image decoder resource limits
         run: dotnet run --project tests/DiscImageStudio.ImageIOTests --configuration Release
@@ -135,15 +133,13 @@ jobs:
           ref: ${{ inputs.ref || github.sha }}
           persist-credentials: false
 
-      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
-        with:
-          global-json-file: global.json
-          check-latest: false
-          skip-lts-prepass: true
-
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
-          python-version: '3.14'
+          python-version-file: .python-version
+          check-latest: false
+
+      - name: Install the verified .NET SDK
+        run: python packaging/Install-DotNetSdk.py
 
       - name: Restore
         run: dotnet restore DiscImageStudio.slnx --locked-mode
@@ -252,11 +248,13 @@ jobs:
           ref: ${{ inputs.ref || github.sha }}
           persist-credentials: false
 
-      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
-          global-json-file: global.json
+          python-version-file: .python-version
           check-latest: false
-          skip-lts-prepass: true
+
+      - name: Install the verified .NET SDK
+        run: python packaging/Install-DotNetSdk.py
 
       - name: Restore desktop localization tests
         run: dotnet restore tests/DiscImageStudio.ArchitectureTests --locked-mode

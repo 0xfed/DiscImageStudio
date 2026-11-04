@@ -35,7 +35,9 @@ dotnet run --project src/DiscImageStudio.App --configuration Release
 
 构建使用 SDK `10.0.403` 和运行时 `10.0.14`，默认启用锁定还原。已审查的 NuGet 依赖图保存在 `eng/dependencies/{portable|windows}/{optionalRID}/{ProjectName}.lock.json`。修改 `VersionPrefix`、项目引用、包版本或 SDK/运行时后，应在同一次改动中重新生成并审查锁文件。
 
-使用 Python `3.14` 更新覆盖五个 CI 平台、仅允许 wheel 的完整 Python 锁文件；使用 NuGet 更新脚本更新所有受支持目标和 RID 的依赖图。在仓库根目录运行：
+CI 在按 `.python-version` 配置 CPython `3.14.10` 后运行 `python packaging/Install-DotNetSdk.py`，下载固定官方 SDK 归档，解压前与 `eng/dependencies/dotnet-sdk.json` 中经审查的 SHA512 比对，并安装到全新目录。更新 SDK 时应将清单中五个平台的地址和哈希与 `global.json`、依赖锁文件一起审查；不能仅凭已有目录报告相同版本就复用它。
+
+使用 Python `3.14.10` 更新覆盖五个 CI 平台、仅允许 wheel 的完整 Python 锁文件；使用 NuGet 更新脚本更新所有受支持目标和 RID 的依赖图。在仓库根目录运行：
 
 ```powershell
 python packaging/Update-NuGetLocks.py

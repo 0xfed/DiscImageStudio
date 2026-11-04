@@ -6,6 +6,8 @@
 
 ### 中文
 
+- 升级构建来源证明 Action 至 `actions/attest` `4.2.2`，通过 `.python-version` 将 CI 固定为 CPython `3.14.10`，并使用 `packaging/Install-DotNetSdk.py` 在全新目录安装 SDK，解压前按 `eng/dependencies/dotnet-sdk.json` 中经审查的 SHA512 校验下载归档。
+
 - DVD 实时预览（含标定预览）生成时保留用户选择的界面语言，并增加对语言偏好及实际语言均保持不变的回归检查。
 
 - 替换过时的 `StbImageWriteSharp` 依赖，改用基于 .NET `ZLibStream` 和固定大小缓冲区的 PNG 写入器；保持解码后像素不变，并在 macOS 上继续强制验证包签名。
@@ -46,6 +48,8 @@
 - 侧栏工程头卡片右侧新增软盘保存按钮。
 
 ### English
+
+- Upgrade build provenance to `actions/attest` `4.2.2`, pin CI to CPython `3.14.10` through `.python-version`, and install the SDK into a fresh directory with `packaging/Install-DotNetSdk.py`, verifying downloaded archives against the reviewed SHA512 values in `eng/dependencies/dotnet-sdk.json` before extraction.
 
 - Preserve the selected interface language when generating DVD live previews, including calibration previews, and add regression checks for both the language preference and effective language.
 

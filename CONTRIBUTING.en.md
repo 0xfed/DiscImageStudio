@@ -35,7 +35,9 @@ dotnet run --project src/DiscImageStudio.App --configuration Release
 
 Builds use SDK `10.0.403` and runtime `10.0.14`, with locked restores enabled by default. Reviewed NuGet graphs live under `eng/dependencies/{portable|windows}/{optionalRID}/{ProjectName}.lock.json`. After changing `VersionPrefix`, project references, package versions or the SDK/runtime, regenerate and review the locks in the same change.
 
-Use Python `3.14` to refresh the complete wheel-only Python lock for all five CI platforms, and the NuGet updater to refresh every supported target and RID graph. Run from the repository root:
+After setting up CPython `3.14.10` from `.python-version`, CI runs `python packaging/Install-DotNetSdk.py` to download a fixed official SDK archive, compare its SHA512 with the reviewed value in `eng/dependencies/dotnet-sdk.json` before extraction, and install into a fresh directory. Review all five platform URLs and hashes together with `global.json` and dependency locks when updating the SDK; an existing directory reporting the same version is insufficient for reuse.
+
+Use Python `3.14.10` to refresh the complete wheel-only Python lock for all five CI platforms, and the NuGet updater to refresh every supported target and RID graph. Run from the repository root:
 
 ```powershell
 python packaging/Update-NuGetLocks.py

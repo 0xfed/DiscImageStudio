@@ -118,3 +118,9 @@ BD-R 重用同一燒錄契約：`BluRayIsoGenerator` 在單一前向串流寫 UD
 4. 底層演算法無法安全取消時，`SupportsCancellation` 須為 `false`。
 5. 媒體專用格式保留在專用模組，只有穩定且真正共用的概念進入 Core。
 6. 新模組須增加目錄路由測試及最小輸出冒煙測試。
+
+## 建置輸入與 CI
+
+建置工具鏈由 `global.json` 固定 SDK `10.0.403`，執行階段為 `10.0.14`。CI 透過 `packaging/Install-DotNetSdk.py` 讀取 `eng/dependencies/dotnet-sdk.json` 中五個平台的官方封存檔位址與 SHA512，在解壓縮前驗證完整下載內容，再安裝至全新目錄；不依版本號重用既有 SDK。SDK 升級時必須一併審查版本、封存檔雜湊與相依鎖定檔。
+
+CI 透過 `.python-version` 固定 CPython `3.14.10`，Python 工具使用 `requirements-ci.lock` 中經審查的 wheel。Actions 固定提交，建置來源證明使用 `actions/attest` `4.2.2`；證明與鎖定檔不能取代程式碼審查或修復所有內嵌相依套件漏洞。Python Pillow/Brotli 與其餘 Actions 公告的剩餘邊界見[安全性政策](../SECURITY.zh-TW.md)。

@@ -4,6 +4,8 @@
 
 ## 未リリース
 
+- ビルド来歴の Action を `actions/attest` `4.2.2` に更新し、`.python-version` で CI の CPython を `3.14.10` に固定しました。`packaging/Install-DotNetSdk.py` で新しいディレクトリに SDK をインストールし、展開前にダウンロードしたアーカイブを `eng/dependencies/dotnet-sdk.json` のレビュー済み SHA512 値と照合します。
+
 - DVD のライブプレビュー生成時（キャリブレーションプレビューを含む）に選択した表示言語を維持し、言語設定と実際の表示言語がともに変わらないことを確認する回帰テストを追加しました。
 
 - 古い `StbImageWriteSharp` 依存関係を、.NET の `ZLibStream` と固定長バッファーを使う PNG ライターに置き換えました。デコード後のピクセルを保ち、macOS でも厳格なパッケージ署名検証を維持します。

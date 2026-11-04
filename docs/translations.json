@@ -22,7 +22,7 @@
     {
       "source": "SECURITY.md",
       "source_language": "zh-CN",
-      "source_sha256": "49999ad8d478c1095016a1b14d522465f541a5a73ff9a990a9a2a073e98e1de1",
+      "source_sha256": "197c8e6911090d2f2ed5b06f17797b29e5c76ded24b190234d18a574bf39815c",
       "translations": {
         "zh-CN": "SECURITY.md",
         "zh-TW": "SECURITY.zh-TW.md",
@@ -46,7 +46,7 @@
     {
       "source": "CONTRIBUTING.md",
       "source_language": "zh-CN",
-      "source_sha256": "26d4dcdf9d845c4489d9ca4c8b2ef963c08ed0d139d1f34c50f56a020d3b0c9c",
+      "source_sha256": "cda2601b1b3fdd80a73261af77ddae31f01d828652797161607c7e90685afc17",
       "translations": {
         "zh-CN": "CONTRIBUTING.md",
         "zh-TW": "CONTRIBUTING.zh-TW.md",
@@ -236,7 +236,7 @@
     {
       "source": "docs/ARCHITECTURE.md",
       "source_language": "zh-CN",
-      "source_sha256": "f32a53d9b9bc7a34e9aa79c309af975fc5759296d9614ad2b73d8dd594fba20c",
+      "source_sha256": "1d5de738af7578095d6e5b2507139338afe2bc4c686bbbbed5357013ee8d0854",
       "translated_mermaid_labels": [
         "CdEngine",
         "BdEngine"
@@ -276,7 +276,7 @@
     {
       "source": "CHANGELOG.md",
       "source_language": "zh-CN",
-      "source_sha256": "370ed2b33a385e6ee4a2f42af800e371ae703ebc444a375bbfdadf7bdf147f88",
+      "source_sha256": "c9001c90bcd6a8cd76486c8984ac2dea91910e8afb721b5fc4927f656b91321a",
       "parallel_language_sections": [
         "中文",
         "English"

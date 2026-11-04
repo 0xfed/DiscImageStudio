@@ -4,6 +4,8 @@
 
 ## Henüz yayımlanmayan
 
+- Derleme kaynağı kanıtı için `actions/attest` `4.2.2` sürümüne geçildi, CI, `.python-version` ile CPython `3.14.10` sürümüne sabitlendi. SDK, `packaging/Install-DotNetSdk.py` ile yeni bir dizine kurulur; indirilen arşivler açılmadan önce `eng/dependencies/dotnet-sdk.json` içindeki incelenmiş SHA512 değerleriyle doğrulanır.
+
 - Kalibrasyon önizlemeleri dahil DVD canlı önizlemeleri oluşturulurken seçilen arayüz dili korunur; hem dil tercihinin hem de uygulanan dilin değişmediğini doğrulayan regresyon kontrolleri eklendi.
 
 - Eski `StbImageWriteSharp` bağımlılığı, .NET `ZLibStream` ve sabit boyutlu arabellekler kullanan bir PNG yazıcısıyla değiştirildi; çözülen pikseller korundu ve macOS üzerinde katı paket imzası doğrulaması sürdürüldü.

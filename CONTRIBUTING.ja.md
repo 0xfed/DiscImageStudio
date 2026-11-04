@@ -35,7 +35,9 @@ dotnet run --project src/DiscImageStudio.App --configuration Release
 
 ビルドでは SDK `10.0.403` とランタイム `10.0.14` を使用し、既定でロック済みの復元を適用します。レビュー済みの NuGet 依存グラフは `eng/dependencies/{portable|windows}/{optionalRID}/{ProjectName}.lock.json` に保存します。`VersionPrefix`、プロジェクト参照、パッケージのバージョン、SDK／ランタイムを変更したら、同じ変更内でロックファイルを再生成し、レビューしてください。
 
-Python `3.14` を使用して、五つの CI プラットフォームを対象とする wheel のみの完全な Python ロックファイルを更新します。NuGet 更新スクリプトでは、サポート対象のすべてのターゲットと RID の依存グラフを更新します。リポジトリのルートで実行してください。
+CI は `.python-version` に従って CPython `3.14.10` をセットアップした後、`python packaging/Install-DotNetSdk.py` を実行して固定された公式 SDK アーカイブをダウンロードし、展開前に `eng/dependencies/dotnet-sdk.json` のレビュー済み SHA512 値と照合して、新しいディレクトリにインストールします。SDK 更新時は 5 プラットフォームの URL とハッシュを `global.json`、依存関係ロックとまとめてレビューします。既存ディレクトリが同じバージョンを報告するだけでは再利用しません。
+
+Python `3.14.10` を使用して、五つの CI プラットフォームを対象とする wheel のみの完全な Python ロックファイルを更新します。NuGet 更新スクリプトでは、サポート対象のすべてのターゲットと RID の依存グラフを更新します。リポジトリのルートで実行してください。
 
 ```powershell
 python packaging/Update-NuGetLocks.py

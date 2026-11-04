@@ -35,7 +35,9 @@ dotnet run --project src/DiscImageStudio.App --configuration Release
 
 Derlemeler SDK `10.0.403` ve çalışma zamanı `10.0.14` kullanır; kilitli geri yükleme varsayılan olarak etkindir. İncelenen NuGet bağımlılık grafikleri `eng/dependencies/{portable|windows}/{optionalRID}/{ProjectName}.lock.json` altında tutulur. `VersionPrefix`, proje başvuruları, paket sürümleri veya SDK/çalışma zamanı değiştiğinde, kilit dosyalarını aynı değişiklik içinde yeniden oluşturup inceleyin.
 
-Beş CI platformunun tamamı için yalnızca wheel içeren eksiksiz Python kilidini yenilemek üzere Python `3.14` kullanın; desteklenen tüm hedef ve RID grafiklerini yenilemek için NuGet güncelleme betiğini çalıştırın. Depo kökünde çalıştırın:
+CI, `.python-version` uyarınca CPython `3.14.10` kurulumundan sonra `python packaging/Install-DotNetSdk.py` çalıştırır; sabit bir resmî SDK arşivini indirir, açmadan önce SHA512 değerini `eng/dependencies/dotnet-sdk.json` içindeki incelenmiş değerle karşılaştırır ve yeni bir dizine kurar. SDK güncellenirken beş platformun URL ve karmalarını `global.json` ve bağımlılık kilitleriyle birlikte inceleyin; mevcut bir dizinin aynı sürümü bildirmesi yeniden kullanım için yeterli değildir.
+
+Beş CI platformunun tamamı için yalnızca wheel içeren eksiksiz Python kilidini yenilemek üzere Python `3.14.10` kullanın; desteklenen tüm hedef ve RID grafiklerini yenilemek için NuGet güncelleme betiğini çalıştırın. Depo kökünde çalıştırın:
 
 ```powershell
 python packaging/Update-NuGetLocks.py

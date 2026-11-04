@@ -53,15 +53,13 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
-        with:
-          global-json-file: global.json
-          check-latest: false
-          skip-lts-prepass: true
-
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
-          python-version: '3.14'
+          python-version-file: .python-version
+          check-latest: false
+
+      - name: Install the verified .NET SDK
+        run: python packaging/Install-DotNetSdk.py
 
       - name: Build Store MSIX
         shell: powershell
@@ -87,7 +85,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'MSIX SBOM generation failed.' }
 
       - name: Attest the Store submission and SBOM provenance
-        uses: actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d # v4.2.1
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
           push-to-registry: false
           subject-path: |
@@ -95,7 +93,7 @@ jobs:
             artifacts/msix/release.cdx.json
 
       - name: Attest the Store submission SBOM
-        uses: actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d # v4.2.1
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
           push-to-registry: false
           subject-path: artifacts/msix/*.msix

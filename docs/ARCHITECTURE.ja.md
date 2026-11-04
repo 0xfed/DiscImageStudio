@@ -118,3 +118,9 @@ BD-R も同じ書き込み契約を使います。`BluRayIsoGenerator` は単一
 4. 下位アルゴリズムを安全にキャンセルできない場合、`SupportsCancellation` を `false` にします。
 5. メディア固有の形式は専用モジュールに置き、安定した、本当に共通の概念だけを Core に入れます。
 6. 新しいモジュールにはカタログの振り分けテストと最小出力のスモークテストを追加します。
+
+## ビルド入力と CI
+
+ビルドツールチェーンは `global.json` で SDK `10.0.403` を固定し、ランタイム `10.0.14` を使用します。CI は `packaging/Install-DotNetSdk.py` で `eng/dependencies/dotnet-sdk.json` に記録された 5 プラットフォームの公式アーカイブ URL と SHA512 値を読み、ダウンロード全体を展開前に検証して新しいディレクトリにインストールします。既存の SDK をバージョン番号だけで再利用しません。SDK 更新時はバージョン、アーカイブハッシュ、依存関係ロックをまとめてレビューします。
+
+CI は `.python-version` で CPython `3.14.10` を固定し、Python ツールは `requirements-ci.lock` のレビュー済み wheel を使用します。Actions はコミットを固定し、ビルド来歴には `actions/attest` `4.2.2` を使用します。証明とロックはコードレビューの代わりにはならず、バンドル依存関係のすべての脆弱性を修正するものでもありません。Python Pillow/Brotli と Actions のアドバイザリに残る境界は[セキュリティポリシー](../SECURITY.ja.md)を参照してください。

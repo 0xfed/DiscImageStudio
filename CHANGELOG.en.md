@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Upgrade build provenance to `actions/attest` `4.2.2`, pin CI to CPython `3.14.10` through `.python-version`, and install the SDK into a fresh directory with `packaging/Install-DotNetSdk.py`, verifying downloaded archives against the reviewed SHA512 values in `eng/dependencies/dotnet-sdk.json` before extraction.
+
 - Preserve the selected interface language when generating DVD live previews, including calibration previews, and add regression checks for both the language preference and effective language.
 
 - Replace the obsolete `StbImageWriteSharp` dependency with a PNG writer built on .NET `ZLibStream` and fixed-size buffers, preserving decoded pixels and keeping strict package signature verification enabled on macOS.

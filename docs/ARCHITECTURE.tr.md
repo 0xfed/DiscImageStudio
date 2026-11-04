@@ -118,3 +118,9 @@ BD-R aynı yazma sözleşmesini kullanır: `BluRayIsoGenerator`, tek bir ileri a
 4. Alt algoritma güvenle iptal edilemiyorsa `SupportsCancellation`, `false` olmalıdır.
 5. Ortama özgü biçimler kendi modülünde kalır; yalnızca kararlı ve gerçekten ortak kavramlar Core'a girer.
 6. Yeni modüller katalog yönlendirme testi ve en küçük çıktı için bir duman testi eklemelidir.
+
+## Derleme girdileri ve CI
+
+Derleme araç zinciri, SDK `10.0.403` sürümünü `global.json` ile sabitler ve `10.0.14` çalışma zamanını kullanır. CI, `packaging/Install-DotNetSdk.py` ile `eng/dependencies/dotnet-sdk.json` içindeki beş platformun resmî arşiv URL’lerini ve SHA512 değerlerini okur, indirilen içeriğin tamamını açmadan önce doğrular ve yeni bir dizine kurar; mevcut SDK’yı yalnızca sürümüne bakarak yeniden kullanmaz. SDK yükseltmeleri sürümün, arşiv karmalarının ve bağımlılık kilitlerinin birlikte incelenmesini gerektirir.
+
+CI, `.python-version` ile CPython `3.14.10` sürümüne sabitlenir; Python araçları `requirements-ci.lock` içindeki incelenmiş wheel dosyalarını kullanır. Actions commit’lere sabitlenir, derleme kaynağı kanıtı için `actions/attest` `4.2.2` kullanılır; kanıtlar ve kilitler kod incelemesinin yerini tutmaz veya paketlenmiş bağımlılıkların tüm açıklarını gidermez. Python Pillow/Brotli ve Actions duyurularında kalan sınırlar için [güvenlik politikasına](../SECURITY.tr.md) bakın.

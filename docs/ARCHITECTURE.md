@@ -118,3 +118,9 @@ BD-R 复用同一刻录契约：`BluRayIsoGenerator` 在一个前向流里写入
 4. 如果底层算法不能安全取消，`SupportsCancellation` 必须为 `false`。
 5. 介质专用格式留在专用模块；只有稳定且真正共享的概念进入 Core。
 6. 新模块必须增加目录路由测试和一个最小输出冒烟测试。
+
+## 构建输入与 CI
+
+构建工具链由 `global.json` 固定 SDK `10.0.403`，运行时为 `10.0.14`。CI 通过 `packaging/Install-DotNetSdk.py` 读取 `eng/dependencies/dotnet-sdk.json` 中五个平台的官方归档地址和 SHA512，在解压前验证完整下载内容，再安装到全新目录；不按版本号复用已有 SDK。SDK 升级时必须一并审查版本、归档哈希和依赖锁文件。
+
+CI 通过 `.python-version` 固定 CPython `3.14.10`，Python 工具使用 `requirements-ci.lock` 中经审查的 wheel。Actions 固定提交，构建来源证明使用 `actions/attest` `4.2.2`；证明与锁文件不能替代代码审查或修复所有内嵌依赖漏洞。Python Pillow/Brotli 与其余 Actions 公告的剩余边界见[安全政策](../SECURITY.md)。

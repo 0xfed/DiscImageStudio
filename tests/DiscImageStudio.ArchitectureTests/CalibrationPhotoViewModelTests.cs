@@ -41,10 +41,11 @@ internal static class CalibrationPhotoViewModelTests
         string path = Path.Combine(directory, "wide-sectors.calibration.json");
         Invoke(model, "SaveSessionTo", path);
         model.UseCoarsePattern = false;
+        model.SelectFineModeCommand.Execute(null);
         model.CreateTargetCommand.Execute(null);
         Require(model.Target is { IsCoarsePattern: false }, "creating a fine target switches back explicitly");
         Await(model, "LoadSessionFromAsync", path);
-        Require(model.Target?.Id == target.Id && model.UseCoarsePattern && model.Target.IsCoarsePattern
+        Require(model.Target?.Id == target.Id && model.UseCoarsePattern && model.Target.IsCoarsePattern && model.IsCoarseMode
             && model.StreamBurnCommand.CanExecute(null), "reopening restores the coarse target and checkbox together");
     }
 

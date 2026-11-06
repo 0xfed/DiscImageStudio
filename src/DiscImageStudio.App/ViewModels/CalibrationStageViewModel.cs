@@ -35,11 +35,11 @@ public partial class CalibrationViewModel
     public string TraceConfirmationLabel => L.T(HasBoundarySegments ? "HalfDisc.Confirm" : "Xaml.ICheckedTheFullCurveItsShapeAndTurns");
     public string ApplyTraceLabel => L.T(IsIntermediateMode ? "SingleLine.Apply" : "Xaml.ApplyCalibration");
 
-    private void SelectStage(CalibrationStage stage)
+    private void SelectStage(CalibrationStage stage, bool resetPatternSelection = true)
     {
         if (_stage == stage) return;
         _stage = stage;
-        if (!_installing) { UseCoarsePattern = false; UseCirclePattern = false; UseVisualSelectorPattern = false; }
+        if (!_installing && resetPatternSelection) { UseCoarsePattern = false; UseCirclePattern = false; UseVisualSelectorPattern = false; }
         OnPropertyChanged(nameof(IsCoarseMode));
         OnPropertyChanged(nameof(IsIntermediateMode));
         OnPropertyChanged(nameof(IsFineMode));
@@ -76,10 +76,10 @@ public partial class CalibrationViewModel
     {
         var target = session.Target;
         var stage = target.HasSingleRadialLine || target.HasBoundaryPattern ? CalibrationStage.SingleLine
-            : !target.HasCrossArms ? CalibrationStage.Coarse
+            : target.IsCoarsePattern || !target.HasCrossArms ? CalibrationStage.Coarse
             : target.Artwork == CalibrationArtwork.ReferenceCross ? CalibrationStage.Fine
             : session.Photo?.IsCoarseMode == true || (session.Photo is null && target.HasAngularReference)
                 ? CalibrationStage.Coarse : CalibrationStage.Fine;
-        SelectStage(stage);
+        SelectStage(stage, resetPatternSelection: false);
     }
 }

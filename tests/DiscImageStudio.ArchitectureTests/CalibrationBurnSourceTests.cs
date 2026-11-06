@@ -65,15 +65,19 @@ internal static class CalibrationBurnSourceTests
             shell.Calibration.EnsureTarget();
             Require(shell.Calibration.Target?.Parameters.Kind == CalibrationDiscKind.BluRay
                 && shell.Calibration.SelectedDiscType == "BD", "BD setup builds a target without an open project");
+            ProjectDocument? previousProject = shell.CurrentProject;
             foreach (string family in new[] { ProjectDocument.CdFamily, ProjectDocument.DvdFamily, ProjectDocument.BluRayFamily })
             {
                 SetProjectFamily(shell, family);
                 Require(shell.Burn.CanConfigureFileUpdates, "every data project exposes the file-update panel");
                 shell.Burn.KeepDiscOpenForFileUpdates = true;
-                Require(family == ProjectDocument.BluRayFamily || (family == ProjectDocument.DvdFamily ? state.DvdUseUdf250 : state.CdUseUdf250),
+                Require(family == ProjectDocument.BluRayFamily || (family == ProjectDocument.DvdFamily ? shell.State.DvdUseUdf250 : shell.State.CdUseUdf250),
                     "leaving the disc open selects UDF for the active CD/DVD project");
                 shell.Burn.KeepDiscOpenForFileUpdates = false;
             }
+            Require(!state.CdUseUdf250 && !state.DvdUseUdf250,
+                "project file-update settings do not change the independent calibration setup");
+            typeof(ShellViewModel).GetProperty(nameof(ShellViewModel.CurrentProject))!.SetValue(shell, previousProject);
             BurnViewModel burn = shell.CalibrationBurn;
             shell.NavigateTo(Workspace.CalibrationBurn);
             Require(!shell.IsProjectMode && shell.IsJobDockVisible && shell.CurrentWorkspace == Workspace.CalibrationBurn,

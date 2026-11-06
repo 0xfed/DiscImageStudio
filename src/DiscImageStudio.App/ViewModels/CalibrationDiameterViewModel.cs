@@ -26,7 +26,9 @@ public partial class CalibrationViewModel
     public string? RingStageInstruction => IsVisualSelectorWorkflow ? L.T("VisualSelector.PreviewCaption") : UseRingMeasurements ? L.T("Circle preview · enter measured diameters.") : null;
     public string CalibrationCanvasHint => L.T(IsVisualSelectorWorkflow ? "VisualSelector.BandHelp" : UseRingMeasurements ? "Xaml.RingMeasurementHelp" : "Xaml.ScrollToZoomRightDragToPanDragPoints");
     public string SecondStepTitle => IsVisualSelectorWorkflow ? L.T("VisualSelector.SelectBands") : UseRingMeasurements ? L.T("Measure ring diameters") : L.T("Xaml.RectifyPhoto");
-    public string ThirdStepTitle => IsVisualSelectorWorkflow ? L.T("VisualSelector.ReviewEstimate") : UseRingMeasurements ? L.T("Check and apply radii") : L.T("Xaml.TraceAndSolve");
+    public string ThirdStepTitle => IsVisualSelectorWorkflow ? L.T("VisualSelector.ReviewEstimate") : UseRingMeasurements ? L.T("Check and apply radii")
+        : IsCoarseMode ? L.T("Xaml.CoarseCalibrationPhase")
+        : IsIntermediateMode ? L.T("HalfDisc.Stage") : L.T("Xaml.FineCalibrationPhase");
     public RelayCommand SolveDiametersCommand { get; private set; } = null!;
     public RelayCommand ApplyRingParametersCommand { get; private set; } = null!;
     public RelayCommand ReviewRingMeasurementsCommand { get; private set; } = null!;

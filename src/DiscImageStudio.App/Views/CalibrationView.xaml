@@ -575,6 +575,34 @@
                                 </Style>
                             </controls:StepCard.Style>
                             <StackPanel>
+                                <controls:VisibilityGate IsOpen="{Binding IsVisualSelectorWorkflow}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding VisualSelectorEstimateSummary}" Style="{StaticResource CompactHint}" TextWrapping="Wrap" Margin="0,0,0,10" />
+                                        <TextBlock Text="{loc:Text VisualSelector.ApplyHelp}" Style="{StaticResource CompactHint}" TextWrapping="Wrap" Margin="0,0,0,10" />
+                                        <Button Command="{Binding ApplyVisualSelectorEstimateCommand}" Style="{StaticResource CompactPrimaryButton}"
+                                                Height="Auto" MinHeight="{StaticResource CompactHeight}" Padding="12,6">
+                                            <TextBlock Text="{loc:Text VisualSelector.Apply}" TextWrapping="Wrap" TextAlignment="Center" />
+                                        </Button>
+                                    </StackPanel>
+                                </controls:VisibilityGate>
+                                <controls:VisibilityGate IsOpen="{Binding UseRingMeasurements}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding RingFitSummary}" Style="{StaticResource CompactHint}" TextWrapping="Wrap" Margin="0,0,0,10" />
+                                        <TextBlock Text="{loc:Text Xaml.RingFitAccuracyHelp}" Style="{StaticResource CompactHint}" TextWrapping="Wrap" Margin="0,0,0,10" />
+                                        <Button Command="{Binding ReviewRingMeasurementsCommand}" Style="{StaticResource CompactButton}"
+                                                Content="{loc:Text Xaml.ReviewRingMeasurements}" Margin="0,0,0,10" />
+                                        <CheckBox IsChecked="{Binding RingMeasurementsConfirmed, Mode=TwoWay}"
+                                                  Style="{StaticResource CompactCheckBox}" Margin="0,0,0,10">
+                                            <TextBlock Text="{loc:Text Xaml.ConfirmRingMeasurements}" TextWrapping="Wrap" />
+                                        </CheckBox>
+                                        <Button Command="{Binding ApplyRingParametersCommand}" Style="{StaticResource CompactPrimaryButton}"
+                                                Height="Auto" MinHeight="{StaticResource CompactHeight}" Padding="12,6">
+                                            <TextBlock Text="{loc:Text Xaml.ApplyCalibration}" TextWrapping="Wrap" TextAlignment="Center" />
+                                        </Button>
+                                    </StackPanel>
+                                </controls:VisibilityGate>
+                                <controls:VisibilityGate IsOpen="{Binding UsePhotoWorkflow}">
+                                    <StackPanel>
                                 <Button Content="{loc:Text Xaml.BackToPhotoCorrection}" Command="{Binding BackToPhotoCommand}"
                                         Style="{StaticResource CompactButton}" HorizontalAlignment="Stretch" Margin="0,0,0,10" />
                                 <controls:VisibilityGate IsOpen="{Binding IsRadialArcStep}">
@@ -734,6 +762,8 @@
                                         <Button Content="{Binding ApplyTraceLabel}" Command="{Binding ApplyParametersCommand}"
                                                 ToolTip="{Binding ApplyParametersHint}" ToolTipService.ShowOnDisabled="True"
                                                 Style="{StaticResource CompactPrimaryButton}" HorizontalAlignment="Stretch" />
+                                    </StackPanel>
+                                </controls:VisibilityGate>
                                     </StackPanel>
                                 </controls:VisibilityGate>
                             </StackPanel>

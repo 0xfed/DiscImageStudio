@@ -59,6 +59,7 @@ public partial class CalibrationViewModel
     private void NotifyTraceStage()
     {
         OnPropertyChanged(nameof(IsFineStep));
+        OnPropertyChanged(nameof(ThirdStepTitle));
         OnPropertyChanged(nameof(IsLineFitStep));
         OnPropertyChanged(nameof(HasBoundarySegments));
         OnPropertyChanged(nameof(IsBoundarySegmentStep));

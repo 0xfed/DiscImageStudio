@@ -187,6 +187,9 @@ internal static class UiLocalizationLayoutTests
                                 if (!shell.Calibration.ApplyRingParametersCommand.CanExecute(null))
                                     throw new InvalidOperationException("The measured-diameter workflow did not produce an applicable fit.");
                                 Pump();
+                                if (!Descendants(window).OfType<Button>().Any(button => button.IsVisible
+                                    && ReferenceEquals(button.Command, shell.Calibration.ApplyRingParametersCommand)))
+                                    throw new InvalidOperationException("The diameter result has no visible Apply control.");
                                 Capture(window, name + "-ring-fit");
                                 if (family == "dvd")
                                 {
@@ -222,6 +225,9 @@ internal static class UiLocalizationLayoutTests
                                         || !shell.Calibration.StepThreeExpanded
                                         || string.IsNullOrWhiteSpace(shell.Calibration.VisualSelectorEstimateSummary))
                                         throw new InvalidOperationException("The visual selector did not display an applicable coarse estimate.");
+                                    if (!Descendants(window).OfType<Button>().Any(button => button.IsVisible
+                                        && ReferenceEquals(button.Command, shell.Calibration.ApplyVisualSelectorEstimateCommand)))
+                                        throw new InvalidOperationException("The visual estimate has no visible Apply control.");
                                     Capture(window, name + "-visual-estimate");
                                     // Inspect the estimate without applying it or touching a recorder.
                                     shell.Calibration.UseVisualSelectorPattern = false;

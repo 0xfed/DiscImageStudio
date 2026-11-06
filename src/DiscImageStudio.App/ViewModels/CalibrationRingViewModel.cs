@@ -1,182 +1,451 @@
-using System.Collections.ObjectModel;
-using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DiscImageStudio.Controls;
 using DiscImageStudio.Core.Calibration;
 using DiscImageStudio.Localization;
+using DiscImageStudio.Services;
 
 namespace DiscImageStudio.ViewModels;
 
 public partial class CalibrationViewModel
 {
-    private CalibrationRingFitResult? _ringFit;
-    [ObservableProperty] private bool _useCirclePattern;
-    [ObservableProperty] private bool _useRingMeasurements;
-    [ObservableProperty] private string _diameterTolerance = "0.10";
-    [ObservableProperty] private bool _ringMeasurementsConfirmed;
-    [ObservableProperty] private string _ringFitSummary = string.Empty;
-    public ObservableCollection<RingDiameterRow> RingDiameters { get; } = [];
-    public bool HasMeasurableRings => RingDiameters.Count >= 3;
-    public bool CanSelectRingMeasurementMethod => HasMeasurableRings && _target?.IsRingPattern != true;
-    public bool UsePhotoWorkflow => !UseRingMeasurements && !IsVisualSelectorWorkflow;
-    public bool ShowPhotoBoundaryTools => UsePhotoWorkflow && IsPhotoStep;
-    public bool ShowPhotoTraceTools => UsePhotoWorkflow && IsTraceStep;
-    public string CalibrationStageTitle => IsVisualSelectorWorkflow ? L.T("VisualSelector.Label") : UseRingMeasurements ? L.T("Calibration circles") : L.T("Xaml.CalibrationPhoto");
-    public string? RingStageInstruction => IsVisualSelectorWorkflow ? L.T("VisualSelector.PreviewCaption") : UseRingMeasurements ? L.T("Circle preview · enter measured diameters.") : null;
-    public string CalibrationCanvasHint => L.T(IsVisualSelectorWorkflow ? "VisualSelector.BandHelp" : UseRingMeasurements ? "Xaml.RingMeasurementHelp" : "Xaml.ScrollToZoomRightDragToPanDragPoints");
-    public string SecondStepTitle => IsVisualSelectorWorkflow ? L.T("VisualSelector.SelectBands") : UseRingMeasurements ? L.T("Measure ring diameters") : L.T("Xaml.RectifyPhoto");
-    public string ThirdStepTitle => IsVisualSelectorWorkflow ? L.T("VisualSelector.ReviewEstimate") : UseRingMeasurements ? L.T("Check and apply radii") : L.T("Xaml.TraceAndSolve");
-    public RelayCommand SolveRingsCommand { get; private set; } = null!;
-    public RelayCommand ApplyRingParametersCommand { get; private set; } = null!;
-    public RelayCommand ReviewRingMeasurementsCommand { get; private set; } = null!;
-    private CalibrationPatternKind SelectedPatternKind => UseVisualSelectorPattern ? CalibrationPatternKind.VisualSelector
-        : UseCirclePattern ? CalibrationPatternKind.ConcentricRings
-        : UseCoarsePattern ? CalibrationPatternKind.WideSectors : CalibrationPatternKind.FineCross;
+    private CalibrationFitResult? _ringFit;
+    private CalibrationSectorScaleResult? _sectorCheck;
+    private long _ringRevision;
+    // An accepted coarse estimate seeds the fine search on this photograph. The
+    // target and its independent, possibly user-supplied search centre stay intact.
+    private CalibrationParameters? _acceptedRingSeed;
+
+    private CalibrationAngleSweepResult? _sweepReadout;
+    public string RingSolveLabel => L.T(_target?.HasAngleSweep == true ? "AngleBands.Solve" : "Xaml.CoarseRingSolve");
+    public string RingBoundaryInstructions => L.T(_target?.HasAngleSweep == true ? "AngleBands.Edges" : "BandEdges.Instructions");
+    public bool IsPhotoRingMode => IsCoarseMode && _target?.Artwork != CalibrationArtwork.LegacyReference;
+    public bool IsRingStep => IsTraceStep && IsPhotoRingMode
+        && (HasWideBandTarget || _target is { SchemaVersion: <= 12, HasCrossArms: true });
+    [ObservableProperty] private IReadOnlyList<CalibrationRingArc> _ringArcs = [];
+    public sealed class RingChoice(int index, bool wideBand) : ObservableObject
+    {
+        public int Index { get; } = index;
+        public string Label => wideBand ? CalibrationRingArc.WideEdgeLabel(Index) : (Index + 1).ToString();
+        internal void RefreshLabel() => OnPropertyChanged(nameof(Label));
+    }
+    [ObservableProperty] private IReadOnlyList<RingChoice> _ringChoices = [];
+    [ObservableProperty, NotifyPropertyChangedFor(nameof(IsDragRingMode))] private bool _threePointMode;
+    public bool IsDragRingMode => !ThreePointMode && !IsBandRayMode;
+    public string RingPickerLabel => L.T(HasWideBandTarget ? "BandEdges.SelectEdge" : "Xaml.CoarseRingNumber");
+    public string RingOperationHint => L.T(HasWideBandTarget
+        ? "BandEdges.RayHint"
+        : ThreePointMode ? "Xaml.CoarseRingPointHint" : "Xaml.CoarseRingDragHint");
+    [ObservableProperty] private int _selectedRingIndex = -1;
+    [ObservableProperty] private IReadOnlyList<CalibrationPoint> _ringPointMarkers = [];
+    private string? _ringPointError;
+    public string RingPointSummary => _ringPointError ?? (RingPointMarkers.Count == 3 && (uint)SelectedRingIndex < (uint)RingArcs.Count
+        ? L.Format("Rings.PointsReady", RingArcs[SelectedRingIndex].RadiusMm)
+        : L.Format("Rings.PointsCount", RingPointMarkers.Count));
+    public RelayCommand<CalibrationPoint> RingPointCommand { get; private set; } = null!;
+    public RelayCommand UndoRingPointCommand { get; private set; } = null!;
+    public RelayCommand RestartRingPointsCommand { get; private set; } = null!;
+
+    public RelayCommand SelectCoarseModeCommand { get; private set; } = null!;
+    public RelayCommand SelectFineModeCommand { get; private set; } = null!;
+    public RelayCommand<CalibrationRingEdit> RingEditedCommand { get; private set; } = null!;
+    public IAsyncRelayCommand SolveRingsCommand { get; private set; } = null!;
+    public RelayCommand UseRingSeedCommand { get; private set; } = null!;
+    public RelayCommand ClearRingSeedCommand { get; private set; } = null!;
+    public RelayCommand ApplyCoarseParametersCommand { get; private set; } = null!;
+    public IAsyncRelayCommand VerifySectorScaleCommand { get; private set; } = null!;
+    public RelayCommand ApplyVerifiedScaleCommand { get; private set; } = null!;
+    public bool CanVerifySectorScale => _target?.HasAngularReference == true;
+    public string SectorCheckSummary => _sectorCheck switch
+    {
+        { Corrected: { } p } result => L.Format("Phases.VerifiedScale", result.ApparentOverPhysical,
+            result.InnerCoherence, result.OuterCoherence, p.InnerRadiusMm, p.OuterRadiusMm),
+        { Status: CalibrationSectorScaleStatus.Disagree } bad =>
+            L.Format("Phases.Disagree", bad.InnerScale, bad.OuterScale),
+        { Status: CalibrationSectorScaleStatus.OutsideDisc } => L.T("Phases.OutOfBounds"),
+        { } weak => L.Format("Phases.Unverified", weak.InnerCoherence, weak.OuterCoherence),
+        _ => L.T("Phases.SectorHint"),
+    };
+    public bool HasAvailableRingSeed => RingEstimateAccepted(_ringFit, SelectedPhysicalDiscSize.OuterRadiusMm);
+    public bool HasAcceptedRingSeed => _acceptedRingSeed is not null;
+    public string FineInitialSummary => _acceptedRingSeed is { } seed
+        ? L.Format("Phases.RingSeed", seed.InnerRadiusMm, seed.OuterRadiusMm)
+        : _searchCenter is { } centre
+            ? L.Format(IsIntermediateMode ? "HalfDisc.RecordSeed" : "Phases.RecordSeed", centre.InnerRadiusMm, centre.OuterRadiusMm)
+            : L.T("Phases.PendingSeed");
+
+    public string CoarseSummary
+    {
+        get
+        {
+            int count = RingArcs.Count(ring => ring.IsConfirmed);
+            if (!CanMeasureAtPhotoSize) return L.T("WideBands.Size");
+            if (RingArcs.Count < 3) return L.T("Rings.InsufficientTarget");
+            if (_ringFit is null)
+                return L.Format(HasWideBandTarget ? (_target!.SchemaVersion == 11 ? "BandEdges.CountLegacy" : "BandEdges.Count") : "Rings.Count",
+                    count, RingArcs.Count);
+            if (_ringFit.Candidates.FirstOrDefault() is not { } best)
+                return string.Join("\n", _ringFit.Warnings.Select(L.T));
+            if (HasWideBandTarget)
+            {
+                string radii = L.Format("WideBands.Result", best.Parameters.InnerRadiusMm, best.Parameters.OuterRadiusMm);
+                if (!HasAvailableRingSeed) return radii + "\n" + L.T("Rings.CheckAlignment");
+                string fit = count == 2 ? L.T("WideBands.Pair") : L.Format("BandEdges.Residual", best.MaxErrorMm);
+                if (_target?.HasAngleSweep == true)
+                {
+                    if (_sweepReadout?.Corrected is { } corrected && ValidSweepRadius(corrected))
+                    {
+                        string offsets = string.Join(" / ", _sweepReadout.DegreesPerTurnOffset
+                            .Select(value => value.ToString("+0.00;-0.00;0.00") + "°"));
+                        return L.Format("AngleBands.Result", corrected.InnerRadiusMm, corrected.OuterRadiusMm,
+                            _sweepReadout.StationCount, best.Parameters.InnerRadiusMm, best.Parameters.OuterRadiusMm)
+                            + Environment.NewLine + L.Format("AngleBands.Angles", offsets);
+                    }
+                    string hint = count < 6 ? "AngleBands.NeedSix"
+                        : !AllSixOnOneRay(RingObservations()) ? "AngleBands.OldMeasurements" : "AngleBands.Weak";
+                    return radii + "\n" + L.T(hint);
+                }
+                return radii + "\n" + fit;
+            }
+            string estimate = L.Format("Rings.Estimate", best.Parameters.InnerRadiusMm,
+                best.Parameters.OuterRadiusMm, best.RmsErrorMm, best.MaxErrorMm);
+            if (!RingEstimateAccepted(_ringFit, SelectedPhysicalDiscSize.OuterRadiusMm))
+                return estimate + "\n" + L.T("Rings.CheckAlignment");
+            return _target?.HasAngularReference == false
+                ? estimate + "\n" + L.T("Phases.LegacyRingEstimate") : estimate;
+        }
+    }
+
+    public string BandIntervalSummary
+    {
+        get
+        {
+            if (_target is not { HasWideAddressBands: true } || !RingArcs.Any(r => r.IsConfirmed)) return string.Empty;
+            var spans = CalibrationRingFitter.GetWideBandIntervals(_target, RingObservations());
+            static string Join(IEnumerable<double?> values) =>
+                string.Join(" / ", values.Select(v => v.HasValue ? v.Value.ToString("0.00") : "—"));
+            string summary = L.Format("BandEdges.Widths", Join(spans.SegmentWidthsMm))
+                + Environment.NewLine + L.Format("BandEdges.Spacings", Join(spans.InnerEdgeSpacingsMm));
+            if (!spans.PredictedInnerEdgeSpacingsMm.Any(p => p.HasValue)) return summary;
+            return summary + Environment.NewLine + L.Format("BandEdges.PredictedSpacings", Join(spans.PredictedInnerEdgeSpacingsMm));
+        }
+    }
 
     private void InitializeRingCommands()
     {
-        ReviewRingMeasurementsCommand = new RelayCommand(() => StepTwoExpanded = true, () => !IsBusy);
-        SolveRingsCommand = new RelayCommand(SolveRings, () => CanUseTarget() && UseRingMeasurements && HasMeasurableRings);
-        ApplyRingParametersCommand = new RelayCommand(() =>
-        {
-            if (CanApplyRingParameters() && _ringFit is { } fit) ApplyCalibrationParameters(fit.Parameters);
-        }, CanApplyRingParameters);
+        InitializeClockCommands();
+        InitializeArcLengthCommands();
+        InitializeBandRayCommands();
+        SelectCoarseModeCommand = new RelayCommand(() => SelectStage(CalibrationStage.Coarse), () => !IsBusy);
+        SelectIntermediateModeCommand = new RelayCommand(() => SelectStage(CalibrationStage.SingleLine), () => !IsBusy);
+        SelectFineModeCommand = new RelayCommand(() => SelectStage(CalibrationStage.Fine), () => !IsBusy);
+        RingEditedCommand = new RelayCommand<CalibrationRingEdit>(EditRing, _ => CanMeasureRings() && IsDragRingMode);
+        RingPointCommand = new RelayCommand<CalibrationPoint>(AddRingPoint,
+            _ => CanMarkPoints() && RingPointMarkers.Count < 3);
+        UndoRingPointCommand = new RelayCommand(UndoRingPoint,
+            () => CanMarkPoints() && RingPointMarkers.Count > 0);
+        RestartRingPointsCommand = new RelayCommand(RestartRingPoints,
+            () => CanMarkPoints() && (RingPointMarkers.Count > 0 || RingArcs[SelectedRingIndex].IsConfirmed));
+        SolveRingsCommand = new AsyncRelayCommand(SolveRingsAsync,
+            () => CanMeasureRings() && (HasWideBandTarget
+                ? CalibrationRingFitter.HasRequiredWideBandEdges(_target!, RingArcs.Where(r => r.IsConfirmed).Select(r => r.RingIndex))
+                : RingArcs.Count(r => r.IsConfirmed) >= 3));
+        UseRingSeedCommand = new RelayCommand(() => SetFineSeed(_ringFit?.BestParameters),
+            () => CanUseTarget() && IsTraceStep && _target!.HasCrossArms && HasAvailableRingSeed && !HasAcceptedRingSeed);
+        ClearRingSeedCommand = new RelayCommand(() => SetFineSeed(null),
+            () => CanUseTarget() && IsTraceStep && HasAcceptedRingSeed);
+        ApplyCoarseParametersCommand = new RelayCommand(ApplyCoarseParameters, CanUseRingEstimate);
+        VerifySectorScaleCommand = new AsyncRelayCommand(VerifySectorScaleAsync,
+            () => CanVerifySectorScale && CanUseRingEstimate() && RectifiedPhoto is not null);
+        ApplyVerifiedScaleCommand = new RelayCommand(ApplyVerifiedScale,
+            () => CanVerifySectorScale && CanUseRingEstimate() && _sectorCheck?.Succeeded == true);
     }
 
-    partial void OnUseCirclePatternChanged(bool value)
+    private void RefreshRingCommands()
     {
-        if (value) { UseCoarsePattern = false; UseVisualSelectorPattern = false; }
-        InvalidateVisualSelectorEstimate();
-        OnPropertyChanged(nameof(ActivePatternSummary));
-        RefreshCommands();
+        RefreshClockCommands();
+        RefreshArcLengthCommands();
+        RefreshBandRayCommands();
+        OnPropertyChanged(nameof(RingOperationHint));
+        OnPropertyChanged(nameof(RingPickerLabel));
+        SelectCoarseModeCommand?.NotifyCanExecuteChanged();
+        SelectIntermediateModeCommand?.NotifyCanExecuteChanged();
+        SelectFineModeCommand?.NotifyCanExecuteChanged();
+        RingEditedCommand?.NotifyCanExecuteChanged();
+        RingPointCommand?.NotifyCanExecuteChanged();
+        UndoRingPointCommand?.NotifyCanExecuteChanged();
+        RestartRingPointsCommand?.NotifyCanExecuteChanged();
+        SolveRingsCommand?.NotifyCanExecuteChanged();
+        UseRingSeedCommand?.NotifyCanExecuteChanged();
+        ClearRingSeedCommand?.NotifyCanExecuteChanged();
+        ApplyCoarseParametersCommand?.NotifyCanExecuteChanged();
+        VerifySectorScaleCommand?.NotifyCanExecuteChanged();
+        ApplyVerifiedScaleCommand?.NotifyCanExecuteChanged();
     }
 
-    partial void OnUseRingMeasurementsChanged(bool value)
-    {
-        if (value && IsVisualSelectorWorkflow) { UseRingMeasurements = false; return; }
-        RingMeasurementsConfirmed = false;
-        ShowTargetPreview = value || IsVisualSelectorWorkflow;
-        OnPropertyChanged(nameof(UsePhotoWorkflow));
-        OnPropertyChanged(nameof(ShowPhotoBoundaryTools)); OnPropertyChanged(nameof(ShowPhotoTraceTools));
-        OnPropertyChanged(nameof(CalibrationStageTitle));
-        OnPropertyChanged(nameof(RingStageInstruction)); OnPropertyChanged(nameof(CalibrationCanvasHint));
-        OnPropertyChanged(nameof(SecondStepTitle)); OnPropertyChanged(nameof(ThirdStepTitle));
-        OnPropertyChanged(nameof(StepTwoState)); OnPropertyChanged(nameof(StepThreeState));
-        RefreshCommands();
-    }
-    partial void OnDiameterToleranceChanged(string value) => InvalidateRingFit();
-    partial void OnRingMeasurementsConfirmedChanged(bool value) => ApplyRingParametersCommand?.NotifyCanExecuteChanged();
+    private bool CanMeasureAtPhotoSize => _target is not { HasWideAddressBands: true, Parameters.Kind: CalibrationDiscKind.Cd }
+        || SelectedPhysicalDiscSize.OuterRadiusMm == 60;
+    private bool CanMeasureRings() => CanUseTarget() && IsRingStep && _photoTransform is not null && CanMeasureAtPhotoSize;
+    private bool CanMarkPoints() => !IsBandRayMode && CanMeasureRings() && ThreePointMode && !ShowTargetPreview
+        && (uint)SelectedRingIndex < (uint)RingArcs.Count;
 
-    private bool CanApplyRingParameters() => !IsBusy && UseRingMeasurements && RingMeasurementsConfirmed
-        && _ringFit is { } fit && double.TryParse(DiameterTolerance, NumberStyles.Float, CultureInfo.InvariantCulture, out double tolerance)
-        && tolerance is >= .001 and <= 2 && fit.IsWithinTolerance(tolerance);
-
-    private void ResetRingMeasurements()
+    private void SetRingObservations(IReadOnlyList<CalibrationRingObservation>? saved = null)
     {
-        RingDiameters.Clear();
-        if (_target is { } target)
-            foreach (CalibrationRing ring in CalibrationRingFitter.GetRings(target))
-                RingDiameters.Add(new(ring, InvalidateRingFit));
-        DiameterTolerance = "0.10";
-        UseRingMeasurements = _target?.IsRingPattern == true;
-        InvalidateRingFit();
-        OnPropertyChanged(nameof(HasMeasurableRings));
-        OnPropertyChanged(nameof(CanSelectRingMeasurementMethod));
-    }
-
-    private void InvalidateRingFit()
-    {
+        ResetClockReadout();
+        SetArcLengthMarks(null);
+        _ringRevision++;
+        _acceptedRingSeed = null;
         _ringFit = null;
-        RingMeasurementsConfirmed = false;
-        RingFitSummary = string.Empty;
-        foreach (RingDiameterRow row in RingDiameters) row.Residual = string.Empty;
-        OnPropertyChanged(nameof(StepTwoState)); OnPropertyChanged(nameof(StepThreeState));
-        ApplyRingParametersCommand?.NotifyCanExecuteChanged();
-    }
-
-    private List<CalibrationRingMeasurement>? ReadRingMeasurements()
-    {
-        List<CalibrationRingMeasurement> result = [];
-        foreach (RingDiameterRow row in RingDiameters.Where(row => !string.IsNullOrWhiteSpace(row.MeasuredDiameter)))
+        _sweepReadout = null;
+        _sectorCheck = null;
+        int ringCount = _target?.VisibleRings.Count ?? 0;
+        RingArcs = Enumerable.Range(0, HasWideBandTarget ? 2 * ringCount : ringCount).Select(index =>
         {
-            if (!double.TryParse(row.MeasuredDiameter, NumberStyles.Float, CultureInfo.InvariantCulture, out double diameter)
-                || !double.IsFinite(diameter) || diameter <= 0 || diameter > 2000)
-                throw new ArgumentException(L.T("Check the ring numbers and positive measured diameters in millimetres."));
-            result.Add(new(row.Ring.Index, diameter));
-        }
-        return result.Count == 0 ? null : result;
+            var observed = saved?.FirstOrDefault(item => item.RingIndex == index);
+            return new CalibrationRingArc(index, observed?.RadiusMm ?? NominalEdgeRadius(index),
+                observed is not null, observed?.Points);
+        }).ToArray();
+        IEnumerable<int> ids = HasWideBandTarget ? CalibrationRingFitter.WideBandEdgeOrder : Enumerable.Range(0, ringCount);
+        RingChoices = ids.Select(id => new RingChoice(id, HasWideBandTarget)).ToArray();
+        ThreePointMode = false;
+        SelectedRingIndex = RingArcs.Count == 0 ? -1 : 0;
+        ResetBandRayMode();
+        ShowSelectedRingPoints();
+        NotifyRingResult();
     }
 
-    private double ReadDiameterTolerance()
+    private CalibrationRingObservation[] RingObservations() => RingArcs.Where(r => r.IsConfirmed)
+        .Select(r => new CalibrationRingObservation(r.RingIndex, r.RadiusMm, r.Points)).ToArray();
+
+    private double NominalEdgeRadius(int index)
     {
-        if (!double.TryParse(DiameterTolerance, NumberStyles.Float, CultureInfo.InvariantCulture, out double value)
-            || !double.IsFinite(value) || value is < .001 or > 2)
-            throw new ArgumentException(L.T("Enter a diameter tolerance between 0.001 and 2 mm."));
-        return value;
+        var bands = _target!.VisibleRings;
+        if (index < bands.Count) return bands[index].InnerRadiusMm;
+        var band = bands[index - bands.Count];
+        return band.InnerRadiusMm + band.WidthMm;
     }
 
-    private void SolveRings()
+    private void EditRing(CalibrationRingEdit? edit)
     {
-        InvalidateRingFit();
-        try
+        if (edit is null || !CanMeasureRings() || !IsDragRingMode || ShowTargetPreview
+            || (uint)edit.RingIndex >= (uint)RingArcs.Count) return;
+        if (edit.RadiusMm is double radius
+            && (!double.IsFinite(radius) || radius < 7.5 || radius > SelectedPhysicalDiscSize.OuterRadiusMm)) return;
+        var previous = RingArcs[edit.RingIndex];
+        if (previous.IsConfirmed && previous.RadiusMm == edit.RadiusMm) return;
+        ReplaceRing(edit.RingIndex, edit.RadiusMm);
+    }
+
+    private void ReplaceRing(int index, double? measured, IReadOnlyList<CalibrationPoint>? points = null)
+    {
+        var arcs = RingArcs.ToArray();
+        arcs[index] = new(index, measured ?? NominalEdgeRadius(index), measured.HasValue, points);
+        RingArcs = arcs;
+        if (_oldWideBandDraft?.RingIndex == index) _oldWideBandDraft = null;
+        if (SelectedRingIndex == index) ShowSelectedRingPoints();
+        InvalidateRingResult();
+    }
+
+    private void InvalidateRingResult()
+    {
+        _ringRevision++;
+        _ringFit = null;
+        _sweepReadout = null;
+        _sectorCheck = null;
+        // A fine fit that used the record's initial values did not depend on the edited rings.
+        if (HasAcceptedRingSeed)
         {
-            if (_target is null || !UseRingMeasurements) return;
-            _ = ReadDiameterTolerance();
-            _ringFit = CalibrationRingFitter.Fit(_target, ReadRingMeasurements() ?? []);
-            foreach (CalibrationRingResidual residual in _ringFit.Residuals)
-                RingDiameters.Single(row => row.Ring.Index == residual.RingIndex).Residual
-                    = L.Format("Diameter residual: {0:0.###} mm", residual.ErrorMm);
-            UpdateRingFitSummary();
-            StepThreeExpanded = true;
-            OnPropertyChanged(nameof(StepTwoState)); OnPropertyChanged(nameof(StepThreeState));
-            ApplyRingParametersCommand.NotifyCanExecuteChanged();
+            _acceptedRingSeed = null;
+            InvalidateFit();
         }
-        catch (Exception ex) { Report(ex); RingFitSummary = ex.Message; }
+        NotifyRingResult();
     }
 
-    private void UpdateRingFitSummary()
+    private void NotifyRingResult()
     {
-        if (_ringFit is not { } fit) return;
-        RingFitSummary = L.Format("Estimated inner radius: {0:0.0000} mm; outer radius: {1:0.0000} mm.",
-            fit.Parameters.InnerRadiusMm, fit.Parameters.OuterRadiusMm)
-            + "\n" + L.Format("Diameter residuals: RMS {0:0.###} mm; maximum {1:0.###} mm.",
-                fit.RmsDiameterErrorMm, fit.MaxDiameterErrorMm)
-            + (fit.IsWithinTolerance(ReadDiameterTolerance()) ? string.Empty
-                : "\n" + L.T("A diameter residual exceeds the tolerance. Check measurements and ring identities before applying."));
+        OnPropertyChanged(nameof(RingSolveLabel));
+        OnPropertyChanged(nameof(RingBoundaryInstructions));
+        OnPropertyChanged(nameof(CoarseSummary));
+        OnPropertyChanged(nameof(BandIntervalSummary));
+        OnPropertyChanged(nameof(HasAvailableRingSeed));
+        OnPropertyChanged(nameof(HasAcceptedRingSeed));
+        OnPropertyChanged(nameof(FineInitialSummary));
+        OnPropertyChanged(nameof(CanVerifySectorScale));
+        OnPropertyChanged(nameof(SectorCheckSummary));
+        RefreshRingCommands();
     }
 
-    private void RestoreRingMeasurements(CalibrationSession session)
+    partial void OnSelectedRingIndexChanged(int value)
     {
-        if (session.RingMeasurements is { } values)
-            foreach (CalibrationRingMeasurement value in values)
-                RingDiameters.Single(row => row.Ring.Index == value.RingIndex).MeasuredDiameter
-                    = value.DiameterMm.ToString("G", CultureInfo.InvariantCulture);
-        DiameterTolerance = (session.RingDiameterToleranceMm ?? .1).ToString("G", CultureInfo.InvariantCulture);
-        UseRingMeasurements = session.UseRingMeasurements || session.Target.IsRingPattern;
-        if (UseRingMeasurements) { ShowTargetPreview = true; StepTwoExpanded = true; }
+        ShowSelectedRingPoints();
+        OnBandRaySelectionChanged();
     }
-
-    private void RelocalizeRings()
+    partial void OnThreePointModeChanged(bool value)
     {
-        OnPropertyChanged(nameof(SecondStepTitle)); OnPropertyChanged(nameof(ThirdStepTitle));
-        OnPropertyChanged(nameof(CalibrationStageTitle));
-        OnPropertyChanged(nameof(RingStageInstruction)); OnPropertyChanged(nameof(CalibrationCanvasHint));
-        foreach (RingDiameterRow row in RingDiameters) row.Relocalize();
-        UpdateRingFitSummary();
-        if (_ringFit is { } fit)
-            foreach (CalibrationRingResidual residual in fit.Residuals)
-                RingDiameters.Single(row => row.Ring.Index == residual.RingIndex).Residual
-                    = L.Format("Diameter residual: {0:0.###} mm", residual.ErrorMm);
+        ShowSelectedRingPoints();
     }
-}
+    partial void OnShowTargetPreviewChanged(bool value) => RefreshRingCommands();
 
-public sealed partial class RingDiameterRow(CalibrationRing ring, Action changed) : ObservableObject
-{
-    public CalibrationRing Ring { get; } = ring;
-    public string Label => L.Format("Ring {0} · generated diameter {1:0.###} mm", Ring.Index, Ring.NominalDiameterMm);
-    [ObservableProperty] private string _measuredDiameter = string.Empty;
-    [ObservableProperty] private string _residual = string.Empty;
-    partial void OnMeasuredDiameterChanged(string value) => changed();
-    public void Relocalize() => OnPropertyChanged(nameof(Label));
+    private void ShowSelectedRingPoints() => SetRingMarkers((uint)SelectedRingIndex < (uint)RingArcs.Count
+        ? RingArcs[SelectedRingIndex].Points ?? [] : []);
+
+    private void SetRingMarkers(IReadOnlyList<CalibrationPoint> points, string? error = null)
+    {
+        _ringPointError = error;
+        RingPointMarkers = points;
+        OnPropertyChanged(nameof(RingPointSummary));
+        RefreshRingCommands();
+    }
+
+    private void AddRingPoint(CalibrationPoint? point)
+    {
+        if (!CanMarkPoints() || point is null || RingPointMarkers.Count >= 3) return;
+        double radius = Math.Sqrt(point.X * point.X + point.Y * point.Y);
+        if (!double.IsFinite(radius) || radius < 7.5 || radius > SelectedPhysicalDiscSize.OuterRadiusMm)
+        {
+            SetRingMarkers(RingPointMarkers, L.T("圆弧采样点必须位于中心孔与盘片外缘之间。"));
+            return;
+        }
+        CalibrationPoint[] points = [.. RingPointMarkers, point];
+        if (points.Length == 3)
+        {
+            try
+            {
+                double measured = CalibrationRingFitter.MeasureArc(points, SelectedPhysicalDiscSize.OuterRadiusMm);
+                ReplaceRing(SelectedRingIndex, measured, points);
+            }
+            catch (ArgumentException ex)
+            {
+                // Keep the first two clicks; the user can retry the third or undo either one.
+                SetRingMarkers(RingPointMarkers, L.Error(ex));
+            }
+            return;
+        }
+        if (RingArcs[SelectedRingIndex].IsConfirmed) ReplaceRing(SelectedRingIndex, null);
+        SetRingMarkers(points);
+    }
+
+    private void UndoRingPoint()
+    {
+        if (!CanMarkPoints() || RingPointMarkers.Count == 0) return;
+        var remaining = RingPointMarkers.Take(RingPointMarkers.Count - 1).ToArray();
+        if (RingArcs[SelectedRingIndex].IsConfirmed) ReplaceRing(SelectedRingIndex, null);
+        SetRingMarkers(remaining);
+    }
+
+    private void RestartRingPoints()
+    {
+        if (!CanMarkPoints()) return;
+        if (RingArcs[SelectedRingIndex].IsConfirmed) ReplaceRing(SelectedRingIndex, null);
+        else SetRingMarkers([]);
+    }
+
+    private async Task SolveRingsAsync()
+    {
+        if (!CanMeasureRings() || _target is not { } target) return;
+        var observations = RingObservations();
+        long revision = _ringRevision;
+        var photo = RectifiedPhoto;
+        double canvas = PhotoCanvasRadiusMm, physicalRadius = SelectedPhysicalDiscSize.OuterRadiusMm;
+        double? angle = BandRayAngleDegrees;
+        await RunAsync(L.T("Rings.Fitting"), async token =>
+        {
+            var (fit, sweep) = await Task.Run(() =>
+            {
+                var radial = CalibrationRingFitter.Fit(target, observations, token);
+                CalibrationAngleSweepResult? angular = null;
+                if (target.HasAngleSweep && photo is not null && AllSixOnOneRay(observations) && RingEstimateAccepted(radial, physicalRadius))
+                    angular = CalibrationAngleSweepReader.Read(target, observations, canvas,
+                        CalibrationClockPhotoReader.CreateSampler(photo, canvas), angle, token);
+                return (radial, angular);
+            }, token);
+            token.ThrowIfCancellationRequested();
+            if (revision != _ringRevision || !ReferenceEquals(target, _target)) throw new OperationCanceledException();
+            _ringFit = fit;
+            _sweepReadout = sweep;
+            NotifyRingResult();
+            _statusMessage = CoarseSummary;
+        });
+    }
+
+    private static bool RingEstimateAccepted(CalibrationFitResult? fit, double physicalRadius) =>
+        fit?.Succeeded == true && fit.Candidates.FirstOrDefault() is { } candidate
+        && candidate.Parameters.InnerRadiusMm >= 7.5 && candidate.Parameters.OuterRadiusMm <= physicalRadius
+        && ResidualAccepted(candidate.RmsErrorMm, candidate.MaxErrorMm);
+
+    private bool CanUseRingEstimate() => CanMeasureRings() && HasAvailableRingSeed;
+    private bool ValidSweepRadius(CalibrationParameters p) =>
+        p.InnerRadiusMm >= 7.5 && p.OuterRadiusMm <= SelectedPhysicalDiscSize.OuterRadiusMm && p.OuterRadiusMm > p.InnerRadiusMm;
+
+    private void SetFineSeed(CalibrationParameters? seed)
+    {
+        if (_acceptedRingSeed == seed) return;
+        _acceptedRingSeed = seed;
+        InvalidateFit();
+        NotifyRingResult();
+    }
+
+    private void ApplyCoarseParameters()
+    {
+        if (!CanUseRingEstimate() || _ringFit!.BestParameters is not { } p) return;
+        if (_sweepReadout?.Corrected is { } corrected && ValidSweepRadius(corrected)) p = corrected;
+        if (HasWideBandTarget)
+        {
+            // Broad bands estimate radii at constant pitch. Their zero shape terms
+            // are not a new measurement of the setup's independently fitted pitch.
+            WriteSetupRadii(p);
+            string sectors = p.Sectors.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            switch (p.Kind)
+            {
+                case CalibrationDiscKind.Cd: _state.CdSectors = sectors; break;
+                case CalibrationDiscKind.BluRay:
+                    _state.BdTotalSectors = sectors;
+                    _state.BdInvertMapping = p.BluRayInvertMapping;
+                    break;
+                default: _state.DvdTotalSectors = sectors; break;
+            }
+            if (p.Kind == CalibrationDiscKind.Cd) _state.CdInterleave = _cdInterleave;
+        }
+        else WriteSetupRadii(p);
+        ReportInitialGeometryApplied(p);
+    }
+
+    private async Task VerifySectorScaleAsync()
+    {
+        if (!CanVerifySectorScale || !CanUseRingEstimate() || _ringFit?.BestParameters is not { } apparent
+            || _target is not { } target || RectifiedPhoto is not { } photo) return;
+        long revision = _ringRevision;
+        double canvas = PhotoCanvasRadiusMm, edge = SelectedPhysicalDiscSize.OuterRadiusMm;
+        await RunAsync(L.T("Phases.Verifying"), async token =>
+        {
+            _sectorCheck = null;
+            NotifyRingResult();
+            var check = await Task.Run(() => CalibrationSectorPhotoReader.Verify(photo, canvas, target, apparent, token), token);
+            token.ThrowIfCancellationRequested();
+            if (revision != _ringRevision || !ReferenceEquals(target, _target) || !ReferenceEquals(photo, RectifiedPhoto))
+                throw new OperationCanceledException();
+            if (check.Corrected is { } p && (p.InnerRadiusMm < 7.5 || p.OuterRadiusMm > edge))
+                check = check with { Corrected = null, Status = CalibrationSectorScaleStatus.OutsideDisc };
+            _sectorCheck = check;
+            _statusMessage = SectorCheckSummary;
+            NotifyRingResult();
+        });
+    }
+
+    private void ApplyVerifiedScale()
+    {
+        if (!CanUseRingEstimate() || _sectorCheck?.Corrected is not { } p) return;
+        // A physical estimate for a subsequent burn must travel with the track length
+        // used to infer it. Keep the currently measured photo in its apparent coordinates.
+        WriteSetupParameters(p);
+        if (p.Kind == CalibrationDiscKind.Cd) _state.CdInterleave = _cdInterleave;
+        ReportInitialGeometryApplied(p);
+    }
+
+    private void ReportInitialGeometryApplied(CalibrationParameters p)
+    {
+        _statusMessage = L.Format("Rings.Applied", p.InnerRadiusMm, p.OuterRadiusMm);
+        _shell.AppendLog(_statusMessage + "\n");
+        _shell.ShowToast(L.T("Phases.InitialApplied"), _statusMessage, ToastKind.Success);
+    }
 }

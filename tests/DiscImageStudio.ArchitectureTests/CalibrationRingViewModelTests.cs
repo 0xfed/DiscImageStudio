@@ -30,7 +30,7 @@ internal static class CalibrationRingViewModelTests
             var actual = target.Parameters with { InnerRadiusMm = 25.25, OuterRadiusMm = 57 };
             SetMeasurements(model, actual);
             model.DiameterTolerance = "0.03";
-            model.SolveRingsCommand.Execute(null);
+            model.SolveDiametersCommand.Execute(null);
             Require(!string.IsNullOrEmpty(model.RingFitSummary) && !model.ApplyRingParametersCommand.CanExecute(null),
                 "solving displays radii but requires checking measured ring identities");
             model.RingMeasurementsConfirmed = true;
@@ -50,14 +50,14 @@ internal static class CalibrationRingViewModelTests
             Require(reopened.Target?.Id == target.Id && reopened.UseCirclePattern && reopened.UseRingMeasurements
                 && reopened.DiameterTolerance == "0.03" && reopened.RingDiameters.All(row => row.MeasuredDiameter.Length > 0)
                 && !reopened.ApplyRingParametersCommand.CanExecute(null), "reopening restores inputs but requires a fresh fit");
-            reopened.SolveRingsCommand.Execute(null);
+            reopened.SolveDiametersCommand.Execute(null);
             reopened.RingMeasurementsConfirmed = true;
             Require(reopened.ApplyRingParametersCommand.CanExecute(null), "restored diameters solve again");
             reopened.RingDiameters[3].MeasuredDiameter = (double.Parse(reopened.RingDiameters[3].MeasuredDiameter,
                 CultureInfo.InvariantCulture) + .5).ToString("G", CultureInfo.InvariantCulture);
             Require(!reopened.ApplyRingParametersCommand.CanExecute(null) && !reopened.RingMeasurementsConfirmed,
                 "editing one diameter invalidates the applied candidate and confirmation");
-            reopened.SolveRingsCommand.Execute(null);
+            reopened.SolveDiametersCommand.Execute(null);
             reopened.RingMeasurementsConfirmed = true;
             Require(!reopened.ApplyRingParametersCommand.CanExecute(null), "large residuals cannot be applied even if checked");
 
@@ -68,7 +68,7 @@ internal static class CalibrationRingViewModelTests
                 "the original fine target exposes its existing observation circles for measurement");
             model.UseRingMeasurements = true;
             SetMeasurements(model, model.Target.Parameters with { InnerRadiusMm = 25.1, OuterRadiusMm = 57.1 });
-            model.SolveRingsCommand.Execute(null);
+            model.SolveDiametersCommand.Execute(null);
             model.RingMeasurementsConfirmed = true;
             Require(model.ApplyRingParametersCommand.CanExecute(null), "existing fine-cross circles can calibrate without a visible cross");
         }

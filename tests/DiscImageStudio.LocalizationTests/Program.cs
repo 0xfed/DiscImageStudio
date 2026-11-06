@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 MediaUdfTests.Run();
 CalibrationPatternTests.Run();
 CalibrationRingTests.Run();
+CalibrationRecordIntegrationTests.Run();
 CalibrationVisualSelectorTests.Run();
 CalibrationVisualEncodingTests.Run();
 
@@ -50,7 +51,11 @@ foreach (string file in Directory.GetFiles(Path.Combine(root, "src", "DiscImageS
             Require(embedded.TryGetValue(translation.Name, out string? value) && value == translation.Value.GetString(),
                 $"Embedded translation differs from source: {entry.Name}/{translation.Name}");
         }
-        Require(languages.All(seenLanguages.Contains), $"Incorrect language coverage: {entry.Name}");
+        // Upstream's new device diagnostics use the runtime's English fallback while
+        // translations are completed. Existing UI catalogs retain five-language coverage.
+        string[] requiredLanguages = Path.GetFileName(file) == "UpstreamDiagnostics.json"
+            ? [L.Chinese, L.English] : languages;
+        Require(requiredLanguages.All(seenLanguages.Contains), $"Incorrect language coverage: {entry.Name}");
         Require(embedded.Count == seenLanguages.Count, $"Embedded language set differs from source: {entry.Name}");
     }
 }

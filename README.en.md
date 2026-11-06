@@ -1,6 +1,6 @@
 <div align="center">
 
-[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md) | [日本語](README.ja.md) | [Türkçe](README.tr.md)
+[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md) | [日本語](README.ja.md) | [Türkçe](README.tr.md) | [Español](README.es.md) | [Čeština](README.cs.md)
 
 ![Banner](docs/images/DiscImageStudio_Banner_2.png)
 
@@ -250,3 +250,5 @@ Thanks to [arduinocelentano’s CDImage project](https://github.com/arduinocelen
    <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=jiafeimiao-k-cat/discimagestudio&type=date&legend=top-left" />
  </picture>
 </a>
+
+Assisted calibration now has coarse, boundary and fine stages and can run independently of a drawing project. Confirm the disc capacity, then create the matching target for each blank disc. Analyze every recorded disc with its own saved generation record and photograph. [Calibration after the upstream integration](docs/CALIBRATION_TUTORIAL.en.md).

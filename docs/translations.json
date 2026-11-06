@@ -94,7 +94,7 @@
     {
       "source": "docs/CALIBRATION.md",
       "source_language": "zh-CN",
-      "source_sha256": "2af1bfd03104adab4634ae754332190e47431a060b9759c28238e532fe4ff6a3",
+      "source_sha256": "b2bd36a736efc8119cf175a96ea53b5eb17d642cbeb73b7f9061c7258a76b725",
       "translations": {
         "zh-CN": "docs/CALIBRATION.md",
         "zh-TW": "docs/CALIBRATION.zh-TW.md",
@@ -130,7 +130,7 @@
     {
       "source": "docs/LOCALIZATION.md",
       "source_language": "zh-CN",
-      "source_sha256": "2e7aca1fcb0f7189b41b202c63bd8a823ebbba3a6832555dd0000f5bcae404be",
+      "source_sha256": "3878a91722010f3eb9b588ca40a17733808dfb4c37d77d69a5db11d70cb1b52b",
       "translations": {
         "zh-CN": "docs/LOCALIZATION.md",
         "en": "docs/LOCALIZATION.en.md",
@@ -142,7 +142,7 @@
     {
       "source": "docs/VALIDATION.md",
       "source_language": "zh-CN",
-      "source_sha256": "2dfac6a047990ab36a35eec3741da918b752da05aa05bcf11a625a5dd4a52a82",
+      "source_sha256": "611012eb04ebbd62846ddbc5ce54d308aabd6e30b7b69f9efa8bfcd5d3fa7030",
       "translations": {
         "zh-CN": "docs/VALIDATION.md",
         "en": "docs/VALIDATION.en.md",
@@ -236,7 +236,7 @@
     {
       "source": "docs/ARCHITECTURE.md",
       "source_language": "zh-CN",
-      "source_sha256": "34a57a4ab5a6da758b2470983cfb4771a1116eaac0a5e2e45604dfe544a71289",
+      "source_sha256": "9861a50dc1dd0825eeb212eb6a704f59bd5d59f384667cfffda5a989bf64f83a",
       "translated_mermaid_labels": [
         "CdEngine",
         "BdEngine"
@@ -252,7 +252,7 @@
     {
       "source": "README.md",
       "source_language": "zh-CN",
-      "source_sha256": "8b2858817840a9170f8b9cc7727e15b0e6282fab77a38b961934295250df3cba",
+      "source_sha256": "1d2ac6181051806cf445db2c82b7ab82748b990a6d63d00da275bc796eee25a1",
       "translations": {
         "zh-CN": "README.md",
         "zh-TW": "README.zh-TW.md",
@@ -276,7 +276,7 @@
     {
       "source": "CHANGELOG.md",
       "source_language": "zh-CN",
-      "source_sha256": "829905fc489a246f4a1072f87c170546473e22502271752604ec96a5d55b0659",
+      "source_sha256": "33304745ce6ea8de013fc76ced25995275d805ecd5369e21c40cc0caa4e83e78",
       "parallel_language_sections": [
         "中文",
         "English"
@@ -299,6 +299,18 @@
         "en": "docs/LOCALIZATION_AUDIT.md",
         "ja": "docs/LOCALIZATION_AUDIT.ja.md",
         "tr": "docs/LOCALIZATION_AUDIT.tr.md"
+      }
+    },
+    {
+      "source": "docs/CALIBRATION_TUTORIAL.md",
+      "source_language": "zh-CN",
+      "source_sha256": "1089873d20a225e31ae5244a4970db93e2459d03d08c062f0e21c45ac53c95d4",
+      "translations": {
+        "zh-CN": "docs/CALIBRATION_TUTORIAL.md",
+        "zh-TW": "docs/CALIBRATION_TUTORIAL.zh-TW.md",
+        "en": "docs/CALIBRATION_TUTORIAL.en.md",
+        "ja": "docs/CALIBRATION_TUTORIAL.ja.md",
+        "tr": "docs/CALIBRATION_TUTORIAL.tr.md"
       }
     }
   ]

@@ -26,7 +26,10 @@ public sealed record BluRayIsoMetadata(
     string? DataDirectory,
     DateTimeOffset? UdfTimestamp,
     DateTimeOffset GeneratedUtc,
-    bool FilesAtOuterRing = false)
+    bool FilesAtOuterRing = false,
+    double PitchLinear = 0,
+    double PitchQuadratic = 0,
+    double PitchCubic = 0)
 {
     public const string FormatName = "bd-r-image-v1";
 
@@ -55,7 +58,8 @@ public sealed record BluRayIsoMetadata(
             plan.DataDirectory,
             plan.UdfTimestamp,
             generatedUtc,
-            plan.FilesAtOuterRing);
+            plan.FilesAtOuterRing,
+            plan.Disc.PitchLinear, plan.Disc.PitchQuadratic, plan.Disc.PitchCubic);
 
     public static string PathFor(string isoPath) => isoPath + ".json";
 
@@ -119,6 +123,14 @@ public sealed record BluRayIsoMetadata(
         }
 
         Tone.Validate("tone");
+        try
+        {
+            DvdTrackGeometry.ValidatePitchCoefficients(PitchLinear, PitchQuadratic, PitchCubic);
+        }
+        catch (ArgumentException exception)
+        {
+            throw new InvalidDataException(L.T("BD sidecar pitch coefficients are invalid."), exception);
+        }
     }
 
     private static readonly JsonSerializerOptions JsonOptions = new()

@@ -1,0 +1,79 @@
+{
+  "图层 '{0}' 的 translateXMm": {
+    "zh-CN": "图层 '{0}' 的 translateXMm",
+    "en": "Layer '{0}' translateXMm",
+    "zh-TW": "圖層 '{0}' 的 translateXMm",
+    "ja": "レイヤー '{0}' の translateXMm",
+    "tr": "'{0}' katmanının translateXMm değeri"
+  },
+  "图层 '{0}' 的 translateYMm": {
+    "zh-CN": "图层 '{0}' 的 translateYMm",
+    "en": "Layer '{0}' translateYMm",
+    "zh-TW": "圖層 '{0}' 的 translateYMm",
+    "ja": "レイヤー '{0}' の translateYMm",
+    "tr": "'{0}' katmanının translateYMm değeri"
+  },
+  "图层 '{0}' 的 rotationDeg": {
+    "zh-CN": "图层 '{0}' 的 rotationDeg",
+    "en": "Layer '{0}' rotationDeg",
+    "zh-TW": "圖層 '{0}' 的 rotationDeg",
+    "ja": "レイヤー '{0}' の rotationDeg",
+    "tr": "'{0}' katmanının rotationDeg değeri"
+  },
+  "预设 '{0}' 的 {1} {2}。": {
+    "zh-CN": "预设 '{0}' 的 {1} {2}。",
+    "en": "Preset '{0}' {1} {2}.",
+    "zh-TW": "預設 '{0}' 的 {1} {2}。",
+    "ja": "プリセット '{0}' の {1} は {2}。",
+    "tr": "'{0}' ön ayarının {1} değeri {2}."
+  },
+  "必须大于 0": {
+    "zh-CN": "必须大于 0",
+    "en": "must be greater than 0",
+    "zh-TW": "必須大於 0",
+    "ja": "0 より大きい必要があります",
+    "tr": "0'dan büyük olmalı"
+  },
+  "必须是 16 的倍数": {
+    "zh-CN": "必须是 16 的倍数",
+    "en": "must be a multiple of 16",
+    "zh-TW": "必須是 16 的倍數",
+    "ja": "16 の倍数である必要があります",
+    "tr": "16'nın katı olmalı"
+  },
+  "必须是 32 的倍数且不超过 {0:N0}": {
+    "zh-CN": "必须是 32 的倍数且不超过 {0:N0}",
+    "en": "must be a multiple of 32 and no greater than {0:N0}",
+    "zh-TW": "必須是 32 的倍數且不超過 {0:N0}",
+    "ja": "32 の倍数で、{0:N0} 以下である必要があります",
+    "tr": "32'nin katı olmalı ve {0:N0} değerini aşmamalı"
+  },
+  "不能超过 60": {
+    "zh-CN": "不能超过 60",
+    "en": "must not exceed 60",
+    "zh-TW": "不能超過 60",
+    "ja": "60 以下である必要があります",
+    "tr": "60'ı aşmamalı"
+  },
+  "不能为空": {
+    "zh-CN": "不能为空",
+    "en": "cannot be empty",
+    "zh-TW": "不能為空",
+    "ja": "空にできません",
+    "tr": "boş olamaz"
+  },
+  "必须大于 innerRadiusMm": {
+    "zh-CN": "必须大于 innerRadiusMm",
+    "en": "must be greater than innerRadiusMm",
+    "zh-TW": "必須大於 innerRadiusMm",
+    "ja": "innerRadiusMm より大きい必要があります",
+    "tr": "innerRadiusMm değerinden büyük olmalı"
+  },
+  "必须是大于 0 的有限数值": {
+    "zh-CN": "必须是大于 0 的有限数值",
+    "en": "must be a finite number greater than 0",
+    "zh-TW": "必須是大於 0 的有限數值",
+    "ja": "0 より大きい有限数である必要があります",
+    "tr": "0'dan büyük sonlu bir sayı olmalı"
+  }
+}

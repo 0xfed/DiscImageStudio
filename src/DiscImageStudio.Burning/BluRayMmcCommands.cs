@@ -45,7 +45,7 @@ internal sealed class MmcCommandException : IOException
         // current I/O connection; it does not establish a cable/power cause.
         string connection = result.HResult == unchecked((int)0x8007048f)
             ? L.T("，Windows 报告设备未连接") : string.Empty;
-        return L.Format("蓝光命令 0x{0:X2} 失败（HRESULT 0x{1:X8}，{2}{3}）。", opcode, result.HResult, sense, connection);
+        return L.Format("光驱命令 0x{0:X2} 失败（HRESULT 0x{1:X8}，{2}{3}）。", opcode, result.HResult, sense, connection);
     }
 
     private static (int Key, int Asc, int Ascq) ReadSense(byte[] sense)
@@ -62,7 +62,7 @@ internal sealed class MmcCommandException : IOException
 /// Only reads, removal protection, SYNCHRONIZE CACHE and CLOSE TRACK/SESSION are
 /// issued here. In particular, this path never issues FORMAT UNIT or allocates spare areas.
 /// </summary>
-internal sealed class BluRayMmcCommands(IMmcCommandTransport transport)
+internal sealed class BluRayMmcCommands(IMmcCommandTransport transport, Action<int, int>? reportRecordedLba = null)
 {
     internal const int CommandHasSenseData = 0x00AA0200;
 
@@ -81,15 +81,7 @@ internal sealed class BluRayMmcCommands(IMmcCommandTransport transport)
         if (lastTrack == 0)
             throw new IOException(L.T("蓝光盘未报告有效的可写轨道编号。"));
 
-        byte[] capacities = Read(0x23, 256);
-        RequireLength(capacities, 12, "READ FORMAT CAPACITIES");
-        if (capacities[3] < 8 || capacities[3] % 8 != 0 || capacities.Length < 4 + capacities[3])
-            throw new IOException(L.T("蓝光格式容量描述符长度无效。"));
-        uint maximumBlocks = BinaryPrimitives.ReadUInt32BigEndian(capacities.AsSpan(4, 4));
-        int formatStatus = capacities[8] & 3;
-        // For BD-R, bytes 9..11 describe spare-area clusters, not the logical
-        // block size used by generic MMC format-capacity descriptors.
-
+        var (maximumBlocks, formatStatus, _) = ReadFormatCapacity();
         byte[] track = ReadTrack(lastTrack);
         int returnedTrack = track[2] | track[32] << 8;
 
@@ -118,6 +110,21 @@ internal sealed class BluRayMmcCommands(IMmcCommandTransport transport)
             throw new MmcCommandException(cdb[0], result);
         RequireLength(result.Data, count * 2048, "READ(10)");
         return result.Data;
+    }
+
+    internal (uint Blocks, int Status, int SpareClusters) ReadFormatCapacity()
+    {
+        byte[] capacities = Read(0x23, 256);
+        RequireLength(capacities, 12, "READ FORMAT CAPACITIES");
+        if (capacities[3] < 8 || capacities[3] % 8 != 0 || capacities.Length < 4 + capacities[3])
+            throw new IOException(L.T("蓝光格式容量描述符长度无效。"));
+        uint maximumBlocks = BinaryPrimitives.ReadUInt32BigEndian(capacities.AsSpan(4, 4));
+        int formatStatus = capacities[8] & 3;
+        // For BD-R, bytes 9..11 describe spare-area clusters, not the logical
+        // block size used by generic MMC format-capacity descriptors.
+
+        int spareClusters = (capacities[9] << 16) | (capacities[10] << 8) | capacities[11];
+        return (maximumBlocks, formatStatus, spareClusters);
     }
 
     internal void PreventRemoval(bool prevent)
@@ -179,6 +186,19 @@ internal sealed class BluRayMmcCommands(IMmcCommandTransport transport)
             throw new IOException(L.T("蓝光盘返回了不同的轨道编号，已停止刻录操作。"));
         if ((track[5] & 0x20) != 0)
             throw new IOException(L.T("蓝光轨道已标记为损坏，已停止刻录操作。"));
+        // Reuse an existing READ TRACK INFORMATION response. LRA_V is bit 1;
+        // never infer physical recording from NWA or acknowledged WRITE data.
+        // No additional device command is issued for diagnostics, even on failure.
+        if ((track[7] & 2) != 0)
+        {
+            uint start = BinaryPrimitives.ReadUInt32BigEndian(track.AsSpan(8, 4));
+            uint lastRecorded = BinaryPrimitives.ReadUInt32BigEndian(track.AsSpan(28, 4));
+            if (start <= lastRecorded && lastRecorded <= int.MaxValue)
+            {
+                try { reportRecordedLba?.Invoke((int)start, (int)lastRecorded); }
+                catch { /* Telemetry must not change the result of a device command. */ }
+            }
+        }
         return track;
     }
 

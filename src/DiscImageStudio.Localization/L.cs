@@ -16,6 +16,8 @@ public static class L
     public const string English = "en";
     public const string Japanese = "ja";
     public const string Turkish = "tr";
+    public const string Spanish = "es";
+    public const string Czech = "cs";
     public const string SystemLanguage = "system";
 
     private static readonly CultureInfo StartupCulture = CultureInfo.CurrentUICulture;
@@ -41,6 +43,10 @@ public static class L
         string name when name.StartsWith("ja-", StringComparison.Ordinal) => Japanese,
         "tr" => Turkish,
         string name when name.StartsWith("tr-", StringComparison.Ordinal) => Turkish,
+        "es" => Spanish,
+        string name when name.StartsWith("es-", StringComparison.Ordinal) => Spanish,
+        "cs" => Czech,
+        string name when name.StartsWith("cs-", StringComparison.Ordinal) => Czech,
         string name when IsTraditionalChinese(name) => TraditionalChinese,
         "zh-cn" or "zh-sg" or "zh" or "zh-hans" or "zh-chs" => Chinese,
         string name when name.StartsWith("zh-hans-", StringComparison.Ordinal) => Chinese,
@@ -55,6 +61,8 @@ public static class L
         CultureInfo culture = systemCulture ?? StartupCulture;
         if (culture.TwoLetterISOLanguageName == "ja") return Japanese;
         if (culture.TwoLetterISOLanguageName == "tr") return Turkish;
+        if (culture.TwoLetterISOLanguageName == "es") return Spanish;
+        if (culture.TwoLetterISOLanguageName == "cs") return Czech;
         if (culture.TwoLetterISOLanguageName != "zh") return English;
         return IsTraditionalChinese(culture.Name) ? TraditionalChinese : Chinese;
     }
@@ -98,8 +106,9 @@ public static class L
             return true;
         }
         if (Catalog.Value.TryGetValue(key, out Dictionary<string, string>? translations)
-            && (translations.TryGetValue(CurrentLanguage, out string? translated)
-                || translations.TryGetValue(Chinese, out translated)))
+            && ((translations.TryGetValue(CurrentLanguage, out string? translated) && !string.IsNullOrWhiteSpace(translated))
+                || (translations.TryGetValue(English, out translated) && !string.IsNullOrWhiteSpace(translated))
+                || (translations.TryGetValue(Chinese, out translated) && !string.IsNullOrWhiteSpace(translated))))
         {
             text = translated;
             return true;
@@ -118,6 +127,25 @@ public static class L
         ArgumentNullException.ThrowIfNull(text);
         return Format(text.Format, text.GetArguments());
     }
+
+    /// <summary>Translates a known diagnostic before inserting values. Unmarked
+    /// exceptions retain the existing exact-key lookup and original fallback.</summary>
+    public static string Error(Exception exception)
+    {
+        ArgumentNullException.ThrowIfNull(exception);
+        return DiagnosticMessage.Template(exception) is { } template
+            ? Diagnostic(template)
+            : T(exception.Message);
+    }
+
+    private static string Diagnostic(FormattableString template)
+        => Format(template.Format, template.GetArguments()
+            .Select(value => value switch
+            {
+                FormattableString nested => Diagnostic(nested),
+                DiagnosticMessage.ExceptionDetail detail => Error(detail.Exception),
+                _ => value,
+            }).ToArray());
 
     public static string Format(string key, params object?[] arguments) =>
         string.Format(CultureInfo.CurrentCulture, T(key), arguments);

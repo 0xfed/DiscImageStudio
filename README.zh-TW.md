@@ -1,6 +1,6 @@
 <div align="center">
 
-[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md) | [日本語](README.ja.md) | [Türkçe](README.tr.md)
+[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md) | [日本語](README.ja.md) | [Türkçe](README.tr.md) | [Español](README.es.md) | [Čeština](README.cs.md)
 
 ![Banner](docs/images/DiscImageStudio_Banner_2.png)
 
@@ -250,3 +250,5 @@ CD 共通編碼部分也參考了 [ECMA-130，第 2 版（CD-ROM，1996）](http
    <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=jiafeimiao-k-cat/discimagestudio&type=date&legend=top-left" />
  </picture>
 </a>
+
+輔助標定現在提供粗標、邊界標定和精標三個階段，並可獨立於繪圖專案使用。先確認盤片容量，再為每張空白盤新增對應階段的標靶；每張已燒錄盤都必須使用產生時儲存的記錄和照片。 [上游整合後的標定流程](docs/CALIBRATION_TUTORIAL.zh-TW.md).

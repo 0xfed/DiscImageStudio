@@ -55,9 +55,9 @@ internal static class BurnWriteSpeedSelectionTests
             shell = new ShellViewModel(Dispatcher.CurrentDispatcher, recorder);
             shell.State.DvdTotalSectors = "16";
             shell.Calibration.SelectedDiscType = "DVD";
+            shell.Calibration.SelectFineModeCommand.Execute(null);
             shell.Calibration.CreateTargetCommand.Execute(null);
-            BurnViewModel burn = shell.Burn;
-            burn.UseCalibrationPattern = true;
+            BurnViewModel burn = shell.CalibrationBurn;
             var devices = BoundSelector(nameof(BurnViewModel.Devices), nameof(BurnViewModel.SelectedDevice), "DisplayName");
             var speeds = BoundSelector(nameof(BurnViewModel.Speeds), nameof(BurnViewModel.SelectedSpeed), "DisplayName");
             speeds.SetBinding(UIElement.IsEnabledProperty, new Binding(nameof(BurnViewModel.IsSpeedComboEnabled)));
@@ -209,6 +209,9 @@ internal static class BurnWriteSpeedSelectionTests
             Speeds.Add(request);
             return request.Task;
         }
+        public Task<long> GetMediaSectorCountAsync(string deviceId, OpticalBurnMediaKind mediaKind,
+            CancellationToken cancellationToken = default)
+            => throw new InvalidOperationException("This fixture cannot query real media.");
         public Task<OpticalBurnResult> BurnAsync(OpticalBurnRequest request,
             IProgress<OpticalBurnProgress>? progress = null, CancellationToken cancellationToken = default)
             => throw new InvalidOperationException("This selection test must never burn.");

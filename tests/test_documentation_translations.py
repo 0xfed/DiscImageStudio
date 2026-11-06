@@ -17,7 +17,7 @@ from urllib.parse import unquote, urlsplit, urlunsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 LANGUAGES = ("zh-CN", "zh-TW", "en", "ja", "tr")
-SUFFIX = re.compile(r"\.(?:zh-CN|zh-TW|en|ja|tr)(?=\.md$)")
+SUFFIX = re.compile(r"\.(?:zh-CN|zh-TW|en|ja|tr|es|cs)(?=\.md$)")
 LINK = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
 
 

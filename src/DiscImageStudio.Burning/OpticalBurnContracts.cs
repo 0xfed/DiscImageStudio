@@ -73,7 +73,7 @@ public sealed record OpticalBurnProgress(
 }
 
 // Workflow state is independent of the translated operation description.
-internal sealed record OpticalBurnOperation(string Message, bool IsFinalizing = false);
+internal sealed record OpticalBurnOperation(string Message, bool IsFinalizing = false, string? Phase = null);
 
 /// <summary>
 /// CD audio producers supply headerless 44.1 kHz, 16-bit stereo little-endian PCM,
@@ -142,6 +142,10 @@ public interface IOpticalDiscBurner
         => throw new NotSupportedException(L.T("This burner does not support Blu-ray file updates."));
 
     Task<IReadOnlyList<OpticalBurnDevice>> GetDevicesAsync(
+        CancellationToken cancellationToken = default);
+
+    /// <summary>Read the loaded medium's total sector count without preparing it for writing.</summary>
+    Task<long> GetMediaSectorCountAsync(string deviceId, OpticalBurnMediaKind mediaKind,
         CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<OpticalWriteSpeed>> GetSupportedWriteSpeedsAsync(

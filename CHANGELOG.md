@@ -4,6 +4,14 @@
 
 ## Unreleased
 
+### 中文
+
+- 整合上游标定阶段、刻录诊断及编码修正；保留 UDF 2.50 文件更新、实测直径和目视选择器，并明确区分保存的标定图案来源。
+
+### English
+
+- Integrate upstream calibration stages, burn diagnostics and encoding fixes; preserve UDF 2.50 file updates, measured diameters and visual selectors, and explicitly distinguish saved calibration artwork lineages.
+
 ## [1.8.1] - 2026-11-04
 
 ### 中文

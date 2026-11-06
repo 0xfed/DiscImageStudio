@@ -106,3 +106,5 @@ dotnet run --project tests/DiscImageStudio.ArchitectureTests -c Release -- --loc
 ```
 
 Çalıştırıcı bu Linux ortamında derlendi; Windows çalışması bir push sonrası depo CI çalıştırmasını bekliyor. Denetim başarısız olsa da PNG ve JSON raporu yüklenir. Boş projeler sentetik test verileridir; matris fiziksel optik sonucu veya tüm dolu iş akışı durumlarını doğrulamaz.
+
+Üst projeden gelen yeni aygıt tanıları aşamalı olarak çevrilebilir; seçili dil eksikse İngilizceye dönülür. Tamamlanmış arayüz kaynaklarında beş dil zorunluluğu sürer. Aygıt alan adları, sayı biçimleri ve özgün işletim sistemi hataları korunur.

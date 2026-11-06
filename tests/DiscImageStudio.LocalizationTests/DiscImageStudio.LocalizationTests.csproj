@@ -22,6 +22,7 @@
     <Compile Include="../DiscImageStudio.ArchitectureTests/CalibrationRingTests.cs" Link="CalibrationRingTests.cs" />
     <Compile Include="../DiscImageStudio.ArchitectureTests/CalibrationVisualSelectorTests.cs" Link="CalibrationVisualSelectorTests.cs" />
     <Compile Include="../DiscImageStudio.ArchitectureTests/CalibrationVisualEncodingTests.cs" Link="CalibrationVisualEncodingTests.cs" />
+    <Compile Include="../DiscImageStudio.ArchitectureTests/CalibrationRecordIntegrationTests.cs" Link="CalibrationRecordIntegrationTests.cs" />
     <!-- The SDK already ships the C# parser. No additional NuGet dependency is needed. -->
     <Reference Include="Microsoft.CodeAnalysis">
       <HintPath>$(MSBuildSDKsPath)/../Roslyn/bincore/Microsoft.CodeAnalysis.dll</HintPath>

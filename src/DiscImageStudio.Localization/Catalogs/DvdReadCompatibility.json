@@ -1,0 +1,37 @@
+{
+  "DvdReadCompatibility.Label": {
+    "zh-CN": "DVD读取兼容性（实验性）",
+    "en": "DVD read compatibility (experimental)",
+    "zh-TW": "DVD 讀取相容性（實驗性）",
+    "ja": "DVD 読み取り互換性（実験的）",
+    "tr": "DVD okuma uyumluluğu (deneysel)"
+  },
+  "DvdReadCompatibility.Hint": {
+    "zh-CN": "可改善部分驱动器的读回，可能轻微改变纹理。",
+    "en": "May improve read-back on some drives and slightly change the texture.",
+    "zh-TW": "可能改善部分光碟機的讀回，並略微改變紋理。",
+    "ja": "一部のドライブで読み取りを改善する可能性があり、模様がわずかに変わります。",
+    "tr": "Bazı sürücülerde geri okumayı iyileştirebilir ve dokuyu biraz değiştirebilir."
+  },
+  "DvdReadCompatibility.FrozenHint": {
+    "zh-CN": "使用标靶记录中的选项；如需更改，请创建新标靶。",
+    "en": "Uses the option saved with this target. Create a new target to change it.",
+    "zh-TW": "使用此標靶儲存的選項。若要變更，請新增標靶。",
+    "ja": "このターゲットに保存された設定を使用します。変更するには新しいターゲットを作成してください。",
+    "tr": "Bu hedefle kaydedilen seçenek kullanılır. Değiştirmek için yeni hedef oluşturun."
+  },
+  "DvdReadCompatibility.Enabled": {
+    "zh-CN": "DVD读取兼容性：已启用（实验性）",
+    "en": "DVD read compatibility: enabled (experimental)",
+    "zh-TW": "DVD 讀取相容性：已啟用（實驗性）",
+    "ja": "DVD 読み取り互換性：有効（実験的）",
+    "tr": "DVD okuma uyumluluğu: etkin (deneysel)"
+  },
+  "DvdReadCompatibility.Disabled": {
+    "zh-CN": "DVD读取兼容性：关闭",
+    "en": "DVD read compatibility: off",
+    "zh-TW": "DVD 讀取相容性：關閉",
+    "ja": "DVD 読み取り互換性：無効",
+    "tr": "DVD okuma uyumluluğu: kapalı"
+  }
+}

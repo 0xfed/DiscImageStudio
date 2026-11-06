@@ -77,3 +77,5 @@ The v1.3.1 CD data DAO path has not been physically burned either. It has passed
 Recorded DVD cubic-track-pitch photographs and parameters appear in the [README before/after comparison](../README.en.md#辅助标定展示). The historical physical-model audit is in [PHYSICAL_MODEL_AUDIT.md](PHYSICAL_MODEL_AUDIT.en.md); its conclusions retain their stated dates and code baseline and do not replace validation of the current source.
 
 Future physical-disc records should include the version or commit, recorder and firmware, disc model, preset parameters, speed, generation/burning entry point, and original photographs. Avoid generalizing one device's results to all discs.
+
+Assisted calibration now has coarse, boundary and fine stages and can run independently of a drawing project. Confirm the disc capacity, then create the matching target for each blank disc. Analyze every recorded disc with its own saved generation record and photograph. [Calibration after the upstream integration](CALIBRATION_TUTORIAL.en.md).

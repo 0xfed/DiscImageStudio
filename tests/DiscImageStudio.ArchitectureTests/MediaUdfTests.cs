@@ -79,6 +79,20 @@ internal static class MediaUdfTests
             Require(cd ? CdDataImageMetadata.TryLoad(export)?.UseUdf250 == true : DvdImageMetadata.TryLoad(export)?.UseUdf250 == true,
                 "artifact sidecars retain the selected filesystem");
 
+            string typedExport = Path.Combine(root, "typed.iso");
+            if (cd)
+                CdImageGenerator.Generate(new(picture, typedExport, new(24.5, 56.8, recorded),
+                    ToneProfile.LegacyBinary, DataDirectory: source, VolumeLabel: "MEDIA_VAT",
+                    FilesAtOuterRing: outer, UseUdf250: true));
+            else
+                DvdImageGenerator.Generate(new(picture, typedExport, new(recorded, 24, 58, FastParallelism: 1),
+                    source, "MEDIA_VAT", outer, UseUdf250: true));
+            Require(UdfFilesystemTests.Inspect(File.ReadAllBytes(typedExport), recorded, "MEDIA_VAT").Count == 3,
+                "typed GUI exports preserve the UDF selection and readable file tree");
+            Require(cd ? CdDataImageMetadata.TryLoad(typedExport)?.UseUdf250 == true
+                : DvdImageMetadata.TryLoad(typedExport)?.UseUdf250 == true,
+                "typed GUI export sidecars preserve UDF for later file updates");
+
             File.Delete(Path.Combine(source, "remove.txt"));
             Directory.CreateDirectory(Path.Combine(source, "新增"));
             File.WriteAllText(Path.Combine(source, "新增", "add.txt"), "added");

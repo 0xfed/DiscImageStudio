@@ -496,6 +496,9 @@ internal static class UiLocalizationLayoutTests
         public Task<IReadOnlyList<OpticalWriteSpeed>> GetSupportedWriteSpeedsAsync(string deviceId,
             OpticalBurnMediaKind mediaKind, CancellationToken cancellationToken = default)
             => Task.FromResult<IReadOnlyList<OpticalWriteSpeed>>([]);
+        public Task<long> GetMediaSectorCountAsync(string deviceId, OpticalBurnMediaKind mediaKind,
+            CancellationToken cancellationToken = default)
+            => throw new InvalidOperationException("This fixture cannot query real media.");
         public Task<OpticalBurnResult> BurnAsync(OpticalBurnRequest request, IProgress<OpticalBurnProgress>? progress = null,
             CancellationToken cancellationToken = default)
             => throw new InvalidOperationException("The UI layout fixture cannot write to a recorder.");

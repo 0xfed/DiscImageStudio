@@ -9,6 +9,7 @@ internal static class CalibrationCoreTests
 {
     internal static void Run()
     {
+        CalibrationStagedArtworkTests.Run();
         TestTargetAndSession();
         TestDraftsAndInsufficientInput();
         foreach (CalibrationDiscKind kind in Enum.GetValues<CalibrationDiscKind>())
@@ -32,8 +33,8 @@ internal static class CalibrationCoreTests
 
     private static void TestTargetAndSession()
     {
-        CalibrationTarget target = CalibrationTarget.Create(Parameters());
-        Check(target.SchemaVersion == CalibrationTarget.CurrentSchemaVersion && target.Cells.Count == 0 && target.Groups.Count == 4
+        CalibrationTarget target = new(6, Guid.NewGuid().ToString("N"), Parameters(), new CalibrationPatternOptions(), []);
+        Check(target.SchemaVersion == 6 && target.Cells.Count == 0 && target.Groups.Count == 4
             && target.ControlCells.Count == 4 && target.ControlPoints.Count == 8,
             "only four radial arms provide control geometry; rings are observation guides");
         Check(target.RingRadiiMm.Zip(new[] { 490.0, 570, 650, 730, 810, 890, 970, 1050, 1130 })

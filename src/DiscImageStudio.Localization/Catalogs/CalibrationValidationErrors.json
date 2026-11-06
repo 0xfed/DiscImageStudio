@@ -1,0 +1,72 @@
+{
+  "短圆弧量取记录无效。": {
+    "zh-CN": "短圆弧量取记录无效。",
+    "en": "The short-arc measurement record is invalid.",
+    "zh-TW": "短圓弧量取記錄無效。",
+    "ja": "短い円弧の測定記録が無効です。",
+    "tr": "Kısa yay ölçüm kaydı geçersiz."
+  },
+  "时标读数的优先方向无效。": {
+    "zh-CN": "时标读数的优先方向无效。",
+    "en": "The preferred direction for reading the clock ruler is invalid.",
+    "zh-TW": "時標讀數的優先方向無效。",
+    "ja": "時計目盛りを読む優先方向が無効です。",
+    "tr": "Saat cetvelini okumak için tercih edilen yön geçersiz."
+  },
+  "边界描点只能用于对应的边界中标记录，不能与十字线或单线的中线描点混用。": {
+    "zh-CN": "边界描点只能用于对应的边界中标记录，不能与十字线或单线的中线描点混用。",
+    "en": "Boundary points require the matching boundary-calibration record and cannot be combined with centerline points from cross or single-line targets.",
+    "zh-TW": "邊界描點只能用於對應的邊界中標記錄，不能與十字線或單線的中線描點混用。",
+    "ja": "境界点は対応する境界校正記録でのみ使えます。十字線や単線の中心線の点と混在させることはできません。",
+    "tr": "Sınır noktaları ilgili sınır kalibrasyon kaydını gerektirir; çapraz veya tek çizgili hedeflerin merkez çizgisi noktalarıyla birleştirilemez."
+  },
+  "分段描边记录需要已确认的矫正照片，所有点须位于盘面上。": {
+    "zh-CN": "分段描边记录需要已确认的矫正照片，所有点须位于盘面上。",
+    "en": "Segmented boundary traces require confirmed photo rectification, with every point on the disc.",
+    "zh-TW": "分段描邊記錄需要已確認的校正照片，所有點須位於盤面上。",
+    "ja": "区間ごとの境界記録には確認済みの写真補正が必要です。すべての点をディスク上に置いてください。",
+    "tr": "Parçalı sınır izleri için fotoğraf düzeltmesi onaylanmalı ve tüm noktalar disk üzerinde olmalıdır."
+  },
+  "此标靶未刻录宽角度参考标记。": {
+    "zh-CN": "此标靶未刻录宽角度参考标记。",
+    "en": "This target has no wide-angle reference marks.",
+    "zh-TW": "此標靶未燒錄寬角度參考標記。",
+    "ja": "このターゲットには広角の基準マークが記録されていません。",
+    "tr": "Bu hedefte geniş açılı referans işaretleri yok."
+  },
+  "标定图案类型与记录版本不匹配。": {
+    "zh-CN": "标定图案类型与记录版本不匹配。",
+    "en": "The calibration pattern type does not match the record version.",
+    "zh-TW": "標定圖案類型與記錄版本不符。",
+    "ja": "校正パターンの種類が記録のバージョンと一致しません。",
+    "tr": "Kalibrasyon deseninin türü kayıt sürümüyle uyuşmuyor."
+  },
+  "时钟尺粗标靶需要 70–85 分钟、1200 mm/s 的标准 12 cm CD。": {
+    "zh-CN": "时钟尺粗标靶需要 70–85 分钟、1200 mm/s 的标准 12 cm CD。",
+    "en": "The coarse clock-ruler target requires a standard 12 cm CD with 70–85 minutes of capacity and a linear speed of 1200 mm/s.",
+    "zh-TW": "時鐘尺粗標靶需要 70–85 分鐘、1200 mm/s 的標準 12 cm CD。",
+    "ja": "時計目盛りの粗校正ターゲットには、容量 70–85 分、線速度 1200 mm/s の標準 12 cm CD が必要です。",
+    "tr": "Kaba saat cetveli hedefi için 70–85 dakika kapasiteli, 1200 mm/s çizgisel hızlı standart 12 cm CD gerekir."
+  },
+  "圆弧粗标靶需要 70–85 分钟、1200 mm/s 的标准 12 cm CD。": {
+    "zh-CN": "圆弧粗标靶需要 70–85 分钟、1200 mm/s 的标准 12 cm CD。",
+    "en": "The coarse arc target requires a standard 12 cm CD with 70–85 minutes of capacity and a linear speed of 1200 mm/s.",
+    "zh-TW": "圓弧粗標靶需要 70–85 分鐘、1200 mm/s 的標準 12 cm CD。",
+    "ja": "円弧の粗校正ターゲットには、容量 70–85 分、線速度 1200 mm/s の標準 12 cm CD が必要です。",
+    "tr": "Kaba yay hedefi için 70–85 dakika kapasiteli, 1200 mm/s çizgisel hızlı standart 12 cm CD gerekir."
+  },
+  "时钟尺按 CD 逻辑字节生成，不能用平面图像采样编码。": {
+    "zh-CN": "时钟尺按 CD 逻辑字节生成，不能用平面图像采样编码。",
+    "en": "The clock ruler is generated from CD logical bytes and cannot be encoded by sampling a flat image.",
+    "zh-TW": "時鐘尺按 CD 邏輯位元組產生，不能用平面影像取樣編碼。",
+    "ja": "時計目盛りは CD の論理バイトから生成されるため、平面画像のサンプリングで符号化できません。",
+    "tr": "Saat cetveli CD mantıksal baytlarından üretilir; düz görüntü örneklemesiyle kodlanamaz."
+  },
+  "标定固定盘片类型、扇区数和线速度／位长，可拟合内外半径、三次轨距与整体旋转。": {
+    "zh-CN": "标定固定盘片类型、扇区数和线速度／位长，可拟合内外半径、三次轨距与整体旋转。",
+    "en": "Calibration keeps the disc type, sector count, and linear speed or channel bit length fixed. It can fit the inner and outer radii, cubic track pitch, and overall rotation.",
+    "zh-TW": "標定固定盤片類型、磁區數和線速度／位元長度，可擬合內外半徑、三次軌距與整體旋轉。",
+    "ja": "校正ではディスク種類、セクター数、線速度またはチャネルビット長を固定し、内外半径、3 次のトラックピッチ、全体の回転を近似します。",
+    "tr": "Kalibrasyon disk türünü, sektör sayısını ve çizgisel hızı veya kanal bit uzunluğunu sabit tutar; iç/dış yarıçapı, kübik iz aralığını ve genel dönüşü uydurabilir."
+  }
+}

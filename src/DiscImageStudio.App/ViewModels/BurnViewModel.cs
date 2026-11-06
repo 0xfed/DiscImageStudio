@@ -64,8 +64,9 @@ public partial class BurnViewModel : ObservableObject
     [ObservableProperty]
     private string _speedStatusText = L.T("放入可写盘片后读取其支持的速度；默认自动使用最低可用速度，以降低写入错误率。");
 
-    [ObservableProperty]
-    private bool _useCalibrationPattern;
+    public bool UseCalibrationPattern { get; }
+    public Workspace PageWorkspace => UseCalibrationPattern ? Workspace.CalibrationBurn : Workspace.Burn;
+    public string PageTitle => UseCalibrationPattern ? L.T("Standalone.BurnTitle") : L.T("刻录");
 
     [ObservableProperty]
     private string _sourceTitle = L.T("使用工程当前合成图与参数");
@@ -77,16 +78,6 @@ public partial class BurnViewModel : ObservableObject
     private bool _confirmChecked;
 
     [ObservableProperty]
-    private string _burnStatusText = L.T("等待开始");
-
-    // The status line is stored as a key so a language switch can re-read it; progress and
-    // error details stay in their own fields.
-    private string _burnStatusKey = "等待开始";
-
-    [ObservableProperty]
-    private double _burnProgressValue;
-
-    [ObservableProperty]
     private bool _isBurnRunning;
 
     public BurnViewModel(ShellViewModel shell, DiscParametersState state, DesignViewModel design)
@@ -95,12 +86,13 @@ public partial class BurnViewModel : ObservableObject
     }
 
     internal BurnViewModel(ShellViewModel shell, DiscParametersState state, DesignViewModel design,
-        IOpticalDiscBurner opticalDiscBurner)
+        IOpticalDiscBurner opticalDiscBurner, bool useCalibrationPattern = false)
     {
         _shell = shell;
         _state = state;
         _design = design;
         _opticalDiscBurner = opticalDiscBurner;
+        UseCalibrationPattern = useCalibrationPattern;
         RefreshDevicesCommand = new RelayCommand(() => _ = RefreshDevicesAsync(), () => !_shell.IsBusy);
         RefreshSpeedsCommand = new RelayCommand(() => _ = RefreshWriteSpeedsAsync(), () => !_shell.IsBusy);
         StartBurnCommand = new AsyncRelayCommand(() => StartStreamBurnAsync(), CanStartBurn);
@@ -110,6 +102,7 @@ public partial class BurnViewModel : ObservableObject
         {
             InvalidateConfirmation();
             OnPropertyChanged(nameof(IsSetupEnabled));
+            OnPropertyChanged(nameof(CanEditDvdReadCompatibility));
             RefreshDevicesCommand.NotifyCanExecuteChanged();
             RefreshSpeedsCommand.NotifyCanExecuteChanged();
             StartBurnCommand.NotifyCanExecuteChanged();
@@ -120,8 +113,8 @@ public partial class BurnViewModel : ObservableObject
         // target's family), so a project switch or a new target has to re-derive and re-arm.
         _shell.PropertyChanged += (_, args) =>
         {
-            if (args.PropertyName is nameof(ShellViewModel.IsProjectOpen)
-                or nameof(ShellViewModel.CurrentProject))
+            if (!UseCalibrationPattern && args.PropertyName is (nameof(ShellViewModel.IsProjectOpen)
+                or nameof(ShellViewModel.CurrentProject)))
             {
                 OnFamilyInputsChanged();
             }
@@ -149,6 +142,11 @@ public partial class BurnViewModel : ObservableObject
                     KeepDiscOpenForFileUpdates = false;
                 InvalidateConfirmation();
             }
+            if (args.PropertyName == nameof(DiscParametersState.DvdReadCompatibility) && !UseCalibrationPattern)
+            {
+                OnPropertyChanged(nameof(DvdReadCompatibility));
+                UpdateSourceSummary();
+            }
             if (args.PropertyName == nameof(DiscParametersState.CdDataDirectory)
                 && !UseCalibrationPattern
                 && _shell.CurrentProject?.Family == OpticalDiscFamily.CompactDisc)
@@ -161,6 +159,7 @@ public partial class BurnViewModel : ObservableObject
             if (args.PropertyName is nameof(IsBurnRunning))
             {
                 CancelBurnCommand.NotifyCanExecuteChanged();
+                _shell.RefreshCancelJobState();
             }
         };
     }
@@ -179,6 +178,20 @@ public partial class BurnViewModel : ObservableObject
     /// <summary>Exposed for the view's two-way bindings to the shared parameters, so the page
     /// can bind this view model directly like every other workspace page.</summary>
     public DiscParametersState State => _state;
+
+    // Calibration burns replay the saved target, regardless of changes to the next-target setup.
+    public bool DvdReadCompatibility
+    {
+        get => UseCalibrationPattern
+            ? _shell.Calibration.Target?.Parameters.DvdReadCompatibility ?? false
+            : _state.DvdReadCompatibility;
+        set
+        {
+            if (!UseCalibrationPattern) _state.DvdReadCompatibility = value;
+        }
+    }
+
+    public bool CanEditDvdReadCompatibility => !UseCalibrationPattern && IsSetupEnabled;
 
     /// <summary>Workspace navigation for the page's cross-workspace links.</summary>
     public IRelayCommand<Workspace> NavigateCommand => _shell.NavigateCommand;
@@ -263,8 +276,6 @@ public partial class BurnViewModel : ObservableObject
 
     partial void OnConfirmCheckedChanged(bool value) => UpdateActionState();
 
-    partial void OnUseCalibrationPatternChanged(bool value) => OnFamilyInputsChanged();
-
     /// <summary>A source change (project switch, calibration target, calibration switch) moves
     /// the derived family, so confirmation, summary and speeds all have to re-derive.</summary>
     public void OnCalibrationTargetChanged() => OnFamilyInputsChanged();
@@ -273,6 +284,7 @@ public partial class BurnViewModel : ObservableObject
     {
         UpdateDiscFilesCommand.NotifyCanExecuteChanged();
         OnPropertyChanged(nameof(IsDvdBurn));
+        OnPropertyChanged(nameof(DvdReadCompatibility));
         OnPropertyChanged(nameof(IsBluRayBurn));
         OnPropertyChanged(nameof(CanConfigureFileUpdates));
         OnPropertyChanged(nameof(FileUpdateSourceDirectory));
@@ -329,7 +341,7 @@ public partial class BurnViewModel : ObservableObject
             identity = string.Join("\u001f", "dvd", _design.CompositeRevision, _state.DvdTotalSectors,
                 _state.DvdInnerRadius, _state.DvdOuterRadius,
                 _state.DvdPitchLinear, _state.DvdPitchQuadratic, _state.DvdPitchCubic,
-                _state.DvdDataDirectory, _state.DvdVolumeLabel, _state.DvdFilesAtOuterRing, _state.DvdUseUdf250,
+                _state.DvdDataDirectory, _state.DvdVolumeLabel, _state.DvdFilesAtOuterRing, _state.DvdUseUdf250, _state.DvdReadCompatibility,
                 _state.ToneDitherStrength, _state.ToneBrightness, _state.ToneSrgbLinearization);
         }
         else if (IsBluRayBurn)
@@ -346,6 +358,7 @@ public partial class BurnViewModel : ObservableObject
                 : L.F($"合成图会自动生成本页输入。 · {polarity}") + dataSuffix;
             identity = string.Join("\u001f", "bd", _design.CompositeRevision, _state.BdTotalSectors,
                 _state.BdInnerRadius, _state.BdOuterRadius, _state.BdDataDirectory,
+                _state.BdPitchLinear, _state.BdPitchQuadratic, _state.BdPitchCubic,
                 _state.BdVolumeLabel, _state.BdInvertMapping, _state.BdFilesAtOuterRing,
                 _state.ToneDitherStrength, _state.ToneBrightness, _state.ToneSrgbLinearization);
         }
@@ -364,6 +377,7 @@ public partial class BurnViewModel : ObservableObject
                 : L.F($"合成图会自动生成本页输入。 · {encoding}");
             identity = string.Join("\u001f", "cd", _design.CompositeRevision, _state.CdSectors,
                 _state.CdInnerRadius, _state.CdOuterRadius, _state.CdInterleave,
+                _state.CdPitchLinear, _state.CdPitchQuadratic, _state.CdPitchCubic,
                 _state.CdDataDirectory, _state.CdVolumeLabel, _state.CdFilesAtOuterRing, _state.CdUseUdf250,
                 _state.ToneDitherStrength, _state.ToneLevels, _state.ToneBrightness,
                 _state.ToneSrgbLinearization);
@@ -378,17 +392,11 @@ public partial class BurnViewModel : ObservableObject
 
     /// <summary>Re-reads the cached source, device and speed text. The source identity is
     /// unchanged, so confirmation and detected devices stay exactly where they were.</summary>
-    private void SetBurnStatus(string key)
-    {
-        _burnStatusKey = key;
-        BurnStatusText = L.T(key);
-    }
-
     internal void Relocalize()
     {
+        OnPropertyChanged(nameof(PageTitle));
         OnPropertyChanged(nameof(FamilyLabel));
         UpdateSourceSummary();
-        BurnStatusText = L.T(_burnStatusKey);
         if (_isRefreshingDevices)
         {
             DeviceStatusText = L.T("正在检测刻录机…");
@@ -596,6 +604,7 @@ public partial class BurnViewModel : ObservableObject
         bool ownsBusyState = false;
         _isPreparingBurn = true;
         OnPropertyChanged(nameof(IsSetupEnabled));
+        OnPropertyChanged(nameof(CanEditDvdReadCompatibility));
         UpdateActionState();
         try
         {
@@ -776,7 +785,7 @@ public partial class BurnViewModel : ObservableObject
 
             if (_shell.IsBusy || preparationRevision != _burnPreparationRevision || !ConfirmChecked)
             {
-                SetBurnStatus("刻录来源或选项已变化，请重新确认后开始。");
+                _shell.ShowToast(L.T("操作未执行"), L.T("刻录来源或选项已变化，请重新确认后开始。"), ToastKind.Info);
                 return;
             }
 
@@ -785,11 +794,7 @@ public partial class BurnViewModel : ObservableObject
             IsBurnRunning = true;
             CancellationTokenSource burnCancellation = new();
             _burnCancellation = burnCancellation;
-            // The burn reports real percentages, so it drives the job dock's bar instead of
-            // showing a second progress surface inside this page.
             _shell.BeginBurnDockJob(request.MediaKind, request.ContentLength);
-            BurnProgressValue = 0;
-            SetBurnStatus("正在流式刻录，进度见底部任务栏。");
             _shell.AppendLog(
                 L.F($"\n[{DateTime.Now:HH:mm:ss}] 开始流式刻录：{contentDescription}；")
                 + L.F($"设备={device.DisplayName}；请求速度={selectedWriteSpeed.DisplayName}。\n"));
@@ -800,15 +805,12 @@ public partial class BurnViewModel : ObservableObject
                     return;
                 }
 
-                _shell.ReportBurnProgress(value);
-                BurnProgressValue = _shell.JobProgressValue;
+                _shell.ReportBurnProgress(value, cancellationRequested: burnCancellation.IsCancellationRequested);
             });
             OpticalBurnResult result = await _opticalDiscBurner.BurnAsync(
                 request,
                 progress,
                 burnCancellation.Token);
-            BurnProgressValue = 100;
-            SetBurnStatus("刻录完成，可以取出光盘。");
             _shell.CompleteDockJob(L.T("完成：流式刻录 ") + contentDescription);
             _shell.AppendLog(
                 L.F($"[{DateTime.Now:HH:mm:ss}] 流式刻录完成：{result.BytesWritten} 字节，")
@@ -819,21 +821,21 @@ public partial class BurnViewModel : ObservableObject
             ConfirmChecked = false;
             _shell.ShowToast(L.T("流式刻录完成"), L.T("流式刻录已经完成，可以取出光盘。"), ToastKind.Success);
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException exception)
         {
-            SetBurnStatus("已请求取消；光驱可能仍需一段时间才能停止。");
-            _shell.AbortDockJob(L.T("已取消：流式刻录"), expandLog: false);
+            if (ownsBusyState) _shell.AbortDockJob(L.T("已取消：流式刻录"), expandLog: false);
             _shell.AppendLog(
                 L.F($"[{DateTime.Now:HH:mm:ss}] 已取消流式刻录；当前盘片可能无法继续使用。\n"));
+            _shell.AppendLog(OpticalBurnDiagnostics.FormatException(exception) + "\n");
         }
         catch (Exception exception)
         {
-            SetBurnStatus("刻录未完成，请查看错误信息。");
-            _shell.AbortDockJob(L.T("失败：流式刻录"), expandLog: true);
+            if (ownsBusyState) _shell.AbortDockJob(L.T("失败：流式刻录"), expandLog: true);
             _shell.AppendLog(L.F($"[{DateTime.Now:HH:mm:ss}] 流式刻录失败：{exception.Message}\n"));
+            _shell.AppendLog(OpticalBurnDiagnostics.FormatException(exception) + "\n");
             _shell.ShowToast(
                 L.T("流式刻录未完成"),
-                exception.Message + L.T("\n\n如果写入已经开始，当前盘片可能无法继续使用。"),
+                L.T("详情见窗口底部的任务日志。") + L.T("\n\n如果写入已经开始，当前盘片可能无法继续使用。"),
                 ToastKind.Error);
         }
         finally
@@ -849,6 +851,7 @@ public partial class BurnViewModel : ObservableObject
             }
 
             OnPropertyChanged(nameof(IsSetupEnabled));
+            OnPropertyChanged(nameof(CanEditDvdReadCompatibility));
             UpdateActionState();
         }
     }
@@ -917,21 +920,21 @@ public partial class BurnViewModel : ObservableObject
             DvdStreamingOptions options = CalibrationViewModel.DvdOptions(target);
             options.Validate();
             return new OpticalBurnRequest(deviceId, OpticalBurnMediaKind.DvdData, options.ContentLength,
-                (output, token) => DvdStreamingGenerator.GenerateCalibrationPattern(target, output,
+                (output, token) => DvdStreamingGenerator.GeneratePattern(target, output, options,
                     cancellationToken: token), writeSpeed);
         }
 
-        CdDiscParameters parameters = CalibrationViewModel.CdParameters(target);
+        CdDiscParameters parameters = CdDiscParameters.FromCalibration(target);
         parameters.Validate();
         return new OpticalBurnRequest(deviceId, OpticalBurnMediaKind.CdAudio, parameters.TotalBytes,
-            (output, token) => CdTrackGenerator.GeneratePatternToStream(target.Sample, output, parameters,
-                cdInterleave, cancellationToken: token, audioByteOrder: CdAudioByteOrder.LittleEndian), writeSpeed);
+            (output, token) => CdTrackGenerator.GeneratePatternToStream(target, output, cdInterleave,
+                cancellationToken: token, audioByteOrder: CdAudioByteOrder.LittleEndian), writeSpeed);
     }
 
     private void CancelStreamBurn()
     {
         CancelBurnCommand.NotifyCanExecuteChanged();
-        SetBurnStatus("正在请求停止刻录，请不要取出盘片…");
+        _shell.JobStatusText = L.T("正在请求停止刻录，请不要取出盘片…");
         _burnCancellation?.Cancel();
     }
 
@@ -940,7 +943,10 @@ public partial class BurnViewModel : ObservableObject
         CdDiscParameters parameters = new(
             ParameterParser.ParsePositiveDouble(_state.CdInnerRadius, L.T("CD 内半径")),
             ParameterParser.ParsePositiveDouble(_state.CdOuterRadius, L.T("CD 外半径")),
-            ParameterParser.ParsePositiveLong(_state.CdSectors, L.T("CD 扇区数")));
+            ParameterParser.ParsePositiveLong(_state.CdSectors, L.T("CD 扇区数")),
+            PitchLinear: ParameterParser.ParseDouble(_state.CdPitchLinear, L.T("相对一次项")),
+            PitchQuadratic: ParameterParser.ParseDouble(_state.CdPitchQuadratic, L.T("相对二次项")),
+            PitchCubic: ParameterParser.ParseDouble(_state.CdPitchCubic, L.T("相对三次项")));
         parameters.Validate();
         return parameters;
     }
@@ -957,7 +963,10 @@ public partial class BurnViewModel : ObservableObject
             checked((uint)totalSectors),
             1,
             ParameterParser.ParsePositiveDouble(_state.BdInnerRadius, L.T("蓝光内半径")),
-            ParameterParser.ParsePositiveDouble(_state.BdOuterRadius, L.T("蓝光外半径")));
+            ParameterParser.ParsePositiveDouble(_state.BdOuterRadius, L.T("蓝光外半径")),
+            PitchLinear: ParameterParser.ParseDouble(_state.BdPitchLinear, L.T("相对一次项")),
+            PitchQuadratic: ParameterParser.ParseDouble(_state.BdPitchQuadratic, L.T("相对二次项")),
+            PitchCubic: ParameterParser.ParseDouble(_state.BdPitchCubic, L.T("相对三次项")));
         disc.Validate();
         return disc;
     }
@@ -972,7 +981,8 @@ public partial class BurnViewModel : ObservableObject
             PitchLinear: ParameterParser.ParseDouble(_state.DvdPitchLinear, L.T("DVD 轨距一次项")),
             PitchQuadratic: ParameterParser.ParseDouble(_state.DvdPitchQuadratic, L.T("DVD 轨距二次项")),
             PitchCubic: ParameterParser.ParseDouble(_state.DvdPitchCubic, L.T("DVD 轨距三次项")),
-            Tone: _state.DvdTone);
+            Tone: _state.DvdTone,
+            ReadCompatibility: _state.DvdReadCompatibility);
         options.Validate();
         return options;
     }

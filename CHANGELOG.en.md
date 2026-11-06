@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Integrate upstream calibration stages, burn diagnostics and encoding fixes; preserve UDF 2.50 file updates, measured diameters and visual selectors, and explicitly distinguish saved calibration artwork lineages.
+
 ## [1.8.1] - 2026-11-04
 
 - Prevent the speed dropdown from reverting when labels bind, and preserve the selected speed when refreshing disc or recorder information, including calibration burns. Keep the Automatic fallback when the current drive and disc do not report the chosen speed. Add regressions for stable option identity, delayed recorder responses and speed selection.

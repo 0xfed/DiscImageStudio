@@ -24,7 +24,8 @@ public sealed record CalibrationParameters(
     long Sectors, double LinearDensity,
     double PitchLinear = 0, double PitchQuadratic = 0, double PitchCubic = 0,
     bool BluRayInvertMapping = false, long DrawingStartSector = 0, DateTimeOffset? BluRayIsoTimestamp = null,
-    long DrawingEndSectorExclusive = 0)
+    long DrawingEndSectorExclusive = 0,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] bool DvdReadCompatibility = false)
 {
     public const int DvdChannelBitsPerSector = 38_688;
     public const int BluRaySectorsPerCluster = 32;
@@ -60,8 +61,6 @@ public sealed record CalibrationParameters(
             || !double.IsFinite(2 * TrackLengthMm / (OuterRadiusMm * OuterRadiusMm - InnerRadiusMm * InnerRadiusMm)))
             throw new ArgumentException(L.T("标定参数无效：请检查盘片类型、内外半径、扇区数和线速度／位长。"));
         DvdTrackGeometry.ValidatePitchCoefficients(PitchLinear, PitchQuadratic, PitchCubic);
-        if (Kind != CalibrationDiscKind.Dvd && (PitchLinear != 0 || PitchQuadratic != 0 || PitchCubic != 0))
-            throw new ArgumentException(L.T("三次轨距参数仅适用于 DVD。"));
         if (DrawingStartSector < 0 || DrawingStartSector >= Sectors
             || DrawingEndSectorExclusive < 0 || DrawingEndSectorExclusive > Sectors
             || (DrawingEndSectorExclusive != 0 && DrawingEndSectorExclusive <= DrawingStartSector)
@@ -186,7 +185,9 @@ public sealed record CalibrationCell(
 
 public sealed class CalibrationTarget
 {
-    public const int CurrentSchemaVersion = 9;
+    public const int CurrentSchemaVersion = 17;
+    public const double SingleRadialLineWidthMm = 6;
+    private readonly CalibrationAngularPattern? _angularPattern;
     public const int LegacyRingSchemaVersion = 8;
     public const int LegacyPatternSchemaVersion = 7;
     public const int LegacyFineCrossSchemaVersion = 6;
@@ -195,35 +196,78 @@ public sealed class CalibrationTarget
     private readonly CalibrationGeometry _generatedGeometry;
     private readonly double _drawingInnerRadiusMm;
     private readonly double _drawingOuterRadiusMm;
-    private readonly double _ringThicknessMm;
 
     [JsonConstructor]
     public CalibrationTarget(int schemaVersion, string id, CalibrationParameters parameters,
-        CalibrationPatternOptions options, IReadOnlyList<CalibrationCell> cells)
+        CalibrationPatternOptions options, IReadOnlyList<CalibrationCell> cells, CalibrationArtwork artwork = (CalibrationArtwork)(-1))
     {
         SchemaVersion = schemaVersion;
+        // Fork records through v9 predate the artwork discriminator. Preserve their
+        // original reference PNG and pattern options; new records always write artwork.
+        Artwork = artwork != (CalibrationArtwork)(-1) ? artwork : (schemaVersion is >= 7 and <= 9
+            ? CalibrationArtwork.LegacyReference : CalibrationArtwork.SweptReference);
         Id = id;
         Parameters = parameters ?? throw new ArgumentNullException(nameof(parameters));
         Options = options ?? throw new ArgumentNullException(nameof(options));
         Cells = Array.AsReadOnly(cells?.ToArray() ?? throw new ArgumentNullException(nameof(cells)));
         Validate();
-        _generatedGeometry = new(Parameters);
+        _generatedGeometry = new(ParametersForGeometry(Parameters));
+        WideAddressBands = HasWideAddressBands ? CalibrationWideBandPattern.ForVersion(SchemaVersion) : [];
+        WideBandSectorRanges = HasWideAddressBands && Parameters.Kind != CalibrationDiscKind.Cd
+            ? CalibrationWideBandPattern.SectorRanges(Parameters, WideAddressBands) : [];
+        AngleSweepStations = HasAngleSweep ? CalibrationAngleSweepStation.Create(this, _generatedGeometry) : [];
         _drawingInnerRadiusMm = _generatedGeometry.AtProgress(Parameters.DrawingStartSector / (double)Parameters.Sectors).Radius;
         _drawingOuterRadiusMm = Parameters.DrawingOuterRadiusMm;
-        VisualSelector = IsVisualSelectorPattern ? new(Parameters, Options.VisualSelectorRangeMm ?? 1) : null;
-        Groups = Array.AsReadOnly(IsRingPattern || IsVisualSelectorPattern ? [] : BuildGroups(Parameters));
         double pixelSizeMm = CalibrationReferencePattern.MillimetresPerPixel(Parameters.OuterRadiusMm, Parameters.Kind);
-        RingRadiiMm = Array.AsReadOnly(IsRingPattern
-            ? new[] { .06, .18, .34, .50, .66, .82, .94 }.Select(fraction =>
+        double crossWidth = CalibrationReferencePattern.NominalLineWidthPixels * pixelSizeMm;
+        VisualSelector = IsVisualSelectorPattern ? new(Parameters, Options.VisualSelectorRangeMm ?? 1) : null;
+        if (IsRingPattern)
+        {
+            RingRadiiMm = Array.AsReadOnly(new[] { .06, .18, .34, .50, .66, .82, .94 }.Select(fraction =>
                 _generatedGeometry.AtProgress(Parameters.DrawingStartSector / (double)Parameters.Sectors
                     + fraction * ((Parameters.DrawingEndSectorExclusive == 0 ? Parameters.Sectors
-                        : Parameters.DrawingEndSectorExclusive) - Parameters.DrawingStartSector) / Parameters.Sectors).Radius).ToArray()
-            : IsCoarsePattern || IsVisualSelectorPattern
-            ? Array.Empty<double>()
-            : CalibrationReferencePattern.RingRadiiPixels.Select(radius => radius * pixelSizeMm).ToArray());
-        _ringThicknessMm = IsCoarsePattern || IsVisualSelectorPattern ? 0 : IsRingPattern
-            ? Math.Min(.15, RingRadiiMm.Zip(RingRadiiMm.Skip(1), (a, b) => b - a).Min() / 4)
-            : CalibrationReferencePattern.NominalLineWidthPixels * pixelSizeMm;
+                        : Parameters.DrawingEndSectorExclusive) - Parameters.DrawingStartSector) / Parameters.Sectors).Radius).ToArray());
+            crossWidth = Math.Min(.15, RingRadiiMm.Zip(RingRadiiMm.Skip(1), (a, b) => b - a).Min() / 4);
+            VisibleRings = Array.AsReadOnly(RingRadiiMm.Select((radius, index) => new CalibrationRing(index, radius, crossWidth)).ToArray());
+        }
+        else if (IsCoarsePattern || IsVisualSelectorPattern)
+        {
+            VisibleRings = [];
+            RingRadiiMm = [];
+        }
+        else if (UsesReferencePattern)
+        {
+            RingRadiiMm = Array.AsReadOnly(CalibrationReferencePattern.RingRadiiPixels.Select(radius => radius * pixelSizeMm).ToArray());
+            VisibleRings = Array.AsReadOnly(RingRadiiMm
+                .Where(radius => radius - crossWidth / 2 >= DrawingInnerRadiusMm && radius + crossWidth / 2 <= DrawingOuterRadiusMm)
+                .Select((radius, index) => new CalibrationRing(index, radius, crossWidth)).ToArray());
+        }
+        else if (HasBoundaryPattern || HasSingleRadialLine || HasRadialArcDashes)
+        {
+            if (HasSingleRadialLine) crossWidth = SingleRadialLineWidthMm;
+            VisibleRings = [];
+            RingRadiiMm = [];
+        }
+        else if (HasClockRuler || HasWideAddressBands)
+        {
+            VisibleRings = HasWideAddressBands ? CalibrationWideBandPattern.AddressRings(this, _generatedGeometry)
+                : CalibrationClockRulerPattern.AddressRings(_generatedGeometry);
+            RingRadiiMm = Array.AsReadOnly(VisibleRings.Select(r => r.RadiusMm).ToArray());
+        }
+        else
+        {
+            crossWidth = Math.Min(1.5 * crossWidth, .025 * (DrawingOuterRadiusMm - DrawingInnerRadiusMm));
+            double radiansPerMm = _generatedGeometry.AngleAtRadius(Parameters.OuterRadiusMm)
+                / (Parameters.OuterRadiusMm - Parameters.InnerRadiusMm);
+            _angularPattern = new(DrawingInnerRadiusMm, DrawingOuterRadiusMm, radiansPerMm, crossWidth, Artwork);
+            VisibleRings = _angularPattern.Rings;
+            RingRadiiMm = Array.AsReadOnly(VisibleRings.Select(r => r.RadiusMm).ToArray());
+        }
+        RadialArcDashes = HasRadialArcDashes
+            ? CalibrationRadialArcPattern.Create(schemaVersion, DrawingInnerRadiusMm, DrawingOuterRadiusMm) : [];
+        // Wavy boundaries have no straight legacy control spines. Their exact source
+        // profile is used by the boundary fitter and prediction directly.
+        Groups = !HasCrossArms || HasWavyBoundary ? [] : Array.AsReadOnly(BuildGroups(Parameters, crossWidth, TraceArmCount, HasBoundaryPattern ? 180 : 90));
         ControlCells = Array.AsReadOnly(Cells.Concat(BuildSpineCells(Groups)).ToArray());
         _byId = ControlCells.ToDictionary(cell => cell.Id, StringComparer.Ordinal);
         _controlPointByReference = new();
@@ -249,6 +293,7 @@ public sealed class CalibrationTarget
     }
 
     public int SchemaVersion { get; }
+    public CalibrationArtwork Artwork { get; }
     public string Id { get; }
     public CalibrationParameters Parameters { get; }
     public CalibrationPatternOptions Options { get; }
@@ -257,10 +302,11 @@ public sealed class CalibrationTarget
     [JsonIgnore]
     public IReadOnlyList<CalibrationGroup> Groups { get; }
 
-    /// <summary>Visual guides only. Rings supply no angular observations to curve fitting.</summary>
+    /// <summary>Source circle centres, including any circles cropped from legacy artwork.</summary>
     [JsonIgnore]
     public IReadOnlyList<double> RingRadiiMm { get; }
 
+    /// <summary>Measurable rings, numbered from the innermost complete circle on this particular disc.</summary>
     [JsonIgnore]
     public bool IsCoarsePattern => Options.PatternKind == CalibrationPatternKind.WideSectors;
 
@@ -273,8 +319,103 @@ public sealed class CalibrationTarget
     [JsonIgnore]
     public CalibrationVisualSelector? VisualSelector { get; }
 
+    public IReadOnlyList<CalibrationRing> VisibleRings { get; }
+
     [JsonIgnore]
-    public double RingThicknessMm => _ringThicknessMm;
+    public bool HasAngularReference => _angularPattern is not null && Artwork == CalibrationArtwork.SweptReference;
+
+    [JsonIgnore]
+    public bool HasClockRuler => Artwork == CalibrationArtwork.ClockRuler;
+
+    [JsonIgnore]
+    public bool HasRadialArcDashes => Artwork == CalibrationArtwork.RadialArcDashes;
+
+    [JsonIgnore]
+    public bool HasWideAddressBands => Artwork is CalibrationArtwork.WideAddressBands or CalibrationArtwork.AngleSweepBands;
+
+    [JsonIgnore]
+    public bool HasAngleSweep => Artwork == CalibrationArtwork.AngleSweepBands;
+
+    [JsonIgnore]
+    public IReadOnlyList<CalibrationAngleSweepStation> AngleSweepStations { get; }
+
+    [JsonIgnore]
+    public IReadOnlyList<CalibrationAddressBand> WideAddressBands { get; }
+
+    /// <summary>Absolute, half-open DVD or BD sector ranges used by the writer and the fit.
+    /// CD retains its original byte-addressed transitions.</summary>
+    [JsonIgnore]
+    public IReadOnlyList<(long Start, long EndExclusive)> WideBandSectorRanges { get; }
+
+    internal (double Start, double EndExclusive) WideBandProgress(int bandIndex)
+    {
+        if (Parameters.Kind == CalibrationDiscKind.Cd)
+        {
+            var band = WideAddressBands[bandIndex];
+            return (band.StartProgress, band.EndProgress);
+        }
+        var range = WideBandSectorRanges[bandIndex];
+        return (range.Start / (double)Parameters.Sectors, range.EndExclusive / (double)Parameters.Sectors);
+    }
+
+    // The saved setup can include fine-calibrated pitch coefficients. Coarse
+    // bands use fixed pitch for both their schematic and their endpoint estimate.
+    internal CalibrationParameters ParametersForGeometry(CalibrationParameters p) =>
+        HasWideAddressBands
+            ? p with { PitchLinear = 0, PitchQuadratic = 0, PitchCubic = 0 } : p;
+
+    [JsonIgnore]
+    public bool UsesReferencePattern => SchemaVersion == 6 || (Options.PatternKind == CalibrationPatternKind.FineCross
+        && Artwork is CalibrationArtwork.ReferenceCross or CalibrationArtwork.LegacyReference);
+
+    [JsonIgnore]
+    public bool HasSingleRadialLine => Artwork == CalibrationArtwork.SingleRadialLine;
+
+    /// <summary>Two opposite black/white boundaries, measured as separate visible fragments.</summary>
+    [JsonIgnore]
+    public bool HasHalfDisc => Artwork == CalibrationArtwork.HalfDisc;
+
+    [JsonIgnore]
+    public bool HasWavyBoundary => Artwork == CalibrationArtwork.WavyBoundary;
+
+    [JsonIgnore]
+    public bool HasBoundaryPattern => HasHalfDisc || HasWavyBoundary;
+
+    /// <summary>Known source bearing offset of both opposed boundaries; no whole turns are prescribed.</summary>
+    public double BoundaryPhaseAtSourceRadius(double radius)
+        => HasWavyBoundary ? Math.PI / 2 * Math.Sin(6 * Math.PI
+            * (radius - DrawingInnerRadiusMm) / (DrawingOuterRadiusMm - DrawingInnerRadiusMm)) : 0;
+
+    internal double BoundaryPhaseDerivative(double radius)
+        => HasWavyBoundary ? BoundaryPhaseDerivativeBound * Math.Cos(6 * Math.PI
+            * (radius - DrawingInnerRadiusMm) / (DrawingOuterRadiusMm - DrawingInnerRadiusMm)) : 0;
+
+    internal double BoundaryPhaseDerivativeBound => HasWavyBoundary
+        ? 3 * Math.PI * Math.PI / (DrawingOuterRadiusMm - DrawingInnerRadiusMm) : 0;
+
+    [JsonIgnore]
+    public int TraceArmCount => IsRingPattern || IsVisualSelectorPattern ? 0 : Artwork switch
+    {
+        CalibrationArtwork.SingleRadialLine => 1,
+        CalibrationArtwork.HalfDisc or CalibrationArtwork.WavyBoundary => 2,
+        CalibrationArtwork.SweptReference or CalibrationArtwork.FineCross or CalibrationArtwork.ReferenceCross or CalibrationArtwork.LegacyReference => 4,
+        _ => 0,
+    };
+
+    [JsonIgnore]
+    public bool HasCrossArms => TraceArmCount > 0;
+
+    [JsonIgnore]
+    public IReadOnlyList<CalibrationRadialArc> RadialArcDashes { get; }
+
+    /// <summary>Unwrapped source sector bearing in the calibration photo convention (Y down).</summary>
+    public double SectorAngleAtRadius(double sourceRadiusMm) => HasAngularReference
+        ? _angularPattern!.SectorAngle(sourceRadiusMm) : throw new InvalidOperationException(L.T("此标靶未刻录宽角度参考标记。"));
+
+    [JsonIgnore]
+    public double RingThicknessMm => UsesReferencePattern
+        ? CalibrationReferencePattern.NominalLineWidthPixels * CalibrationReferencePattern.MillimetresPerPixel(Parameters.OuterRadiusMm, Parameters.Kind)
+        : VisibleRings.Count == 0 ? 0 : VisibleRings[0].WidthMm;
 
     [JsonIgnore]
     public IReadOnlyList<CalibrationCell> ControlCells { get; }
@@ -298,7 +439,7 @@ public sealed class CalibrationTarget
     }
 
     public static CalibrationTarget Create(CalibrationParameters parameters, CalibrationPatternOptions? options = null,
-        CalibrationPatternKind? patternKind = null)
+        CalibrationPatternKind? patternKind = null, CalibrationArtwork artwork = CalibrationArtwork.SweptReference)
     {
         parameters.Validate();
         double scale = Math.Clamp((parameters.OuterRadiusMm - parameters.InnerRadiusMm) / 32.3, 0.5, 2);
@@ -307,20 +448,57 @@ public sealed class CalibrationTarget
         options.Validate();
         if (options.PatternKind == CalibrationPatternKind.VisualSelector)
             parameters = parameters with { PitchLinear = 0, PitchQuadratic = 0, PitchCubic = 0 };
-        return new(CurrentSchemaVersion, Guid.NewGuid().ToString("N"), parameters, options,
-            BuildCells(parameters));
+        if (patternKind is not null || options.PatternKind != CalibrationPatternKind.FineCross)
+            artwork = CalibrationArtwork.LegacyReference;
+        int version = artwork switch
+        {
+            CalibrationArtwork.ClockRuler => 8,
+            CalibrationArtwork.RadialArcDashes => 10,
+            CalibrationArtwork.WideAddressBands => 12,
+            CalibrationArtwork.AngleSweepBands => 13,
+            CalibrationArtwork.ReferenceCross or CalibrationArtwork.SingleRadialLine => 14,
+            CalibrationArtwork.HalfDisc => 15,
+            CalibrationArtwork.WavyBoundary => 16,
+            CalibrationArtwork.LegacyReference => 17,
+            _ => 7,
+        };
+        return new(version, Guid.NewGuid().ToString("N"), parameters, options,
+            BuildCells(parameters), artwork);
     }
 
     public void Validate()
     {
-        if (SchemaVersion != CurrentSchemaVersion
-            && (SchemaVersion != LegacyRingSchemaVersion || IsVisualSelectorPattern)
-            && (SchemaVersion != LegacyPatternSchemaVersion || IsRingPattern || IsVisualSelectorPattern)
-            && (SchemaVersion != LegacyFineCrossSchemaVersion
-                || Options.PatternKind != CalibrationPatternKind.FineCross))
-            throw new ArgumentException(L.F($"不支持的标定会话版本 {SchemaVersion}。"));
+        if (SchemaVersion is < 6 or > CurrentSchemaVersion)
+            throw DiagnosticMessage.Argument($"不支持的标定会话版本 {SchemaVersion}。");
+        bool legacy = Artwork == CalibrationArtwork.LegacyReference;
+        if (!Enum.IsDefined(Artwork) || (legacy
+            ? (SchemaVersion is not (6 or 7 or 8 or 9 or 17)
+                || (SchemaVersion == 6 && Options.PatternKind != CalibrationPatternKind.FineCross)
+                || (SchemaVersion == 7 && (IsRingPattern || IsVisualSelectorPattern))
+                || (SchemaVersion == 8 && IsVisualSelectorPattern))
+            : ((SchemaVersion == 6 && Artwork != default)
+                || ((SchemaVersion == 8) != HasClockRuler)
+                || ((SchemaVersion is 9 or 10) != HasRadialArcDashes)
+                || ((SchemaVersion is 11 or 12) != (Artwork == CalibrationArtwork.WideAddressBands))
+                || ((SchemaVersion == 13) != HasAngleSweep)
+                || ((SchemaVersion == 14) != (Artwork is CalibrationArtwork.ReferenceCross or CalibrationArtwork.SingleRadialLine))
+                || ((SchemaVersion == 15) != HasHalfDisc)
+                || ((SchemaVersion == 16) != HasWavyBoundary)
+                || SchemaVersion == 17 || Options.PatternKind != CalibrationPatternKind.FineCross)))
+            throw new ArgumentException(L.T("标定图案类型与记录版本不匹配。"));
         if (!Guid.TryParseExact(Id, "N", out _)) throw new ArgumentException(L.T("标定图案 ID 无效。"));
         Parameters.Validate();
+        if (HasClockRuler && !CalibrationClockRulerPattern.Supports(Parameters))
+            throw new ArgumentException(L.T("时钟尺粗标靶需要 70–85 分钟、1200 mm/s 的标准 12 cm CD。"));
+        if (HasRadialArcDashes && !CalibrationRadialArcPattern.Supports(Parameters))
+            throw new ArgumentException(L.T("圆弧粗标靶需要 70–85 分钟、1200 mm/s 的标准 12 cm CD。"));
+        if (HasWideAddressBands && (SchemaVersion == 11 || Parameters.Kind == CalibrationDiscKind.Cd)
+            && !CalibrationClockRulerPattern.Supports(Parameters))
+            throw new ArgumentException(L.T("宽带粗标靶需要 70–85 分钟、1200 mm/s 的标准 12 cm CD。"));
+        if (HasWideAddressBands && SchemaVersion == 12 && !CalibrationWideBandPattern.Supports(Parameters))
+            throw new ArgumentException(L.T("宽带粗标靶需要完整的 DVD 扇区块或蓝光簇，且绘图区须足以分辨六个交界并估算全盘半径。"));
+        if (HasAngleSweep && !CalibrationWideBandPattern.SupportsAngleSweep(Parameters))
+            throw new ArgumentException(L.T("当前盘型、容量或绘图区不适用 v13 角度粗标。"));
         Options.Validate();
         if (IsVisualSelectorPattern) CalibrationVisualSelector.ValidateParameters(Parameters, Options.VisualSelectorRangeMm ?? 1);
         if (Cells.Count > 20_000 || Cells.Any(cell => cell is null))
@@ -401,9 +579,11 @@ public sealed class CalibrationTarget
         return outline;
     }
 
-    /// <summary>The original PNG mapped to the generation outer radius, then clipped to its annulus.</summary>
+    /// <summary>Sample the frozen artwork for this target version inside its recording annulus.</summary>
     public byte Sample(double xMm, double yMm)
     {
+        if (HasClockRuler)
+            throw new InvalidOperationException(L.T("时钟尺按 CD 逻辑字节生成，不能用平面图像采样编码。"));
         if (!double.IsFinite(xMm) || !double.IsFinite(yMm)) return 255;
         double radiusSquared = xMm * xMm + yMm * yMm;
         if (radiusSquared < DrawingInnerRadiusMm * DrawingInnerRadiusMm - 1e-10
@@ -426,7 +606,49 @@ public sealed class CalibrationTarget
             bool black = (xMm >= 0) == (yMm >= 0);
             return black ? (byte)0 : (byte)255;
         }
-        return CalibrationReferencePattern.Sample(xMm, yMm, Parameters.OuterRadiusMm, Parameters.Kind);
+        // Half-disc black/white boundaries lie on the two vertical radii. Their 50%
+        // duty cycle retains contrast when the recorded image winds into tight spirals.
+        if (HasHalfDisc) return xMm < 0 ? (byte)0 : (byte)255;
+        if (HasWavyBoundary)
+        {
+            double phase = BoundaryPhaseAtSourceRadius(Math.Sqrt(radiusSquared));
+            return xMm * Math.Cos(phase) + yMm * Math.Sin(phase) < 0 ? (byte)0 : (byte)255;
+        }
+        // Arm zero points upwards in photo coordinates (+Y down). Only its centreline
+        // enters the fit; the two broad edges are visual guides to that same centreline.
+        if (HasSingleRadialLine)
+            return yMm < 0 && Math.Abs(xMm) <= SingleRadialLineWidthMm / 2 ? (byte)0 : (byte)255;
+        if (HasRadialArcDashes)
+            return CalibrationRadialArcPattern.Sample(RadialArcDashes, xMm, radiusSquared);
+        if (HasWideAddressBands)
+        {
+            // The encoder uses the intervals' exact byte addresses. The planar preview shows
+            // the same intervals at the radii predicted by this generation snapshot.
+            double radius = Math.Sqrt(radiusSquared);
+            for (int i = 0; i < VisibleRings.Count; i++)
+            {
+                var band = VisibleRings[i];
+                if (radius >= band.InnerRadiusMm && radius < band.InnerRadiusMm + band.WidthMm)
+                {
+                    if (HasAngleSweep)
+                    {
+                        var station = AngleSweepStations[i];
+                        double q = _generatedGeometry.ProgressAtRadius(radius);
+                        if (q >= station.StartProgress && q < station.EndProgress)
+                        {
+                            double phase = Math.Atan2(yMm, xMm) - _generatedGeometry.AngleAtRadius(radius)
+                                + station.PhaseAt(q);
+                            return CalibrationAngleSweepStation.Tone(phase);
+                        }
+                    }
+                    return 0;
+                }
+            }
+            return 255;
+        }
+        return _angularPattern is null
+            ? CalibrationReferencePattern.Sample(xMm, yMm, Parameters.OuterRadiusMm, Parameters.Kind)
+            : _angularPattern.Sample(xMm, yMm, radiusSquared);
     }
 
     [JsonIgnore]
@@ -446,7 +668,7 @@ public sealed class CalibrationTarget
     {
         ValidateCompatible(actualParameters);
         if (!double.IsFinite(rotationRadians)) throw new ArgumentException(L.T("旋转必须是有限数值。"));
-        var actual = new CalibrationGeometry(actualParameters);
+        var actual = new CalibrationGeometry(ParametersForGeometry(actualParameters));
         return sourcePoint =>
         {
             ArgumentNullException.ThrowIfNull(sourcePoint);
@@ -482,7 +704,7 @@ public sealed class CalibrationTarget
     {
         ValidateCompatible(actual);
         Func<CalibrationPoint, CalibrationPoint> map = CreateMapping(actual, rotationRadians);
-        var actualGeometry = new CalibrationGeometry(actual);
+        var actualGeometry = new CalibrationGeometry(ParametersForGeometry(actual));
         var reverseModel = new CalibrationCrossModel(actualGeometry, _generatedGeometry,
             Parameters.Kind, actual == Parameters);
         var points = new List<CalibrationPoint>();
@@ -540,7 +762,7 @@ public sealed class CalibrationTarget
     {
         ValidateCompatible(actualParameters);
         if (!double.IsFinite(rotationRadians)) throw new ArgumentException(L.T("旋转必须是有限数值。"));
-        var actual = new CalibrationGeometry(actualParameters);
+        var actual = new CalibrationGeometry(ParametersForGeometry(actualParameters));
         return point =>
         {
             if (point is null || !double.IsFinite(point.X) || !double.IsFinite(point.Y)) return null;
@@ -563,7 +785,7 @@ public sealed class CalibrationTarget
             || actual.DrawingStartSector != Parameters.DrawingStartSector
             || actual.DrawingEndSectorExclusive != Parameters.DrawingEndSectorExclusive
             || actual.BluRayIsoTimestamp != Parameters.BluRayIsoTimestamp)
-            throw new ArgumentException(L.T("标定固定盘片类型、扇区数和线速度／位长；DVD 可拟合内外半径、三次轨距与整体旋转。"));
+            throw new ArgumentException(L.T("标定固定盘片类型、扇区数和线速度／位长，可拟合内外半径、三次轨距与整体旋转。"));
     }
 
     private static CalibrationCell[] BuildCells(CalibrationParameters parameters)
@@ -584,14 +806,13 @@ public sealed class CalibrationTarget
         yield return PolarBoundary([(group.SpineInnerRadiusMm, group.AngleDegrees), (group.SpineOuterRadiusMm, group.AngleDegrees)]);
     }
 
-    private static CalibrationGroup[] BuildGroups(CalibrationParameters parameters)
+    private static CalibrationGroup[] BuildGroups(CalibrationParameters parameters, double crossWidth, int count, double angleStep = 90)
     {
-        return Enumerable.Range(0, 4).Select(index =>
+        return Enumerable.Range(0, count).Select(index =>
         {
-            double angle = -90 + index * 90;
+            double angle = -90 + index * angleStep;
             return new CalibrationGroup($"C-{index}", index, CalibrationGroupRole.Coarse, angle, [],
-                0, angle, angle, CalibrationReferencePattern.NominalLineWidthPixels
-                    * CalibrationReferencePattern.MillimetresPerPixel(parameters.OuterRadiusMm, parameters.Kind),
+                0, angle, angle, crossWidth,
                 parameters.DrawingInnerRadiusMm, parameters.DrawingOuterRadiusMm);
         }).ToArray();
     }

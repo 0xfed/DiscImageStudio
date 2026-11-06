@@ -24,7 +24,7 @@ internal static class CalibrationPatternTests
 
     private static void TestPatternAndPersistence(CalibrationDiscKind kind)
     {
-        CalibrationTarget fine = CalibrationTarget.Create(Parameters(kind));
+        CalibrationTarget fine = CalibrationTarget.Create(Parameters(kind), patternKind: CalibrationPatternKind.FineCross);
         CalibrationTarget coarse = CalibrationTarget.Create(Parameters(kind), patternKind: CalibrationPatternKind.WideSectors);
         Require(!fine.IsCoarsePattern && coarse.IsCoarsePattern && coarse.RingRadiiMm.Count == 0,
             "coarse mode is explicit and has no guide circles to confuse with sector edges");
@@ -60,7 +60,7 @@ internal static class CalibrationPatternTests
 
     private static void TestAngularDrift()
     {
-        CalibrationTarget fine = CalibrationTarget.Create(Parameters());
+        CalibrationTarget fine = CalibrationTarget.Create(Parameters(), patternKind: CalibrationPatternKind.FineCross);
         CalibrationTarget coarse = CalibrationTarget.Create(Parameters(), patternKind: CalibrationPatternKind.WideSectors);
         List<object> results = [];
         foreach ((double innerError, double outerError, double offsetSectors) in new[]

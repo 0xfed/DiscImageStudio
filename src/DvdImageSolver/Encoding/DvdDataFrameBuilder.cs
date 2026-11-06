@@ -44,7 +44,7 @@ internal static class DvdDataFrameBuilder
         frame[2] = (byte)(physicalSectorNumber >> 8);
         frame[3] = (byte)physicalSectorNumber;
         ReedSolomon.AppendIed(frame.AsSpan(0, 4), frame.AsSpan(4, 2));
-        frame.AsSpan(6, 6).Clear(); // DVD-R Data Frame RSV: six bytes, all ZERO.
+        frame.AsSpan(6, 6).Clear(); // DVD-R RSV default when not specified by the application.
         payload.CopyTo(frame.AsSpan(12, PayloadBytes));
 
         uint edc = ComputeEdc(frame.AsSpan(0, 2060));
@@ -109,6 +109,7 @@ internal static class DvdDataFrameBuilder
 
     internal static uint ComputeEdc(ReadOnlySpan<byte> data)
     {
+        // ECMA-267 16.4: this feedback form already computes data(x) * x^32 mod G(x).
         const uint polynomialWithoutTopBit = 0x80000011;
         uint remainder = 0;
         foreach (byte value in data)
@@ -122,16 +123,6 @@ internal static class DvdDataFrameBuilder
                 {
                     remainder ^= polynomialWithoutTopBit;
                 }
-            }
-        }
-
-        for (int bit = 0; bit < 32; bit++)
-        {
-            uint feedback = remainder >> 31;
-            remainder <<= 1;
-            if (feedback != 0)
-            {
-                remainder ^= polynomialWithoutTopBit;
             }
         }
 

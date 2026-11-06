@@ -14,7 +14,7 @@ public sealed class CalibrationPhotoTransform
     {
         ArgumentNullException.ThrowIfNull(discToSourceMatrix9);
         if (discToSourceMatrix9.Length != 9 || discToSourceMatrix9.Any(value => !double.IsFinite(value)))
-            throw new ArgumentException(L.T("照片变换必须包含 9 个有限数值。"), nameof(discToSourceMatrix9));
+            throw DiagnosticMessage.Argument($"照片变换必须包含 9 个有限数值。", nameof(discToSourceMatrix9));
         _discToSource = (double[])discToSourceMatrix9.Clone();
         double scale = _discToSource.Max(Math.Abs);
         if (scale <= 0) throw new ArgumentException(L.T("照片变换不可逆。"));
@@ -71,6 +71,7 @@ public sealed record CalibrationPhotoFitResult(bool Succeeded, CalibrationPhotoT
     double OuterRmsPixels, double HoleRmsPixels, string Message)
 {
     public string? Error => Succeeded ? null : Message;
+    public FormattableString? MessageTemplate { get; init; }
 }
 
 /// <summary>
@@ -158,15 +159,22 @@ public static class CalibrationPhotoRectifier
             (double holeRms, double holeMaximum) = Residual(holePixels, transform, physicalHoleRadiusMm, cancellationToken);
             double tolerance = Math.Max(2, sourceScale * 0.006);
             if (outerRms > tolerance || holeRms > tolerance || Math.Max(outerMaximum, holeMaximum) > tolerance * 3)
-                return new(false, null, outerRms, holeRms,
-                    L.F($"两条实体轮廓无法同时吻合：外缘误差 {outerRms:0.##} px，内缘误差 {holeRms:0.##} px。请检查内缘、外缘与盘片尺寸。"));
-            return new(true, transform, outerRms, holeRms,
-                L.F($"已联合校正外缘与内缘。轮廓误差：外缘 {outerRms:0.##} px，内缘 {holeRms:0.##} px。请继续核对两条轮廓。"));
+                return WithMessage(false, null, outerRms, holeRms,
+                    $"两条实体轮廓无法同时吻合：外缘误差 {outerRms:0.##} px，内缘误差 {holeRms:0.##} px。请检查内缘、外缘与盘片尺寸。");
+            return WithMessage(true, transform, outerRms, holeRms,
+                $"已联合校正外缘与内缘。轮廓误差：外缘 {outerRms:0.##} px，内缘 {holeRms:0.##} px。请继续核对两条轮廓。");
         }
-        catch (ArgumentException error) { return Failed(error.Message); }
+        catch (ArgumentException error)
+        {
+            return Failed(error.Message) with { MessageTemplate = $"{DiagnosticMessage.Detail(error)}" };
+        }
     }
 
     private static CalibrationPhotoFitResult Failed(string message) => new(false, null, double.NaN, double.NaN, L.T(message));
+
+    private static CalibrationPhotoFitResult WithMessage(bool succeeded, CalibrationPhotoTransform? transform,
+        double outerRms, double holeRms, FormattableString message)
+        => new(succeeded, transform, outerRms, holeRms, message.ToString()) { MessageTemplate = message };
 
     private static bool IsSpread(IReadOnlyList<CalibrationPoint> points)
     {

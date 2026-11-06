@@ -15,23 +15,6 @@ internal static class UnifiedCommandRunner
 
     private static DiscModuleCatalog Modules => ConsoleModuleRunner.Catalog;
 
-    internal static bool SupportsCancellation(string command)
-        => Modules.Resolve(command).Descriptor.SupportsCancellation;
-
-    /// <summary>The GUI job path: same modules and arguments as the CLI, but progress and
-    /// cancellation flow through the caller instead of Console.CancelKeyPress.</summary>
-    internal static DiscJobResult RunJob(string[] arguments,
-        IProgress<DiscJobProgress>? progress, CancellationToken cancellationToken)
-    {
-        if (arguments.Length == 0)
-        {
-            throw new ArgumentException(L.T("Missing command."));
-        }
-
-        DiscJobRequest request = new(arguments[0], arguments.Skip(1));
-        return Modules.ExecuteAsync(request, progress, cancellationToken).GetAwaiter().GetResult();
-    }
-
     internal static int Run(string[] arguments)
     {
         try
@@ -53,11 +36,11 @@ internal static class UnifiedCommandRunner
                 ReadOnlySpan<string> snapshotArguments = arguments.AsSpan(1);
                 string? tabValue = FindOption(snapshotArguments, "tab");
                 int workspaceIndex = tabValue is null ? 0 : int.Parse(tabValue);
-                if (workspaceIndex < 0 || workspaceIndex > (int)Workspace.Calibration)
+                if (workspaceIndex < 0 || workspaceIndex > (int)Workspace.CalibrationBurn)
                 {
                     throw new ArgumentOutOfRangeException(
                         nameof(arguments),
-                        L.T("Tabs: 0 home, 1 design, 2 preview, 3 export, 4 burn, 5 calibration."));
+                        L.T("Tabs: 0 home, 1 design, 2 preview, 3 export, 4 burn, 5 calibration, 6 calibration burn."));
                 }
 
                 bool settingsDialog = HasOption(snapshotArguments, "settings-dialog");

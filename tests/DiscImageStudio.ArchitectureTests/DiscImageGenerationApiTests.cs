@@ -4,6 +4,7 @@ using System.Windows.Media.Imaging;
 using DiscImageStudio.BluRay;
 using DiscImageStudio.Cd;
 using DiscImageStudio.Core;
+using DiscImageStudio.Localization;
 
 internal static class DiscImageGenerationApiTests
 {
@@ -32,7 +33,8 @@ internal static class DiscImageGenerationApiTests
         DiscJobProgress? last = null;
         DiscImageResult result = CdImageGenerator.Generate(new(source, output, parameters, tone, Interleave: false),
             new InlineProgress<DiscJobProgress>(value => last = value));
-        Require(result.OutputPath == output && result.Summary!.Contains("CD track complete", StringComparison.Ordinal),
+        string summaryPrefix = L.T("CD track complete: {0} sectors, {1} bytes, interleave={2}, elapsed={3:F1}s, output={4}").Split('{')[0];
+        Require(result.OutputPath == output && result.Summary!.StartsWith(summaryPrefix, StringComparison.Ordinal),
             "typed CD returns the published output and summary");
         Require(last is { ModuleId: CdDiscModule.ModuleId, Stage: "generate", Fraction: 1 }
             && last.CompletedUnits == parameters.TotalBytes, "typed CD reports structured byte progress");

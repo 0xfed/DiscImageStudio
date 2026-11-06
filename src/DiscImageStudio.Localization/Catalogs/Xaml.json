@@ -240,7 +240,7 @@
     "ja": "内半径 r0 (mm)",
     "tr": "İç yarıçap r0 (mm)",
     "es": "r0 interior (mm)",
-    "cs": "Vnitřní r0 (mm)"
+    "cs": "Vnitřní poloměr r0 (mm)"
   },
   "Xaml.OuterR1Mm": {
     "zh-CN": "外半径 r1 (mm)",
@@ -249,7 +249,7 @@
     "ja": "外半径 r1 (mm)",
     "tr": "Dış yarıçap r1 (mm)",
     "es": "r1 exterior (mm)",
-    "cs": "Vnější r1 (mm)"
+    "cs": "Vnější poloměr r1 (mm)"
   },
   "Xaml.Sectors": {
     "zh-CN": "扇区数",
@@ -780,7 +780,7 @@
     "ja": "現在のプロジェクト パラメーター",
     "tr": "Geçerli proje parametreleri",
     "es": "Geometría",
-    "cs": "Geometrie"
+    "cs": "Parametry projektu"
   },
   "Xaml.MeasurementsAndQualityAdvanced": {
     "zh-CN": "实测参数与预览精度（高级）",
@@ -798,7 +798,7 @@
     "ja": "内半径 (mm)",
     "tr": "İç yarıçap (mm)",
     "es": "r interior (mm)",
-    "cs": "Vnitřní r (mm)"
+    "cs": "Vnitřní poloměr (mm)"
   },
   "Xaml.OuterRadiusMm": {
     "zh-CN": "外半径 (mm)",
@@ -807,7 +807,7 @@
     "ja": "外半径 (mm)",
     "tr": "Dış yarıçap (mm)",
     "es": "r exterior (mm)",
-    "cs": "Vnější r (mm)"
+    "cs": "Vnější poloměr (mm)"
   },
   "Xaml.PreviewQuality": {
     "zh-CN": "预览精度",
@@ -1131,7 +1131,7 @@
     "ja": "キャリブレーション ディスクを作成",
     "tr": "Kalibrasyon diski oluştur",
     "es": "Crear patrón",
-    "cs": "Vytvořit vzor"
+    "cs": "Vytvořit kalibrační disk"
   },
   "Xaml.CreateTargetFromParameters": {
     "zh-CN": "从当前参数新建标靶",
@@ -1194,7 +1194,7 @@
     "ja": "ディスク イメージ / オーディオ トラックを生成",
     "tr": "Disk imajı / ses izi oluştur",
     "es": "Generar imagen / pista",
-    "cs": "Vytvořit obraz / stopu"
+    "cs": "Vytvořit obraz disku / zvukovou stopu"
   },
   "Xaml.ExportPatternPNG": {
     "zh-CN": "导出图案 PNG",
@@ -1597,7 +1597,7 @@
     "ja": "フォルダー (空欄の場合はディスク全体に描画のみ)",
     "tr": "Klasör (isteğe bağlı, boş bırakılırsa diskin tamamına çizim yapılır)",
     "es": "Carpeta (opcional)",
-    "cs": "Složka (volitelné)"
+    "cs": "Složka (prázdné: kresba na celém disku)"
   },
   "Xaml.CtrlAltScrollToZoomMiddleDragToPan": {
     "zh-CN": "Ctrl/Alt + 滚轮同样可以缩放；中键拖动平移",

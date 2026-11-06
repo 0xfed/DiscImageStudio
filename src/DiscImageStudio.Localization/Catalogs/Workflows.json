@@ -2121,7 +2121,7 @@
     "ja": "、ドライブが採用した設定速度={0}。\n",
     "tr": ", disk yazıcısının uyguladığı hız={0}.\n",
     "es": ", velocidad real={0}.\n",
-    "cs": ", skutečná rychlost={0}.\n"
+    "cs": ", nastavení rychlosti vypalovače={0}.\n"
   },
   "，搜索范围自动扩大至 ±{0:0.###} mm": {
     "zh-CN": "，搜索范围自动扩大至 ±{0:0.###} mm",

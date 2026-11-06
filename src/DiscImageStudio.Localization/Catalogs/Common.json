@@ -1053,7 +1053,7 @@
     "ja": "新規プロジェクトと一時キャッシュの既定の場所。",
     "tr": "Yeni projeler ve geçici önbellek için varsayılan konumlar.",
     "es": "Ubicaciones predeterminadas para proyectos nuevos y archivos temporales.",
-    "cs": "Výchozí umístění nových projektů a dočasných souborů."
+    "cs": "Výchozí umístění nových projektů a dočasné mezipaměti."
   },
   "位置": {
     "zh-CN": "位置",
@@ -1260,7 +1260,7 @@
     "ja": "新規プロジェクトと一時キャッシュの既定の場所。",
     "tr": "Yeni projeler ve geçici önbellek için varsayılan konumlar.",
     "es": "Ubicaciones predeterminadas para proyectos nuevos y archivos temporales.",
-    "cs": "Výchozí umístění nových projektů a dočasných souborů."
+    "cs": "Výchozí umístění nových projektů a dočasné mezipaměti."
   },
   "Settings.Locations": {
     "zh-CN": "位置",

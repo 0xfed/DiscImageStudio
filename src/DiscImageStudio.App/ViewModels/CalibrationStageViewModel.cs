@@ -18,7 +18,8 @@ public partial class CalibrationViewModel
         || (IsTraceStep && IsIntermediateMode && (_target?.HasSingleRadialLine == true || HasBoundarySegments)));
     public bool HasBoundarySegments => _target?.HasBoundaryPattern == true;
     public bool IsBoundarySegmentStep => IsLineFitStep && HasBoundarySegments;
-    public bool CanFitDvdPitch => IsFineMode && _target is not null;
+    public bool CanFitDvdPitch => _target is not null
+        && (IsFineMode || _target.Artwork == CalibrationArtwork.LegacyReference);
 
     private bool TargetMatchesStage => _target?.Artwork == CalibrationArtwork.LegacyReference || _stage switch
     {

@@ -33,6 +33,7 @@ internal static class CalibrationPhotoViewModelTests
     private static void TestCoarseSelectionAndReload(string directory)
     {
         var model = CreateModel(new DiscParametersState());
+        model.SelectedDiscType = "DVD";
         model.UseCoarsePattern = true;
         model.CreateTargetCommand.Execute(null);
         var target = model.Target ?? throw new InvalidOperationException(model.LastStatusMessage);
@@ -46,7 +47,8 @@ internal static class CalibrationPhotoViewModelTests
         Require(model.Target is { IsCoarsePattern: false }, "creating a fine target switches back explicitly");
         Await(model, "LoadSessionFromAsync", path);
         Require(model.Target?.Id == target.Id && model.UseCoarsePattern && model.Target.IsCoarsePattern && model.IsCoarseMode
-            && model.StreamBurnCommand.CanExecute(null), "reopening restores the coarse target and checkbox together");
+            && model.StreamBurnCommand.CanExecute(null) && model.CanFitDvdPitch,
+            "reopening restores the coarse target, checkbox and legacy pitch fitting together");
     }
 
     private static void TestWorkflow(string directory)

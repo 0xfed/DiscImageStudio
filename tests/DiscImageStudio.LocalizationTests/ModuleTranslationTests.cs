@@ -35,6 +35,13 @@ internal static class ModuleTranslationTests
                 invariantInfo ??= info;
                 Check(JsonNode.DeepEquals(invariantInfo, info), "JSON schema or technical values changed in " + language);
 
+                DiscJobResult decoderRequired = Run(new BluRayDiscModule(), "bd-generate",
+                    "--input", "virtual.png", "--output", Path.Combine(directory, "no-decoder.iso"),
+                    "--total-sectors", "1024");
+                Check(decoderRequired.ExitCode == 2 && decoderRequired.Summary == L.T(
+                    "BD picture generation requires an image loader. Run bd-generate through the application or provide a BluRayGray8Raster loader."),
+                    "missing image decoder guidance in " + language);
+
                 List<DiscJobProgress> progress = [];
                 string iso = Path.Combine(directory, language + ".iso");
                 DiscJobResult generated = Run(module, "bd-generate",

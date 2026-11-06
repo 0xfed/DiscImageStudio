@@ -6,6 +6,12 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:vm="clr-namespace:DiscImageStudio.ViewModels"
              SizeChanged="OnViewSizeChanged">
+    <UserControl.Resources>
+        <DataTemplate x:Key="CalibrationPresetTemplate">
+            <TextBlock Text="{Binding DisplayName}" TextTrimming="CharacterEllipsis"
+                       ToolTip="{Binding DisplayName}" />
+        </DataTemplate>
+    </UserControl.Resources>
     <!-- Stage + step inspector: the photo canvas is a monitor (toolbar in the header, legend
          above the status footer); the three-step column is a guided disclosure where the
          active step is the expanded one. -->
@@ -334,16 +340,16 @@
                                         </Style>
                                     </StackPanel.Style>
                                     <Grid Margin="0,0,0,8">
-                                        <Grid.ColumnDefinitions><ColumnDefinition Width="68" /><ColumnDefinition Width="8" /><ColumnDefinition /></Grid.ColumnDefinitions>
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="88" /><ColumnDefinition Width="8" /><ColumnDefinition /></Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
                                         <TextBlock Text="{loc:Text Xaml.DiscType}" Style="{StaticResource FieldLabel}" />
                                         <TextBlock Grid.Column="2" Text="{loc:Text CalibrationMedia.Preset}" Style="{StaticResource FieldLabel}" />
                                         <ComboBox Grid.Row="1" ItemsSource="{Binding DiscTypeChoices}" SelectedItem="{Binding SelectedDiscType, Mode=TwoWay}"
                                                   Style="{StaticResource CompactComboBox}" AutomationProperties.Name="{loc:Text Xaml.DiscType}" />
                                         <Grid Grid.Row="1" Grid.Column="2">
-                                            <controls:VisibilityGate IsOpen="{Binding IsCdSetup}"><ComboBox ItemsSource="{Binding Parameters.CdPresets}" SelectedItem="{Binding Parameters.SelectedCdPreset, Mode=TwoWay}" DisplayMemberPath="DisplayName" Style="{StaticResource CompactComboBox}" AutomationProperties.Name="{loc:Text CalibrationMedia.Preset}" /></controls:VisibilityGate>
-                                            <controls:VisibilityGate IsOpen="{Binding IsDvdSetup}"><ComboBox ItemsSource="{Binding Parameters.DvdPresets}" SelectedItem="{Binding Parameters.SelectedDvdPreset, Mode=TwoWay}" DisplayMemberPath="DisplayName" Style="{StaticResource CompactComboBox}" AutomationProperties.Name="{loc:Text CalibrationMedia.Preset}" /></controls:VisibilityGate>
-                                            <controls:VisibilityGate IsOpen="{Binding IsBluRaySetup}"><ComboBox ItemsSource="{Binding Parameters.BluRayPresets}" SelectedItem="{Binding Parameters.SelectedBluRayPreset, Mode=TwoWay}" DisplayMemberPath="DisplayName" Style="{StaticResource CompactComboBox}" AutomationProperties.Name="{loc:Text CalibrationMedia.Preset}" /></controls:VisibilityGate>
+                                            <controls:VisibilityGate IsOpen="{Binding IsCdSetup}"><ComboBox ItemsSource="{Binding Parameters.CdPresets}" SelectedItem="{Binding Parameters.SelectedCdPreset, Mode=TwoWay}" ItemTemplate="{StaticResource CalibrationPresetTemplate}" TextSearch.TextPath="DisplayName" Style="{StaticResource CompactComboBox}" AutomationProperties.Name="{loc:Text CalibrationMedia.Preset}" /></controls:VisibilityGate>
+                                            <controls:VisibilityGate IsOpen="{Binding IsDvdSetup}"><ComboBox ItemsSource="{Binding Parameters.DvdPresets}" SelectedItem="{Binding Parameters.SelectedDvdPreset, Mode=TwoWay}" ItemTemplate="{StaticResource CalibrationPresetTemplate}" TextSearch.TextPath="DisplayName" Style="{StaticResource CompactComboBox}" AutomationProperties.Name="{loc:Text CalibrationMedia.Preset}" /></controls:VisibilityGate>
+                                            <controls:VisibilityGate IsOpen="{Binding IsBluRaySetup}"><ComboBox ItemsSource="{Binding Parameters.BluRayPresets}" SelectedItem="{Binding Parameters.SelectedBluRayPreset, Mode=TwoWay}" ItemTemplate="{StaticResource CalibrationPresetTemplate}" TextSearch.TextPath="DisplayName" Style="{StaticResource CompactComboBox}" AutomationProperties.Name="{loc:Text CalibrationMedia.Preset}" /></controls:VisibilityGate>
                                         </Grid>
                                     </Grid>
                                     <Grid Margin="0,0,0,8">
@@ -378,7 +384,10 @@
                                                   AutomationProperties.Name="{loc:Text Xaml.Recorder}" DisplayMemberPath="DisplayName" Style="{StaticResource CompactComboBox}" />
                                     </controls:VisibilityGate>
                                     <TextBlock Text="{Binding CapacityStatus}" TextWrapping="Wrap" Style="{StaticResource CompactHint}" AutomationProperties.LiveSetting="Polite" />
-                                    <Expander Header="{loc:Text CalibrationMedia.Encoding}" Margin="0,4,0,10">
+                                    <Expander Margin="0,4,0,10">
+                                        <Expander.Header>
+                                            <TextBlock Text="{loc:Text CalibrationMedia.Encoding}" TextWrapping="Wrap" />
+                                        </Expander.Header>
                                         <StackPanel Margin="0,6,0,0">
                                             <controls:VisibilityGate IsOpen="{Binding IsCdSetup}"><CheckBox IsChecked="{Binding Parameters.CdInterleave, Mode=TwoWay}" Content="{loc:Text CalibrationMedia.CdInterleave}" Style="{StaticResource CompactCheckBox}" /></controls:VisibilityGate>
                                             <controls:VisibilityGate IsOpen="{Binding IsDvdSetup}" Margin="0,0,0,10">

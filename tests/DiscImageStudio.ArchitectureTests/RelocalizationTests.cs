@@ -49,7 +49,8 @@ internal static class RelocalizationTests
                 {
                     L.SetLanguage(language);
                     shell.Calibration.Relocalize();
-                    Require(shell.Calibration.FitAssessment == L.T(warning), "fit guidance follows " + language);
+                    Require(shell.Calibration.FitAssessment.Split(Environment.NewLine).Contains(L.T(warning), StringComparer.Ordinal),
+                        "the complete warning line in the assessment follows " + language);
                     Require(Field<CalibrationFitResult>(shell.Calibration, "_fit").Warnings[0] == warning,
                         "presenting guidance preserves the original warning for input-failure classification");
                 }

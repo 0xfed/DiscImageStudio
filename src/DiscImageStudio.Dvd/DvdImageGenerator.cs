@@ -69,7 +69,7 @@ public static class DvdImageGenerator
         if (!hybrid && request.FilesAtOuterRing)
             throw new ArgumentException(L.T("Outer-ring file placement requires a data directory."), nameof(request));
         string outputPath = Path.GetFullPath(request.OutputPath);
-        progress?.Report(new("dvd", "prepare", "Preparing DVD image…"));
+        progress?.Report(new("dvd", "prepare", L.T("Preparing DVD image…")));
         DvdHybridStreamingPlan? plan = hybrid ? DvdStreamingGenerator.PrepareHybrid(
             request.DataDirectory!, request.Options, request.VolumeLabel, request.FilesAtOuterRing, request.UseUdf250) : null;
         cancellationToken.ThrowIfCancellationRequested();
@@ -84,12 +84,12 @@ public static class DvdImageGenerator
         };
         FastDispersionWriteResult result = FastDvdImageFileWriter.Write(request.SourceImage,
             outputPath, options, plan?.IsoLayout, value => progress?.Report(new(
-                "dvd", "generate", $"Generating DVD image: {value.CompletedBlocks}/{value.TotalBlocks} blocks",
+                "dvd", "generate", L.F($"Generating DVD image: {value.CompletedBlocks}/{value.TotalBlocks} blocks"),
                 (double)value.CompletedBlocks / value.TotalBlocks,
                 (long)value.CompletedBlocks * 32768, (long)value.TotalBlocks * 32768, value.Elapsed)),
             cancellationToken);
         cancellationToken.ThrowIfCancellationRequested();
-        string summary = $"DVD image completed: {result.CompletedBlocks} blocks, {result.ControlledWords} controlled words.";
+        string summary = L.F($"DVD image completed: {result.CompletedBlocks} blocks, {result.ControlledWords} controlled words.");
         progress?.Report(new("dvd", "complete", summary, 1,
             (long)result.FilledSectors * 2048, (long)result.FilledSectors * 2048, result.Elapsed));
         return new DiscImageResult(outputPath, summary);

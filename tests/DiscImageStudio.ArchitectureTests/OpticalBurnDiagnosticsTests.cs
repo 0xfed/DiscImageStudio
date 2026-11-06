@@ -13,7 +13,7 @@ internal static class OpticalBurnDiagnosticsTests
         TestExceptionTree();
         TestFirstFailureContextIsRetained();
         TestVerificationInterfaceMetadata();
-        bool nativeVerificationChecked = TestNativeVerificationWithoutRecorder();
+        bool nativeVerificationChecked = OperatingSystem.IsWindows() && TestNativeVerificationWithoutRecorder();
         Console.WriteLine("optical-burn-diagnostics: passed (exception tree, first failure context, verification interface"
             + (nativeVerificationChecked ? ", native verification setting; no recorder access)"
                 : "; native verification unavailable, no recorder access)"));

@@ -138,7 +138,7 @@ public static class L
             : T(exception.Message);
     }
 
-    private static string Diagnostic(FormattableString template)
+    internal static string Diagnostic(FormattableString template)
         => Format(template.Format, template.GetArguments()
             .Select(value => value switch
             {

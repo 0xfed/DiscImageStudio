@@ -3,8 +3,8 @@ using System.Runtime.CompilerServices;
 
 namespace DiscImageStudio.Localization;
 
-/// <summary>Preserves an application-owned diagnostic template until a UI can
-/// translate it. The exception type, parameter name and original message remain
+/// <summary>Preserves an application-owned diagnostic template so a UI can
+/// translate it again after a language change. The exception type, parameter name and original message remain
 /// available to callers and diagnostic logs.</summary>
 public static class DiagnosticMessage
 {
@@ -37,6 +37,6 @@ public static class DiagnosticMessage
     private static string Render(FormattableString message)
     {
         ArgumentNullException.ThrowIfNull(message);
-        return message.ToString(CultureInfo.CurrentCulture);
+        return L.Diagnostic(message);
     }
 }

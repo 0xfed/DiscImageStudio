@@ -1,4 +1,5 @@
 using DiscImageStudio.Core;
+using DiscImageStudio.Localization;
 
 namespace DiscImageStudio.Cd;
 
@@ -34,23 +35,19 @@ public static class CdImageGenerator
             CdGenerationSummary dataSummary = CdDataImageGenerator.Generate(request.SourceImage,
                 request.OutputPath, request.Parameters, plan,
                 value => progress?.Report(new DiscJobProgress(CdDiscModule.ModuleId, "generate",
-                    $"CD data progress {value.Fraction:P1}", value.Fraction, value.CompletedBytes,
+                    L.F($"CD data progress {value.Fraction:P1}"), value.Fraction, value.CompletedBytes,
                     value.TotalBytes, value.Elapsed)), cancellationToken, request.Tone);
             return new DiscImageResult(dataSummary.OutputTrack,
-                $"CD data image complete: {plan.FileCount} files, {plan.TotalSectors} sectors, "
-                + $"files={(request.FilesAtOuterRing ? "outer" : "inner")}, output={dataSummary.OutputTrack}");
+                L.F($"CD data image complete: {plan.FileCount} files, {plan.TotalSectors} sectors, files={(request.FilesAtOuterRing ? L.T("Xaml.OuterRing") : L.T("Xaml.InnerRing"))}, output={dataSummary.OutputTrack}"));
         }
 
         CdGenerationSummary summary = CdTrackGenerator.Generate(request.SourceImage, request.OutputPath,
             request.Parameters, request.Interleave, request.WriteCue,
             value => progress?.Report(new DiscJobProgress(CdDiscModule.ModuleId, "generate",
-                $"CD progress {value.Fraction:P1}", value.Fraction, value.CompletedBytes,
+                L.F($"CD progress {value.Fraction:P1}"), value.Fraction, value.CompletedBytes,
                 value.TotalBytes, value.Elapsed)), cancellationToken, request.Tone);
-        string message =
-            $"CD track complete: {summary.Sectors} sectors, {summary.BytesWritten} bytes, "
-            + $"interleave={summary.Interleaved}, elapsed={summary.Elapsed.TotalSeconds:F1}s, "
-            + $"output={summary.OutputTrack}"
-            + (summary.CueSheetPath is null ? string.Empty : $", cue={summary.CueSheetPath}");
+        string message = L.F($"CD track complete: {summary.Sectors} sectors, {summary.BytesWritten} bytes, interleave={summary.Interleaved}, elapsed={summary.Elapsed.TotalSeconds:F1}s, output={summary.OutputTrack}")
+            + (summary.CueSheetPath is null ? string.Empty : L.F($", cue={summary.CueSheetPath}"));
         return new DiscImageResult(summary.OutputTrack, message);
     }
 }

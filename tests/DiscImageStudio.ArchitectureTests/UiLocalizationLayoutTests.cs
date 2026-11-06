@@ -154,6 +154,7 @@ internal static class UiLocalizationLayoutTests
                             }
                             if (workspace == Workspace.Calibration)
                             {
+                                shell.Calibration.SelectedDiscType = family switch { "dvd" => "DVD", "bd" => "BD", _ => "CD" };
                                 if (!Descendants(window).OfType<CheckBox>().Any(box => box.IsVisible && box.Name == "CoarsePatternCheckBox"))
                                     throw new InvalidOperationException($"Coarse pattern option is missing for {family}/{language}.");
                                 shell.Calibration.UseCoarsePattern = true;
@@ -180,7 +181,7 @@ internal static class UiLocalizationLayoutTests
                                 foreach (var measurement in CalibrationRingTests.Measurements(ringTarget, actualRings))
                                     shell.Calibration.RingDiameters.Single(row => row.Ring.Index == measurement.RingIndex).MeasuredDiameter
                                         = measurement.DiameterMm.ToString("0.000", CultureInfo.InvariantCulture);
-                                shell.Calibration.SolveRingsCommand.Execute(null);
+                                shell.Calibration.SolveDiametersCommand.Execute(null);
                                 shell.Calibration.RingMeasurementsConfirmed = true;
                                 if (!shell.Calibration.ApplyRingParametersCommand.CanExecute(null))
                                     throw new InvalidOperationException("The measured-diameter workflow did not produce an applicable fit.");
@@ -226,6 +227,7 @@ internal static class UiLocalizationLayoutTests
                                 }
                                 shell.Calibration.UseCirclePattern = false;
                                 shell.Calibration.UseCoarsePattern = false;
+                                shell.Calibration.SelectFineModeCommand.Execute(null);
                                 shell.Calibration.CreateTargetCommand.Execute(null);
                                 shell.Calibration.ShowTargetPreview = false;
                                 shell.Calibration.StepTwoExpanded = true;

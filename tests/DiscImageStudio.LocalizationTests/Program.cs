@@ -7,12 +7,15 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-MediaUdfTests.Run();
-CalibrationPatternTests.Run();
-CalibrationRingTests.Run();
-CalibrationRecordIntegrationTests.Run();
-CalibrationVisualSelectorTests.Run();
-CalibrationVisualEncodingTests.Run();
+if (args is not ["--catalog-only"])
+{
+    MediaUdfTests.Run();
+    CalibrationPatternTests.Run();
+    CalibrationRingTests.Run();
+    CalibrationRecordIntegrationTests.Run();
+    CalibrationVisualSelectorTests.Run();
+    CalibrationVisualEncodingTests.Run();
+}
 
 string root = AppContext.BaseDirectory;
 while (!File.Exists(Path.Combine(root, "DiscImageStudio.slnx")))
@@ -186,7 +189,7 @@ foreach (string file in new[] { app, Path.Combine(root, "tools", "FourLevelDithe
         foreach (XAttribute attribute in element.Attributes())
         {
             // Product names, language endonyms, and physical coordinate units are invariant.
-            string[] invariantUiText = ["Disc Image Studio", "English", "日本語", "Türkçe", "X (mm)", "Y (mm)", " mm"];
+            string[] invariantUiText = ["Disc Image Studio", "English", "日本語", "Türkçe", "Español", "Čeština", "X (mm)", "Y (mm)", " mm"];
             if (attribute.Name.LocalName is "Title" or "Text" or "Content" or "ToolTip" or "Header"
                 or "Label" or "Hint" or "Placeholder" or "Description" or "ActionLabel" or "Badge"
                 or "Subtitle" or "StatusText" or "Details" or "Note" or "ViewDescription" or "SelectionDescription"

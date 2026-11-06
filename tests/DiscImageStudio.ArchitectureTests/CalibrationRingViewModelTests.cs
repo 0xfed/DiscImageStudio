@@ -63,6 +63,7 @@ internal static class CalibrationRingViewModelTests
 
             model.UseCirclePattern = false;
             Require(!model.StreamBurnCommand.CanExecute(null), "changing the selection requires creating the next target");
+            model.SelectFineModeCommand.Execute(null);
             model.CreateTargetCommand.Execute(null);
             Require(model.Target is { IsRingPattern: false } && model.HasMeasurableRings && model.CanSelectRingMeasurementMethod,
                 "the original fine target exposes its existing observation circles for measurement");

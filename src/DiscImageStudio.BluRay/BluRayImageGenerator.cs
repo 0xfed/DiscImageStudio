@@ -44,7 +44,7 @@ public sealed class BluRayImageGenerator
             if (value.Elapsed < nextProgressReport && value.CompletedBytes != value.TotalBytes) return;
             nextProgressReport = value.Elapsed + TimeSpan.FromMilliseconds(250);
             progress?.Report(new DiscJobProgress(BluRayDiscModule.ModuleId, "iso",
-                $"BD {value.CompletedBytes}/{value.TotalBytes} bytes", value.Fraction,
+                L.F($"BD {value.CompletedBytes}/{value.TotalBytes} bytes"), value.Fraction,
                 value.CompletedBytes, value.TotalBytes, value.Elapsed));
         });
         BluRayStreamingSummary summary = BluRayIsoGenerator.GenerateFile(request.OutputPath,
@@ -53,10 +53,10 @@ public sealed class BluRayImageGenerator
             request.InvertMapping, request.Tone, DateTimeOffset.Now).Save(request.OutputPath);
         cancellationToken.ThrowIfCancellationRequested();
         string interpretation = request.InvertMapping
-            ? "dark-to-6T / light-to-3T run-count bias"
-            : "dark-to-3T / light-to-6T run-count bias";
+            ? L.T("dark-to-6T / light-to-3T run-count bias")
+            : L.T("dark-to-3T / light-to-6T run-count bias");
         return new DiscImageResult(Path.GetFullPath(request.OutputPath),
-            $"BD {(plan.HasFileSystem ? "UDF 2.01" : "full-area drawing, no filesystem")}: {summary.BytesWritten} bytes, {request.Parameters.TotalSectors} sectors; {plan.FileCount} {(plan.FilesAtOuterRing ? "outer" : "inner")} files; drawing sectors {plan.DrawingStartSector}..{plan.DrawingEndSectorExclusive - 1}; {interpretation}.");
+            L.F($"BD {(plan.HasFileSystem ? "UDF 2.50" : L.T("full-area drawing, no filesystem"))}: {summary.BytesWritten} bytes, {request.Parameters.TotalSectors} sectors; {plan.FileCount} {(plan.FilesAtOuterRing ? L.T("BluRay.OuterFilePosition") : L.T("BluRay.InnerFilePosition"))} files; drawing sectors {plan.DrawingStartSector}..{plan.DrawingEndSectorExclusive - 1}; {interpretation}."));
     }
 
     internal static BluRayIsoPlan Prepare(BluRayImageRequest request)

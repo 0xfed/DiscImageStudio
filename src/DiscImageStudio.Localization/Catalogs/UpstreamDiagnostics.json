@@ -477,5 +477,101 @@
     "zh-TW": "光碟機命令 0x{0:X2} 失敗（HRESULT 0x{1:X8}，{2}{3}）。",
     "ja": "Drive コマンド 0x{0:X2} に失敗（HRESULT 0x{1:X8}、{2}{3}）。",
     "tr": "Drive komutu 0x{0:X2} başarısız (HRESULT 0x{1:X8}, {2}{3})."
+  },
+  "Preparing DVD image…": {
+    "zh-CN": "正在准备 DVD 镜像…",
+    "en": "Preparing DVD image…"
+  },
+  "Generating DVD image: {0}/{1} blocks": {
+    "zh-CN": "正在生成 DVD 镜像：{0}/{1} 块",
+    "en": "Generating DVD image: {0}/{1} blocks"
+  },
+  "DVD image completed: {0} blocks, {1} controlled words.": {
+    "zh-CN": "DVD 镜像完成：{0} 块，{1} 个受控码字。",
+    "en": "DVD image completed: {0} blocks, {1} controlled words."
+  },
+  "Tabs: 0 home, 1 design, 2 preview, 3 export, 4 burn, 5 calibration, 6 calibration burn.": {
+    "zh-CN": "Tabs: 0 home, 1 design, 2 preview, 3 export, 4 burn, 5 calibration, 6 calibration burn.",
+    "zh-TW": "頁面：0 首頁、1 設計、2 預覽、3 匯出、4 燒錄、5 標定、6 標定燒錄。",
+    "en": "Tabs: 0 home, 1 design, 2 preview, 3 export, 4 burn, 5 calibration, 6 calibration burn.",
+    "ja": "ページ：0 ホーム、1 設計、2 プレビュー、3 出力、4 書き込み、5 校正、6 校正書き込み。",
+    "tr": "Sekmeler: 0 başlangıç, 1 tasarım, 2 önizleme, 3 dışa aktarma, 4 yazma, 5 kalibrasyon, 6 kalibrasyon yazma."
+  },
+  "BD-R 数据传输调用已返回": {
+    "zh-CN": "BD-R 数据传输调用已返回",
+    "zh-TW": "BD-R 資料傳輸呼叫已返回",
+    "en": "BD-R data transfer call returned",
+    "ja": "BD-R データ転送呼び出しが戻りました",
+    "tr": "BD-R veri aktarımı çağrısı döndü"
+  },
+  "刷新 BD-R 缓存（请等待完成）": {
+    "zh-CN": "刷新 BD-R 缓存（请等待完成）",
+    "zh-TW": "刷新 BD-R 快取（請等待完成）",
+    "en": "Flushing the BD-R cache (wait for completion)",
+    "ja": "BD-R キャッシュをフラッシュ中（完了までお待ちください）",
+    "tr": "BD-R önbelleği boşaltılıyor (tamamlanmasını bekleyin)"
+  },
+  "关闭 BD-R 轨道（请等待完成）": {
+    "zh-CN": "关闭 BD-R 轨道（请等待完成）",
+    "zh-TW": "關閉 BD-R 軌道（請等待完成）",
+    "en": "Closing the BD-R track (wait for completion)",
+    "ja": "BD-R トラックを閉じています（完了までお待ちください）",
+    "tr": "BD-R izi kapatılıyor (tamamlanmasını bekleyin)"
+  },
+  "封闭 BD-R 盘片（请等待完成）": {
+    "zh-CN": "封闭 BD-R 盘片（请等待完成）",
+    "zh-TW": "封閉 BD-R 盤片（請等待完成）",
+    "en": "Closing the BD-R disc (wait for completion)",
+    "ja": "BD-R ディスクを閉じています（完了までお待ちください）",
+    "tr": "BD-R diski sonlandırılıyor (tamamlanmasını bekleyin)"
+  },
+  "释放 BD-R 刻录机访问权": {
+    "zh-CN": "释放 BD-R 刻录机访问权",
+    "zh-TW": "釋放 BD-R 燒錄機存取權",
+    "en": "Releasing BD-R recorder access",
+    "ja": "BD-R レコーダーのアクセス権を解放中",
+    "tr": "BD-R yazıcı erişimi serbest bırakılıyor"
+  },
+  "CD 原始写入调用已返回": {
+    "zh-CN": "CD 原始写入调用已返回",
+    "zh-TW": "CD 原始寫入呼叫已返回",
+    "en": "CD raw write call returned",
+    "ja": "CD RAW 書き込み呼び出しが戻りました",
+    "tr": "CD ham yazma çağrısı döndü"
+  },
+  "DVD 写入调用已返回": {
+    "zh-CN": "DVD 写入调用已返回",
+    "zh-TW": "DVD 寫入呼叫已返回",
+    "en": "DVD write call returned",
+    "ja": "DVD 書き込み呼び出しが戻りました",
+    "tr": "DVD yazma çağrısı döndü"
+  },
+  "Relative linear pitch": {
+    "zh-CN": "相对一次轨距项",
+    "zh-TW": "相對一次軌距項",
+    "en": "Relative linear pitch",
+    "ja": "相対ピッチの一次項",
+    "tr": "Göreli doğrusal iz aralığı"
+  },
+  "Relative quadratic pitch": {
+    "zh-CN": "相对二次轨距项",
+    "zh-TW": "相對二次軌距項",
+    "en": "Relative quadratic pitch",
+    "ja": "相対ピッチの二次項",
+    "tr": "Göreli ikinci derece iz aralığı"
+  },
+  "Relative cubic pitch": {
+    "zh-CN": "相对三次轨距项",
+    "zh-TW": "相對三次軌距項",
+    "en": "Relative cubic pitch",
+    "ja": "相対ピッチの三次項",
+    "tr": "Göreli kübik iz aralığı"
+  },
+  "DVD read compatibility (experimental)": {
+    "zh-CN": "DVD读取兼容性（实验性）",
+    "en": "DVD read compatibility (experimental)",
+    "zh-TW": "DVD 讀取相容性（實驗性）",
+    "ja": "DVD 読み取り互換性（実験的）",
+    "tr": "DVD okuma uyumluluğu (deneysel)"
   }
 }

@@ -21,7 +21,7 @@ internal static class RelocalizationTests
     internal static void Run()
     {
         TestPresetGeometryStability();
-        TestGeneratedPresetDescriptions();
+        RunOnSta(TestGeneratedPresetDescriptions);
         TestCalibrationWarningTranslations();
         TestPreviewStateStability();
         TestSearchRangeSelection();

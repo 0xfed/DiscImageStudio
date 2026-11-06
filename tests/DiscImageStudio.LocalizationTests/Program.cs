@@ -292,7 +292,7 @@ CommandHelpTranslationTests.Run(languages);
 DvdTranslationTests.Run(languages);
 InitialPresetTranslationTests.Run(languages, CheckKey);
 CatalogLoadingTests.Run(root, languages);
-Console.WriteLine($"Localization checks passed: {L.Entries.Count} entries × {languages.Length} languages; {references} source references, file filters, formats, and preset fallbacks.");
+Console.WriteLine($"Localization checks passed: {L.Entries.Count} entries, {languages.Length} core languages and progressive English fallback; {references} source references, file filters, formats, and preset fallbacks.");
 
 static bool IsSourceFile(string path) => !path.Split(Path.DirectorySeparatorChar).Any(part => part is "obj" or "bin");
 

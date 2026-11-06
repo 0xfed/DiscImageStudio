@@ -123,7 +123,8 @@ internal static class UiLocalizationLayoutTests
                                 {
                                     Workspace.Design => "Xaml.Design", Workspace.Preview => "Xaml.Preview",
                                     Workspace.Export => "Xaml.Export", Workspace.Burn => "Xaml.Burn",
-                                    Workspace.Calibration => "Xaml.Calibration2", _ => throw new InvalidOperationException(),
+                                    Workspace.Calibration => "Xaml.Calibration2", Workspace.CalibrationBurn => "Standalone.BurnTitle",
+                                    _ => throw new InvalidOperationException(),
                                 };
                                 PageHeader header = Descendants(window).OfType<PageHeader>().Single(h => h.IsVisible);
                                 if (header.Title != L.T(titleKey))

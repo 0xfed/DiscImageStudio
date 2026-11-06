@@ -191,6 +191,7 @@ public static class L
             "DiscImageStudio.Localization.Catalogs.CatalogLoader.json")!;
         var errors = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(stream)!;
         Dictionary<string, string> translations = errors[key];
-        return translations.TryGetValue(CurrentLanguage, out string? value) ? value : translations[Chinese];
+        return translations.TryGetValue(CurrentLanguage, out string? value) ? value
+            : translations.TryGetValue(English, out value) ? value : translations[Chinese];
     }
 }

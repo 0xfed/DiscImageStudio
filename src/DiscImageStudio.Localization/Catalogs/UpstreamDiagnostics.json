@@ -573,5 +573,47 @@
     "zh-TW": "DVD 讀取相容性（實驗性）",
     "ja": "DVD 読み取り互換性（実験的）",
     "tr": "DVD okuma uyumluluğu (deneysel)"
+  },
+  "Measured relative linear pitch": {
+    "en": "Measured relative linear pitch",
+    "zh-CN": "实测相对一次轨距项",
+    "zh-TW": "實測相對一次軌距項",
+    "ja": "実測相対ピッチの一次項",
+    "tr": "Ölçülen göreli doğrusal iz aralığı"
+  },
+  "Linear radial pitch coefficient": {
+    "en": "Linear radial pitch coefficient",
+    "zh-CN": "一次径向轨距系数",
+    "zh-TW": "一次徑向軌距係數",
+    "ja": "半径方向ピッチの一次係数",
+    "tr": "Doğrusal radyal iz aralığı katsayısı"
+  },
+  "Measured relative quadratic pitch": {
+    "en": "Measured relative quadratic pitch",
+    "zh-CN": "实测相对二次轨距项",
+    "zh-TW": "實測相對二次軌距項",
+    "ja": "実測相対ピッチの二次項",
+    "tr": "Ölçülen göreli ikinci derece iz aralığı"
+  },
+  "Quadratic radial pitch coefficient": {
+    "en": "Quadratic radial pitch coefficient",
+    "zh-CN": "二次径向轨距系数",
+    "zh-TW": "二次徑向軌距係數",
+    "ja": "半径方向ピッチの二次係数",
+    "tr": "Ikinci derece radyal iz aralığı katsayısı"
+  },
+  "Measured relative cubic pitch": {
+    "en": "Measured relative cubic pitch",
+    "zh-CN": "实测相对三次轨距项",
+    "zh-TW": "實測相對三次軌距項",
+    "ja": "実測相対ピッチの三次項",
+    "tr": "Ölçülen göreli kübik iz aralığı"
+  },
+  "Cubic radial pitch coefficient": {
+    "en": "Cubic radial pitch coefficient",
+    "zh-CN": "三次径向轨距系数",
+    "zh-TW": "三次徑向軌距係數",
+    "ja": "半径方向ピッチの三次係数",
+    "tr": "Kübik radyal iz aralığı katsayısı"
   }
 }

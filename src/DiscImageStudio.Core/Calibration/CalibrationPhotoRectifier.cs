@@ -174,7 +174,7 @@ public static class CalibrationPhotoRectifier
 
     private static CalibrationPhotoFitResult WithMessage(bool succeeded, CalibrationPhotoTransform? transform,
         double outerRms, double holeRms, FormattableString message)
-        => new(succeeded, transform, outerRms, holeRms, message.ToString()) { MessageTemplate = message };
+        => new(succeeded, transform, outerRms, holeRms, L.F(message)) { MessageTemplate = message };
 
     private static bool IsSpread(IReadOnlyList<CalibrationPoint> points)
     {

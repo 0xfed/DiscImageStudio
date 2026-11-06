@@ -479,7 +479,7 @@
                                            State="{Binding StepTwoState}"
                                            IsExpanded="{Binding StepTwoExpanded, Mode=TwoWay}">
                             <StackPanel>
-                                <controls:VisibilityGate IsOpen="{Binding IsConventionalCalibrationWorkflow}">
+                                <controls:VisibilityGate IsOpen="{Binding HasMeasurableRings}">
                                 <CheckBox IsChecked="{Binding UseRingMeasurements, Mode=TwoWay}"
                                           IsEnabled="{Binding CanSelectRingMeasurementMethod}"
                                           Style="{StaticResource CompactCheckBox}" Margin="0,0,0,10">

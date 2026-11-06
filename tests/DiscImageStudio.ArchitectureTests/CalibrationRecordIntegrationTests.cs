@@ -31,6 +31,9 @@ internal static class CalibrationRecordIntegrationTests
             Require(restored.Artwork == artwork && restored.SchemaVersion == target.SchemaVersion
                 && restored.VisibleRings.SequenceEqual(target.VisibleRings), "upstream records round-trip independently");
         }
+        var bands = CalibrationTarget.Create(parameters with { PitchLinear = .1 }, artwork: CalibrationArtwork.AngleSweepBands);
+        Require(CalibrationDiameterFitter.GetRings(bands).Count == 0,
+            "constant-pitch address bands cannot enter the saved-pitch diameter fitter");
         Console.WriteLine("calibration-record-integration: passed (fork v8/v9 samples, circle identities and explicit upstream artwork)");
     }
 

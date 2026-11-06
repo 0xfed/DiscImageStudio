@@ -82,7 +82,8 @@ public partial class CalibrationViewModel : ObservableObject
             + (IsSelectedPatternCurrent ? string.Empty
                 : "\n" + L.T("Create a new target to use the selected pattern."));
 
-    internal static string PatternLabel(CalibrationTarget target) => target.Options.PatternKind switch
+    internal static string PatternLabel(CalibrationTarget target) => target.Artwork != CalibrationArtwork.LegacyReference
+        && target.SchemaVersion != 6 ? DescribeArtwork(target) : target.Options.PatternKind switch
     {
         CalibrationPatternKind.VisualSelector => L.T("VisualSelector.Label"),
         CalibrationPatternKind.ConcentricRings => L.T("Circles (measured diameters)"),

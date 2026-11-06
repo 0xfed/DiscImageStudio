@@ -27,6 +27,9 @@ public static class CalibrationDiameterFitter
     {
         ArgumentNullException.ThrowIfNull(target);
         target.Validate();
+        // Wide address bands use their own constant-pitch edge model. Their centres
+        // must not be interpreted as thin circles under the saved fine-pitch shape.
+        if (!target.IsRingPattern && !target.UsesReferencePattern) return [];
         var source = new CalibrationGeometry(target.Parameters);
         double halfWidth = target.RingThicknessMm / 2;
         return target.RingRadiiMm.Where(radius => radius - halfWidth >= target.DrawingInnerRadiusMm

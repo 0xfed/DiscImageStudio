@@ -20,7 +20,7 @@ using DiscImageStudio.ViewModels;
 /// Exercises real workspace bindings with temporary stores and a recorder that cannot write.</summary>
 internal static class UiLocalizationLayoutTests
 {
-    private static readonly string[] Languages = ["zh-CN", "zh-TW", "en", "ja", "tr"];
+    private static readonly string[] Languages = ["zh-CN", "zh-TW", "en", "ja", "tr", "es", "cs"];
     private static readonly (int Width, int Height, AppTheme Theme)[] Profiles =
         [(1366, 900, AppTheme.Dark), (960, 700, AppTheme.Light)];
     private sealed record Issue(string Scenario, string Element, string Text, string Reason);
@@ -296,7 +296,7 @@ internal static class UiLocalizationLayoutTests
                 throw new InvalidOperationException($"The expected {expectedScenarios} UI layout scenarios did not all render meaningful text.");
             if (issues.Count != 0)
                 throw new InvalidOperationException($"UI localization layout found {issues.Count} text issues; see {output}.");
-            Console.WriteLine($"UI localization layout: {scenarios.Count} scenarios passed in five languages; screenshots: {output}");
+            Console.WriteLine($"UI localization layout: {scenarios.Count} scenarios passed in {Languages.Length} languages; screenshots: {output}");
 
             void Capture(Window target, string name)
             {

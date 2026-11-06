@@ -129,9 +129,11 @@ public sealed class CdDiscModule : IOpticalDiscModule
         IProgress<DiscJobProgress>? progress,
         CancellationToken cancellationToken)
     {
+        // Preserve the established CLI diagnostic order before entering the typed API.
+        string output = options.Require("output");
         CdImageRequest image = new(
             options.Require("input"),
-            options.Require("output"),
+            output,
             ReadParameters(options),
             ReadTone(options),
             options.GetBoolean("interleave", true),

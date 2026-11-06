@@ -178,7 +178,7 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
                 BluRayImageGenerator.Prepare(image);
                 token.ThrowIfCancellationRequested();
                 return new(Descriptor.Id, command.Name, 2,
-                    "BD picture generation requires an image loader. Run bd-generate through the application or provide a BluRayGray8Raster loader.");
+                    L.T("BD picture generation requires an image loader. Run bd-generate through the application or provide a BluRayGray8Raster loader."));
             }
             DiscImageResult result = new BluRayImageGenerator(_imageLoader).Generate(image, progress, token);
             return new(Descriptor.Id, command.Name, 0, result.Summary, result.OutputPath);
@@ -193,19 +193,19 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
         uint value = UInt(options["byte"], "byte");
         if (value > 255) throw new ArgumentOutOfRangeException("byte", L.T("Probe byte must be 0..255 or 0x00..0xFF."));
         BluRayConstantByteMapping mapping = new((byte)value);
-        string interpretation = $"scrambled byte 0x{value:X2}; no black/white interpretation";
+        string interpretation = L.F($"scrambled byte 0x{value:X2}; no black/white interpretation");
         TimeSpan nextProgressReport = TimeSpan.Zero;
         InlineProgress<BluRayStreamingProgress> report = new(p =>
             {
                 if (p.Elapsed < nextProgressReport && p.CompletedBytes != p.TotalBytes) return;
                 nextProgressReport = p.Elapsed + TimeSpan.FromMilliseconds(250);
-                progress?.Report(new(Descriptor.Id, "payload", $"BD {p.CompletedBytes}/{p.TotalBytes} bytes",
+                progress?.Report(new(Descriptor.Id, "payload", L.F($"BD {p.CompletedBytes}/{p.TotalBytes} bytes"),
                     p.Fraction, p.CompletedBytes, p.TotalBytes, p.Elapsed));
             });
         BluRayStreamingSummary summary = BluRayStreamingGenerator.GenerateFile(output!, streaming, mapping, report, token);
 
         return new(Descriptor.Id, command.Name, 0,
-            $"BD probe: {summary.BytesWritten} raw payload bytes, sectors {start}..{start + count - 1}; {interpretation}. No filesystem.",
+            L.F($"BD probe: {summary.BytesWritten} raw payload bytes, sectors {start}..{start + count - 1}; {interpretation}. No filesystem."),
             Path.GetFullPath(output!));
     }
 

@@ -374,7 +374,7 @@
                                 </controls:VisibilityGate>
                                 <controls:VisibilityGate IsOpen="{Binding HasSelection}" Inverted="True">
                                     <TextBlock Style="{StaticResource HintText}"
-                                               Text="{loc:Text Xaml.SelectALayerOnTheCanvasToEditIts}" />
+                                               Text="{loc:Text Xaml.SelectALayerOnTheCanvasToEditIts}" Padding="3,0,0,0" />
                                 </controls:VisibilityGate>
                             </StackPanel>
                         </Border>

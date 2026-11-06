@@ -432,7 +432,7 @@
                                                Style="{StaticResource CompactText}" Margin="0,0,0,8" />
                                 </controls:VisibilityGate>
 
-                                <TextBlock Text="{Binding ActivePatternSummary}" Style="{StaticResource CompactHint}"
+                                <TextBlock Text="{Binding ActivePatternSummary}" Style="{StaticResource CompactHint}" Padding="3,0,0,0"
                                            TextWrapping="Wrap" Margin="0,0,0,10" />
 
                                 <!-- Two delivery paths, named by what the user does next:
@@ -473,7 +473,10 @@
                                 <controls:VisibilityGate IsOpen="{Binding IsVisualSelectorWorkflow}">
                                     <TextBlock Text="{loc:Text VisualSelector.OutputHelp}" Style="{StaticResource CompactHint}" TextWrapping="Wrap" Margin="0,0,0,10" />
                                 </controls:VisibilityGate>
-                                <Expander Header="{loc:Text Xaml.CalibrationSessionAdvanced}" IsExpanded="False">
+                                <Expander IsExpanded="False">
+                                    <Expander.Header>
+                                        <TextBlock Text="{loc:Text Xaml.CalibrationSessionAdvanced}" TextWrapping="Wrap" />
+                                    </Expander.Header>
                                     <WrapPanel Margin="0,4,0,0">
                                         <Button Content="{loc:Text Xaml.SaveCalibrationSession}" Command="{Binding SaveSessionCommand}"
                                                 Style="{StaticResource CompactButton}" Margin="0,0,8,0" />

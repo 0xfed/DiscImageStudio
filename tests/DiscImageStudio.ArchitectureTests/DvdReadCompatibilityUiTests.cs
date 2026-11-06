@@ -188,8 +188,8 @@ internal static class DvdReadCompatibilityUiTests
                 string english = L.T(fullKey);
                 Require(english != fullKey && !english.Any(c => c is >= '\u4e00' and <= '\u9fff'),
                     key + " has an English translation");
-                L.SetLanguage(L.Japanese);
-                Require(L.T(fullKey) == english, key + " uses English fallback when its locale is missing");
+                L.SetLanguage(L.Czech);
+                Require(L.T(fullKey) == english, key + " uses English fallback when its optional locale is missing");
             }
             L.SetLanguage(L.Chinese);
             host.Content = export;

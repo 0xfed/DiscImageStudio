@@ -92,8 +92,8 @@ internal static class PopupLocalizationTests
         var toast = shell.Toasts.Last();
         string message = toast.Message;
         Require(!HasChinese(message) && !HasChinese(toast.Title)
-            && message.Contains("outer edge", StringComparison.Ordinal)
-            && message.Contains("center-hole", StringComparison.Ordinal),
+            && message.Contains("outer-edge error", StringComparison.Ordinal)
+            && message.Contains("inner-edge error", StringComparison.Ordinal),
             "the actual failure popup and its title are English");
         Require(message.Contains(fit.OuterRmsPixels.ToString("0.##", CultureInfo.CurrentCulture) + " px", StringComparison.Ordinal)
             && message.Contains(fit.HoleRmsPixels.ToString("0.##", CultureInfo.CurrentCulture) + " px", StringComparison.Ordinal),
@@ -111,7 +111,9 @@ internal static class PopupLocalizationTests
             "an unsupported calibration schema reports its actual version in English");
 
         var transformError = Capture<ArgumentException>(() => new CalibrationPhotoTransform([1, 2]));
-        Require(transformError.ParamName == "discToSourceMatrix9" && HasChinese(transformError.Message)
+        Require(transformError.ParamName == "discToSourceMatrix9"
+            && transformError.Message.Contains(transformError.ParamName, StringComparison.Ordinal)
+            && DiagnosticMessage.Template(transformError)?.Format == "照片变换必须包含 9 个有限数值。"
             && !HasChinese(L.Error(transformError)) && L.Error(transformError).Contains("9", StringComparison.Ordinal),
             "parameter-suffixed errors retain their diagnostics and have a translated display message");
 

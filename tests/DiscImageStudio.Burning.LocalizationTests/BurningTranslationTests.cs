@@ -59,12 +59,15 @@ internal static class BurningTranslationTests
         Check(operations[^1].Message == L.T("关闭 CD 刻录会话"), "translated CD close operation");
         string track = L.T(kind == OpticalBurnMediaKind.CdData ? "数据轨" : "音轨");
         Check(operations.Any(operation => operation.Message == L.Format("写入 CD DAO {0}", track)), "translated CD track description");
-        using GeneratedContentComStream rejected = Content(request);
-        CdSession small = new() { LeadoutLimit = 296 };
-        using CdImage sameImage = new();
-        InvalidOperationException overburn = Throws<InvalidOperationException>(() => WindowsImapiBurner.BurnCdDao(small, sameImage, rejected, request, CancellationToken.None));
-        Check(overburn.Message == L.Format("CD DAO lead-out 超出盘片边界 {0} 个扇区；最多允许 {1} 个 DAO 扇区的受限 overburn。", 4, 3), "localized unchanged overburn limit");
-        Check(!small.Calls.Contains("write") && small.Calls[^1] == "release", "CD rejection before write with cleanup");
+        foreach (int excess in new[] { 1, 4 })
+        {
+            using GeneratedContentComStream rejected = Content(request);
+            CdSession small = new() { LeadoutLimit = 300 - excess };
+            using CdImage sameImage = new();
+            InvalidOperationException overburn = Throws<InvalidOperationException>(() => WindowsImapiBurner.BurnCdDao(small, sameImage, rejected, request, CancellationToken.None));
+            Check(overburn.Message == L.Format("CD DAO lead-out 超出盘片边界 {0} 个扇区；已取消刻录，不允许超刻。", excess), "localized strict DAO boundary");
+            Check(!small.Calls.Contains("write") && small.Calls[^1] == "release", "CD rejection before write with cleanup");
+        }
     }
 
     private static void TestBluRay()

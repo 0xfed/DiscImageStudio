@@ -97,7 +97,7 @@ public sealed record CdDiscParameters(
         }
 
         if (SourceImageOuterRadiusMm is { } sourceRadius && (!double.IsFinite(sourceRadius) || sourceRadius <= 0))
-            throw new ArgumentOutOfRangeException(nameof(SourceImageOuterRadiusMm), "Source image radius must be positive and finite.");
+            throw new ArgumentOutOfRangeException(nameof(SourceImageOuterRadiusMm), L.T("Source image radius must be positive and finite."));
         _ = GeometryBytes;
         _ = TotalBytes;
         DvdTrackGeometry.ValidatePitchCoefficients(PitchLinear, PitchQuadratic, PitchCubic);

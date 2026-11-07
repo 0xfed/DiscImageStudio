@@ -239,7 +239,7 @@ internal static class MultiBlockImageSolver
             || options.ImageMapping.OutputSectors > options.ImageMapping.TotalSectors
             || !double.IsFinite(options.ImageMapping.SamplingOuterRadiusMm)
             || options.ImageMapping.SamplingOuterRadiusMm <= 0)
-            throw new ArgumentOutOfRangeException(nameof(options), "Output capacity and image radius must lie inside the disc geometry.");
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Output capacity and image radius must lie inside the disc geometry."));
 
         if ((ulong)options.StartLba + options.FillSectors > options.ImageMapping.OutputSectors)
         {

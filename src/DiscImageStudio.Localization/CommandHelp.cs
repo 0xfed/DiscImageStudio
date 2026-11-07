@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 namespace DiscImageStudio.Localization;
 
 /// <summary>Localized console help with invariant command and option syntax.</summary>
@@ -106,6 +107,7 @@ public static class CommandHelp
         Option("  --drawing-start-lba N     ", "Hybrid override; must follow all files and align to an ECC Block"),
         Option("  --fast-output true|false ", "Direct dispersion ISO output without ECC/EFM replay (default false; true in hybrid mode)"),
         Option("  --fast-parallelism 0..64 ", "Fast-output workers; 0 selects processor count (default 0)"),
+        Option("  --read-compatibility true|false ", "Experimental periodic 0x9B protection for fast dispersion (default false)"),
         Option("  --iterations-per-block N  ", "Full/state-control passes; dispersion ignores search (defaults 100/3/1)"),
         Option("  --iso-output FILE         ", "Write a directly burnable 2048-byte/sector ISO image"),
         Option("  --iso-sectors N           ", "Sector count for a new minimal ISO (image mode reuses total sectors)"),
@@ -135,6 +137,7 @@ public static class CommandHelp
         Text("State-control chooses payload bytes directly from image-ranked EFMPlus code words and keeps a beam of exact dual-stream prefix states. Search is driven by controllable payload words; the reported majority/gray scores cover every 16-bit channel word, including fixed/EDC/PI/PO and both SYNC words. Stream, DSV and final boundaries remain exact."),
         Code(""),
         Text("Dispersion maps luminance bins 0..127 and 128..255 to scrambled EFMPlus input bytes 0xA5 and 0x92 (5 and 2 transitions), then reverses DVD payload scrambling for ISO output. Nominal preview levels are 0 and 255. It samples every payload code-word center regardless of --constraint-step and --image-threshold. These values are not calibrated optical luminance. Opaque black/white images use nearest-neighbor sampling to preserve their dither pattern. Other images retain alpha-weighted bilinear sampling. Q=0x66 and 0xB9 are not generated; old ISOs retain readback of 66 as black and B9 as nominal dark gray 85. With --fast-output true, payload selection is unchanged but final ECC/EFM boundary and DSV verification are skipped; the JSON finalBoundary is therefore null."),
+        Text("--read-compatibility true protects owned drawing bytes at a 16-byte interval. It may change texture and contrast. Saved targets retain their recorded recipe. Full/state-control output and exact scrambled-byte patterns do not accept it."),
         Code(""),
         Text("Hybrid --data-dir mode builds a mountable ISO9660/Joliet filesystem. Files default to the inner ring; --file-position outer reserves the outer ring for files and draws between front metadata and files. Drawing boundaries align to ECC Blocks and never overwrite the filesystem. It defaults to dispersion plus fast output. --lba and --fill-sectors are automatic in this mode; use --drawing-start-lba to leave additional inner-ring space."),
         Code(""),

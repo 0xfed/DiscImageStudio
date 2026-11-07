@@ -735,7 +735,7 @@ internal static class Program
             L.Format("{0}, image sampled at every payload code-word center", DispersionPaletteDescription()));
 
         if (options.ReadCompatibility)
-            Console.WriteLine($"read compatibility={options.ReadCompatibilityMode} (experimental drawing-byte protection)");
+            Console.WriteLine(L.Format("read compatibility={0} (experimental drawing-byte protection)", options.ReadCompatibilityMode));
 
         FastDispersionWriteResult result = FastDvdImageFileWriter.WritePrepared(
             arguments.Require("image"),

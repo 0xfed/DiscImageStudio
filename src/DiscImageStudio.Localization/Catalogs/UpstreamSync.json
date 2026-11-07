@@ -1,0 +1,128 @@
+{
+  "The medium has no available sectors for this write.": {
+    "zh-CN": "盘片没有可用于此次刻录的扇区。",
+    "en": "The medium has no available sectors for this write.",
+    "zh-TW": "光碟沒有可用於此次燒錄的磁區。",
+    "ja": "この書き込みに使用できるセクターがありません。",
+    "tr": "Bu yazma işlemi için ortamda kullanılabilir sektör yok."
+  },
+  "The medium has no complete recording block available.": {
+    "zh-CN": "盘片没有可用的完整刻录块。",
+    "en": "The medium has no complete recording block available.",
+    "zh-TW": "光碟沒有可用的完整燒錄區塊。",
+    "ja": "使用できる完全な記録ブロックがありません。",
+    "tr": "Ortamda kullanılabilir tam kayıt bloğu yok."
+  },
+  "BD-R output sectors must be a positive multiple of 32 within the geometry.": {
+    "zh-CN": "BD-R 输出扇区数必须为正数、是 32 的倍数，且不超过几何总扇区数。",
+    "en": "BD-R output sectors must be a positive multiple of 32 within the geometry.",
+    "zh-TW": "BD-R 輸出磁區數必須為正數、是 32 的倍數，且不超過幾何總磁區數。",
+    "ja": "BD-R の出力セクター数は正の 32 の倍数で、形状の総セクター数以下である必要があります。",
+    "tr": "BD-R çıktı sektör sayısı pozitif, 32’nin katı ve geometrinin toplam sektör sayısını aşmayan bir değer olmalıdır."
+  },
+  "BD sidecar output sectors must be a 32-aligned range within the geometry.": {
+    "zh-CN": "BD 附加记录的输出范围必须按 32 扇区对齐，且位于盘面几何范围内。",
+    "en": "BD sidecar output sectors must be a 32-aligned range within the geometry.",
+    "zh-TW": "BD 附加記錄的輸出範圍必須按 32 磁區對齊，且位於碟面幾何範圍內。",
+    "ja": "BD サイドカーの出力範囲は 32 セクター単位で、形状の範囲内にある必要があります。",
+    "tr": "BD yan dosyasının çıktı aralığı 32 sektöre hizalı olmalı ve geometri içinde kalmalıdır."
+  },
+  "This recorder does not expose writable media capacity.": {
+    "zh-CN": "此刻录机无法提供盘片的可写容量。",
+    "en": "This recorder does not expose writable media capacity.",
+    "zh-TW": "此燒錄機無法提供光碟的可寫容量。",
+    "ja": "このドライブは書き込み可能な容量を取得できません。",
+    "tr": "Bu sürücü ortamın yazılabilir kapasitesini bildirmiyor."
+  },
+  "Source image radius must be positive and finite.": {
+    "zh-CN": "源图像半径必须为正的有限数值。",
+    "en": "Source image radius must be positive and finite.",
+    "zh-TW": "來源影像半徑必須為正的有限數值。",
+    "ja": "元画像の半径は正の有限値である必要があります。",
+    "tr": "Kaynak görüntü yarıçapı pozitif ve sonlu olmalıdır."
+  },
+  "Invalid confirmed calibration fit.": {
+    "zh-CN": "已确认的标定拟合记录无效。",
+    "en": "Invalid confirmed calibration fit.",
+    "zh-TW": "已確認的校準擬合記錄無效。",
+    "ja": "確認済みの校正フィット記録が無効です。",
+    "tr": "Onaylanmış kalibrasyon uyum kaydı geçersiz."
+  },
+  "Invalid confirmed calibration fit candidate.": {
+    "zh-CN": "已确认的标定拟合候选记录无效。",
+    "en": "Invalid confirmed calibration fit candidate.",
+    "zh-TW": "已確認的校準擬合候選記錄無效。",
+    "ja": "確認済みの校正フィット候補が無効です。",
+    "tr": "Onaylanmış kalibrasyon uyum adayı geçersiz."
+  },
+  "Unsupported DVD read compatibility recipe in the calibration target.": {
+    "zh-CN": "标靶中的 DVD 读取兼容性规则不受支持。",
+    "en": "Unsupported DVD read compatibility recipe in the calibration target.",
+    "zh-TW": "標靶中的 DVD 讀取相容性規則不受支援。",
+    "ja": "校正ターゲットの DVD 読み取り互換ルールに対応していません。",
+    "tr": "Kalibrasyon hedefindeki DVD okuma uyumluluğu kuralı desteklenmiyor."
+  },
+  "Unsupported DVD read compatibility recipe.": {
+    "zh-CN": "不支持此 DVD 读取兼容性规则。",
+    "en": "Unsupported DVD read compatibility recipe.",
+    "zh-TW": "不支援此 DVD 讀取相容性規則。",
+    "ja": "この DVD 読み取り互換ルールに対応していません。",
+    "tr": "Bu DVD okuma uyumluluğu kuralı desteklenmiyor."
+  },
+  "Output capacity and image radius must lie inside the disc geometry.": {
+    "zh-CN": "输出容量与图像半径必须位于盘面几何范围内。",
+    "en": "Output capacity and image radius must lie inside the disc geometry.",
+    "zh-TW": "輸出容量與影像半徑必須位於碟面幾何範圍內。",
+    "ja": "出力容量と画像半径はディスク形状の範囲内にある必要があります。",
+    "tr": "Çıktı kapasitesi ve görüntü yarıçapı disk geometrisi içinde kalmalıdır."
+  },
+  "Geometry total sectors": {
+    "zh-CN": "几何总扇区数",
+    "en": "Geometry total sectors",
+    "zh-TW": "幾何總磁區數",
+    "ja": "形状の総セクター数",
+    "tr": "Geometrinin toplam sektör sayısı"
+  },
+  "Geometry sectors": {
+    "zh-CN": "几何扇区数",
+    "en": "Geometry sectors",
+    "zh-TW": "幾何磁區數",
+    "ja": "形状のセクター数",
+    "tr": "Geometri sektör sayısı"
+  },
+  "Output sectors within the geometry": {
+    "zh-CN": "几何范围内的输出扇区数",
+    "en": "Output sectors within the geometry",
+    "zh-TW": "幾何範圍內的輸出磁區數",
+    "ja": "形状内の出力セクター数",
+    "tr": "Geometri içindeki çıktı sektör sayısı"
+  },
+  "Experimental periodic 0x9B protection for fast dispersion (default false)": {
+    "zh-CN": "快速弥散的实验性周期 0x9B 保护（默认 false）",
+    "en": "Experimental periodic 0x9B protection for fast dispersion (default false)",
+    "zh-TW": "快速彌散的實驗性週期 0x9B 保護（預設 false）",
+    "ja": "高速分散の実験的な周期 0x9B 保護（既定 false）",
+    "tr": "Hızlı dağılım için deneysel periyodik 0x9B koruması (varsayılan false)"
+  },
+  "--read-compatibility true protects owned drawing bytes at a 16-byte interval. It may change texture and contrast. Saved targets retain their recorded recipe. Full/state-control output and exact scrambled-byte patterns do not accept it.": {
+    "zh-CN": "--read-compatibility true 每隔 16 字节保护生成器拥有的绘图字节，可能改变纹理与对比度。已保存标靶保留原记录规则。full/state-control 输出和精确扰码字节图案不接受此选项。",
+    "en": "--read-compatibility true protects owned drawing bytes at a 16-byte interval. It may change texture and contrast. Saved targets retain their recorded recipe. Full/state-control output and exact scrambled-byte patterns do not accept it.",
+    "zh-TW": "--read-compatibility true 每隔 16 位元組保護產生器擁有的繪圖位元組，可能改變紋理與對比。已儲存標靶保留原記錄規則。full/state-control 輸出和精確擾碼位元組圖案不接受此選項。",
+    "ja": "--read-compatibility true は所有する描画バイトを 16 バイト間隔で保護し、模様とコントラストが変わる場合があります。保存済みターゲットは記録時のルールを保持します。full/state-control 出力と正確なスクランブルバイトのパターンでは使用できません。",
+    "tr": "--read-compatibility true, üretilen çizim baytlarını 16 bayt aralıkla korur; doku ve kontrast değişebilir. Kayıtlı hedefler kaydedilmiş kuralını korur. full/state-control çıktısı ve tam karıştırılmış bayt desenleri bu seçeneği kabul etmez."
+  },
+  "CD DAO lead-out 超出盘片边界 {0} 个扇区；已取消刻录，不允许超刻。": {
+    "zh-CN": "CD DAO lead-out 超出盘片边界 {0} 个扇区；已取消刻录，不允许超刻。",
+    "en": "CD DAO lead-out exceeds the disc boundary by {0} sectors. Recording was cancelled; overburn is not allowed.",
+    "zh-TW": "CD DAO lead-out 超出光碟邊界 {0} 個磁區；已取消燒錄，不允許超燒。",
+    "ja": "CD DAO の lead-out がディスク境界を {0} セクター超えています。書き込みを中止しました。オーバーバーンは許可されていません。",
+    "tr": "CD DAO lead-out disk sınırını {0} sektör aşıyor. Yazma iptal edildi; kapasite üstü yazmaya izin verilmiyor."
+  },
+  "read compatibility={0} (experimental drawing-byte protection)": {
+    "zh-CN": "读取兼容性={0}（实验性绘图字节保护）",
+    "en": "read compatibility={0} (experimental drawing-byte protection)",
+    "zh-TW": "讀取相容性={0}（實驗性繪圖位元組保護）",
+    "ja": "読み取り互換性={0}（実験的な描画バイト保護）",
+    "tr": "okuma uyumluluğu={0} (deneysel çizim baytı koruması)"
+  }
+}

@@ -82,16 +82,24 @@
   },
   "CalibrationMedia.ReadGeometryOnly": {
     "zh-CN": "{0} · {1}，已填入几何总扇区 {2:N0}。当前盘片无可写容量；新标靶的可用扇区按缺省值估算。",
+    "en": "{0} · {1}. Entered {2:N0} geometry sectors. This disc has no writable capacity; usable sectors for a new target use the default estimate.",
     "zh-TW": "{0} · {1}，已填入幾何總磁區 {2:N0}。目前光碟無可寫容量；新標靶的可用磁區按預設值估算。",
-    "en": "{0} · {1}. Entered {2:N0} geometry sectors. This disc has no writable capacity; usable sectors for a new target use the default estimate."
+    "ja": "{0} · {1}、形状の総セクター数 {2:N0} を入力しました。このディスクには書き込み可能容量がないため、新しいターゲットの使用可能数は既定値から推定します。",
+    "tr": "{0} · {1}. {2:N0} geometri sektörü girildi. Bu diskte yazılabilir alan yok; yeni hedefin kullanılabilir sektörleri varsayılan değerden tahmin edilir."
   },
   "光驱未报告有效的 CD 容量。": {
     "zh-CN": "光驱未报告有效的 CD 容量。",
-    "en": "The drive did not report a valid CD capacity."
+    "en": "The drive did not report a valid CD capacity.",
+    "zh-TW": "光碟機未回報有效的 CD 容量。",
+    "ja": "ドライブが有効な CD 容量を報告しませんでした。",
+    "tr": "Sürücü geçerli bir CD kapasitesi bildirmedi."
   },
   "光驱报告的 DVD 可写容量无效。": {
     "zh-CN": "光驱报告的 DVD 可写容量无效。",
-    "en": "The drive reported an invalid writable DVD capacity."
+    "en": "The drive reported an invalid writable DVD capacity.",
+    "zh-TW": "光碟機回報的 DVD 可寫容量無效。",
+    "ja": "ドライブが報告した DVD の書き込み可能容量が無効です。",
+    "tr": "Sürücünün bildirdiği yazılabilir DVD kapasitesi geçersiz."
   },
   "CalibrationMedia.Failed": {
     "zh-CN": "读取失败。{0}",

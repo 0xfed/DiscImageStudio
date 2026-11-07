@@ -497,7 +497,7 @@ public static class FastDispersionImageWriter
     {
         ArgumentNullException.ThrowIfNull(options);
         if (options.ReadCompatibility && !DvdReadCompatibilityModes.IsSupported(options.ReadCompatibilityMode))
-            throw new ArgumentException("Unsupported DVD read compatibility recipe.", nameof(options));
+            throw new ArgumentException(L.T("Unsupported DVD read compatibility recipe."), nameof(options));
         if (options.Algorithm != SolverAlgorithm.Dispersion)
         {
             throw new ArgumentException(L.T("Fast output requires --algorithm dispersion."));
@@ -522,7 +522,7 @@ public static class FastDispersionImageWriter
             || options.ImageMapping.OutputSectors > options.ImageMapping.TotalSectors
             || !double.IsFinite(options.ImageMapping.SamplingOuterRadiusMm)
             || options.ImageMapping.SamplingOuterRadiusMm <= 0)
-            throw new ArgumentOutOfRangeException(nameof(options), "Output capacity and image radius must lie inside the disc geometry.");
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Output capacity and image radius must lie inside the disc geometry."));
 
         if ((ulong)options.StartLba + options.FillSectors > options.ImageMapping.OutputSectors)
         {

@@ -49,7 +49,7 @@ internal static class DvdReadCompatibilityGuard
         const int minimumPaletteBytes = 58;
         if (payload.Length != sectorLength || scramblerMask.Length != sectorLength
             || ownership.Length != sectorLength)
-            throw new ArgumentException("Payload, scrambler mask, and ownership must each contain one 2048-byte sector.");
+            throw new ArgumentException(L.T("Payload, scrambler mask, and ownership must each contain one 2048-byte sector."));
 
         // All decisions use the original Q. Bridges written earlier in this
         // sector must not alter either later run detection or window counts.

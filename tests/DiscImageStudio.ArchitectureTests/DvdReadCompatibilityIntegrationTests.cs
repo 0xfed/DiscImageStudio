@@ -54,6 +54,7 @@ internal static class DvdReadCompatibilityIntegrationTests
             VerifyPreview(directory, iso);
             VerifyHybrid(directory, source, options);
             VerifyCalibration(directory, options);
+            VerifyVisualSelector(directory);
             VerifyModeValidation(directory, source, options);
             using var canceled = new MemoryStream();
             using var cancellation = new CancellationTokenSource();
@@ -67,6 +68,31 @@ internal static class DvdReadCompatibilityIntegrationTests
         }
         finally { Directory.Delete(directory, recursive: true); }
         Console.WriteLine("dvd-read-compatibility-integration: passed (file/CLI/stream, versioned sidecar, preview, protected files, frozen calibration)");
+    }
+
+    private static void VerifyVisualSelector(string directory)
+    {
+        var parameters = new CalibrationParameters(CalibrationDiscKind.Dvd, 24, 58, 256, 133.3,
+            DvdReadCompatibility: true);
+        var target = CalibrationTarget.Create(parameters, new(VisualSelectorRangeMm: .2), CalibrationPatternKind.VisualSelector);
+        var limitedOptions = new DvdStreamingOptions(256, 24, 58, FastParallelism: 1, UsableSectors: 192,
+            ReadCompatibilityMode: DvdReadCompatibilityModes.LegacyBridge);
+        using MemoryStream complete = new(), limited = new();
+        DvdStreamingGenerator.GenerateCalibrationPattern(target, complete, fastParallelism: 1);
+        var result = DvdStreamingGenerator.GeneratePattern(target, limited, limitedOptions);
+        Require(result.Sectors == 192 && limited.Length == 192 * 2048 && result.CompatibilityChanges > 0
+            && complete.ToArray().AsSpan(0, 192 * 2048).SequenceEqual(limited.ToArray()),
+            "visual selector honors the device cap, preserves full geometry and uses its frozen periodic recipe");
+        var old = new CalibrationTarget(target.SchemaVersion, target.Id, parameters, target.Options, target.Cells, target.Artwork);
+        using MemoryStream legacy = new();
+        DvdStreamingGenerator.GeneratePattern(old, legacy, limitedOptions);
+        Require(legacy.Length == limited.Length && !legacy.ToArray().SequenceEqual(limited.ToArray()),
+            "old visual selector records retain their legacy bridge bytes");
+        string iso = Path.Combine(directory, "selector-limited.iso");
+        DvdImageGenerator.GenerateCalibration(target, iso, limitedOptions);
+        Require(File.ReadAllBytes(iso).SequenceEqual(limited.ToArray())
+            && DvdImageMetadata.TryLoad(iso) is { ReadCompatibilityMode: DvdReadCompatibilityModes.Periodic9B16, UsableSectors: 192 },
+            "limited visual selector file, stream and recorded recipe agree");
     }
 
     private static void VerifyPreview(string directory, string iso)

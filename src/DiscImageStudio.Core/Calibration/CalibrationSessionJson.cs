@@ -79,16 +79,16 @@ public sealed record CalibrationConfirmedFit(string TargetId, CalibrationFitResu
             || (uint)SelectedCandidateIndex >= (uint)Result.Candidates.Count
             || Result.Warnings is null || Result.Warnings.Any(warning => warning is null)
             || !double.IsFinite(Result.RotationRadians) || !ValidError(Result.RmsErrorMm))
-            throw new ArgumentException("Invalid confirmed calibration fit.");
+            throw new ArgumentException(L.T("Invalid confirmed calibration fit."));
         if (Result.BestParameters is { } best) target.ValidateCompatible(best);
         if (Result.Succeeded && Result.BestParameters is null)
-            throw new ArgumentException("Invalid confirmed calibration fit.");
+            throw new ArgumentException(L.T("Invalid confirmed calibration fit."));
         foreach (CalibrationFitCandidate candidate in Result.Candidates)
         {
             if (candidate is null || candidate.Parameters is null
                 || !double.IsFinite(candidate.RotationRadians) || !ValidError(candidate.RmsErrorMm)
                 || !ValidError(candidate.RobustCost) || !ValidError(candidate.MaxErrorMm) || candidate.OutlierCount < 0)
-                throw new ArgumentException("Invalid confirmed calibration fit candidate.");
+                throw new ArgumentException(L.T("Invalid confirmed calibration fit candidate."));
             target.ValidateCompatible(candidate.Parameters);
         }
     }

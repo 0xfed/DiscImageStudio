@@ -44,7 +44,7 @@ public sealed record DvdStreamingOptions(
     public void Validate()
     {
         if (ReadCompatibility && !DvdReadCompatibilityModes.IsSupported(ReadCompatibilityMode))
-            throw new ArgumentException("Unsupported DVD read compatibility recipe.", nameof(ReadCompatibilityMode));
+            throw new ArgumentException(L.T("Unsupported DVD read compatibility recipe."), nameof(ReadCompatibilityMode));
         DvdTrackGeometry.ValidatePitchCoefficients(PitchLinear, PitchQuadratic, PitchCubic);
         if (Tone is { } tone)
         {
@@ -94,7 +94,7 @@ public sealed record DvdStreamingOptions(
         }
 
         if (SourceImageOuterRadiusMm is { } sourceRadius && (!double.IsFinite(sourceRadius) || sourceRadius <= 0))
-            throw new ArgumentOutOfRangeException(nameof(SourceImageOuterRadiusMm), "Source image radius must be positive and finite.");
+            throw new ArgumentOutOfRangeException(nameof(SourceImageOuterRadiusMm), L.T("Source image radius must be positive and finite."));
         _ = ContentLength;
         // Resolve the complete curve before a hybrid stream writes its filesystem
         // prefix. Positive coefficients alone do not guarantee numerical resolution.
@@ -260,7 +260,8 @@ public static class DvdStreamingGenerator
             ReadCompatibilityMode = target.EffectiveDvdReadCompatibilityMode,
         };
         if (target.IsVisualSelectorPattern)
-            return GenerateCalibrationPattern(target, output, progress, options.FastParallelism, cancellationToken);
+            return GenerateCalibrationPattern(target, output, progress, options.FastParallelism, cancellationToken,
+                options.OutputSectors);
         if (target.UsesReferencePattern)
         {
             ArgumentNullException.ThrowIfNull(output);
@@ -323,7 +324,8 @@ public static class DvdStreamingGenerator
         Stream output,
         Action<DvdStreamingProgress>? progress = null,
         int fastParallelism = 0,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        uint? usableSectors = null)
     {
         ArgumentNullException.ThrowIfNull(target);
         ArgumentNullException.ThrowIfNull(output);
@@ -334,7 +336,9 @@ public static class DvdStreamingGenerator
         DvdStreamingOptions options = new(checked((uint)p.Sectors), p.InnerRadiusMm, p.OuterRadiusMm,
             p.LinearDensity, FastParallelism: fastParallelism,
             PitchLinear: p.PitchLinear, PitchQuadratic: p.PitchQuadratic, PitchCubic: p.PitchCubic,
-            ReadCompatibility: p.DvdReadCompatibility);
+            ReadCompatibility: p.DvdReadCompatibility,
+            UsableSectors: usableSectors ?? (p.UsableSectors is { } usable ? checked((uint)usable) : null),
+            ReadCompatibilityMode: target.EffectiveDvdReadCompatibilityMode);
         options.Validate();
         if (target.VisualSelector is not { } selector)
             return GeneratePattern(target, output, options, progress, cancellationToken);
@@ -342,11 +346,11 @@ public static class DvdStreamingGenerator
         double totalChannelBits = p.Sectors * (double)CalibrationParameters.DvdChannelBitsPerSector;
         FastDvdStreamSummary summary = FastDispersionImageWriter.WriteCodewordPatternStream(
             sample => selector.SampleRecordingProgress((sample.GlobalCodewordIndex * 16.0 + 8) / totalChannelBits),
-            output, CreateSolveOptions(options, 0, options.TotalSectors),
+            output, CreateSolveOptions(options, 0, options.OutputSectors),
             value => progress?.Invoke(new DvdStreamingProgress(value.BytesWritten, value.TotalBytes,
                 value.CompletedBlocks, value.TotalBlocks, value.Elapsed)), cancellationToken);
         return new DvdStreamingSummary("calibration", summary.SectorsWritten, summary.BytesWritten,
-            summary.ControlledWords, summary.Elapsed);
+            summary.ControlledWords, summary.Elapsed, summary.CompatibilityChanges);
     }
 
     public static DvdStreamingSummary GenerateHybrid(

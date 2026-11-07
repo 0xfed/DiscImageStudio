@@ -1,3 +1,4 @@
+using DiscImageStudio.Localization;
 using DiscImageStudio.Burning;
 
 namespace DiscImageStudio.Services;
@@ -9,7 +10,7 @@ internal static class StreamBurnCapacity
     internal static long Resolve(long usableSectors, long writableSectors, OpticalBurnMediaKind kind)
     {
         if (usableSectors <= 0 || writableSectors <= 0)
-            throw new InvalidOperationException("The medium has no available sectors for this write.");
+            throw new InvalidOperationException(L.T("The medium has no available sectors for this write."));
         int alignment = kind switch
         {
             OpticalBurnMediaKind.DvdData => 16,
@@ -19,7 +20,7 @@ internal static class StreamBurnCapacity
         long limit = Math.Min(usableSectors, writableSectors);
         limit -= limit % alignment;
         if (limit == 0)
-            throw new InvalidOperationException("The medium has no complete recording block available.");
+            throw new InvalidOperationException(L.T("The medium has no complete recording block available."));
         return limit;
     }
 }

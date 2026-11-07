@@ -162,7 +162,7 @@ public interface IOpticalDiscBurner
     /// A total-only implementation cannot safely infer the writable payload limit.</summary>
     Task<OpticalMediaCapacity> GetMediaCapacityAsync(string deviceId, OpticalBurnMediaKind mediaKind,
         CancellationToken cancellationToken = default)
-        => throw new NotSupportedException("This recorder does not expose writable media capacity.");
+        => throw new NotSupportedException(L.T("This recorder does not expose writable media capacity."));
 
     Task<IReadOnlyList<OpticalWriteSpeed>> GetSupportedWriteSpeedsAsync(
         string deviceId,

@@ -125,7 +125,7 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
     internal static OpticalMediaCapacity ReadCdMediaCapacity(long atipSectors, bool physicallyBlank)
     {
         if (atipSectors <= 2)
-            throw new IOException("光驱未报告有效的 CD 容量。");
+            throw new IOException(L.T("光驱未报告有效的 CD 容量。"));
         // A conservative single-track payload limit shared with TAO. The actual
         // recorder remains DAO and independently checks its lead-out before writing.
         // A used CD is not writable by this application's blank-disc DAO workflow.
@@ -137,7 +137,7 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
     {
         long total = ReadDvdSectorCount(physicalMediaType, totalSectorsOnMedia);
         if (freeSectorsOnMedia < 0 || freeSectorsOnMedia > total)
-            throw new IOException("光驱报告的 DVD 可写容量无效。");
+            throw new IOException(L.T("光驱报告的 DVD 可写容量无效。"));
         return new(total, freeSectorsOnMedia);
     }
 

@@ -115,7 +115,7 @@ public sealed record BluRayIsoMetadata(
         }
 
         if (OutputSectors == 0 || OutputSectors > TotalSectors || OutputSectors % BluRayDiscParameters.SectorsPerCluster != 0)
-            throw new InvalidDataException("BD sidecar output sectors must be a 32-aligned range within the geometry.");
+            throw new InvalidDataException(L.T("BD sidecar output sectors must be a 32-aligned range within the geometry."));
         if (!double.IsFinite(InnerRadiusMm) || !double.IsFinite(OuterRadiusMm)
             || InnerRadiusMm <= 0 || OuterRadiusMm <= InnerRadiusMm || OuterRadiusMm > 60)
         {

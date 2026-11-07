@@ -72,7 +72,7 @@ public sealed record CalibrationParameters(
         int alignment = Kind == CalibrationDiscKind.Dvd ? 16 : Kind == CalibrationDiscKind.BluRay ? 32 : 1;
         if (OutputSectors <= 0 || OutputSectors > Sectors
             || (UsableSectors is not null && OutputSectors % alignment != 0))
-            throw new ArgumentException("标定的可用扇区数必须为正数、不超过总扇区数，并符合介质写入对齐要求。");
+            throw new ArgumentException(L.T("标定的可用扇区数必须为正数、不超过总扇区数，并符合介质写入对齐要求。"));
         if (DrawingStartSector < 0 || DrawingStartSector >= OutputSectors
             || DrawingEndSectorExclusive < 0 || DrawingEndSectorExclusive > OutputSectors
             || (DrawingEndSectorExclusive != 0 && DrawingEndSectorExclusive <= DrawingStartSector)
@@ -495,7 +495,7 @@ public sealed class CalibrationTarget
         if (parameters.Kind == CalibrationDiscKind.Cd && version is 12 or 13
             && parameters.OutputSectors <= CalibrationWideBandPattern.ForVersion(version)[^1]
                 .UnitRange(parameters.Sectors).EndExclusive)
-            throw new ArgumentException("CD 粗标的可用扇区数不足以包含最外侧固定地址边界及其后的留白。请增加可用扇区数，或使用边界标定。");
+            throw new ArgumentException(L.T("CD 粗标的可用扇区数不足以包含最外侧固定地址边界及其后的留白。请增加可用扇区数，或使用边界标定。"));
         return new(version, Guid.NewGuid().ToString("N"), parameters, options,
             BuildCells(parameters), artwork,
             parameters.Kind == CalibrationDiscKind.Dvd && parameters.DvdReadCompatibility
@@ -525,7 +525,7 @@ public sealed class CalibrationTarget
         if (!Guid.TryParseExact(Id, "N", out _)) throw new ArgumentException(L.T("标定图案 ID 无效。"));
         Parameters.Validate();
         if (DvdReadCompatibilityMode is not null && !DvdReadCompatibilityModes.IsSupported(DvdReadCompatibilityMode))
-            throw new ArgumentException("Unsupported DVD read compatibility recipe in the calibration target.");
+            throw new ArgumentException(L.T("Unsupported DVD read compatibility recipe in the calibration target."));
         if (HasClockRuler && !CalibrationClockRulerPattern.Supports(Parameters))
             throw new ArgumentException(L.T("时钟尺粗标靶需要 70–85 分钟、1200 mm/s 的标准 12 cm CD。"));
         if (HasRadialArcDashes && !CalibrationRadialArcPattern.Supports(Parameters))

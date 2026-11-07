@@ -47,6 +47,7 @@ internal static class CalibrationTimingViewModelTests
             string path = Path.Combine(directory.FullName, "timing.json");
             var result = Fixture(); DriveTimingRecord.Save(path, result);
             model.Parameters.DvdReadCompatibility = true;
+            model.Parameters.DvdUsableSectors = "2200000";
             await model.LoadTimingRecordFromAsync(path);
             Require(model.UseDriveTiming && model.TimingResult?.U == result.U && model.ApplyTimingResultCommand.CanExecute(null), "saved measurement opens in its workflow");
             Require(shell.State.DvdInnerRadius == projectRadius && ReferenceEquals(target, model.Target), "opening preserves drawing geometry and the burned target");
@@ -56,7 +57,8 @@ internal static class CalibrationTimingViewModelTests
             var expected = result.ToParameters(long.Parse(model.TimingTotalSectors, CultureInfo.InvariantCulture));
             Require(Math.Abs(double.Parse(model.Parameters.DvdInnerRadius, CultureInfo.InvariantCulture) - expected.InnerRadiusMm) < 1e-9
                 && model.Parameters.DvdReadCompatibility && shell.State.DvdInnerRadius == projectRadius
-                && ReferenceEquals(target, model.Target), "application changes only independent calibration geometry");
+                && model.Parameters.DvdUsableSectors == "2200000"
+                && ReferenceEquals(target, model.Target), "application changes only independent calibration geometry and retains usable capacity");
             model.SelectPatternCalibrationCommand.Execute(null);
             Require(model.GenerateImageCommand.CanExecute(null), "returning to photo calibration restores target output");
             model.SelectDriveTimingCommand.Execute(null);
@@ -76,8 +78,10 @@ internal static class CalibrationTimingViewModelTests
             await model.LoadTimingRecordFromAsync(path);
             Require(model.SelectedDiscType == "CD" && model.TimingResult!.RequiresFineCalibration, "CD keeps its unknown origin and follow-up calibration requirement");
             model.TimingTotalSectors = "359849";
+            model.Parameters.CdUsableSectors = "350000";
             model.ApplyTimingResultCommand.Execute(null);
-            Require(model.IsFineMode && model.TimingResultHint == L.T("Timing.CdFineRequired"), "CD application prepares the fine stage");
+            Require(model.IsFineMode && model.Parameters.CdUsableSectors == "350000"
+                && model.TimingResultHint == L.T("Timing.CdFineRequired"), "CD application prepares the fine stage and retains usable capacity");
         }
         finally
         {

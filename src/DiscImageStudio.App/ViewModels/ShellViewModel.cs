@@ -648,6 +648,11 @@ public partial class ShellViewModel : ObservableObject
             return;
         }
 
+        ProjectGeometry geometry = new(result.InnerRadiusMm, result.OuterRadiusMm, result.Sectors,
+            result.PitchLinear, result.PitchQuadratic, result.PitchCubic,
+            DiscParametersState.ResolveUsableSectors(CurrentProject!.Family, result.Sectors, result.UsableSectors));
+        bool synchronizePreview = result.SynchronizePreview
+            || geometry != ProjectSession.CaptureGeometry(CurrentProject!, State);
         _isApplyingProject = true;
         try
         {
@@ -672,6 +677,7 @@ public partial class ShellViewModel : ObservableObject
                     State.BdPitchLinear = ProjectSession.Format(result.PitchLinear);
                     State.BdPitchQuadratic = ProjectSession.Format(result.PitchQuadratic);
                     State.BdPitchCubic = ProjectSession.Format(result.PitchCubic);
+                    State.BdInvertMapping = result.BluRayInvertMapping;
                     break;
                 default:
                     State.CdInnerRadius = ProjectSession.Format(result.InnerRadiusMm);
@@ -684,6 +690,7 @@ public partial class ShellViewModel : ObservableObject
                     break;
             }
 
+            if (synchronizePreview) State.SynchronizePreviewGeometry(CurrentProject.Family);
             CurrentProject = CurrentProject with { Name = result.Name };
         }
         finally

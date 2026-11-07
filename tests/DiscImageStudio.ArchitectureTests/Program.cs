@@ -17,6 +17,23 @@ if (args.SequenceEqual(new[] { "--localization-layout" }))
     return;
 }
 
+if (args is ["--test-parameter-persistence"])
+{
+    PresetApplicationTests.Run();
+    ProjectDialogPresetTests.Run();
+    CalibrationConfirmedFitTests.Run();
+    AppCubicMediaTests.Run();
+    UsableSectorPersistenceTests.Run();
+    CalibrationStandaloneTests.Run();
+    CalibrationPhotoViewModelTests.Run();
+    CalibrationThreeStageTests.Run();
+    CalibrationBoundaryWorkflowTests.Run();
+    CalibrationFitLocalizationTests.Run();
+    PopupLocalizationTests.Run();
+    RelocalizationTests.Run();
+    return;
+}
+
 if (args is ["--test-capacity-ui"])
 {
     DvdReadCompatibilityUiTests.Run();
@@ -147,6 +164,8 @@ TestDiscPresets();
 TestDiscPresetJson();
 UserPresetDeleteTests.Run();
 ProjectDialogPresetTests.Run();
+PresetApplicationTests.Run();
+CalibrationConfirmedFitTests.Run();
 ProjectStoreTests.Run();
 ProjectSessionTests.Run();
 FilePlacementProjectTests.Run();

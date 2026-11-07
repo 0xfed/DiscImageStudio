@@ -1,6 +1,7 @@
 using DiscImageStudio.Localization;
 using System.Diagnostics;
 using System.Runtime.Intrinsics;
+using DiscImageStudio.Core;
 using DiscImageStudio.Core.Calibration;
 using DvdImageSolver.Encoding;
 
@@ -264,8 +265,8 @@ public static class FastDispersionImageWriter
                 payload.Fill(DvdGrayscalePalette.GetScrambledByte(sectorLuminance(sector)));
                 DvdDataFrameBuilder.TransformPayloadScrambling(payload, sector + options.PsnOffset);
                 if (options.ReadCompatibility)
-                    compatibilityChanges += DvdReadCompatibilityGuard.ApplySector(payload,
-                        DvdDataFrameBuilder.PayloadScramblerMask(sector + options.PsnOffset), ownership);
+                    compatibilityChanges += ApplyReadCompatibility(payload,
+                        DvdDataFrameBuilder.PayloadScramblerMask(sector + options.PsnOffset), ownership, options);
             }
             return new GeneratedBlock(lba, buffer, buffer.Length, compatibilityChanges);
         }
@@ -468,11 +469,17 @@ public static class FastDispersionImageWriter
                 }
             }
             if (options.ReadCompatibility)
-                compatibilityChanges += DvdReadCompatibilityGuard.ApplySector(sectorPayload, scrambler, ownership);
+                compatibilityChanges += ApplyReadCompatibility(sectorPayload, scrambler, ownership, options);
         }
 
         return new GeneratedBlock(lba, payloads, controlledWords, compatibilityChanges);
     }
+
+    private static int ApplyReadCompatibility(Span<byte> payload, ReadOnlySpan<byte> mask,
+        ReadOnlySpan<byte> ownership, MultiBlockSolveOptions options)
+        => options.ReadCompatibilityMode == DvdReadCompatibilityModes.LegacyBridge
+            ? DvdReadCompatibilityGuard.ApplyLegacySector(payload, mask, ownership)
+            : DvdReadCompatibilityGuard.ApplySector(payload, mask, ownership);
 
     private static int[] BuildPayloadChannelCenters()
     {
@@ -489,6 +496,8 @@ public static class FastDispersionImageWriter
     internal static void Validate(MultiBlockSolveOptions options)
     {
         ArgumentNullException.ThrowIfNull(options);
+        if (options.ReadCompatibility && !DvdReadCompatibilityModes.IsSupported(options.ReadCompatibilityMode))
+            throw new ArgumentException("Unsupported DVD read compatibility recipe.", nameof(options));
         if (options.Algorithm != SolverAlgorithm.Dispersion)
         {
             throw new ArgumentException(L.T("Fast output requires --algorithm dispersion."));

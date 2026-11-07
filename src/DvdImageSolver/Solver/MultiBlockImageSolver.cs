@@ -1,5 +1,6 @@
 using DiscImageStudio.Localization;
 using System.Diagnostics;
+using DiscImageStudio.Core;
 using DvdImageSolver.Encoding;
 
 namespace DvdImageSolver.Solver;
@@ -26,7 +27,8 @@ public sealed record MultiBlockSolveOptions(
     int FastParallelism = 0,
     bool PreserveExistingIso = false,
     bool UseSampleReuse = true,
-    bool ReadCompatibility = false)
+    bool ReadCompatibility = false,
+    string ReadCompatibilityMode = DvdReadCompatibilityModes.Current)
 {
     /// <summary>Use four-double raster sampling in fast output when supported; false retains the scalar reference path.</summary>
     public bool UseSimdSampling { get; init; } = true;

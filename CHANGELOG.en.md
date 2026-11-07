@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Allow up to three sampling attempts per rotation zone after transient read-timing disturbances while retaining the existing constant-rotation and fit-quality limits. Failure logs include the drive, requested read speed and status, command/profile, cache timings and per-window addresses, sample counts, periods and coherence. Add regressions for transient recovery, persistent-noise rejection and read-session diagnostics.
+
 ## [1.9.0] - 2026-11-07
 
 - Add Burn measurement disc to timing calibration: stream ordinary random-data CD/DVD images directly without saving a full ISO. Reuse recorder, speed, capacity, confirmation and cancellation controls; freeze the source, retain the CD closing allowance and hide artwork protection and UDF update options. Add five-language guidance, seven-language layouts, data routing, stream-byte parity and stale-source regressions.

@@ -1,4 +1,5 @@
 using DiscImageStudio.Localization;
+using System.Text.Json;
 
 namespace DiscImageStudio.Core.Calibration;
 
@@ -12,7 +13,15 @@ public static class DriveTimingCalibrator
         ArgumentNullException.ThrowIfNull(reader);
         options ??= DriveTimingOptions.For(reader.Disc.Media);
         options.Validate();
-        return new Measurement(reader, options, progress, cancellationToken).Run();
+        var measurement = new Measurement(reader, options, progress, cancellationToken);
+        try { return measurement.Run(); }
+        catch (Exception error) when (error is not OperationCanceledException)
+        {
+            // Optional diagnostics must never replace the original device or fit error.
+            try { measurement.AttachDiagnostics(error); }
+            catch { }
+            throw;
+        }
     }
 
     private sealed class Measurement(IDriveTimingReader reader, DriveTimingOptions options,
@@ -29,6 +38,10 @@ public static class DriveTimingCalibrator
         private double[,]? _covariance;
         private uint _reference, _low, _high;
         private double _referenceBits;
+        private double? _plainMedian, _forceMedian, _evictedMedian, _flushMedian;
+        private readonly Queue<PeriodDiagnostic> _periodChecks = new();
+        private sealed record PeriodDiagnostic(string Stage, uint Lba, int Attempt, int Samples,
+            int Succeeded, int Usable, double? PeriodMilliseconds, double? Coherence, int Kept);
         private int Block => reader.Disc.Media == DriveTimingMedia.Dvd ? 16 : 1;
         private bool IsCd => reader.Disc.Media == DriveTimingMedia.Cd;
 
@@ -113,6 +126,7 @@ public static class DriveTimingCalibrator
             DriveTimingRead[] plain = Enumerable.Range(0, options.CacheSamples).Select(_ => Read(lba, 1, false)).ToArray();
             DriveTimingRead[] forced = Enumerable.Range(0, options.CacheSamples).Select(_ => Read(lba, 1, true)).ToArray();
             double plainMedian = MedianDuration(plain), forceMedian = MedianDuration(forced);
+            _plainMedian = plainMedian; _forceMedian = forceMedian;
             bool cached = plainMedian < .003;
             if (forced.All(r => r.Succeeded) && forceMedian >= .003 && forceMedian >= 3 * plainMedian) cached = true;
             if (!cached)
@@ -120,6 +134,7 @@ public static class DriveTimingCalibrator
                 var evicted = new List<DriveTimingRead>();
                 for (int i = 0; i < 8; i++) { Evict(); evicted.Add(Read(lba, 1, false)); }
                 double slower = MedianDuration(evicted);
+                _evictedMedian = slower;
                 if (evicted.All(r => r.Succeeded) && slower >= 3 * plainMedian)
                 {
                     cached = true;
@@ -137,7 +152,8 @@ public static class DriveTimingCalibrator
                 flushed &= reader.FlushReadCache(lba);
                 afterFlush.Add(Read(lba, 1, false));
             }
-            _strategy = flushed && afterFlush.All(r => r.Succeeded) && MedianDuration(afterFlush) >= _cacheThreshold
+            _flushMedian = MedianDuration(afterFlush);
+            _strategy = flushed && afterFlush.All(r => r.Succeeded) && _flushMedian.Value >= _cacheThreshold
                 ? DriveTimingCacheStrategy.Flush : DriveTimingCacheStrategy.Evict;
         }
 
@@ -148,15 +164,16 @@ public static class DriveTimingCalibrator
             int zone = 0;
             foreach (double fraction in new[] { .05, .5, .95 })
             {
-                Report(DriveTimingStage.CheckingRotation, zone++, 3);
                 uint lba = Align(reader.Disc.RecordedSectors * fraction);
-                var times = new List<long>();
-                for (int i = 0; i < options.PeriodSamples; i++)
+                Report(DriveTimingStage.CheckingRotation, zone++, 3, lba);
+                DriveTimingAnalysis.Period? fit = null;
+                // A seek can leave a transient in the first window. Retry fresh
+                // samples at this zone without weakening the rotation criteria.
+                for (int attempt = 1; attempt <= 3; attempt++)
                 {
-                    var read = Timed(lba);
-                    if (Usable(read)) times.Add(read.EndTicks);
+                    fit = SamplePeriod(lba, options.PeriodSamples, DriveTimingStage.CheckingRotation, attempt);
+                    if (fit is { Coherence: >= .93, Used: >= 8 }) break;
                 }
-                var fit = DriveTimingAnalysis.EstimatePeriod(times, reader.TimestampFrequency, cancellationToken: token);
                 if (fit is null || fit.Coherence < .93 || fit.Used < 8) Fail("Timing.UnsteadyDrive");
                 periods.Add(fit!.Seconds);
             }
@@ -169,13 +186,7 @@ public static class DriveTimingCalibrator
             double? previous = null;
             for (int round = 0; round < 10; round++)
             {
-                var times = new List<long>();
-                for (int i = 0; i < 16; i++)
-                {
-                    var read = Timed(_reference);
-                    if (Usable(read)) times.Add(read.EndTicks);
-                }
-                var fit = DriveTimingAnalysis.EstimatePeriod(times, reader.TimestampFrequency, cancellationToken: token);
+                var fit = SamplePeriod(_reference, 16, DriveTimingStage.Settling, round + 1);
                 if (fit is { Coherence: > .95 } && previous is { } prior && Math.Abs(fit.Seconds / prior - 1) < .002)
                 {
                     _period = fit.Seconds;
@@ -185,6 +196,39 @@ public static class DriveTimingCalibrator
                 previous = fit is { Coherence: > .95 } ? fit.Seconds : null;
             }
             Fail("Timing.UnsteadyDrive");
+        }
+
+        private DriveTimingAnalysis.Period? SamplePeriod(uint lba, int count, DriveTimingStage stage, int attempt)
+        {
+            var times = new List<long>();
+            int succeeded = 0;
+            for (int i = 0; i < count; i++)
+            {
+                var read = Timed(lba);
+                if (read.Succeeded) succeeded++;
+                if (Usable(read)) times.Add(read.EndTicks);
+            }
+            var fit = DriveTimingAnalysis.EstimatePeriod(times, reader.TimestampFrequency, cancellationToken: token);
+            _periodChecks.Enqueue(new(stage.ToString(), lba, attempt, count, succeeded, times.Count,
+                fit?.Seconds * 1000, fit?.Coherence, fit?.Used ?? 0));
+            while (_periodChecks.Count > 24) _periodChecks.Dequeue();
+            return fit;
+        }
+
+        internal void AttachDiagnostics(Exception error)
+        {
+            error.Data["Timing.DeviceName"] = reader.Disc.DeviceName;
+            error.Data["Timing.Media"] = reader.Disc.Media;
+            error.Data["Timing.RecordedSectors"] = reader.Disc.RecordedSectors;
+            error.Data["Timing.TimestampFrequency"] = reader.TimestampFrequency;
+            error.Data["Timing.CacheStrategy"] = _strategy;
+            error.Data["Timing.CacheThresholdMs"] = _cacheThreshold * 1000;
+            error.Data["Timing.PlainReadMedianMs"] = _plainMedian * 1000;
+            error.Data["Timing.FuaReadMedianMs"] = _forceMedian * 1000;
+            error.Data["Timing.EvictedReadMedianMs"] = _evictedMedian * 1000;
+            error.Data["Timing.FlushReadMedianMs"] = _flushMedian * 1000;
+            error.Data["Timing.PeriodChecks"] = string.Join(Environment.NewLine,
+                _periodChecks.Select(check => JsonSerializer.Serialize(check)));
         }
 
         private DriveTimingTarget? RetryTarget(uint lba) { Settle(); return MeasureTarget(lba); }

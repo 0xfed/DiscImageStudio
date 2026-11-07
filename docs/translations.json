@@ -94,7 +94,7 @@
     {
       "source": "docs/CALIBRATION.md",
       "source_language": "zh-CN",
-      "source_sha256": "e437833feefe5eea44ecc9091042f476b592e57592c6e5c5d79d2fb9e8d6871b",
+      "source_sha256": "69f8e00a480d6d4bc387f6541ef82a3c319376f6da57eb5474bf237ecda52a96",
       "translations": {
         "zh-CN": "docs/CALIBRATION.md",
         "zh-TW": "docs/CALIBRATION.zh-TW.md",
@@ -142,7 +142,7 @@
     {
       "source": "docs/VALIDATION.md",
       "source_language": "zh-CN",
-      "source_sha256": "6b8bdfd59b916f26f551b60f129ce8bca2b30dc3c6224230be7bbbd97986acea",
+      "source_sha256": "955eb82d0870d9eb63b81c5fb62ba2b7e31fe5f86940ed69e3272789887a7881",
       "translations": {
         "zh-CN": "docs/VALIDATION.md",
         "en": "docs/VALIDATION.en.md",
@@ -276,7 +276,7 @@
     {
       "source": "CHANGELOG.md",
       "source_language": "zh-CN",
-      "source_sha256": "5e8adb711a9002bc936edf8e305e4796f8c173be51c78183c6d2b6554337315b",
+      "source_sha256": "c0b42816ca6c3421b7719f4af00d230ba464fbb3a309a146b11d6262c4ff6bf0",
       "parallel_language_sections": [
         "中文",
         "English"

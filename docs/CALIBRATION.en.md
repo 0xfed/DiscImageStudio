@@ -18,6 +18,8 @@ Choose “Drive read timing (CD/DVD)” to estimate geometry from sector read-co
 
 Timing fits a constant-pitch starting model; use fine pattern calibration when pitch varies with radius. Measurements with ineffective cache bypass, unstable rotation, ambiguous turns or insufficient coverage cannot be applied. Drive decoding biases and batch variation can remain even with low residuals. Software tests use a simulated drive; this integration has no physical-drive validation and provides no Blu-ray timing calibration.
 
+Each rotation zone allows up to three sampling attempts when timings are unstable, with the existing constant-rotation and fit-quality limits retained. Failure logs include the device, requested read speed, command/profile and speed-request status, cache timings, and each window’s LBA, successful/usable counts, period, coherence and retained samples. Retry at a drive-appropriate read speed using the same random-data disc; changing read speed does not require another burn.
+
 ## Pattern and photo calibration
 
 Calibration has three stages: **generate a calibration disc → rectify the photograph → calibrate the curve**, corresponding to the three cards in the right column. The photograph only needs to show the physical outer edge, center hole, and one cross arm or wide-sector boundary clearly. Adjust the lighting to improve visibility; there is no requirement to blacken the disc or position it squarely.

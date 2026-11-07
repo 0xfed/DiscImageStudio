@@ -11,6 +11,8 @@ internal static class OpticalReadSessionTests
             using var session = new OpticalReadSession(transport, "Read test", 5540, CancellationToken.None);
             Require(session.Media.MediaKind == (profile == 0x09 ? OpticalBurnMediaKind.CdData : OpticalBurnMediaKind.DvdData), "loaded media family");
             var read = session.Read(32, 2, true);
+            Require(session.CurrentProfile == profile && session.ReadOpcode == 0xa8
+                && session.SpeedRequestResult?.HResult == 0, "profile, read opcode and speed-request status are retained for diagnostics");
             Require(read.Succeeded && read.EndTicks >= read.StartTicks, "successful timestamped read");
             var cdb = transport.Commands.Last();
             Require(cdb[0] == 0xa8 && cdb[1] == 8 && BinaryPrimitives.ReadUInt32BigEndian(cdb.AsSpan(2)) == 32
@@ -32,6 +34,14 @@ internal static class OpticalReadSessionTests
         using (var session = new OpticalReadSession(fallback, "Fallback", 0, CancellationToken.None))
         {
             Require(session.Read(100, 1, true).Succeeded && fallback.Commands.Last()[0] == 0x28, "unsupported READ(12) falls back to READ(10)");
+            Require(session.ReadOpcode == 0x28 && session.SpeedRequestResult is null
+                && !fallback.Commands.Any(c => c[0] == 0xbb), "default speed sends no request and diagnostic opcode follows the fallback");
+        }
+        var rejectedSpeed = new Transport(0x11) { RejectSpeedRequest = true };
+        using (var session = new OpticalReadSession(rejectedSpeed, "Ignored speed", 3324, CancellationToken.None))
+        {
+            Require(session.SpeedRequestResult?.HResult < 0 && session.Read(32, 1, true).Succeeded,
+                "a rejected speed request is retained without replacing measured rotation checks");
         }
         var mediumError = new Transport(0x11) { MediumError = true };
         using (var session = new OpticalReadSession(mediumError, "Unreadable", 0, CancellationToken.None))
@@ -55,6 +65,7 @@ internal static class OpticalReadSessionTests
         internal readonly List<byte[]> Commands = [];
         internal bool RejectRead12 { get; init; }
         internal bool MediumError { get; init; }
+        internal bool RejectSpeedRequest { get; init; }
         public MmcWriteTransferLimits GetWriteTransferLimits() => new(0, 32 * 2048);
         public MmcCommandResult Execute(byte[] cdb, int allocationLength, uint timeoutSeconds)
         {
@@ -75,6 +86,8 @@ internal static class OpticalReadSessionTests
                 var sense = new byte[18]; sense[0] = 0x70; sense[2] = MediumError ? (byte)3 : (byte)5; sense[12] = MediumError ? (byte)0x11 : (byte)0x20;
                 return new(BluRayMmcCommands.CommandHasSenseData, sense, []);
             }
+            else if (cdb[0] == 0xbb && RejectSpeedRequest)
+                return new(unchecked((int)0x80004005), [], []);
             return new(0, [], data);
         }
     }

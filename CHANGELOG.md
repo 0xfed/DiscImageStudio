@@ -4,6 +4,14 @@
 
 ## Unreleased
 
+### 中文
+
+- 读取计时标定在转速分区暂态不稳时最多采样三轮，保留原有恒速及拟合质量限制。失败日志记录设备、读取速度请求及状态、指令与盘片类型、缓存计时和逐窗口的扇区地址、样本数、周期及相干度，便于区分读失败、缓存与转速问题；补充暂态恢复、持续噪声拒绝及读取诊断回归。
+
+### English
+
+- Allow up to three sampling attempts per rotation zone after transient read-timing disturbances while retaining the existing constant-rotation and fit-quality limits. Failure logs include the drive, requested read speed and status, command/profile, cache timings and per-window addresses, sample counts, periods and coherence. Add regressions for transient recovery, persistent-noise rejection and read-session diagnostics.
+
 ## [1.9.0] - 2026-11-07
 
 ### 中文

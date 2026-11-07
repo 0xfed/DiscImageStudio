@@ -1,4 +1,5 @@
 using System.IO;
+using System.Text.Json;
 using DiscImageStudio.Core;
 using DiscImageStudio.Core.Calibration;
 
@@ -54,6 +55,7 @@ internal static class DriveTimingCalibrationTests
         Throws(() => DriveTimingCalibrator.Measure(new SimulatedDrive(DriveTimingMedia.Dvd, DriveTimingCacheStrategy.Evict)
             { CacheLatencySeconds = .005 }, new(16, 18, 32, 12, 60)));
         Throws(() => DriveTimingCalibrator.Measure(new SimulatedDrive(DriveTimingMedia.Dvd, DriveTimingCacheStrategy.ForceUnitAccess) { VariableSpeed = true }, new(12, 12, 24, 8)));
+        CheckRotationRecovery();
         var broken = new SimulatedDrive(DriveTimingMedia.Dvd, DriveTimingCacheStrategy.ForceUnitAccess) { MediumError = true };
         Throws(() => DriveTimingCalibrator.Measure(broken));
         Require(broken.ReadCount <= 8, "unreadable media fails early");
@@ -62,6 +64,57 @@ internal static class DriveTimingCalibrationTests
         catch (OperationCanceledException) { }
         Console.WriteLine("drive-timing-calibration: passed (independent simulated spindle, cache rejection, CAV, CD/DVD geometry, conversion, records, cancellation)");
 
+    }
+
+    private static void CheckRotationRecovery()
+    {
+        var transient = new SimulatedDrive(DriveTimingMedia.Dvd, DriveTimingCacheStrategy.ForceUnitAccess);
+        bool injected = false;
+        var recovered = DriveTimingCalibrator.Measure(transient, new(16, 18, 32, 12, 60),
+            new InlineProgress(progress =>
+            {
+                if (!injected && progress.Stage == DriveTimingStage.CheckingRotation)
+                {
+                    transient.NoisyReads = 32;
+                    injected = true;
+                }
+            }));
+        recovered.Validate();
+        Require(injected && recovered.Targets.Count >= 8, "a transient rotation window is retried before giving up");
+        var initialWindow = DriveTimingAnalysis.EstimatePeriod(transient.NoisyEndTicks, transient.TimestampFrequency);
+        Require(initialWindow is null || initialWindow.Coherence < .93,
+            "the transient fixture really fails the unchanged rotation quality gate");
+
+        var noisy = new SimulatedDrive(DriveTimingMedia.Dvd, DriveTimingCacheStrategy.ForceUnitAccess);
+        Exception? failure = null;
+        try
+        {
+            DriveTimingCalibrator.Measure(noisy, new(16, 18, 32, 12, 60),
+                new InlineProgress(progress =>
+                {
+                    if (progress.Stage == DriveTimingStage.CheckingRotation) noisy.PersistentNoise = true;
+                }));
+        }
+        catch (InvalidOperationException error) { failure = error; }
+        Require(failure is not null, "persistent noise cannot produce applicable geometry");
+        Require((string?)failure!.Data["Timing.DeviceName"] == noisy.Disc.DeviceName
+            && failure.Data["Timing.CacheStrategy"] is DriveTimingCacheStrategy.ForceUnitAccess
+            && failure.Data["Timing.FuaReadMedianMs"] is double,
+            "failure retains the drive and cache-detection evidence");
+        string history = (string)failure.Data["Timing.PeriodChecks"]!;
+        var attempts = history.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
+            .Select(line => JsonSerializer.Deserialize<JsonElement>(line))
+            .Where(check => check.GetProperty("Stage").GetString() == nameof(DriveTimingStage.CheckingRotation)).ToArray();
+        Require(attempts.Length == 3 && attempts.Select(check => check.GetProperty("Attempt").GetInt32()).SequenceEqual([1, 2, 3])
+            && attempts.All(check => check.GetProperty("Samples").GetInt32() == 32
+                && check.GetProperty("Succeeded").GetInt32() == 32
+                && check.GetProperty("Usable").GetInt32() == 32
+                && check.GetProperty("Lba").GetUInt32() > 0
+                && (check.GetProperty("PeriodMilliseconds").ValueKind == JsonValueKind.Null
+                    || check.GetProperty("Coherence").GetDouble() < .93
+                    || check.GetProperty("Kept").GetInt32() < 8)),
+            "failure records bounded zone retries, addresses, sample counts and fit quality");
+        Console.WriteLine("drive-timing-rotation: transient-window recovery, persistent-noise rejection and diagnostic evidence passed");
     }
 
     private static void Throws(Action action)
@@ -78,6 +131,9 @@ internal static class DriveTimingCalibrationTests
         public bool VariableSpeed { get; init; }
         public bool MediumError { get; init; }
         public double CacheLatencySeconds { get; init; } = .0011;
+        public int NoisyReads { get; set; }
+        public bool PersistentNoise { get; set; }
+        public List<long> NoisyEndTicks { get; } = [];
         public int ReadCount { get; private set; }
         public DriveTimingDisc Disc { get; }
         public long TimestampFrequency => 1_000_000_000;
@@ -114,6 +170,12 @@ internal static class DriveTimingCalibrationTests
                 double phase = Angle(n) / (2 * Math.PI);
                 _clock = (Math.Ceiling(_clock / period - phase) + phase) * period;
                 _clock += (_random.NextDouble() - .5) * .00008;
+                if (NoisyReads > 0 || PersistentNoise)
+                {
+                    if (NoisyReads > 0) NoisyReads--;
+                    _clock += _random.NextDouble() * period;
+                    NoisyEndTicks.Add((long)(_clock * TimestampFrequency));
+                }
                 _radius = radius;
             }
             for (int i = 0; i < sectors; i++)
@@ -125,5 +187,10 @@ internal static class DriveTimingCalibrationTests
         }
         public bool FlushReadCache(uint lba) { if (_strategy == DriveTimingCacheStrategy.Flush) _cache.Clear(); return true; }
         public void Pause(TimeSpan duration, CancellationToken cancellationToken) { cancellationToken.ThrowIfCancellationRequested(); _clock += duration.TotalSeconds; }
+    }
+
+    private sealed class InlineProgress(Action<DriveTimingProgress> report) : IProgress<DriveTimingProgress>
+    {
+        public void Report(DriveTimingProgress value) => report(value);
     }
 }

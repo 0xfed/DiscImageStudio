@@ -4,6 +4,8 @@
 
 ## Henüz yayımlanmayan
 
+- Okuma zamanlaması kalibrasyonunda geçici olarak kararsız her dönüş bölgesi için toplam en çok üç ölçüm denemesine izin verir; mevcut sabit dönüş ve uyum kalitesi sınırlarını korur. Hata günlükleri sürücüyü, istenen okuma hızını ve durumunu, komutu/profili, önbellek sürelerini ve pencere başına adresleri, örnek sayılarını, dönemleri ve tutarlılığı içerir. Geçici düzelme, sürekli gürültünün reddi ve okuma oturumu tanıları için regresyonlar eklendi.
+
 ## [1.9.0] - 2026-11-07
 
 - Zamanlama kalibrasyonuna Ölçüm diski yazdır eklendi: tam ISO kaydetmeden normal rastgele veri CD/DVD görüntülerini doğrudan akışla yazar. Yazıcı, hız, kapasite, onay ve iptal denetimlerini yeniden kullanır; kaynağı sabitler, CD kapatma payını korur, çizim korumasını ve UDF güncelleme seçeneklerini gizler. Beş dilli kılavuz, yedi dilli yerleşim, veri yönlendirmesi, akış bayt eşitliği ve eski kaynak regresyonları eklendi.

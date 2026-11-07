@@ -6,7 +6,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <StackPanel MaxWidth="980" HorizontalAlignment="Left" Margin="0,0,0,12">
             <TextBlock Text="{loc:Text Timing.Intro}" Style="{StaticResource BodyText}" TextWrapping="Wrap" Margin="0,0,0,16" />
-            <Border Background="{DynamicResource Surface2Brush}" BorderBrush="{DynamicResource DividerBrush}"
+            <Border Background="{DynamicResource Surface1Brush}" BorderBrush="{DynamicResource DividerBrush}"
                     BorderThickness="1" CornerRadius="{StaticResource RadiusPanel}" Padding="16" Margin="0,0,0,12">
                 <StackPanel>
                     <TextBlock Text="{loc:Text Timing.PrepareTitle}" Style="{StaticResource CardTitle}" TextWrapping="Wrap" Margin="0,0,0,8" />
@@ -29,7 +29,7 @@
                     </Button>
                 </StackPanel>
             </Border>
-            <Border Background="{DynamicResource Surface2Brush}" BorderBrush="{DynamicResource DividerBrush}"
+            <Border Background="{DynamicResource Surface1Brush}" BorderBrush="{DynamicResource DividerBrush}"
                     BorderThickness="1" CornerRadius="{StaticResource RadiusPanel}" Padding="16" Margin="0,0,0,12">
                 <StackPanel>
                     <TextBlock Text="{loc:Text Timing.MeasureTitle}" Style="{StaticResource CardTitle}" TextWrapping="Wrap" Margin="0,0,0,8" />
@@ -62,7 +62,7 @@
                 </StackPanel>
             </Border>
             <controls:VisibilityGate IsOpen="{Binding HasTimingResult}">
-                <Border Background="{DynamicResource Surface2Brush}" BorderBrush="{DynamicResource DividerBrush}"
+                <Border Background="{DynamicResource Surface1Brush}" BorderBrush="{DynamicResource DividerBrush}"
                         BorderThickness="1" CornerRadius="{StaticResource RadiusPanel}" Padding="16">
                     <StackPanel>
                         <TextBlock Text="{loc:Text Timing.ResultTitle}" Style="{StaticResource CardTitle}" TextWrapping="Wrap" Margin="0,0,0,8" />

@@ -5,12 +5,12 @@
              xmlns:controls="clr-namespace:DiscImageStudio.Controls">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <StackPanel MaxWidth="980" HorizontalAlignment="Left" Margin="0,0,0,12">
-            <TextBlock Text="{loc:Text Timing.Intro}" TextWrapping="Wrap" Margin="0,0,0,16" />
+            <TextBlock Text="{loc:Text Timing.Intro}" Style="{StaticResource BodyText}" TextWrapping="Wrap" Margin="0,0,0,16" />
             <Border Background="{DynamicResource Surface2Brush}" BorderBrush="{DynamicResource DividerBrush}"
                     BorderThickness="1" CornerRadius="{StaticResource RadiusPanel}" Padding="16" Margin="0,0,0,12">
                 <StackPanel>
-                    <TextBlock Text="{loc:Text Timing.PrepareTitle}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,0,0,8" />
-                    <TextBlock Text="{loc:Text Timing.PrepareHelp}" TextWrapping="Wrap" Margin="0,0,0,12" />
+                    <TextBlock Text="{loc:Text Timing.PrepareTitle}" Style="{StaticResource CardTitle}" TextWrapping="Wrap" Margin="0,0,0,8" />
+                    <TextBlock Text="{loc:Text Timing.PrepareHelp}" Style="{StaticResource BodyText}" TextWrapping="Wrap" Margin="0,0,0,12" />
                     <WrapPanel>
                         <StackPanel MinWidth="130" Margin="0,0,16,12">
                             <TextBlock Text="{loc:Text Xaml.DiscType}" Style="{StaticResource FieldLabel}" />
@@ -24,7 +24,7 @@
                         </StackPanel>
                     </WrapPanel>
                     <TextBlock Text="{loc:Text Timing.CapacityHelp}" Style="{StaticResource CompactHint}" TextWrapping="Wrap" Margin="0,0,0,12" />
-                    <Button Command="{Binding GenerateTimingImageCommand}" HorizontalAlignment="Left" Padding="14,8">
+                    <Button Command="{Binding GenerateTimingImageCommand}" Style="{StaticResource SecondaryButton}" HorizontalAlignment="Left" Padding="14,8">
                         <TextBlock Text="{loc:Text Timing.CreateImage}" TextWrapping="Wrap" />
                     </Button>
                 </StackPanel>
@@ -32,8 +32,8 @@
             <Border Background="{DynamicResource Surface2Brush}" BorderBrush="{DynamicResource DividerBrush}"
                     BorderThickness="1" CornerRadius="{StaticResource RadiusPanel}" Padding="16" Margin="0,0,0,12">
                 <StackPanel>
-                    <TextBlock Text="{loc:Text Timing.MeasureTitle}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,0,0,8" />
-                    <TextBlock Text="{loc:Text Timing.MeasureHelp}" TextWrapping="Wrap" Margin="0,0,0,12" />
+                    <TextBlock Text="{loc:Text Timing.MeasureTitle}" Style="{StaticResource CardTitle}" TextWrapping="Wrap" Margin="0,0,0,8" />
+                    <TextBlock Text="{loc:Text Timing.MeasureHelp}" Style="{StaticResource BodyText}" TextWrapping="Wrap" Margin="0,0,0,12" />
                     <WrapPanel>
                         <StackPanel MinWidth="280" Margin="0,0,16,12">
                             <TextBlock Text="{loc:Text Timing.Drive}" Style="{StaticResource FieldLabel}" />
@@ -42,7 +42,7 @@
                                       AutomationProperties.Name="{loc:Text Timing.Drive}" />
                         </StackPanel>
                         <Button Content="{loc:Text Timing.Refresh}" Command="{Binding RefreshTimingReadersCommand}"
-                                VerticalAlignment="Center" Margin="0,0,16,0" />
+                                Style="{StaticResource CompactButton}" VerticalAlignment="Center" Margin="0,0,16,0" />
                         <StackPanel MinWidth="210" Margin="0,0,0,12">
                             <TextBlock Text="{loc:Text Timing.ReadSpeed}" Style="{StaticResource FieldLabel}" TextWrapping="Wrap" />
                             <TextBox Text="{Binding TimingReadSpeed, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding CanEditTiming}"
@@ -50,29 +50,29 @@
                         </StackPanel>
                     </WrapPanel>
                     <WrapPanel Margin="0,0,0,8">
-                        <Button Command="{Binding MeasureDriveTimingCommand}" Margin="0,0,12,8" Padding="14,8">
+                        <Button Command="{Binding MeasureDriveTimingCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,12,8" Padding="14,8">
                             <TextBlock Text="{loc:Text Timing.Measure}" TextWrapping="Wrap" />
                         </Button>
-                        <Button Content="{loc:Text Xaml.Cancel}" Command="{Binding CancelCommand}" Margin="0,0,12,8" />
-                        <Button Command="{Binding OpenTimingRecordCommand}" Margin="0,0,0,8">
+                        <Button Content="{loc:Text Xaml.Cancel}" Command="{Binding CancelCommand}" Style="{StaticResource SecondaryButton}" Margin="0,0,12,8" />
+                        <Button Command="{Binding OpenTimingRecordCommand}" Style="{StaticResource SecondaryButton}" Margin="0,0,0,8">
                             <TextBlock Text="{loc:Text Timing.OpenRecord}" TextWrapping="Wrap" />
                         </Button>
                     </WrapPanel>
-                    <TextBlock Text="{Binding TimingStatus}" TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding TimingStatus}" Style="{StaticResource BodyText}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
             <controls:VisibilityGate IsOpen="{Binding HasTimingResult}">
                 <Border Background="{DynamicResource Surface2Brush}" BorderBrush="{DynamicResource DividerBrush}"
                         BorderThickness="1" CornerRadius="{StaticResource RadiusPanel}" Padding="16">
                     <StackPanel>
-                        <TextBlock Text="{loc:Text Timing.ResultTitle}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,0,0,8" />
-                        <TextBlock Text="{Binding TimingSummary}" TextWrapping="Wrap" Margin="0,0,0,12" />
-                        <TextBlock Text="{Binding TimingResultHint}" TextWrapping="Wrap" Margin="0,0,0,12" />
+                        <TextBlock Text="{loc:Text Timing.ResultTitle}" Style="{StaticResource CardTitle}" TextWrapping="Wrap" Margin="0,0,0,8" />
+                        <TextBlock Text="{Binding TimingSummary}" Style="{StaticResource BodyText}" TextWrapping="Wrap" Margin="0,0,0,12" />
+                        <TextBlock Text="{Binding TimingResultHint}" Style="{StaticResource BodyText}" TextWrapping="Wrap" Margin="0,0,0,12" />
                         <WrapPanel>
-                            <Button Command="{Binding ApplyTimingResultCommand}" Margin="0,0,12,8" Padding="14,8" AutomationProperties.AutomationId="ApplyDriveTiming">
+                            <Button Command="{Binding ApplyTimingResultCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,12,8" Padding="14,8" AutomationProperties.AutomationId="ApplyDriveTiming">
                                 <TextBlock Text="{loc:Text Timing.Apply}" TextWrapping="Wrap" />
                             </Button>
-                            <Button Command="{Binding SaveTimingRecordCommand}" Margin="0,0,0,8">
+                            <Button Command="{Binding SaveTimingRecordCommand}" Style="{StaticResource SecondaryButton}" Margin="0,0,0,8">
                                 <TextBlock Text="{loc:Text Timing.SaveRecord}" TextWrapping="Wrap" />
                             </Button>
                         </WrapPanel>

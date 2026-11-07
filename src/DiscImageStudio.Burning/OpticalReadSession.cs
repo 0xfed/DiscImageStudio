@@ -28,6 +28,9 @@ internal sealed class OpticalReadSession : IOpticalReadSession, IDisposable
     public long TimestampFrequency => Stopwatch.Frequency;
     public int MaximumReadSectors { get; }
     public string? LastReadDiagnostic { get; private set; }
+    internal int CurrentProfile { get; }
+    internal byte ReadOpcode => _readOpcode;
+    internal MmcCommandResult? SpeedRequestResult { get; }
 
     internal OpticalReadSession(IMmcCommandTransport transport, string name, ushort readSpeedKbps, CancellationToken token)
     {
@@ -38,6 +41,7 @@ internal sealed class OpticalReadSession : IOpticalReadSession, IDisposable
         byte[] profile = Query(configuration, 8);
         if (profile.Length < 8) throw new IOException(L.T("Timing.InvalidMedia"));
         int kind = BinaryPrimitives.ReadUInt16BigEndian(profile.AsSpan(6));
+        CurrentProfile = kind;
         OpticalBurnMediaKind media = kind switch
         {
             >= 0x08 and <= 0x0a => OpticalBurnMediaKind.CdData,
@@ -61,7 +65,7 @@ internal sealed class OpticalReadSession : IOpticalReadSession, IDisposable
             speed[4] = speed[5] = 0xff;
             // Some firmware ignores this request. Measured rotation, not this setting,
             // determines whether the timing geometry is usable.
-            _ = transport.Execute(speed, 0, 30);
+            SpeedRequestResult = transport.Execute(speed, 0, 30);
         }
         var test = Read(0, 1, false);
         if (!test.Succeeded && test.SenseKey == 5)

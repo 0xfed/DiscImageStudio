@@ -23,6 +23,15 @@ public sealed partial class WindowsImapiBurner
                 try { return measure(session); }
                 catch (Exception ex)
                 {
+                    ex.Data["Timing.RequestedReadSpeedKbps"] = readSpeedKbps;
+                    ex.Data["Timing.ReadOpcode"] = $"0x{session.ReadOpcode:X2}";
+                    ex.Data["Timing.MediaProfile"] = $"0x{session.CurrentProfile:X4}";
+                    if (session.SpeedRequestResult is { } speedRequest)
+                    {
+                        ex.Data["Timing.SpeedRequestHResult"] = $"0x{speedRequest.HResult:X8}";
+                        if (speedRequest.HResult < 0 || speedRequest.HResult == BluRayMmcCommands.CommandHasSenseData)
+                            ex.Data["Timing.SpeedRequestDiagnostic"] = new MmcCommandException(0xbb, speedRequest).Message;
+                    }
                     if (session.LastReadDiagnostic is { } diagnostic) ex.Data["LastReadDiagnostic"] = diagnostic;
                     throw;
                 }

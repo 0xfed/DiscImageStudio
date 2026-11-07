@@ -18,6 +18,8 @@ Fotoğraf üzerinde işaretlemeden, sektör okuma bitiş zamanlarından geometri
 
 Zamanlama, sabit iz aralıklı bir başlangıç modeli bulur; iz aralığı yarıçapa göre değişiyorsa hassas desen kalibrasyonu yapın. Önbelleği aşamayan, dönüşü kararsız, tam tur sayısı belirsiz veya kapsamı yetersiz ölçümler uygulanamaz. Küçük kalıntılarda bile sürücü çözme yanlılıkları ve parti farkları kalabilir. Yazılım testleri benzetilmiş sürücü kullanır; bu bütünleştirme fiziksel sürücüde doğrulanmamıştır ve Blu-ray zamanlama kalibrasyonu sunmaz.
 
+Geçici kararsızlık durumunda her dönüş bölgesi toplam en çok üç kez örneklenir; mevcut sabit dönüş ve uyum kalitesi sınırları korunur. Hata günlükleri cihazı, istenen okuma hızını, komutu/profili ve hız isteğinin durumunu, önbellek sürelerini ve her pencerenin LBA’sını, başarılı/kullanılabilir örnek sayılarını, dönemini, tutarlılığını ve korunan örnek sayısını içerir. Aynı rastgele veri diskiyle sürücüye uygun başka bir okuma hızında yeniden deneyin; hız değişimi yeniden disk yazmayı gerektirmez.
+
 ## Desen ve fotoğraf kalibrasyonu
 
 Yardımcı kalibrasyon, sağ sütundaki üç karta karşılık gelen **kalibrasyon diski oluşturma → fotoğraf düzeltme → eğri kalibrasyonu** adımlarından oluşur. Fotoğrafta yalnızca fiziksel dış kenarın, merkez deliğinin ve bir artı kolunun veya geniş sektör sınırının açıkça görünmesi yeterlidir. Görünürlüğü artırmak için ışıklandırma ayarlanabilir; diski siyaha boyamak veya tam karşıdan konumlandırmak gerekmez.

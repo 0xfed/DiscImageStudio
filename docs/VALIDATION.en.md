@@ -10,6 +10,8 @@ This page lists reproducible checks for the current source. Automated regression
 
 `TimingMeasurementBurnTests` covers direct random-data measurement burns for CD/DVD: data media routing, exact ISO/stream bytes, frozen sources, device capacity/alignment, confirmation and cancellation. The layout matrix captures the measurement-burn page in all seven languages. Physical recording is not exercised.
 
+Read-timing regressions inject transient jitter during a zone sample and verify geometry recovery after retry, while persistent noise and variable rotation remain rejected. Failure-context checks cover cache detection, zone addresses, retry counts and fit quality; native-read tests retain speed-request results, opcode fallback and the read-only command boundary.
+
 ## Local validation
 
 The most recent full architecture regression was on 2026-10-28, covering UI fixes, calibration generation optimizations, and the Verbatim BD-R (64099) preset (commits `3088802`, `49a0e4d`, and `46e2c53`), on Windows with .NET SDK 10.0.400 (runtime 10.0.11), in Release configuration. The full solution build (0 warnings, 0 errors) and all architecture regressions passed. Tests run the custom executable harness directly, using no `dotnet test` invocation.

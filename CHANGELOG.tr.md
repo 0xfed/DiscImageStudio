@@ -4,6 +4,8 @@
 
 ## Henüz yayımlanmayan
 
+## [1.9.0] - 2026-11-07
+
 - Zamanlama kalibrasyonuna Ölçüm diski yazdır eklendi: tam ISO kaydetmeden normal rastgele veri CD/DVD görüntülerini doğrudan akışla yazar. Yazıcı, hız, kapasite, onay ve iptal denetimlerini yeniden kullanır; kaynağı sabitler, CD kapatma payını korur, çizim korumasını ve UDF güncelleme seçeneklerini gizler. Beş dilli kılavuz, yedi dilli yerleşim, veri yönlendirmesi, akış bayt eşitliği ve eski kaynak regresyonları eklendi.
 - Üst kaynak `62efb5c` sürümüne eşitleme: geometri ve kullanılabilir çıktı kapasitesini ayırıp cihaz sınırlarına uyar; kayıtlı önayarları hemen uygular, onaylanmış fotoğraf uyumlarını saklar; yeni DVD çıktısında periyodik koruma kullanıp eski hedef kurallarını korur. UDF/VAT güncellemeleri, görsel seçiciler ve yerel zamanlama kalibrasyonu, beş dilli belge ve regresyonlarla korunur.
 - disc-probe yönteminden uyarlanan CD/DVD okuma zamanlaması kalibrasyonu eklendi: normal veri ölçüm ISO’su oluşturma, önbellek ve sabit dönüş denetimi, sektör fazlarını aşamalı bulma, ölçümleri kaydetme ve bağımsız kalibrasyon geometrisine uygulama. CD, bilinmeyen iz kayması için hassas desen kalibrasyonunu korur. Benzetilmiş sürücü, salt okunur komut, kayıt ve UI regresyonları eklendi; fiziksel sürücüde doğrulanmadı.

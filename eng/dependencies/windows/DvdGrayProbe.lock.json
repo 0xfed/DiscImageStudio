@@ -5,25 +5,25 @@
       "discimagestudio.core": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.8.1, )"
+          "DiscImageStudio.Localization": "[1.9.0, )"
         }
       },
       "discimagestudio.imageio": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.8.1, )"
+          "DiscImageStudio.Localization": "[1.9.0, )"
         }
       },
       "discimagestudio.imaging": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.8.1, )"
+          "DiscImageStudio.Localization": "[1.9.0, )"
         }
       },
       "discimagestudio.iso": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Localization": "[1.8.1, )"
+          "DiscImageStudio.Localization": "[1.9.0, )"
         }
       },
       "discimagestudio.localization": {
@@ -32,10 +32,10 @@
       "dvdimagesolver": {
         "type": "Project",
         "dependencies": {
-          "DiscImageStudio.Core": "[1.8.1, )",
-          "DiscImageStudio.ImageIO": "[1.8.1, )",
-          "DiscImageStudio.Iso": "[1.8.1, )",
-          "DiscImageStudio.Localization": "[1.8.1, )"
+          "DiscImageStudio.Core": "[1.9.0, )",
+          "DiscImageStudio.ImageIO": "[1.9.0, )",
+          "DiscImageStudio.Iso": "[1.9.0, )",
+          "DiscImageStudio.Localization": "[1.9.0, )"
         }
       }
     }

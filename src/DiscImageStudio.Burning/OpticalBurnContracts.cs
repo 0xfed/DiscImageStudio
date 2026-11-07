@@ -129,6 +129,10 @@ public sealed record FileUpdateContent(long ContentLength, Action<Stream, Cancel
 
 public interface IOpticalDiscBurner
 {
+    Task<T> ReadDiscAsync<T>(string deviceId, ushort readSpeedKbps, Func<IOpticalReadSession, T> measure,
+        CancellationToken cancellationToken = default)
+        => throw new NotSupportedException(L.T("Timing.ReaderUnavailable"));
+
     Task<OpticalBurnResult> UpdateFilesAsync(string deviceId, OpticalBurnMediaKind mediaKind,
         Func<FileUpdateContext, FileUpdateContent> prepareContent,
         OpticalWriteSpeed? writeSpeed = null, IProgress<OpticalBurnProgress>? progress = null,

@@ -4,6 +4,8 @@
 
 ## Henüz yayımlanmayan
 
+- disc-probe yönteminden uyarlanan CD/DVD okuma zamanlaması kalibrasyonu eklendi: normal veri ölçüm ISO’su oluşturma, önbellek ve sabit dönüş denetimi, sektör fazlarını aşamalı bulma, ölçümleri kaydetme ve bağımsız kalibrasyon geometrisine uygulama. CD, bilinmeyen iz kayması için hassas desen kalibrasyonunu korur. Benzetilmiş sürücü, salt okunur komut, kayıt ve UI regresyonları eklendi; fiziksel sürücüde doğrulanmadı.
+
 - Üst projenin kalibrasyon aşamalarını, yazma tanılarını ve kodlama düzeltmelerini birleştir; UDF 2.50 dosya güncellemelerini, çap ölçümlerini ve görsel seçicileri koru, kaydedilen kalibrasyon desenlerinin kökenlerini açıkça ayır.
 
 ## [1.8.1] - 2026-11-04

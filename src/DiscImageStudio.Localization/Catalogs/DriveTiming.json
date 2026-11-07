@@ -1,0 +1,394 @@
+{
+  "Timing.InvalidOptions": {
+    "zh-CN": "计时采样限制无效。",
+    "en": "Invalid timing sample limits.",
+    "zh-TW": "計時取樣限制無效。",
+    "ja": "時間測定のサンプル上限が無効です。",
+    "tr": "Zamanlama örnek sınırları geçersiz."
+  },
+  "Timing.InvalidRecord": {
+    "zh-CN": "计时记录不完整或不可靠，请重新测量。",
+    "en": "The timing record is incomplete or unreliable. Measure again.",
+    "zh-TW": "計時記錄不完整或不可靠，請重新量測。",
+    "ja": "時間測定の記録が不完全か信頼できません。再測定してください。",
+    "tr": "Zamanlama kaydı eksik veya güvenilir değil. Yeniden ölçün."
+  },
+  "Timing.InsufficientCoverage": {
+    "zh-CN": "测量范围不足，请使用完整的普通数据盘。",
+    "en": "Too little of the disc was measured. Use a full plain-data disc.",
+    "zh-TW": "量測範圍不足，請使用完整的一般資料光碟。",
+    "ja": "測定範囲が不足しています。十分なデータを記録したディスクを使用してください。",
+    "tr": "Ölçülen aralık yetersiz. Dolu bir normal veri diski kullanın."
+  },
+  "Timing.InvalidCapacity": {
+    "zh-CN": "请输入空白盘的实际扇区数，容量必须覆盖测量范围。",
+    "en": "Enter the blank disc’s actual sector count; it must cover the measured range.",
+    "zh-TW": "請輸入空白光碟的實際磁區數，容量必須涵蓋量測範圍。",
+    "ja": "空ディスクの実際のセクター数を入力してください。測定範囲を含む必要があります。",
+    "tr": "Boş diskin gerçek sektör sayısını girin; ölçülen aralığı kapsamalıdır."
+  },
+  "Timing.InvalidMedia": {
+    "zh-CN": "请放入已刻录且可读取的 CD 或单层 DVD 数据盘。",
+    "en": "Load a recorded, readable CD or single-layer DVD data disc.",
+    "zh-TW": "請放入已燒錄且可讀取的 CD 或單層 DVD 資料光碟。",
+    "ja": "記録済みで読み取り可能な CD または一層 DVD データディスクを挿入してください。",
+    "tr": "Kaydedilmiş, okunabilir bir CD veya tek katmanlı DVD veri diski takın."
+  },
+  "Timing.UnsteadyDrive": {
+    "zh-CN": "转速未能稳定，请尝试其他读取速度或光驱。",
+    "en": "Rotation did not settle. Try another read speed or drive.",
+    "zh-TW": "轉速未能穩定，請嘗試其他讀取速度或光碟機。",
+    "ja": "回転が安定しません。別の読み取り速度またはドライブを試してください。",
+    "tr": "Dönüş kararlı değil. Başka bir okuma hızı veya sürücü deneyin."
+  },
+  "Timing.NotConstantRotation": {
+    "zh-CN": "转速随盘面位置变化，请选择其他速度或使用图案标定。",
+    "en": "Rotation speed changes across the disc. Select another speed or use pattern calibration.",
+    "zh-TW": "轉速隨碟面位置變化，請選擇其他速度或使用圖案校準。",
+    "ja": "ディスク上の位置によって回転速度が変わります。別の速度またはパターン校正を使用してください。",
+    "tr": "Dönüş hızı diskin konumuna göre değişiyor. Başka bir hız veya desen kalibrasyonu kullanın."
+  },
+  "Timing.AmbiguousTurns": {
+    "zh-CN": "无法可靠确定整圈数，请尝试其他光驱或读取速度。",
+    "en": "Whole turns cannot be resolved reliably. Try another drive or read speed.",
+    "zh-TW": "無法可靠確定整圈數，請嘗試其他光碟機或讀取速度。",
+    "ja": "周回数を確実に判定できません。別のドライブまたは読み取り速度を試してください。",
+    "tr": "Tam tur sayısı güvenilir biçimde belirlenemiyor. Başka bir sürücü veya okuma hızı deneyin."
+  },
+  "Timing.CacheFailed": {
+    "zh-CN": "无法绕过光驱的读取缓存。",
+    "en": "The drive’s read cache could not be bypassed.",
+    "zh-TW": "無法繞過光碟機的讀取快取。",
+    "ja": "ドライブの読み取りキャッシュを回避できません。",
+    "tr": "Sürücünün okuma önbelleği aşılamadı."
+  },
+  "Timing.InvalidClock": {
+    "zh-CN": "光驱返回了无效的读取时间戳。",
+    "en": "The drive returned invalid read timestamps.",
+    "zh-TW": "光碟機傳回無效的讀取時間戳記。",
+    "ja": "ドライブが無効な読み取り時刻を返しました。",
+    "tr": "Sürücü geçersiz okuma zamanları döndürdü."
+  },
+  "Timing.TimeLimit": {
+    "zh-CN": "测量超时，请尝试其他光驱或可正常读取的数据盘。",
+    "en": "The measurement exceeded its time limit. Try another drive or a readable data disc.",
+    "zh-TW": "量測逾時，請嘗試其他光碟機或可正常讀取的資料光碟。",
+    "ja": "測定の制限時間を超えました。別のドライブまたは読み取り可能なデータディスクを試してください。",
+    "tr": "Ölçüm süre sınırını aştı. Başka bir sürücü veya okunabilir veri diski deneyin."
+  },
+  "Timing.UnreadableDisc": {
+    "zh-CN": "多次读取失败，请使用同批次的普通数据测量盘。",
+    "en": "Repeated read failures. Use a plain-data measurement disc from the same batch.",
+    "zh-TW": "多次讀取失敗，請使用同批次的一般資料量測光碟。",
+    "ja": "読み取りが繰り返し失敗しました。同じロットの通常データ測定用ディスクを使用してください。",
+    "tr": "Art arda okuma hatası oluştu. Aynı partiden normal veri içeren bir ölçüm diski kullanın."
+  },
+  "Timing.UnstableFit": {
+    "zh-CN": "测量无法确定稳定的几何参数，请尝试其他光驱或读取速度。",
+    "en": "The measurements do not determine stable geometry. Try another drive or read speed.",
+    "zh-TW": "量測無法確定穩定的幾何參數，請嘗試其他光碟機或讀取速度。",
+    "ja": "測定から安定した形状を求められません。別のドライブまたは読み取り速度を試してください。",
+    "tr": "Ölçümler kararlı geometri belirleyemiyor. Başka bir sürücü veya okuma hızı deneyin."
+  },
+  "Timing.UnsupportedMedia": {
+    "zh-CN": "计时标定支持 CD 数据盘和单层 DVD 数据盘。",
+    "en": "Timing calibration supports data CDs and single-layer DVDs.",
+    "zh-TW": "計時校準支援 CD 資料光碟及單層 DVD 資料光碟。",
+    "ja": "時間校正はデータ CD と一層 DVD に対応しています。",
+    "tr": "Zamanlama kalibrasyonu veri CD’lerini ve tek katmanlı DVD’leri destekler."
+  },
+  "Timing.ReaderUnavailable": {
+    "zh-CN": "此光驱不支持计时标定。",
+    "en": "This recorder does not support timing calibration.",
+    "zh-TW": "此光碟機不支援計時校準。",
+    "ja": "このドライブは時間校正に対応していません。",
+    "tr": "Bu sürücü zamanlama kalibrasyonunu desteklemiyor."
+  },
+  "Timing.InvalidSpeed": {
+    "zh-CN": "请输入 0 到 65535 kB/s 的读取速度，0 为默认。",
+    "en": "Enter a read speed from 0 to 65535 kB/s; 0 uses the drive default.",
+    "zh-TW": "請輸入 0 到 65535 kB/s 的讀取速度，0 為預設。",
+    "ja": "読み取り速度を 0～65535 kB/s で入力してください。0 は既定値です。",
+    "tr": "0 ile 65535 kB/s arasında bir okuma hızı girin; 0 varsayılanı kullanır."
+  },
+  "Timing.WrongMedia": {
+    "zh-CN": "盘片与所选盘型不符。",
+    "en": "The loaded disc does not match the selected media type.",
+    "zh-TW": "光碟與所選類型不符。",
+    "ja": "ディスクが選択した種類と一致しません。",
+    "tr": "Takılı disk seçili ortam türüyle eşleşmiyor."
+  },
+  "Timing.MediaMismatch": {
+    "zh-CN": "应用前请选择与测量盘一致的盘型。",
+    "en": "Select the measured disc’s media type before applying.",
+    "zh-TW": "套用前請選擇與量測光碟一致的類型。",
+    "ja": "適用前に、測定したディスクの種類を選択してください。",
+    "tr": "Uygulamadan önce ölçülen diskin ortam türünü seçin."
+  },
+  "Timing.CdFineRequired": {
+    "zh-CN": "CD 计时仍有未知的沿轨偏移。请应用初值，再用第二张盘进行图案精标并保存修正后的预设。",
+    "en": "CD timing leaves an unknown along-track offset. Apply this estimate, then use fine pattern calibration on a second disc and save the refined preset.",
+    "zh-TW": "CD 計時仍有未知的沿軌偏移。請套用初值，再用第二張光碟進行圖案精校並儲存修正後的預設。",
+    "ja": "CD ではトラック方向のオフセットが未確定です。推定値を適用し、2 枚目でパターン精密校正を行い、修正したプリセットを保存してください。",
+    "tr": "CD zamanlamasında iz boyunca bilinmeyen bir kayma kalır. Tahmini uygulayın, ikinci diskte hassas desen kalibrasyonu yapın ve düzeltilmiş ön ayarı kaydedin."
+  },
+  "Timing.ResultHint": {
+    "zh-CN": "请在同批次的新盘上验证结果，仍可用图案标定进一步修正。",
+    "en": "Verify the result on a fresh disc from the same batch. Pattern calibration remains available for refinement.",
+    "zh-TW": "請在同批次的新光碟上驗證結果，仍可用圖案校準進一步修正。",
+    "ja": "同じロットの新しいディスクで結果を確認してください。パターン校正でさらに調整できます。",
+    "tr": "Sonucu aynı partiden yeni bir diskte doğrulayın. Desen kalibrasyonuyla daha da iyileştirebilirsiniz."
+  },
+  "Timing.Summary": {
+    "zh-CN": "已测量 {6} · {0}｜{5} 个点｜残差 RMS {1:0.###}°｜模型不确定度 {2:0.###}°（1σ）｜测量半径 {3:0.###}–{4:0.###} mm。",
+    "en": "Measured {6} · {0} | {5} points | RMS residual {1:0.###}° | model uncertainty {2:0.###}° (1σ) | measured radii {3:0.###}–{4:0.###} mm.",
+    "zh-TW": "已量測 {6} · {0}｜{5} 個點｜殘差 RMS {1:0.###}°｜模型不確定度 {2:0.###}°（1σ）｜量測半徑 {3:0.###}–{4:0.###} mm。",
+    "ja": "測定済み {6} · {0}｜{5} 点｜残差 RMS {1:0.###}°｜モデルの不確かさ {2:0.###}°（1σ）｜測定半径 {3:0.###}～{4:0.###} mm。",
+    "tr": "Ölçülen {6} · {0} | {5} nokta | RMS kalıntısı {1:0.###}° | model belirsizliği {2:0.###}° (1σ) | yarıçaplar {3:0.###}–{4:0.###} mm."
+  },
+  "Timing.Radii": {
+    "zh-CN": "估计内半径 {0:0.0000} mm · 外半径 {1:0.0000} mm。",
+    "en": "Estimated inner radius {0:0.0000} mm · outer radius {1:0.0000} mm.",
+    "zh-TW": "估計內半徑 {0:0.0000} mm · 外半徑 {1:0.0000} mm。",
+    "ja": "推定内半径 {0:0.0000} mm · 外半径 {1:0.0000} mm。",
+    "tr": "Tahmini iç yarıçap {0:0.0000} mm · dış yarıçap {1:0.0000} mm."
+  },
+  "Timing.PatternMethod": {
+    "zh-CN": "图案标定",
+    "en": "Pattern calibration",
+    "zh-TW": "圖案校準",
+    "ja": "パターン校正",
+    "tr": "Desen kalibrasyonu"
+  },
+  "Timing.Method": {
+    "zh-CN": "光驱读取计时（CD/DVD）",
+    "en": "Drive read timing (CD/DVD)",
+    "zh-TW": "光碟機讀取計時（CD/DVD）",
+    "ja": "ドライブ読み取り時間（CD/DVD）",
+    "tr": "Sürücü okuma zamanlaması (CD/DVD)"
+  },
+  "Timing.Intro": {
+    "zh-CN": "通过扇区读取完成时刻测量螺旋几何，无需照片描点。请使用同批次的普通数据盘和能够恒定转速读取的光驱。",
+    "en": "Measure spiral geometry from sector read-completion times instead of tracing a photo. Use a plain-data disc from the same batch and a drive with constant rotation.",
+    "zh-TW": "透過磁區讀取完成時刻量測螺旋幾何，無須照片描點。請使用同批次的一般資料光碟及能以固定轉速讀取的光碟機。",
+    "ja": "写真をトレースする代わりに、読み取り完了時刻から螺旋形状を測定します。同じロットの通常データディスクと一定回転のドライブを使用してください。",
+    "tr": "Fotoğraf üzerinde işaretlemek yerine okuma bitiş zamanlarından spiral geometrisini ölçün. Aynı partiden normal veri diski ve sabit dönüşlü bir sürücü kullanın."
+  },
+  "Timing.PrepareTitle": {
+    "zh-CN": "1 · 准备测量盘",
+    "en": "1 · Prepare a measurement disc",
+    "zh-TW": "1 · 準備量測光碟",
+    "ja": "1 · 測定用ディスクを準備",
+    "tr": "1 · Ölçüm diski hazırlayın"
+  },
+  "Timing.PrepareHelp": {
+    "zh-CN": "生成此 ISO，将它作为普通数据盘刻录到同批次的空白盘上。请保留测量盘，供该批次的其他盘片使用。",
+    "en": "Create this ISO and burn it as an ordinary data disc on a blank from your batch. Keep the measurement disc for other blanks from that batch.",
+    "zh-TW": "產生此 ISO，將它作為一般資料光碟燒錄至同批次的空白光碟。請保留量測光碟，供該批次的其他光碟使用。",
+    "ja": "この ISO を作成し、同じロットの空ディスクに通常のデータディスクとして書き込んでください。同じロットの他のディスク用に保管してください。",
+    "tr": "Bu ISO’yu oluşturup aynı partiden boş bir diske normal veri diski olarak yazdırın. Ölçüm diskini bu partideki diğer diskler için saklayın."
+  },
+  "Timing.TotalSectors": {
+    "zh-CN": "空白盘容量（扇区）",
+    "en": "Blank disc capacity (sectors)",
+    "zh-TW": "空白光碟容量（磁區）",
+    "ja": "空ディスクの容量（セクター）",
+    "tr": "Boş disk kapasitesi (sektör)"
+  },
+  "Timing.CapacityHelp": {
+    "zh-CN": "请使用空白盘容量，而非挂载后的文件系统大小。CD 镜像会为封盘预留空间。",
+    "en": "Use the blank disc’s capacity, not its mounted filesystem size. CD images reserve space for closing.",
+    "zh-TW": "請使用空白光碟容量，而非掛載後的檔案系統大小。CD 映像會為封片預留空間。",
+    "ja": "マウントされたファイルシステムではなく、空ディスクの容量を使います。CD イメージはクローズ処理用の空きを確保します。",
+    "tr": "Bağlı dosya sisteminin boyutunu değil, boş diskin kapasitesini kullanın. CD imajları kapatma için alan ayırır."
+  },
+  "Timing.CreateImage": {
+    "zh-CN": "生成测量 ISO",
+    "en": "Create measurement ISO",
+    "zh-TW": "產生量測 ISO",
+    "ja": "測定用 ISO を作成",
+    "tr": "Ölçüm ISO’su oluştur"
+  },
+  "Timing.MeasureTitle": {
+    "zh-CN": "2 · 测量已刻录的数据盘",
+    "en": "2 · Measure the recorded disc",
+    "zh-TW": "2 · 量測已燒錄的資料光碟",
+    "ja": "2 · 記録済みディスクを測定",
+    "tr": "2 · Kaydedilmiş diski ölçün"
+  },
+  "Timing.MeasureHelp": {
+    "zh-CN": "放入测量盘。先检查缓存和转速，再测量扇区相位，通常需要几分钟。该过程不发送刻录命令。",
+    "en": "Load the measurement disc. Cache and rotation checks come first, then sector phases. The run usually takes several minutes and sends no recording commands.",
+    "zh-TW": "放入量測光碟。先檢查快取及轉速，再量測磁區相位，通常需要幾分鐘。此過程不傳送燒錄命令。",
+    "ja": "測定用ディスクを挿入してください。キャッシュと回転速度を確認してからセクター位相を測定します。通常は数分かかり、書き込みコマンドは送信しません。",
+    "tr": "Ölçüm diskini takın. Önce önbellek ve dönüş, sonra sektör fazları denetlenir. İşlem genellikle birkaç dakika sürer ve yazma komutu göndermez."
+  },
+  "Timing.Drive": {
+    "zh-CN": "光驱",
+    "en": "Optical drive",
+    "zh-TW": "光碟機",
+    "ja": "光学ドライブ",
+    "tr": "Optik sürücü"
+  },
+  "Timing.Refresh": {
+    "zh-CN": "查找光驱",
+    "en": "Find drives",
+    "zh-TW": "尋找光碟機",
+    "ja": "ドライブを検索",
+    "tr": "Sürücüleri bul"
+  },
+  "Timing.ReadSpeed": {
+    "zh-CN": "读取速度（kB/s；0 为默认）",
+    "en": "Read speed (kB/s; 0 = default)",
+    "zh-TW": "讀取速度（kB/s；0 為預設）",
+    "ja": "読み取り速度（kB/s、0 は既定）",
+    "tr": "Okuma hızı (kB/s; 0 = varsayılan)"
+  },
+  "Timing.Measure": {
+    "zh-CN": "开始计时测量",
+    "en": "Measure read timing",
+    "zh-TW": "開始計時量測",
+    "ja": "読み取り時間を測定",
+    "tr": "Okuma zamanlamasını ölç"
+  },
+  "Timing.ResultTitle": {
+    "zh-CN": "3 · 核对并应用几何参数",
+    "en": "3 · Review and apply geometry",
+    "zh-TW": "3 · 核對並套用幾何參數",
+    "ja": "3 · 形状を確認して適用",
+    "tr": "3 · Geometriyi inceleyip uygulayın"
+  },
+  "Timing.Apply": {
+    "zh-CN": "应用到标定参数",
+    "en": "Apply to calibration setup",
+    "zh-TW": "套用至校準參數",
+    "ja": "校正設定に適用",
+    "tr": "Kalibrasyon ayarlarına uygula"
+  },
+  "Timing.OpenRecord": {
+    "zh-CN": "打开计时测量记录",
+    "en": "Open timing measurement",
+    "zh-TW": "開啟計時量測記錄",
+    "ja": "時間測定記録を開く",
+    "tr": "Zamanlama ölçümünü aç"
+  },
+  "Timing.SaveRecord": {
+    "zh-CN": "保存计时测量记录",
+    "en": "Save timing measurement",
+    "zh-TW": "儲存計時量測記錄",
+    "ja": "時間測定記録を保存",
+    "tr": "Zamanlama ölçümünü kaydet"
+  },
+  "Timing.RecordFilter": {
+    "zh-CN": "计时测量记录|*.timing-calibration.json;*.json",
+    "en": "Timing measurement|*.timing-calibration.json;*.json",
+    "zh-TW": "計時量測記錄|*.timing-calibration.json;*.json",
+    "ja": "時間測定記録|*.timing-calibration.json;*.json",
+    "tr": "Zamanlama ölçümü|*.timing-calibration.json;*.json"
+  },
+  "Timing.FindingDrives": {
+    "zh-CN": "正在查找光驱…",
+    "en": "Finding optical drives…",
+    "zh-TW": "正在尋找光碟機…",
+    "ja": "光学ドライブを検索中…",
+    "tr": "Optik sürücüler aranıyor…"
+  },
+  "Timing.Ready": {
+    "zh-CN": "请放入测量盘并开始测量。",
+    "en": "Load the measurement disc and start measuring.",
+    "zh-TW": "請放入量測光碟並開始量測。",
+    "ja": "測定用ディスクを挿入して測定を開始してください。",
+    "tr": "Ölçüm diskini takıp ölçümü başlatın."
+  },
+  "Timing.Measuring": {
+    "zh-CN": "正在测量读取计时…",
+    "en": "Measuring read timing…",
+    "zh-TW": "正在量測讀取計時…",
+    "ja": "読み取り時間を測定中…",
+    "tr": "Okuma zamanlaması ölçülüyor…"
+  },
+  "Timing.Measured": {
+    "zh-CN": "测量完成，请核对结果后再应用。",
+    "en": "Measurement complete. Review the result before applying it.",
+    "zh-TW": "量測完成，請核對結果後再套用。",
+    "ja": "測定が完了しました。適用前に結果を確認してください。",
+    "tr": "Ölçüm tamamlandı. Uygulamadan önce sonucu inceleyin."
+  },
+  "Timing.CreatingImage": {
+    "zh-CN": "正在生成普通数据测量 ISO…",
+    "en": "Creating the plain-data measurement ISO…",
+    "zh-TW": "正在產生一般資料量測 ISO…",
+    "ja": "通常データの測定用 ISO を作成中…",
+    "tr": "Normal veri ölçüm ISO’su oluşturuluyor…"
+  },
+  "Timing.ImageSaved": {
+    "zh-CN": "测量 ISO 已保存：{0}。请将它作为普通数据盘刻录后再测量。",
+    "en": "Measurement ISO saved: {0}. Burn it as an ordinary data disc before measuring.",
+    "zh-TW": "量測 ISO 已儲存：{0}。請將它作為一般資料光碟燒錄後再量測。",
+    "ja": "測定用 ISO を保存しました：{0}。測定前に通常のデータディスクとして書き込んでください。",
+    "tr": "Ölçüm ISO’su kaydedildi: {0}. Ölçmeden önce normal veri diski olarak yazdırın."
+  },
+  "Timing.RecordLoaded": {
+    "zh-CN": "测量记录已载入，请核对后再应用。",
+    "en": "Measurement loaded. Review the result before applying it.",
+    "zh-TW": "量測記錄已載入，請核對後再套用。",
+    "ja": "測定記録を読み込みました。適用前に結果を確認してください。",
+    "tr": "Ölçüm yüklendi. Uygulamadan önce sonucu inceleyin."
+  },
+  "Timing.RecordSaved": {
+    "zh-CN": "计时测量记录已保存：{0}",
+    "en": "Timing measurement saved: {0}",
+    "zh-TW": "計時量測記錄已儲存：{0}",
+    "ja": "時間測定記録を保存しました：{0}",
+    "tr": "Zamanlama ölçümü kaydedildi: {0}"
+  },
+  "Timing.Applied": {
+    "zh-CN": "计时几何已应用到标定参数。用于工程前，请先将它保存为预设。",
+    "en": "Timing geometry applied to calibration setup. Save it as a preset before using it in a project.",
+    "zh-TW": "計時幾何已套用至校準參數。用於專案前，請先將它儲存為預設。",
+    "ja": "形状を校正設定に適用しました。プロジェクトで使用する前にプリセットとして保存してください。",
+    "tr": "Zamanlama geometrisi kalibrasyon ayarlarına uygulandı. Projede kullanmadan önce ön ayar olarak kaydedin."
+  },
+  "Timing.AppliedCd": {
+    "zh-CN": "初始几何已应用。请继续图案精标，再保存修正后的预设。",
+    "en": "Starting geometry applied. Continue with fine pattern calibration, then save the refined preset.",
+    "zh-TW": "初始幾何已套用。請繼續圖案精校，再儲存修正後的預設。",
+    "ja": "初期形状を適用しました。パターン精密校正を続け、修正したプリセットを保存してください。",
+    "tr": "Başlangıç geometrisi uygulandı. Hassas desen kalibrasyonuna devam edip düzeltilmiş ön ayarı kaydedin."
+  },
+  "Timing.CheckingCache": {
+    "zh-CN": "正在检查绕过读取缓存的方法…",
+    "en": "Checking which reads bypass the cache…",
+    "zh-TW": "正在檢查繞過讀取快取的方法…",
+    "ja": "キャッシュを回避できる読み取り方法を確認中…",
+    "tr": "Önbelleği aşan okuma yöntemi denetleniyor…"
+  },
+  "Timing.CheckingRotation": {
+    "zh-CN": "正在检查转速：区域 {0} / {1}…",
+    "en": "Checking rotation: zone {0} / {1}…",
+    "zh-TW": "正在檢查轉速：區域 {0} / {1}…",
+    "ja": "回転速度を確認中：領域 {0} / {1}…",
+    "tr": "Dönüş denetleniyor: bölge {0} / {1}…"
+  },
+  "Timing.Settling": {
+    "zh-CN": "正在等待转速稳定…",
+    "en": "Waiting for stable rotation…",
+    "zh-TW": "正在等待轉速穩定…",
+    "ja": "回転の安定を待機中…",
+    "tr": "Dönüşün kararlı olması bekleniyor…"
+  },
+  "Timing.TargetProgress": {
+    "zh-CN": "正在测量扇区相位：点位 {0} / {1}…",
+    "en": "Measuring sector phases: point {0} / {1}…",
+    "zh-TW": "正在量測磁區相位：點位 {0} / {1}…",
+    "ja": "セクター位相を測定中：測定点 {0} / {1}…",
+    "tr": "Sektör fazları ölçülüyor: nokta {0} / {1}…"
+  },
+  "Timing.CheckingMedia": {
+    "zh-CN": "正在检查已刻录的数据盘…",
+    "en": "Checking the recorded data disc…",
+    "zh-TW": "正在檢查已燒錄的資料光碟…",
+    "ja": "記録済みデータディスクを確認中…",
+    "tr": "Kaydedilmiş veri diski denetleniyor…"
+  }
+}

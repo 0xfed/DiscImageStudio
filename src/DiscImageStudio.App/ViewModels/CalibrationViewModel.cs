@@ -59,6 +59,7 @@ public partial class CalibrationViewModel : ObservableObject
         InitializeDiameterCommands();
         InitializeVisualSelectorCommands();
         InitializeCapacityCommands();
+        InitializeTimingCommands();
         RefreshCoarseSetup();
         shell.BusyChanged += () => { OnPropertyChanged(nameof(IsBusy)); RefreshCommands(); };
         // The target is a snapshot. Edits here change the setup for the next target.
@@ -69,6 +70,7 @@ public partial class CalibrationViewModel : ObservableObject
             OnPropertyChanged(nameof(SetupPitchQuadratic));
             OnPropertyChanged(nameof(SetupPitchCubic));
             RefreshCoarseSetup();
+            RefreshTimingProperties();
             if (change.PropertyName is nameof(state.CdSectors) or nameof(state.DvdTotalSectors) or nameof(state.BdTotalSectors))
                 CapacityStatus = string.Empty;
         };
@@ -273,6 +275,7 @@ public partial class CalibrationViewModel : ObservableObject
         OnPropertyChanged(nameof(ActivePatternSummary));
         RelocalizeRings();
         RelocalizeVisualSelector();
+        RefreshTimingProperties();
     }
 
     // ---- Step column: state chips and progressive disclosure ----
@@ -342,7 +345,7 @@ public partial class CalibrationViewModel : ObservableObject
     }
 
     internal void OnWindowClosed() { _cancellation?.Cancel(); _previewCancellation?.Cancel(); SetTargetPreviewVisible(false); }
-    private bool CanUseTarget() => !IsBusy && _target is not null;
+    private bool CanUseTarget() => !IsBusy && !UseDriveTiming && _target is not null;
     private bool CanGenerateTarget() => CanUseStageTarget() && IsSelectedPatternCurrent;
     private void ApplyCalibrationParameters(CalibrationParameters p) => WriteSetupParameters(p);
     // Automatic fit checks explain uncertainty; the user's photographic confirmation
@@ -386,6 +389,8 @@ public partial class CalibrationViewModel : ObservableObject
 
     partial void OnSelectedDiscTypeChanged(string value)
     {
+        if (value == "BD") UseDriveTiming = false;
+        RefreshTimingProperties();
         if (value != "DVD") UseVisualSelectorPattern = false;
         OnPropertyChanged(nameof(CanSelectVisualSelectorPattern));
         CapacityStatus = string.Empty;
@@ -1160,6 +1165,7 @@ public partial class CalibrationViewModel : ObservableObject
         }
         finally
         {
+            if (UseDriveTiming) TimingStatus = _statusMessage;
             _isSolving = false;
             _cancellation.Dispose(); _cancellation = null;
             _shell.SetBusy(false);
@@ -1176,6 +1182,7 @@ public partial class CalibrationViewModel : ObservableObject
 
     private void RefreshCommands()
     {
+        RefreshTimingCommands();
         OnPropertyChanged(nameof(CanUseCurrentCalibrationSource));
         CreateTargetCommand.NotifyCanExecuteChanged(); BrowseOutputCommand.NotifyCanExecuteChanged();
         SaveAsPresetCommand.NotifyCanExecuteChanged();

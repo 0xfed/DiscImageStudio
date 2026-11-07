@@ -243,6 +243,25 @@ internal static class UiLocalizationLayoutTests
                                 shell.Calibration.StepThreeExpanded = true;
                                 Pump();
                                 Capture(window, name + "-trace");
+                                if (family != "bd")
+                                {
+                                    shell.Calibration.TimingResult = null;
+                                    shell.Calibration.UseDriveTiming = true;
+                                    Pump();
+                                    Capture(window, name + "-drive-timing");
+                                    shell.Calibration.TimingResult = CalibrationTimingViewModelTests.Fixture(family == "cd"
+                                        ? DiscImageStudio.Core.Calibration.DriveTimingMedia.Cd : DiscImageStudio.Core.Calibration.DriveTimingMedia.Dvd);
+                                    Pump();
+                                    var applyTiming = Descendants(window).OfType<Button>()
+                                        .Single(button => button.IsVisible && ReferenceEquals(button.Command, shell.Calibration.ApplyTimingResultCommand));
+                                    applyTiming.BringIntoView();
+                                    Pump();
+                                    if (!applyTiming.IsEnabled || string.IsNullOrWhiteSpace(shell.Calibration.TimingSummary))
+                                        throw new InvalidOperationException("The timing measurement has no usable Apply control.");
+                                    Capture(window, name + "-timing-result");
+                                    shell.Calibration.UseDriveTiming = false;
+                                    Pump();
+                                }
                                 shell.Calibration.StepOneExpanded = true;
                             }
                         }
@@ -291,7 +310,7 @@ internal static class UiLocalizationLayoutTests
             // Per DVD/profile: three additional visual-selector states.
             // Per language: three settings categories and two project dialogs.
             int expectedScenarios = Languages.Length * (3 * Profiles.Length * (Enum.GetValues<Workspace>().Length + 8)
-                + 3 * Profiles.Length + 5);
+                + 7 * Profiles.Length + 5);
             if (scenarios.Count != expectedScenarios || scenarios.Any(scenario => scenario.TextBlocks < 5))
                 throw new InvalidOperationException($"The expected {expectedScenarios} UI layout scenarios did not all render meaningful text.");
             if (issues.Count != 0)

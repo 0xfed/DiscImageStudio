@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Add CD/DVD read-timing calibration adapted from disc-probe: generate plain-data measurement ISOs, check cache bypass and constant rotation, fit sector phases in steps, save measurements and explicitly apply independent calibration geometry. CD retains fine pattern calibration for its unknown along-track offset. Add simulated-drive, read-only command, record and UI regressions; this integration has no physical-drive validation.
+
 - Integrate upstream calibration stages, burn diagnostics and encoding fixes; preserve UDF 2.50 file updates, measured diameters and visual selectors, and explicitly distinguish saved calibration artwork lineages.
 
 ## [1.8.1] - 2026-11-04

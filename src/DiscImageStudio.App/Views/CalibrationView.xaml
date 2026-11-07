@@ -5,6 +5,7 @@
              xmlns:controls="clr-namespace:DiscImageStudio.Controls"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:vm="clr-namespace:DiscImageStudio.ViewModels"
+             xmlns:views="clr-namespace:DiscImageStudio.Views"
              SizeChanged="OnViewSizeChanged">
     <UserControl.Resources>
         <DataTemplate x:Key="CalibrationPresetTemplate">
@@ -32,7 +33,19 @@
                 </WrapPanel>
             </controls:PageHeader.Actions>
         </controls:PageHeader>
-        <WrapPanel Grid.Row="1" Margin="0,0,0,10">
+        <StackPanel Grid.Row="1">
+        <WrapPanel Margin="0,0,0,10">
+            <RadioButton GroupName="CalibrationMethod" IsChecked="{Binding ShowPatternCalibration, Mode=OneWay}"
+                         Command="{Binding SelectPatternCalibrationCommand}" Margin="0,0,24,6">
+                <TextBlock Text="{loc:Text Timing.PatternMethod}" TextWrapping="Wrap" />
+            </RadioButton>
+            <RadioButton GroupName="CalibrationMethod" IsChecked="{Binding UseDriveTiming, Mode=OneWay}"
+                         Command="{Binding SelectDriveTimingCommand}" IsEnabled="{Binding CanSelectDriveTiming}" Margin="0,0,0,6">
+                <TextBlock Text="{loc:Text Timing.Method}" TextWrapping="Wrap" />
+            </RadioButton>
+        </WrapPanel>
+        <controls:VisibilityGate IsOpen="{Binding ShowPatternCalibration}">
+        <WrapPanel Margin="0,0,0,10">
             <RadioButton x:Name="CoarsePhase" GroupName="CalibrationPhase"
                          IsChecked="{Binding IsCoarseMode, Mode=OneWay}" Command="{Binding SelectCoarseModeCommand}"
                          AutomationProperties.Name="{loc:Text Xaml.CoarseCalibrationPhase}" Margin="0,0,28,6">
@@ -58,10 +71,14 @@
                 </StackPanel>
             </RadioButton>
         </WrapPanel>
+        </controls:VisibilityGate>
+        </StackPanel>
         <!-- One scroll surface: in the wide layout the work area is exactly the viewport tall
              (the step column is an accordion that never grows past it), in the narrow layout
              it stacks and the page scrolls as one. -->
-        <ScrollViewer x:Name="WorkScroll" Grid.Row="2" VerticalScrollBarVisibility="Auto"
+        <controls:VisibilityGate IsOpen="{Binding ShowPatternCalibration}" Grid.Row="2"
+                                 HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+        <ScrollViewer x:Name="WorkScroll" VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled" ScrollChanged="OnWorkScrollChanged"
                       SizeChanged="OnWorkspaceSizeChanged" controls:ScrollMaskBehavior.Enabled="True">
             <Grid x:Name="WorkArea">
@@ -783,5 +800,10 @@
                 </Grid>
             </Grid>
         </ScrollViewer>
+        </controls:VisibilityGate>
+        <controls:VisibilityGate IsOpen="{Binding UseDriveTiming}" Grid.Row="2"
+                                 HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+            <views:DriveTimingCalibrationView />
+        </controls:VisibilityGate>
     </Grid>
 </UserControl>

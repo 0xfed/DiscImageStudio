@@ -42,7 +42,7 @@ public partial class BurnViewModel
             using CancellationTokenSource cancellation = new();
             _burnCancellation = cancellation;
             _shell.BeginBurnDockJob(kind, 1);
-            SetBurnStatus("Updating disc files…");
+            _shell.ReportDockJob(L.T("Updating disc files…"), _shell.JobProgressValue);
             bool progressInitialized = false;
             Progress<OpticalBurnProgress> progress = new(value =>
             {
@@ -53,14 +53,12 @@ public partial class BurnViewModel
                         _shell.BeginBurnDockJob(kind, value.TotalBytes);
                         progressInitialized = true;
                     }
-                    _shell.ReportBurnProgress(value);
-                    BurnProgressValue = _shell.JobProgressValue;
+                    _shell.ReportBurnProgress(value, cancellationRequested: cancellation.IsCancellationRequested);
                 }
             });
             OpticalBurnResult result = await _opticalDiscBurner.UpdateFilesAsync(device.Id, kind,
                 context => PrepareFileUpdate(source, context, cancellation.Token), speed, progress, cancellation.Token);
-            BurnProgressValue = 100;
-            SetBurnStatus("Files updated. The disc remains open for further updates.");
+            _shell.ReportDockJob(L.T("Files updated. The disc remains open for further updates."), _shell.JobProgressValue);
             _shell.CompleteDockJob(L.T("Disc files updated"));
             _shell.AppendLog(L.Format("Disc file update completed: {0:N0} new bytes recorded.\n", result.BytesWritten));
             _shell.ShowToast(L.T("Disc files updated"),
@@ -68,12 +66,12 @@ public partial class BurnViewModel
         }
         catch (OperationCanceledException)
         {
-            SetBurnStatus("已请求取消；光驱可能仍需一段时间才能停止。");
+            _shell.ReportDockJob(L.T("已请求取消；光驱可能仍需一段时间才能停止。"), _shell.JobProgressValue);
             _shell.AbortDockJob(L.T("File update cancelled"), expandLog: true);
         }
         catch (Exception exception)
         {
-            SetBurnStatus("刻录未完成，请查看错误信息。");
+            _shell.ReportDockJob(L.T("刻录未完成，请查看错误信息。"), _shell.JobProgressValue);
             _shell.AbortDockJob(L.T("File update failed"), expandLog: true);
             _shell.AppendLog(exception.Message + "\n");
             _shell.ShowToast(L.T("File update failed"), exception.Message, ToastKind.Error);

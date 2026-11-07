@@ -4,6 +4,8 @@
 
 ## Henüz yayımlanmayan
 
+- Üst projenin kalibrasyon aşamalarını, yazma tanılarını ve kodlama düzeltmelerini birleştir; UDF 2.50 dosya güncellemelerini, çap ölçümlerini ve görsel seçicileri koru, kaydedilen kalibrasyon desenlerinin kökenlerini açıkça ayır.
+
 ## [1.8.1] - 2026-11-04
 
 - Etiketler bağlanırken hız açılır listesindeki seçimin geri dönmesini önleyin; kalibrasyon yazmaları dahil, disk veya yazıcı bilgileri yenilenirken seçilen hızı koruyun. Geçerli sürücü ve disk seçilen hızı bildirmediğinde Otomatik seçeneğine geri dönmeye devam edin. Seçenek kimliği kararlılığı, gecikmeli yazıcı yanıtları ve hız seçimi için regresyon testleri ekleyin.

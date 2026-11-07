@@ -54,6 +54,9 @@ internal static class Program
             return SolveMultipleBlocks(arguments, fillSectors);
         }
 
+        if (ReadBoolean(arguments, "read-compatibility", fallback: false))
+            throw new ArgumentException(L.T("--read-compatibility true requires --fast-output true and --algorithm dispersion."));
+
         string? outputPath = arguments.Has("output") ? arguments.Require("output") : null;
         string? isoOutputPath = arguments.Has("iso-output") ? arguments.Require("iso-output") : null;
         if (outputPath is null && isoOutputPath is null)
@@ -321,7 +324,7 @@ internal static class Program
         string isoPath = arguments.Require("iso");
         string outputPath = arguments.Require("output");
         (uint sidecarStartLba, uint sidecarFillSectors, uint sidecarTotalSectors) =
-            ReadSolveSummary(isoPath + ".json");
+            IsoReadbackRenderer.ReadSolveSummary(isoPath + ".json");
         long isoSectors = new FileInfo(isoPath).Length / DvdEccBlockEncoder.PayloadBytesPerSector;
         uint totalSectors;
         if (arguments.Has("total-sectors") || arguments.Has("total-blocks"))
@@ -372,35 +375,6 @@ internal static class Program
             L.Format("readback: {0}x{1}, classified={2}/{3}, pitch={4:F4} um, output={5}", summary.PreviewSize, summary.PreviewSize, summary.ClassifiedSamples, summary.TotalSamples, summary.TrackPitchMicrometres, outputPath));
         return 0;
     }
-
-    /// <summary>Reads the solve metadata sidecar so a generated ISO defaults to the
-    /// drawing range and disc size it was produced with; missing fields fall back to 0.</summary>
-    private static (uint StartLba, uint FillSectors, uint TotalSectors) ReadSolveSummary(
-        string sidecarPath)
-    {
-        if (!File.Exists(sidecarPath))
-        {
-            return (0, 0, 0);
-        }
-
-        try
-        {
-            using JsonDocument document = JsonDocument.Parse(File.ReadAllText(sidecarPath));
-            return (
-                GetUIntProperty(document.RootElement, "startLba"),
-                GetUIntProperty(document.RootElement, "fillSectors"),
-                GetUIntProperty(document.RootElement, "totalSectors"));
-        }
-        catch (JsonException)
-        {
-            return (0, 0, 0);
-        }
-    }
-
-    private static uint GetUIntProperty(JsonElement element, string name)
-        => element.TryGetProperty(name, out JsonElement value) && value.TryGetUInt32(out uint result)
-            ? result
-            : 0u;
 
     private static int SolveMultipleBlocks(CliArguments arguments, uint fillSectors)
     {
@@ -454,6 +428,10 @@ internal static class Program
         {
             throw new ArgumentException(L.T("--fast-output true requires --algorithm dispersion."));
         }
+
+        bool readCompatibility = ReadBoolean(arguments, "read-compatibility", fallback: false);
+        if (readCompatibility && !fastOutput)
+            throw new ArgumentException(L.T("--read-compatibility true requires --fast-output true and --algorithm dispersion."));
 
         int iterationsPerBlock = arguments.Has("iterations-per-block")
             ? arguments.GetInt("iterations-per-block", 0)
@@ -566,7 +544,8 @@ internal static class Program
             arguments.GetInt("batch-candidates", 4),
             arguments.GetInt("search-lanes", 1),
             arguments.GetInt("fast-parallelism", 0),
-            PreserveExistingIso: hybridMode);
+            PreserveExistingIso: hybridMode,
+            ReadCompatibility: readCompatibility);
         int totalBlocks = checked((int)(fillSectors / DvdEccBlockEncoder.SectorCount));
         int progressEvery = Math.Max(1, totalBlocks / 100);
         if (fastOutput)
@@ -755,10 +734,14 @@ internal static class Program
         Console.WriteLine(
             L.Format("{0}, image sampled at every payload code-word center", DispersionPaletteDescription()));
 
-        FastDispersionWriteResult result = FastDispersionImageWriter.Write(
+        if (options.ReadCompatibility)
+            Console.WriteLine("read compatibility=bridge-9b-v1 (experimental sector-local 0x92-to-0x9B bridges)");
+
+        FastDispersionWriteResult result = FastDvdImageFileWriter.WritePrepared(
             arguments.Require("image"),
             isoOutputPath,
             options,
+            hybridIso,
             progress =>
             {
                 if (progress.CompletedBlocks == 1
@@ -776,46 +759,6 @@ internal static class Program
                 }
             });
 
-        ImageMappingOptions imageMapping = options.ImageMapping;
-        var metadata = new
-        {
-            format = "dvd-nrzi-disc-fill-v2",
-            sourceImage = Path.GetFullPath(arguments.Require("image")),
-            isoOutput = Path.GetFullPath(isoOutputPath),
-            startLba = options.StartLba,
-            filesAtOuterRing = hybridIso?.FilesAtOuterRing ?? false,
-            fillSectors = options.FillSectors,
-            totalSectors = imageMapping.TotalSectors,
-            psnOffset = $"0x{options.PsnOffset:X}",
-            blockCount = result.CompletedBlocks,
-            algorithm = "dispersion",
-            fastOutput = true,
-            fastParallelism = options.FastParallelism == 0
-                ? Environment.ProcessorCount
-                : options.FastParallelism,
-            exactEccEfmReplay = false,
-            finalBoundary = (object?)null,
-            dispersionPool = DispersionPaletteMetadata(),
-            constraintStep = imageMapping.SampleEveryChannelBits,
-            constraintStepUsed = false,
-            totalScore = 0,
-            totalScoreMaximum = result.ControlledWords,
-            scoreMetric = "payload-transition-class-error",
-            normalizedScore = 0.0,
-            elapsedSeconds = result.Elapsed.TotalSeconds,
-            imageMapping,
-            pitchPolynomial = DescribePitchPolynomial(imageMapping),
-            iso = new
-            {
-                mode = hybridIso?.Mode ?? "raw-sector-image",
-                logicalSectorBytes = IsoImageWriter.LogicalSectorBytes,
-                imageSectors = result.IsoSectors,
-                sparseFile = result.SparseIso,
-                mountableFilesystem = hybridIso is not null,
-                hybrid = hybridIso,
-            },
-        };
-        WriteJson(isoOutputPath + ".json", metadata);
         double totalMebibytes = result.FilledSectors
             * (double)IsoImageWriter.LogicalSectorBytes
             / (1024 * 1024);
@@ -823,7 +766,13 @@ internal static class Program
             ? 0
             : totalMebibytes / result.Elapsed.TotalSeconds;
         Console.WriteLine(
-            L.Format("done: blocks={0}, controlled={1}, payload-transition-class-error=0, boundary=not replayed, rate={2:F2} MiB/s, elapsed={3:F1}s, output={4}", result.CompletedBlocks, result.ControlledWords, finalRate, result.Elapsed.TotalSeconds, isoOutputPath));
+            $"done: blocks={result.CompletedBlocks}, controlled={result.ControlledWords}, "
+            + (options.ReadCompatibility
+                ? $"compatibility changes={result.CompatibilityChanges}, payload-transition-class-error=not evaluated, "
+                : "payload-transition-class-error=0, ")
+            + "boundary=not replayed, "
+            + $"rate={finalRate:F2} MiB/s, elapsed={result.Elapsed.TotalSeconds:F1}s, "
+            + $"output={isoOutputPath}");
         return 0;
     }
 
@@ -932,21 +881,7 @@ internal static class Program
     }
 
     private static object DescribePitchPolynomial(ImageMappingOptions options)
-    {
-        double length = options.TotalSectors * (double)DvdEccBlockEncoder.ChannelBitsPerSector
-            * options.ChannelBitLengthNm * 1e-6;
-        double scale = DiscImageStudio.Core.DvdTrackGeometry.Create(options.InnerRadiusMm,
-            options.OuterRadiusMm, length, options.PitchLinear, options.PitchQuadratic, options.PitchCubic).TrackPitchMm * 1000;
-        return new
-        {
-            variable = "x=(radiusMm-innerRadiusMm)/(outerRadiusMm-innerRadiusMm)",
-            unit = "micrometres",
-            constant = scale,
-            linear = scale * options.PitchLinear,
-            quadratic = scale * options.PitchQuadratic,
-            cubic = scale * options.PitchCubic,
-        };
-    }
+        => FastDvdImageFileWriter.DescribePitchPolynomial(options);
 
     private static uint ReadTotalSectors(CliArguments arguments)
     {
@@ -1315,24 +1250,8 @@ internal static class Program
             string.Join(",", Enumerable.Range(0, 2)
                 .Select(level => $"0x{DvdGrayscalePalette.GetScrambledByteForLevel(level):X2}")));
 
-    private static object DispersionPaletteMetadata() => new
-    {
-        domain = "scrambled-main-data-byte-at-efmplus-input",
-        blackByte = $"0x{DvdGrayscalePalette.BlackScrambledByte:X2}",
-        whiteByte = $"0x{DvdGrayscalePalette.WhiteScrambledByte:X2}",
-        blackTransitionsPerCodeword = 5,
-        whiteTransitionsPerCodeword = 2,
-        luminanceCalibration = "nominal-black-white-not-photometric-measurement",
-        rasterSampling = "nearest-for-opaque-binary-grayscale-otherwise-alpha-weighted-bilinear",
-        levels = Enumerable.Range(0, 2).Select(level => new
-        {
-            inputMinimum = Enumerable.Range(0, 256).First(value => BinaryGrayscale.GetLevelIndex((byte)value) == level),
-            inputMaximum = Enumerable.Range(0, 256).Last(value => BinaryGrayscale.GetLevelIndex((byte)value) == level),
-            previewLuminance = BinaryGrayscale.GetLuminance(level),
-            scrambledByte = $"0x{DvdGrayscalePalette.GetScrambledByteForLevel(level):X2}",
-            transitionsPerCodeword = level == 0 ? 5 : 2,
-        }).ToArray(),
-    };
+    private static object DispersionPaletteMetadata()
+        => FastDvdImageFileWriter.DispersionPaletteMetadata();
 
     private static object[] BinaryBytePairMetadata()
         => EfmPlusBinaryBytePairs.AtZeroDsv

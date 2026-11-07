@@ -47,6 +47,7 @@ internal static class CatalogLoadingTests
             string[] sources = [
                 "global using System; global using System.IO; global using System.Linq; global using System.Collections.Generic;",
                 File.ReadAllText(Path.Combine(directory, "L.cs")),
+                File.ReadAllText(Path.Combine(directory, "DiagnosticMessage.cs")),
                 File.ReadAllText(Path.Combine(directory, "CommandLineLanguage.cs")),
                 """
                 using DiscImageStudio.Localization;

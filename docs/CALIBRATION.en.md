@@ -89,3 +89,5 @@ New records use schema 9 and retain the pattern, measured circle diameters, meas
 Automated checks cover consistency of the built-in original image and pixel sampling; CD/DVD/BD file and streaming output consistency; BD drawing ranges and polarity; recovery of synthetic perspective; degenerate boundaries and cancellation; single-curve solving; full curves beyond the preset band; prediction direction and curvature; interactive coordinate transforms; point dragging and insertion; session restoration and invalidation rules. Burning tests write only memory streams and do not access recorders.
 
 Software and synthetic tests cannot establish real-disc visibility, lens condition, point-placement accuracy, or final physical calibration accuracy. Check the entire predicted curve against your own photograph before applying it.
+
+Assisted calibration now has coarse, boundary and fine stages and can run independently of a drawing project. Confirm the disc capacity, then create the matching target for each blank disc. Analyze every recorded disc with its own saved generation record and photograph. [Calibration after the upstream integration](CALIBRATION_TUTORIAL.en.md).

@@ -24,7 +24,7 @@ public partial class MainWindow : Window
     private readonly WindowWorkArea _workArea;
     private readonly UserControl[] _pages;
     private readonly (SideNavItem Item, Workspace Workspace)[] _navItems;
-    private readonly PageHeader?[] _pageHeaders = new PageHeader?[6];
+    private readonly PageHeader?[] _pageHeaders = new PageHeader?[Enum.GetValues<Workspace>().Length];
     private readonly AppSettingsStore _settingsStore;
     private AppSettings _settings;
     private bool _isSidebarCollapsed;
@@ -51,7 +51,7 @@ public partial class MainWindow : Window
         _shell.SaveConfirmationHandler = (title, message, confirmLabel, neutralLabel)
             => BurnConfirmModal.ShowThreeWayAsync(title, message, confirmLabel, neutralLabel);
         _shell.ShowProjectDialogHandler = ShowProjectDialog;
-        _shell.CalibrationParametersApplied += PlayProjectUpdateCelebration;
+        _shell.Calibration.ShowPresetSaveDialog = () => PresetSaveWindow.Show(this);
         _shell.ProjectSaved += PlayProjectSaveTrail;
         DataContext = _shell;
 
@@ -65,6 +65,7 @@ public partial class MainWindow : Window
             new ExportView(_shell.Export),
             new BurnView(_shell.Burn),
             new CalibrationView(_shell.Calibration),
+            new BurnView(_shell.CalibrationBurn),
         ];
         _navItems =
         [
@@ -141,22 +142,14 @@ public partial class MainWindow : Window
             _shell.OpenProjectForSnapshot(Path.GetFullPath(projectPath));
         }
 
+        if (workspace == Workspace.Burn && string.Equals(burnSource, "calibration", StringComparison.OrdinalIgnoreCase))
+            workspace = Workspace.CalibrationBurn;
         _shell.SelectWorkspace(workspace);
-        if (workspace == Workspace.Burn)
+        if (workspace is Workspace.Burn or Workspace.CalibrationBurn)
         {
-            bool calibrationSource = string.Equals(burnSource, "calibration", StringComparison.OrdinalIgnoreCase);
-            if (calibrationSource)
-            {
-                // The target has to exist before the burn summary can describe it.
+            if (workspace == Workspace.CalibrationBurn)
                 _shell.Calibration.EnsureTarget();
-                _shell.Burn.UseCalibrationPattern = true;
-            }
-
-            _shell.Burn.UpdateSourceSummary();
-        }
-        if (workspace == Workspace.Calibration)
-        {
-            _shell.Calibration.EnsureTarget();
+            (workspace == Workspace.CalibrationBurn ? _shell.CalibrationBurn : _shell.Burn).UpdateSourceSummary();
         }
         if (!string.IsNullOrWhiteSpace(previewPath))
         {
@@ -225,10 +218,12 @@ public partial class MainWindow : Window
     // Snapshot-only synthetic telemetry. No burner or recorder is created here.
     internal void ShowBurnProgressForSnapshot(string phase)
     {
-        if (phase is not ("write" or "buffer" or "finalize"))
-            throw new ArgumentException(L.T("Burn progress snapshot must be write, buffer or finalize."));
-        var kind = _shell.Burn.IsBluRayBurn ? DiscImageStudio.Burning.OpticalBurnMediaKind.BluRayData
-            : _shell.Burn.IsDvdBurn ? DiscImageStudio.Burning.OpticalBurnMediaKind.DvdData
+        if (phase is not ("write" or "buffer" or "finalize" or "write-complete" or "verify"
+            or "flush" or "close-track" or "close-disc" or "release"))
+            throw new ArgumentException(L.T("Unknown burn progress snapshot phase."));
+        var burn = _shell.CurrentWorkspace == Workspace.CalibrationBurn ? _shell.CalibrationBurn : _shell.Burn;
+        var kind = burn.IsBluRayBurn ? DiscImageStudio.Burning.OpticalBurnMediaKind.BluRayData
+            : burn.IsDvdBurn ? DiscImageStudio.Burning.OpticalBurnMediaKind.DvdData
             : DiscImageStudio.Burning.OpticalBurnMediaKind.CdAudio;
         long total = kind == DiscImageStudio.Burning.OpticalBurnMediaKind.CdAudio ? 800L * 1024 * 1024
             : kind == DiscImageStudio.Burning.OpticalBurnMediaKind.BluRayData ? 12219392L * 2048 : 2295104L * 2048;
@@ -237,8 +232,19 @@ public partial class MainWindow : Window
         _shell.ReportBurnProgress(new("buffer", L.T("正在准备防断流缓冲区…"), 0, total));
         if (phase != "buffer")
             _shell.ReportBurnProgress(new("write", L.T("刻录机开始写入。"), total / 3, total, 8.25 * 1024 * 1024));
-        if (phase == "finalize")
-            _shell.ReportBurnProgress(new("finalize", L.T("正在刷新缓存并关闭刻录会话…"), total / 3, total));
+        string? phaseMessage = phase switch
+        {
+            "finalize" => "正在完成写入并关闭刻录会话…",
+            "write-complete" => "Windows 刻录接口报告写入完成，正在等待返回…",
+            "verify" => "正在验证刻录数据…",
+            "flush" => "刷新 BD-R 缓存（请等待完成）",
+            "close-track" => "关闭 BD-R 轨道（请等待完成）",
+            "close-disc" => "封闭 BD-R 盘片（请等待完成）",
+            "release" => "释放 BD-R 刻录机访问权",
+            _ => null,
+        };
+        if (phaseMessage is not null)
+            _shell.ReportBurnProgress(new(phase, phaseMessage, total / 3, total));
     }
 
     /// <summary>Snapshot hook: forces the hovered state on the first recent-project card
@@ -286,6 +292,7 @@ public partial class MainWindow : Window
         if (mode is not ("pattern" or "closeup" or "target"))
             throw new ArgumentException(L.T("Calibration snapshot view must be pattern, closeup or target."));
         _shell.SelectWorkspace(Workspace.Calibration);
+        _shell.Calibration.EnsureTarget();
         if (mode == "target")
         {
             // Step one auto-collapses once a target exists; snapshots need it open again to
@@ -454,13 +461,21 @@ public partial class MainWindow : Window
             return;
         }
 
-        if (e.Key == Key.S && Keyboard.Modifiers is ModifierKeys.Control or (ModifierKeys.Control | ModifierKeys.Shift)
-            && _shell.IsProjectOpen)
+        if (e.Key == Key.S && Keyboard.Modifiers is ModifierKeys.Control or (ModifierKeys.Control | ModifierKeys.Shift))
         {
-            e.Handled = true;
-            _ = Keyboard.Modifiers.HasFlag(ModifierKeys.Shift)
-                ? _shell.SaveProjectAsCommand.ExecuteAsync(null)
-                : _shell.SaveProjectCommand.ExecuteAsync(null);
+            if (_shell.CurrentWorkspace is Workspace.Calibration or Workspace.CalibrationBurn)
+            {
+                e.Handled = true;
+                if (_shell.Calibration.SaveSessionCommand.CanExecute(null))
+                    _shell.Calibration.SaveSessionCommand.Execute(null);
+            }
+            else if (_shell.IsProjectOpen)
+            {
+                e.Handled = true;
+                _ = Keyboard.Modifiers.HasFlag(ModifierKeys.Shift)
+                    ? _shell.SaveProjectAsCommand.ExecuteAsync(null)
+                    : _shell.SaveProjectCommand.ExecuteAsync(null);
+            }
         }
     }
 
@@ -627,7 +642,7 @@ public partial class MainWindow : Window
         if (settings.CacheDirectory.Length > 0
             && !string.Equals(cacheDirectory, settings.CacheDirectory, StringComparison.OrdinalIgnoreCase))
         {
-            _shell.ShowToast(L.T("缓存位置不可用"), L.T("已改用系统临时目录。"), ToastKind.Warning);
+            _shell.ShowToast(L.T("缓存位置不可用"), L.T("已改用默认缓存目录。"), ToastKind.Warning);
         }
 
         if (languageChanged)
@@ -639,9 +654,7 @@ public partial class MainWindow : Window
     private void UpdateProjectHeader()
     {
         SidebarBorder.Visibility = _shell.IsProjectMode ? Visibility.Visible : Visibility.Collapsed;
-        // The job dock is chrome for the workspace shell: on the start screen there is no
-        // project to work on, so it stays out of the way.
-        DockHost.Visibility = _shell.IsProjectMode ? Visibility.Visible : Visibility.Collapsed;
+        UpdateJobDockVisibility();
         if (!_shell.IsProjectOpen)
         {
             return;
@@ -654,6 +667,8 @@ public partial class MainWindow : Window
 
     private void Shell_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
+        if (e.PropertyName == nameof(ShellViewModel.IsJobDockVisible))
+            UpdateJobDockVisibility();
         if (e.PropertyName is nameof(ShellViewModel.CurrentWorkspace)
             or nameof(ShellViewModel.IsProjectOpen)
             or nameof(ShellViewModel.IsDirty)
@@ -668,6 +683,9 @@ public partial class MainWindow : Window
             }
         }
     }
+
+    private void UpdateJobDockVisibility()
+        => DockHost.Visibility = _shell.IsJobDockVisible ? Visibility.Visible : Visibility.Collapsed;
 
     // ---- Stage rails ----
 
@@ -782,12 +800,18 @@ public partial class MainWindow : Window
                 viewModel.InnerRadiusText = _shell.State.BdInnerRadius;
                 viewModel.OuterRadiusText = _shell.State.BdOuterRadius;
                 viewModel.SectorsText = _shell.State.BdTotalSectors;
+                viewModel.PitchLinearText = _shell.State.BdPitchLinear;
+                viewModel.PitchQuadraticText = _shell.State.BdPitchQuadratic;
+                viewModel.PitchCubicText = _shell.State.BdPitchCubic;
             }
             else
             {
                 viewModel.InnerRadiusText = _shell.State.CdInnerRadius;
                 viewModel.OuterRadiusText = _shell.State.CdOuterRadius;
                 viewModel.SectorsText = _shell.State.CdSectors;
+                viewModel.PitchLinearText = _shell.State.CdPitchLinear;
+                viewModel.PitchQuadraticText = _shell.State.CdPitchQuadratic;
+                viewModel.PitchCubicText = _shell.State.CdPitchCubic;
             }
         }
 
@@ -800,9 +824,10 @@ public partial class MainWindow : Window
 
     private void UpdateNavActive(Workspace workspace)
     {
+        Workspace active = workspace == Workspace.CalibrationBurn ? Workspace.Calibration : workspace;
         foreach ((SideNavItem item, Workspace itemWorkspace) in _navItems)
         {
-            item.IsActive = itemWorkspace == workspace;
+            item.IsActive = itemWorkspace == active;
         }
     }
 

@@ -106,3 +106,5 @@ dotnet run --project tests/DiscImageStudio.ArchitectureTests -c Release -- --loc
 ```
 
 The runner compiles in this Linux workspace; its Windows execution remains pending the next repository CI run after a push. CI uploads PNGs and the JSON report even when a check fails. Empty projects are synthetic fixtures; the matrix does not validate physical optical output or every populated workflow state.
+
+New upstream device diagnostics may be translated incrementally and fall back to English when the selected language is missing. Completed interface catalogs still require all five languages. Device field names, numeric formats and original operating-system errors remain unchanged.

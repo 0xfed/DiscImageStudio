@@ -1,6 +1,6 @@
 <div align="center">
 
-[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md) | [日本語](README.ja.md) | [Türkçe](README.tr.md)
+[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md) | [日本語](README.ja.md) | [Türkçe](README.tr.md) | [Español](README.es.md) | [Čeština](README.cs.md)
 
 ![Afiş](docs/images/DiscImageStudio_Banner_2.png)
 
@@ -250,3 +250,5 @@ CD ses izleri üreterek disk yüzeyinde görünür görüntüler oluşturma yön
    <img alt="Yıldız geçmişi grafiği" src="https://api.star-history.com/chart?repos=jiafeimiao-k-cat/discimagestudio&type=date&legend=top-left" />
  </picture>
 </a>
+
+Yardımlı kalibrasyon artık kaba, sınır ve hassas aşamalarını içerir ve çizim projesinden bağımsız kullanılabilir. Disk kapasitesini doğrulayın, ardından her boş disk için ilgili aşamanın hedefini oluşturun. Yazılmış her diski kendi üretim kaydı ve fotoğrafıyla inceleyin. [Üst proje birleştirmesinden sonra kalibrasyon](docs/CALIBRATION_TUTORIAL.tr.md).

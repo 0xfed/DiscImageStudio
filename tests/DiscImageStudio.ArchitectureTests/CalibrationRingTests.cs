@@ -13,10 +13,10 @@ internal static class CalibrationRingTests
         {
             CalibrationParameters p = Parameters(kind);
             CalibrationTarget target = CalibrationTarget.Create(p, patternKind: CalibrationPatternKind.ConcentricRings);
-            var rings = CalibrationRingFitter.GetRings(target);
+            var rings = CalibrationDiameterFitter.GetRings(target);
             Require(target.IsRingPattern && rings.Count == 7 && target.Groups.Count == 0
                 && target.ControlPoints.Count == 0, "seven complete circles without cross controls");
-            foreach (CalibrationRing ring in rings)
+            foreach (CalibrationDiameterRing ring in rings)
                 for (int angle = 0; angle < 360; angle += 7)
                 {
                     double a = angle * Math.PI / 180;
@@ -28,7 +28,7 @@ internal static class CalibrationRingTests
                 "clear center and spaces, without a cross");
             foreach ((double innerError, double outerError) in new[] { (.1, -.08), (2.0, -1.0), (-2.0, 1.0), (.5, .5) })
                 TestRecovery(target, p with { InnerRadiusMm = p.InnerRadiusMm + innerError, OuterRadiusMm = p.OuterRadiusMm + outerError });
-            TestRecovery(CalibrationTarget.Create(p), p with { InnerRadiusMm = 24.1, OuterRadiusMm = 57.9 });
+            TestRecovery(CalibrationTarget.Create(p, patternKind: CalibrationPatternKind.FineCross), p with { InnerRadiusMm = 24.1, OuterRadiusMm = 57.9 });
             TestRecordsAndErrors(target);
         }
         CalibrationParameters shaped = Parameters(CalibrationDiscKind.Dvd) with { PitchLinear = .15, PitchQuadratic = -.10, PitchCubic = .02 };
@@ -47,27 +47,27 @@ internal static class CalibrationRingTests
     {
         var geometry = DvdTrackGeometry.Create(actual.InnerRadiusMm, actual.OuterRadiusMm, actual.TrackLengthMm,
             actual.PitchLinear, actual.PitchQuadratic, actual.PitchCubic);
-        return CalibrationRingFitter.GetRings(target).Select(ring => new CalibrationRingMeasurement(ring.Index,
+        return CalibrationDiameterFitter.GetRings(target).Select(ring => new CalibrationRingMeasurement(ring.Index,
             2 * geometry.RadiusAtArcLength(ring.TrackProgress * actual.TrackLengthMm))).ToList();
     }
 
     private static void TestRecovery(CalibrationTarget target, CalibrationParameters actual)
     {
         var measurements = Measurements(target, actual);
-        CalibrationRingFitResult fit = CalibrationRingFitter.Fit(target, measurements);
+        CalibrationRingFitResult fit = CalibrationDiameterFitter.Fit(target, measurements);
         Require(Math.Abs(fit.Parameters.InnerRadiusMm - actual.InnerRadiusMm) < 1e-6
             && Math.Abs(fit.Parameters.OuterRadiusMm - actual.OuterRadiusMm) < 1e-6
             && fit.MaxDiameterErrorMm < 1e-6, "known diameters recover both radial endpoints");
         Require(fit.Parameters with { InnerRadiusMm = actual.InnerRadiusMm, OuterRadiusMm = actual.OuterRadiusMm } == actual,
             "the fit preserves saved density, sectors, polarity, range, timestamp and pitch shape");
         var rounded = measurements.Select(value => value with { DiameterMm = Math.Round(value.DiameterMm, 2) }).ToList();
-        CalibrationRingFitResult realistic = CalibrationRingFitter.Fit(target, rounded);
+        CalibrationRingFitResult realistic = CalibrationDiameterFitter.Fit(target, rounded);
         Require(realistic.IsWithinTolerance(.01) && Math.Abs(realistic.Parameters.InnerRadiusMm - actual.InnerRadiusMm) < .02
             && Math.Abs(realistic.Parameters.OuterRadiusMm - actual.OuterRadiusMm) < .02,
             "rounded diameters remain useful without claiming physical accuracy");
         measurements[measurements.Count / 2] = measurements[measurements.Count / 2] with
         { DiameterMm = measurements[measurements.Count / 2].DiameterMm + .5 };
-        Require(!CalibrationRingFitter.Fit(target, measurements).IsWithinTolerance(.1), "inconsistent diameters expose a large residual");
+        Require(!CalibrationDiameterFitter.Fit(target, measurements).IsWithinTolerance(.1), "inconsistent diameters expose a large residual");
     }
 
     private static void TestRecordsAndErrors(CalibrationTarget target)
@@ -79,11 +79,11 @@ internal static class CalibrationRingTests
         Require(restored.Target.IsRingPattern && restored.UseRingMeasurements
             && restored.RingMeasurements!.SequenceEqual(values) && restored.RingDiameterToleranceMm == .1,
             "the durable record keeps target, diameters, method and tolerance");
-        Throws(() => CalibrationRingFitter.Fit(target, values.Take(2).ToArray()));
-        Throws(() => CalibrationRingFitter.Fit(target, values.Take(3).ToArray()));
-        Throws(() => CalibrationRingFitter.Fit(target, [values[0], values[0], values[^1]]));
-        Throws(() => CalibrationRingFitter.Fit(target, [values[0] with { DiameterMm = double.NaN }, values[3], values[^1]]));
-        Throws(() => CalibrationRingFitter.Fit(target, [values[0] with { DiameterMm = values[^1].DiameterMm }, values[3], values[^1]]));
+        Throws(() => CalibrationDiameterFitter.Fit(target, values.Take(2).ToArray()));
+        Throws(() => CalibrationDiameterFitter.Fit(target, values.Take(3).ToArray()));
+        Throws(() => CalibrationDiameterFitter.Fit(target, [values[0], values[0], values[^1]]));
+        Throws(() => CalibrationDiameterFitter.Fit(target, [values[0] with { DiameterMm = double.NaN }, values[3], values[^1]]));
+        Throws(() => CalibrationDiameterFitter.Fit(target, [values[0] with { DiameterMm = values[^1].DiameterMm }, values[3], values[^1]]));
         Throws(() => CalibrationSessionJson.Serialize(session with { RingDiameterToleranceMm = -1 }));
         JsonNode old = JsonNode.Parse(json)!;
         old["target"]!["schemaVersion"] = CalibrationTarget.LegacyPatternSchemaVersion;

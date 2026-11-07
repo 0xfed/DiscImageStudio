@@ -1,0 +1,233 @@
+{
+  "半盘边界片段不能超过 64 段。": {
+    "zh-CN": "半盘边界片段不能超过 64 段。",
+    "en": "A half-disc target supports at most 64 boundary segments.",
+    "zh-TW": "半盤邊界片段不能超過 64 段。",
+    "ja": "半円盤の境界区間は最大 64 個です。",
+    "tr": "Yarım disk en fazla 64 sınır parçasını destekler."
+  },
+  "边界片段编号无效或重复。": {
+    "zh-CN": "边界片段编号无效或重复。",
+    "en": "A boundary segment ID is invalid or duplicated.",
+    "zh-TW": "邊界片段編號無效或重複。",
+    "ja": "境界区間の番号が無効か重複しています。",
+    "tr": "Sınır parçasının kimliği geçersiz veya yinelenmiş."
+  },
+  "此记录不是半黑半白中标图，不能加入边界片段。": {
+    "zh-CN": "此记录不是半黑半白中标图，不能加入边界片段。",
+    "en": "This record is not a half-disc boundary calibration target and cannot contain boundary segments.",
+    "zh-TW": "此記錄不是半黑半白中標圖，不能加入邊界片段。",
+    "ja": "この記録は半円盤の境界校正用ではないため、境界区間を追加できません。",
+    "tr": "Bu kayıt yarım disk sınır kalibrasyonuna ait değil; sınır parçaları eklenemez."
+  },
+  "边界片段的点数不能超过 4000。": {
+    "zh-CN": "边界片段的点数不能超过 4000。",
+    "en": "Boundary segments support at most 4,000 points in total.",
+    "zh-TW": "邊界片段的點數總計不能超過 4000。",
+    "ja": "境界区間の点数は合計 4000 点までです。",
+    "tr": "Sınır parçalarında toplam en fazla 4000 nokta kullanılabilir."
+  },
+  "边界点坐标无效，请使用矫正后以盘心为原点的坐标。": {
+    "zh-CN": "边界点坐标无效，请使用矫正后以盘心为原点的坐标。",
+    "en": "Invalid boundary point coordinates. Use rectified coordinates with the disc center as the origin.",
+    "zh-TW": "邊界點座標無效，請使用校正後以盤心為原點的座標。",
+    "ja": "境界点の座標が無効です。補正後のディスク中心を原点とする座標を使ってください。",
+    "tr": "Sınır noktası koordinatları geçersiz. Düzeltilmiş görüntüde disk merkezini başlangıç noktası olarak kullanın."
+  },
+  "边界拟合需要对应的中标图案记录。": {
+    "zh-CN": "边界拟合需要对应的中标图案记录。",
+    "en": "Boundary fitting requires the matching boundary calibration target record.",
+    "zh-TW": "邊界擬合需要對應的中標圖案記錄。",
+    "ja": "境界の近似には、対応する境界校正パターンの記録が必要です。",
+    "tr": "Sınır uydurma için ilgili sınır kalibrasyon deseninin kaydı gerekir."
+  },
+  "分段中标的半径搜索范围不能超过 ±0.05 mm，请先完成 v13 粗标。": {
+    "zh-CN": "分段中标的半径搜索范围不能超过 ±0.05 mm，请先完成 v13 粗标。",
+    "en": "Segmented boundary fitting supports a radius search range of at most ±0.05 mm. Complete v13 coarse calibration first.",
+    "zh-TW": "分段中標的半徑搜尋範圍不能超過 ±0.05 mm，請先完成 v13 粗標。",
+    "ja": "区間ごとの境界校正では半径の探索範囲は ±0.05 mm 以下です。先に v13 の粗校正を完了してください。",
+    "tr": "Parçalı sınır uydurmada yarıçap arama aralığı en fazla ±0.05 mm olabilir. Önce v13 kaba kalibrasyonunu tamamlayın."
+  },
+  "边界片段需覆盖至少 55% 的绘图半径范围，请在更靠内、靠外的位置各补一段。": {
+    "zh-CN": "边界片段需覆盖至少 55% 的绘图半径范围，请在更靠内、靠外的位置各补一段。",
+    "en": "Boundary segments must cover at least 55% of the drawing radius range. Add segments closer to the inner and outer edges.",
+    "zh-TW": "邊界片段需涵蓋至少 55% 的繪圖半徑範圍，請在更靠內、靠外的位置各補一段。",
+    "ja": "境界区間は描画半径範囲の 55% 以上を覆う必要があります。内側と外側に区間を追加してください。",
+    "tr": "Sınır parçaları çizim yarıçapı aralığının en az %55'ini kapsamalı. İç ve dış kenarlara daha yakın parçalar ekleyin."
+  },
+  "片段集中在少数相近半径，请选至少 4 个不同半径位置的边界，避免重复描同一小段。": {
+    "zh-CN": "片段集中在少数相近半径，请选至少 4 个不同半径位置的边界，避免重复描同一小段。",
+    "en": "The segments are clustered at similar radii. Trace boundaries at four or more distinct radial positions instead of tracing the same short section repeatedly.",
+    "zh-TW": "片段集中在少數相近半徑，請選至少 4 個不同半徑位置的邊界，避免重複描同一小段。",
+    "ja": "区間が近い半径に集中しています。同じ短い区間を繰り返さず、4 か所以上の異なる半径の境界をなぞってください。",
+    "tr": "Parçalar benzer yarıçaplarda toplanmış. Aynı kısa bölümü yinelemek yerine en az 4 farklı yarıçap konumundaki sınırları izleyin."
+  },
+  "多段边界覆盖的是相同的半径范围，请在至少 4 处互不重叠的半径位置选段。": {
+    "zh-CN": "多段边界覆盖的是相同的半径范围，请在至少 4 处互不重叠的半径位置选段。",
+    "en": "The boundary segments cover the same radius range. Choose segments at four or more non-overlapping radial positions.",
+    "zh-TW": "多段邊界涵蓋相同的半徑範圍，請在至少 4 處互不重疊的半徑位置選段。",
+    "ja": "境界区間が同じ半径範囲を覆っています。半径範囲が重ならない 4 か所以上で区間を選んでください。",
+    "tr": "Sınır parçaları aynı yarıçap aralığını kapsıyor. Birbiriyle örtüşmeyen en az 4 yarıçap konumundan parça seçin."
+  },
+  "当前半径范围没有有效的盘面模型，请检查生成记录和照片轮廓。": {
+    "zh-CN": "当前半径范围没有有效的盘面模型，请检查生成记录和照片轮廓。",
+    "en": "No valid disc model exists within this radius range. Check the generation record and photographed outline.",
+    "zh-TW": "目前半徑範圍沒有有效的盤面模型，請檢查產生記錄和照片輪廓。",
+    "ja": "この半径範囲では有効なディスクモデルがありません。生成記録と写真の輪郭を確認してください。",
+    "tr": "Bu yarıçap aralığında geçerli disk modeli yok. Üretim kaydını ve fotoğrafın dış çizgisini kontrol edin."
+  },
+  "搜索边界超出有效盘面模型，请缩小中标半径搜索范围。": {
+    "zh-CN": "搜索边界超出有效盘面模型，请缩小中标半径搜索范围。",
+    "en": "The search bounds exceed the valid disc model. Narrow the radius search range for boundary calibration.",
+    "zh-TW": "搜尋邊界超出有效盤面模型，請縮小中標半徑搜尋範圍。",
+    "ja": "探索境界が有効なディスクモデルを超えています。境界校正の半径探索範囲を狭めてください。",
+    "tr": "Arama sınırları geçerli disk modelini aşıyor. Sınır kalibrasyonunun yarıçap aralığını daraltın."
+  },
+  "当前范围的角度变化过大，无法可靠穷举绕圈候选，请缩小中标半径搜索范围。": {
+    "zh-CN": "当前范围的角度变化过大，无法可靠穷举绕圈候选，请缩小中标半径搜索范围。",
+    "en": "The angular variation is too large to enumerate winding candidates reliably. Narrow the radius search range for boundary calibration.",
+    "zh-TW": "目前範圍的角度變化過大，無法可靠窮舉繞圈候選，請縮小中標半徑搜尋範圍。",
+    "ja": "角度の変化が大きすぎて巻き数の候補を確実に列挙できません。境界校正の半径探索範囲を狭めてください。",
+    "tr": "Açı değişimi, dolanım adaylarını güvenilir biçimde taramak için çok büyük. Yarıçap arama aralığını daraltın."
+  },
+  "当前范围包含过多绕圈候选，请缩小中标半径搜索范围后再算。": {
+    "zh-CN": "当前范围包含过多绕圈候选，请缩小中标半径搜索范围后再算。",
+    "en": "This range contains too many winding candidates. Narrow the radius search range for boundary calibration and calculate again.",
+    "zh-TW": "目前範圍包含過多繞圈候選，請縮小中標半徑搜尋範圍後再算。",
+    "ja": "この範囲には巻き数の候補が多すぎます。半径探索範囲を狭めて再計算してください。",
+    "tr": "Bu aralıkta çok fazla dolanım adayı var. Yarıçap aralığını daraltıp yeniden hesaplayın."
+  },
+  "当前搜索范围有过多可行绕圈区间，尚未排除歧义，请缩小半径范围或补充较长的边界片段。": {
+    "zh-CN": "当前搜索范围有过多可行绕圈区间，尚未排除歧义，请缩小半径范围或补充较长的边界片段。",
+    "en": "Too many feasible winding intervals remain in this search range. Narrow the radius range or trace longer boundary segments to resolve the ambiguity.",
+    "zh-TW": "目前搜尋範圍有過多可行繞圈區間，尚未排除歧義，請縮小半徑範圍或補充較長的邊界片段。",
+    "ja": "探索範囲内に巻き数の候補区間が多く残っています。半径範囲を狭めるか、長い境界区間を追加してください。",
+    "tr": "Aralıkta çok fazla olası dolanım bölgesi kaldı. Belirsizliği gidermek için yarıçap aralığını daraltın veya daha uzun sınır parçaları çizin."
+  },
+  "这些边界片段没有得到有效参数，请检查点是否位于黑白交界。": {
+    "zh-CN": "这些边界片段没有得到有效参数，请检查点是否位于黑白交界。",
+    "en": "These boundary segments did not produce valid parameters. Check that the points lie on the black-white boundary.",
+    "zh-TW": "這些邊界片段沒有得到有效參數，請檢查點是否位於黑白交界。",
+    "ja": "この境界区間から有効なパラメーターを求められませんでした。点が白黒の境界上にあるか確認してください。",
+    "tr": "Bu sınır parçalarından geçerli parametre bulunamadı. Noktaların siyah ve beyaz arasındaki sınırda olduğunu kontrol edin."
+  },
+  "最佳候选落在搜索边界，尚不能确认绕圈数，请复核粗标结果或适当调整搜索范围。": {
+    "zh-CN": "最佳候选落在搜索边界，尚不能确认绕圈数，请复核粗标结果或适当调整搜索范围。",
+    "en": "The best candidate lies on a search bound, leaving the winding count unresolved. Check the coarse calibration result or adjust the search range.",
+    "zh-TW": "最佳候選落在搜尋邊界，尚不能確認繞圈數，請複核粗標結果或適當調整搜尋範圍。",
+    "ja": "最良候補が探索境界上にあるため、巻き数を確定できません。粗校正の結果を確認するか探索範囲を調整してください。",
+    "tr": "En iyi aday arama sınırında; dolanım sayısı belirsiz. Kaba kalibrasyon sonucunu kontrol edin veya arama aralığını ayarlayın."
+  },
+  "边界片段与同一个盘面模型不一致，请检查误点、照片矫正和片段是否跨过了另一条边界。": {
+    "zh-CN": "边界片段与同一个盘面模型不一致，请检查误点、照片矫正和片段是否跨过了另一条边界。",
+    "en": "The boundary segments do not match a single disc model. Check for misplaced points, photo rectification errors, or segments crossing another boundary.",
+    "zh-TW": "邊界片段與同一個盤面模型不一致，請檢查誤點、照片校正和片段是否跨過另一條邊界。",
+    "ja": "境界区間が同じディスクモデルと一致しません。点の位置、写真補正、別の境界を横切っていないかを確認してください。",
+    "tr": "Sınır parçaları tek bir disk modeliyle uyuşmuyor. Yanlış noktaları, fotoğraf düzeltmesini ve başka bir sınırın geçilip geçilmediğini kontrol edin."
+  },
+  "仍有不同绕圈数的候选能解释这些片段，请在不同半径补一段更长的清楚边界后再算。": {
+    "zh-CN": "仍有不同绕圈数的候选能解释这些片段，请在不同半径补一段更长的清楚边界后再算。",
+    "en": "Candidates with different winding counts still fit these segments. Trace a longer, clear boundary at another radius and calculate again.",
+    "zh-TW": "仍有不同繞圈數的候選能解釋這些片段，請在不同半徑補一段更長的清楚邊界後再算。",
+    "ja": "異なる巻き数の候補がまだ適合します。別の半径に、より長く明瞭な境界区間を追加して再計算してください。",
+    "tr": "Farklı dolanım sayıları hâlâ parçalara uyuyor. Başka bir yarıçapta daha uzun ve net bir sınır ekleyip yeniden hesaplayın."
+  },
+  "边界连续可见时，沿同一条边界至少描 6 点并覆盖 55% 半径范围；也可描两段各覆盖 10% 半径范围的长边界，每段至少 6 点。只有短片段时需至少 4 段，每段至少 3 点。": {
+    "zh-CN": "边界连续可见时，沿同一条边界至少描 6 点并覆盖 55% 半径范围；也可描两段各覆盖 10% 半径范围的长边界，每段至少 6 点。只有短片段时需至少 4 段，每段至少 3 点。",
+    "en": "For a continuously visible boundary, trace at least 6 points along the same boundary covering 55% of the radius range. Alternatively, trace two long segments, each with at least 6 points covering 10% of the radius range. If only short segments are visible, trace at least 4 segments with at least 3 points each.",
+    "zh-TW": "邊界連續可見時，沿同一條邊界至少描 6 點並涵蓋 55% 半徑範圍；也可描兩段各涵蓋 10% 半徑範圍的長邊界，每段至少 6 點。只有短片段時需至少 4 段，每段至少 3 點。",
+    "ja": "連続して見える境界では、同じ境界上に 6 点以上を置き、半径範囲の 55% を覆ってください。または、各 6 点以上で半径範囲の 10% を覆う長い区間を 2 本なぞってください。短い区間しか見えない場合は、各 3 点以上の区間を 4 本以上なぞってください。",
+    "tr": "Sınır kesintisiz görünüyorsa aynı sınırda en az 6 noktayla yarıçap aralığının %55'ini kapsayın. Alternatif olarak her biri en az 6 noktayla %10'u kapsayan iki uzun parça çizin. Yalnızca kısa parçalar görünüyorsa her biri en az 3 noktalı en az 4 parça gerekir."
+  },
+  "每段至少需要 3 个不同位置的点，请沿同一小段边界分散点选。": {
+    "zh-CN": "每段至少需要 3 个不同位置的点，请沿同一小段边界分散点选。",
+    "en": "Each segment needs at least 3 distinct points. Spread the points along the same short boundary section.",
+    "zh-TW": "每段至少需要 3 個不同位置的點，請沿同一小段邊界分散點選。",
+    "ja": "各区間には異なる位置の点が 3 点以上必要です。同じ境界区間に点を分散させてください。",
+    "tr": "Her parçada farklı konumlarda en az 3 nokta gerekir. Noktaları aynı kısa sınır boyunca dağıtın."
+  },
+  "边界上存在接近半圈的点间空隙，请在看得清的同一段交界上补点，看不清连接时请新建片段。": {
+    "zh-CN": "边界上存在接近半圈的点间空隙，请在看得清的同一段交界上补点，看不清连接时请新建片段。",
+    "en": "Adjacent boundary points are nearly half a turn apart. Add points along the same visible section, or start a new segment if the connection is not visible.",
+    "zh-TW": "邊界上存在接近半圈的點間空隙，請在看得清的同一段交界上補點，看不清連接時請新增片段。",
+    "ja": "隣接する境界点が半周近く離れています。同じ見える区間に点を追加するか、つながりが見えない場合は新しい区間を作成してください。",
+    "tr": "Komşu sınır noktaları arasında neredeyse yarım tur var. Aynı görünür bölüme nokta ekleyin; bağlantı görünmüyorsa yeni bir parça başlatın."
+  },
+  "有片段太短，无法判断边界的局部走向，请把这一段的点拉开一些。": {
+    "zh-CN": "有片段太短，无法判断边界的局部走向，请把这一段的点拉开一些。",
+    "en": "A segment is too short to determine its local boundary direction. Spread its points farther apart.",
+    "zh-TW": "有片段太短，無法判斷邊界的局部走向，請把這一段的點拉開一些。",
+    "ja": "短すぎて境界の向きを判定できない区間があります。その区間の点をもっと離してください。",
+    "tr": "Bir parça sınırın yerel yönünü belirlemek için çok kısa. Noktalarını birbirinden uzaklaştırın."
+  },
+  "边界中标请使用边界描点，不能把不相连的交界拼成十字线的连续曲线。": {
+    "zh-CN": "边界中标请使用边界描点，不能把不相连的交界拼成十字线的连续曲线。",
+    "en": "Use boundary segments for boundary calibration. Disconnected edges cannot be combined into a continuous cross-arm trace.",
+    "zh-TW": "邊界中標請使用邊界描點，不能把不相連的交界拼成十字線的連續曲線。",
+    "ja": "境界校正には境界区間を使ってください。離れた境界を十字線の連続曲線として結合することはできません。",
+    "tr": "Sınır kalibrasyonunda sınır parçalarını kullanın. Bağlantısız kenarlar sürekli bir çapraz kol izi olarak birleştirilemez."
+  },
+  "此标靶没有十字臂，请使用精标盘照片描线。": {
+    "zh-CN": "此标靶没有十字臂，请使用精标盘照片描线。",
+    "en": "This target has no cross arms. Trace curves on a fine calibration disc photo.",
+    "zh-TW": "此標靶沒有十字臂，請使用精標盤照片描線。",
+    "ja": "このターゲットには十字線がありません。精密校正用ディスクの写真で曲線をなぞってください。",
+    "tr": "Bu hedefte çapraz kollar yok. Hassas kalibrasyon diskinin fotoğrafında eğrileri izleyin."
+  },
+  "已拟合三次轨距；三个形状系数与内外半径可能互相补偿，低残差不表示参数唯一，应用前请核对整条预测曲线。": {
+    "zh-CN": "已拟合三次轨距；三个形状系数与内外半径可能互相补偿，低残差不表示参数唯一，应用前请核对整条预测曲线。",
+    "en": "Cubic track pitch was fitted. Its three coefficients and the two radii can compensate for each other, so a low residual does not establish unique parameters. Check the full predicted curve before applying.",
+    "zh-TW": "已擬合三次軌距；三個形狀係數與內外半徑可能互相補償，低殘差不表示參數唯一，套用前請核對整條預測曲線。",
+    "ja": "3 次のトラックピッチを近似しました。3 つの係数と内外半径は互いに補い合うため、残差が小さくても解が一意とは限りません。適用前に予測曲線全体を確認してください。",
+    "tr": "Kübik iz aralığı uyduruldu. Üç katsayı ve iki yarıçap birbirini telafi edebilir; düşük artık, parametrelerin tek olduğunu göstermez. Uygulamadan önce tahmin eğrisinin tamamını kontrol edin."
+  },
+  "已自动扩大搜索至 ±{0:0.###} mm。": {
+    "zh-CN": "已自动扩大搜索至 ±{0:0.###} mm。",
+    "en": "Search range automatically expanded to ±{0:0.###} mm.",
+    "zh-TW": "已自動擴大搜尋至 ±{0:0.###} mm。",
+    "ja": "探索範囲を自動で ±{0:0.###} mm に拡大しました。",
+    "tr": "Arama aralığı otomatik olarak ±{0:0.###} mm'ye genişletildi."
+  },
+  "已标记 {0} 个偏离较大的点。": {
+    "zh-CN": "已标记 {0} 个偏离较大的点。",
+    "en": "Marked {0} points with large deviations.",
+    "zh-TW": "已標記 {0} 個偏離較大的點。",
+    "ja": "偏差の大きい {0} 点をマークしました。",
+    "tr": "Sapması büyük {0} nokta işaretlendi."
+  },
+  "时钟标尺需要矫正后的正方形照片。": {
+    "zh-CN": "时钟标尺需要矫正后的正方形照片。",
+    "en": "The clock scale requires a rectified square photo.",
+    "zh-TW": "時鐘標尺需要校正後的正方形照片。",
+    "ja": "時計目盛りには補正済みの正方形の写真が必要です。",
+    "tr": "Saat ölçeği için düzeltilmiş kare bir fotoğraf gerekir."
+  },
+  "扇区校验需要矫正后的正方形照片。": {
+    "zh-CN": "扇区校验需要矫正后的正方形照片。",
+    "en": "Sector verification requires a rectified square photo.",
+    "zh-TW": "扇區校驗需要校正後的正方形照片。",
+    "ja": "セクターの検証には補正済みの正方形の写真が必要です。",
+    "tr": "Sektör doğrulaması için düzeltilmiş kare bir fotoğraf gerekir."
+  },
+  "时钟尺预览是示意图。请从标定页生成 CD 音轨或直接刻录。": {
+    "zh-CN": "时钟尺预览是示意图。请从标定页生成 CD 音轨或直接刻录。",
+    "en": "The clock-scale preview is schematic. Generate a CD audio track or burn it directly from the calibration page.",
+    "zh-TW": "時鐘尺預覽是示意圖。請從標定頁產生 CD 音軌或直接燒錄。",
+    "ja": "時計目盛りのプレビューは模式図です。校正ページで CD 音声トラックを生成するか直接書き込んでください。",
+    "tr": "Saat ölçeği önizlemesi şematiktir. Kalibrasyon sayfasından CD ses izi üretin veya doğrudan yazdırın."
+  },
+  "标定操作": {
+    "zh-CN": "标定操作",
+    "en": "Calibration operation",
+    "zh-TW": "標定操作",
+    "ja": "校正操作",
+    "tr": "Kalibrasyon işlemi"
+  },
+  "标定轮廓预览": {
+    "zh-CN": "标定轮廓预览",
+    "en": "Calibration contour preview",
+    "zh-TW": "標定輪廓預覽",
+    "ja": "校正輪郭のプレビュー",
+    "tr": "Kalibrasyon dış çizgisi önizlemesi"
+  }
+}

@@ -21,7 +21,9 @@ public sealed record DvdStreamingOptions(
     double PitchLinear = 0,
     double PitchQuadratic = 0,
     double PitchCubic = 0,
-    ToneProfile? Tone = null)
+    ToneProfile? Tone = null,
+    bool UseSampleReuse = true,
+    bool ReadCompatibility = false)
 {
     /// <summary>Physical channel-bit length of the DVD scheme; the UI no longer exposes it.</summary>
     public const double StandardChannelBitLengthNm = 133.3;
@@ -103,7 +105,8 @@ public sealed record DvdStreamingSummary(
     uint Sectors,
     long BytesWritten,
     long ControlledWords,
-    TimeSpan Elapsed);
+    TimeSpan Elapsed,
+    long CompatibilityChanges = 0);
 
 public sealed class DvdHybridStreamingPlan
 {
@@ -206,7 +209,8 @@ public static class DvdStreamingGenerator
             summary.SectorsWritten,
             summary.BytesWritten,
             summary.ControlledWords,
-            summary.Elapsed);
+            summary.Elapsed,
+            summary.CompatibilityChanges);
     }
 
     /// <summary>
@@ -222,6 +226,56 @@ public static class DvdStreamingGenerator
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(sampleGray);
+        return GeneratePattern(sampleGray, null, output, options, progress, cancellationToken);
+    }
+
+    public static DvdStreamingSummary GeneratePattern(
+        CalibrationTarget target, Stream output, DvdStreamingOptions options,
+        Action<DvdStreamingProgress>? progress = null, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(target);
+        ArgumentNullException.ThrowIfNull(options);
+        if (target.Parameters.Kind != CalibrationDiscKind.Dvd || target.Parameters.Sectors != options.TotalSectors)
+            throw new ArgumentException(L.T("Calibration target and output must describe the same DVD sector capacity."), nameof(target));
+        // A calibration target describes the bytes that were generated/burned.
+        // Later changes to the project output checkbox must not change that target.
+        options = options with { ReadCompatibility = target.Parameters.DvdReadCompatibility };
+        if (target.IsVisualSelectorPattern)
+            return GenerateCalibrationPattern(target, output, progress, options.FastParallelism, cancellationToken);
+        if (target.UsesReferencePattern)
+        {
+            ArgumentNullException.ThrowIfNull(output);
+            options.Validate();
+            MultiBlockSolveOptions solveOptions = CreateSolveOptions(options, 0, options.TotalSectors);
+            FastDvdStreamSummary summary = FastDispersionImageWriter.WriteCalibrationReferenceStream(
+                target, output, solveOptions,
+                value => progress?.Invoke(new DvdStreamingProgress(value.BytesWritten, value.TotalBytes,
+                    value.CompletedBlocks, value.TotalBlocks, value.Elapsed)), cancellationToken);
+            return new DvdStreamingSummary("calibration", summary.SectorsWritten, summary.BytesWritten,
+                summary.ControlledWords, summary.Elapsed, summary.CompatibilityChanges);
+        }
+        if (!target.HasWideAddressBands)
+            return GeneratePattern(target.Sample, output, options, progress, cancellationToken);
+
+        var bands = target.WideBandSectorRanges;
+        var angleSweep = target.HasAngleSweep ? new CalibrationAngleSweepSampler(target) : null;
+        byte SectorLuminance(uint sector)
+        {
+            if (angleSweep is not null && angleSweep.TryGetLuminance((sector + 0.5) / options.TotalSectors, out var marker))
+                return marker;
+            for (int i = 0; i < bands.Count; i++)
+                if (sector >= bands[i].Start && sector < bands[i].EndExclusive)
+                    return 0;
+            return 255;
+        }
+        return GeneratePattern(target.Sample, SectorLuminance, output, options, progress, cancellationToken);
+    }
+
+    private static DvdStreamingSummary GeneratePattern(
+        Func<double, double, byte> sampleGray, Func<uint, byte>? sectorLuminance,
+        Stream output, DvdStreamingOptions options,
+        Action<DvdStreamingProgress>? progress, CancellationToken cancellationToken)
+    {
         ArgumentNullException.ThrowIfNull(output);
         ArgumentNullException.ThrowIfNull(options);
         options.Validate();
@@ -229,23 +283,18 @@ public static class DvdStreamingGenerator
             options,
             startLba: 0,
             fillSectors: options.TotalSectors);
-        FastDvdStreamSummary summary = FastDispersionImageWriter.WritePatternStream(
-            sampleGray,
-            output,
-            solveOptions,
-            value => progress?.Invoke(new DvdStreamingProgress(
-                value.BytesWritten,
-                value.TotalBytes,
-                value.CompletedBlocks,
-                value.TotalBlocks,
-                value.Elapsed)),
-            cancellationToken);
+        void Report(FastDvdStreamProgress value) => progress?.Invoke(new DvdStreamingProgress(
+            value.BytesWritten, value.TotalBytes, value.CompletedBlocks, value.TotalBlocks, value.Elapsed));
+        FastDvdStreamSummary summary = sectorLuminance is null
+            ? FastDispersionImageWriter.WritePatternStream(sampleGray, output, solveOptions, Report, cancellationToken)
+            : FastDispersionImageWriter.WriteSectorPatternStream(sectorLuminance, output, solveOptions, Report, cancellationToken);
         return new DvdStreamingSummary(
             "calibration",
             summary.SectorsWritten,
             summary.BytesWritten,
             summary.ControlledWords,
-            summary.Elapsed);
+            summary.Elapsed,
+            summary.CompatibilityChanges);
     }
 
     /// <summary>Encodes the immutable calibration record. Visual selectors are sampled
@@ -265,10 +314,11 @@ public static class DvdStreamingGenerator
             throw new ArgumentException(L.T("DVD calibration requires a DVD target."), nameof(target));
         DvdStreamingOptions options = new(checked((uint)p.Sectors), p.InnerRadiusMm, p.OuterRadiusMm,
             p.LinearDensity, FastParallelism: fastParallelism,
-            PitchLinear: p.PitchLinear, PitchQuadratic: p.PitchQuadratic, PitchCubic: p.PitchCubic);
+            PitchLinear: p.PitchLinear, PitchQuadratic: p.PitchQuadratic, PitchCubic: p.PitchCubic,
+            ReadCompatibility: p.DvdReadCompatibility);
         options.Validate();
         if (target.VisualSelector is not { } selector)
-            return GeneratePattern(target.Sample, output, options, progress, cancellationToken);
+            return GeneratePattern(target, output, options, progress, cancellationToken);
 
         double totalChannelBits = p.Sectors * (double)CalibrationParameters.DvdChannelBitsPerSector;
         FastDvdStreamSummary summary = FastDispersionImageWriter.WriteCodewordPatternStream(
@@ -344,10 +394,11 @@ public static class DvdStreamingGenerator
             options.TotalSectors,
             plan.ContentLength,
             drawing.ControlledWords,
-            stopwatch.Elapsed);
+            stopwatch.Elapsed,
+            drawing.CompatibilityChanges);
     }
 
-    private static MultiBlockSolveOptions CreateSolveOptions(
+    internal static MultiBlockSolveOptions CreateSolveOptions(
         DvdStreamingOptions options,
         uint startLba,
         uint fillSectors)
@@ -378,7 +429,9 @@ public static class DvdStreamingGenerator
             ZeroInitialPayload: false,
             imageMapping,
             Algorithm: SolverAlgorithm.Dispersion,
-            FastParallelism: options.FastParallelism);
+            FastParallelism: options.FastParallelism,
+            UseSampleReuse: options.UseSampleReuse,
+            ReadCompatibility: options.ReadCompatibility);
     }
 
     private static uint AlignToEccBlock(uint lba, uint psnOffset)

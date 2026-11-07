@@ -83,9 +83,10 @@ internal static class BurningTranslationTests
         byte[] written = session.Transport.Payloads.SelectMany(value => value).ToArray();
         Check(written.AsSpan().SequenceEqual(bytes), "BD payload unchanged");
         SameBytes("bd", written);
-        Check(operations.Count(operation => operation.IsFinalizing) == 1 && operations[^1].IsFinalizing, "BD finalization flag follows state, not translated text");
-        Check(operations[^1].Message == L.T("刷新 BD-R 缓存并封盘（请等待完成）"), "translated BD finalization operation");
-        Check(operations[3].Message == L.Format("无备用区顺序写入 BD-R：{0:N0} 扇区", 64), "translated BD write operation");
+        Check(operations.Where(operation => operation.IsFinalizing).Select(operation => operation.Phase)
+            .SequenceEqual(new[] { "flush", "close-track", "close-disc" }), "BD finalization flags follow explicit phases");
+        Check(operations.Single(operation => operation.Phase == "close-disc").Message == L.T("封闭 BD-R 盘片（请等待完成）"), "translated BD finalization operation");
+        Check(operations.Any(operation => operation.Message == L.Format("无备用区顺序写入 BD-R：{0:N0} 扇区", 64)), "translated BD write operation");
         Check(session.Progress[^1].Stage == "write" && session.Progress[^1].CompletedBytes == bytes.Length
               && session.Progress[^1].BytesPerSecond > 0, "device-accepted progress and rate");
         Check(session.Progress[^1].Message.StartsWith(L.T("刻录机已接收"), StringComparison.Ordinal), "translated device progress");
@@ -142,7 +143,7 @@ internal static class BurningTranslationTests
         MmcCommandResult result = new(unchecked((int)0x8007048f), [], []);
         MmcCommandException command = new(0x2a, result);
         Check(!command.HasValidSense && command.HResult == result.HResult
-              && command.Message == L.Format("蓝光命令 0x{0:X2} 失败（HRESULT 0x{1:X8}，{2}{3}）。", 0x2a, result.HResult,
+              && command.Message == L.Format("光驱命令 0x{0:X2} 失败（HRESULT 0x{1:X8}，{2}{3}）。", 0x2a, result.HResult,
                   L.T("未返回有效的设备 Sense 数据"), L.T("，Windows 报告设备未连接")), "MMC status data and full nested translation");
         BluRayWriteDiagnostics diagnostic = new(65536, 1, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(3),
             [new(0, 32, TimeSpan.FromSeconds(.1), TimeSpan.FromSeconds(1))], new(32, 32, TimeSpan.FromSeconds(.2), TimeSpan.FromSeconds(2)));
@@ -236,7 +237,7 @@ internal static class BurningTranslationTests
     {
         internal bool Created;
         public long StartOfLeadout => 300;
-        public IStream CreateImage(IStream content) { Created = true; return content; }
+        public IStream CreateImage(IStream content, int sectorType = 2) { Created = true; return content; }
         public void Dispose() { }
     }
 

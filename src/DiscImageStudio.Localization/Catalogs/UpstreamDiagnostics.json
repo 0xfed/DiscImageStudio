@@ -1,0 +1,619 @@
+{
+  "ECMA-267 primary SY{0}, state {1}": {
+    "zh-CN": "ECMA-267 primary SY{0}, state {1}",
+    "en": "ECMA-267 primary SY{0}, state {1}"
+  },
+  "ECMA-267 secondary SY{0}, state {1}": {
+    "zh-CN": "ECMA-267 secondary SY{0}, state {1}",
+    "en": "ECMA-267 secondary SY{0}, state {1}"
+  },
+  "encoded ECMA-267 SY6, state {0}, DSV {1}, land {2}": {
+    "zh-CN": "encoded ECMA-267 SY6, state {0}, DSV {1}, land {2}",
+    "en": "encoded ECMA-267 SY6, state {0}, DSV {1}, land {2}"
+  },
+  "SY6 word scorer boundary": {
+    "zh-CN": "SY6 word scorer boundary",
+    "en": "SY6 word scorer boundary"
+  },
+  "secondary SY6 next state": {
+    "zh-CN": "secondary SY6 next state",
+    "en": "secondary SY6 next state"
+  },
+  "secondary SY6 prefix DSV": {
+    "zh-CN": "secondary SY6 prefix DSV",
+    "en": "secondary SY6 prefix DSV"
+  },
+  "secondary SY6 prefix level": {
+    "zh-CN": "secondary SY6 prefix level",
+    "en": "secondary SY6 prefix level"
+  },
+  "encoder selects secondary SY6 in state {0}": {
+    "zh-CN": "encoder selects secondary SY6 in state {0}",
+    "en": "encoder selects secondary SY6 in state {0}"
+  },
+  "EDC x^32 remainder": {
+    "zh-CN": "EDC x^32 remainder",
+    "en": "EDC x^32 remainder"
+  },
+  "EDC MSB-first order": {
+    "zh-CN": "EDC MSB-first order",
+    "en": "EDC MSB-first order"
+  },
+  "EDC multi-byte vector": {
+    "zh-CN": "EDC multi-byte vector",
+    "en": "EDC multi-byte vector"
+  },
+  "EDC complete frame vector {0}": {
+    "zh-CN": "EDC complete frame vector {0}",
+    "en": "EDC complete frame vector {0}"
+  },
+  "EDC full-frame polynomial remainder {0}": {
+    "zh-CN": "EDC full-frame polynomial remainder {0}",
+    "en": "EDC full-frame polynomial remainder {0}"
+  },
+  "EDC valid frame {0}": {
+    "zh-CN": "EDC valid frame {0}",
+    "en": "EDC valid frame {0}"
+  },
+  "EDC rejects changed payload {0}": {
+    "zh-CN": "EDC rejects changed payload {0}",
+    "en": "EDC rejects changed payload {0}"
+  },
+  "--read-compatibility true requires --fast-output true and --algorithm dispersion.": {
+    "zh-CN": "--read-compatibility true 需要 --fast-output true 和 --algorithm dispersion。",
+    "en": "--read-compatibility true requires --fast-output true and --algorithm dispersion."
+  },
+  "Unknown burn progress snapshot phase.": {
+    "zh-CN": "未知的刻录进度截图阶段。",
+    "en": "Unknown burn progress snapshot phase."
+  },
+  "Snapshot language must be zh-CN, zh-TW, en, ja, tr, es, cs or system.": {
+    "zh-CN": "截图语言必须为 zh-CN、zh-TW、en、ja、tr、es、cs 或 system。",
+    "en": "Snapshot language must be zh-CN, zh-TW, en, ja, tr, es, cs or system."
+  },
+  "CD DAO images require cooked R-W or raw P-W 2448-byte sectors.": {
+    "zh-CN": "CD DAO 镜像需要 Cooked R-W 或 Raw P-W 的 2448 字节扇区。",
+    "en": "CD DAO images require cooked R-W or raw P-W 2448-byte sectors."
+  },
+  "正在等待刻录机状态…": {
+    "zh-CN": "正在等待刻录机状态…",
+    "en": "Waiting for recorder status…"
+  },
+  "正在结束 CD 原始写入…": {
+    "zh-CN": "正在结束 CD 原始写入…",
+    "en": "Finishing the CD raw write…"
+  },
+  "正在完成 DVD 写入并关闭刻录会话…": {
+    "zh-CN": "正在完成 DVD 写入并关闭刻录会话…",
+    "en": "Completing the DVD write and closing the recording session…"
+  },
+  "Windows 刻录接口报告写入完成，正在等待返回…": {
+    "zh-CN": "Windows 刻录接口报告写入完成，正在等待返回…",
+    "en": "Windows reports that writing is complete; waiting for the call to return…"
+  },
+  "正在验证刻录数据…": {
+    "zh-CN": "正在验证刻录数据…",
+    "en": "Verifying recorded data…"
+  },
+  "刻录状态缓存：Stage={0}；EventSource={1}；": {
+    "zh-CN": "刻录状态缓存：Stage={0}；EventSource={1}；",
+    "en": "Burn status snapshot: Stage={0}; EventSource={1}; "
+  },
+  "CurrentAction={0}（来源={1}）；": {
+    "zh-CN": "CurrentAction={0}（来源={1}）；",
+    "en": "CurrentAction={0}(source={1}); "
+  },
+  "StartLba={0}（来源={1}）；": {
+    "zh-CN": "StartLba={0}（来源={1}）；",
+    "en": "StartLba={0}(source={1}); "
+  },
+  "（来源={0}）；LastAcceptedLba={1}；": {
+    "zh-CN": "（来源={0}）；LastAcceptedLba={1}；",
+    "en": "(source={0}); LastAcceptedLba={1}; "
+  },
+  "{0}{1}（来源={2}，事件={3}）": {
+    "zh-CN": "{0}{1}（来源={2}，事件={3}）",
+    "en": "{0}{1}(source={2}, event={3})"
+  },
+  "Windows 刻录接口未接受关闭 DVD 刻后校验的设置。": {
+    "zh-CN": "Windows 刻录接口未接受关闭 DVD 刻后校验的设置。",
+    "en": "The Windows recording interface did not accept disabling DVD post-burn verification."
+  },
+  "光驱命令 0x{0:X2} 失败（HRESULT 0x{1:X8}，": {
+    "zh-CN": "光驱命令 0x{0:X2} 失败（HRESULT 0x{1:X8}，",
+    "en": "Drive command 0x{0:X2} failed (HRESULT 0x{1:X8}, "
+  },
+  "生成流缓存（各字段为瞬时近似值；不代表盘片写入量）：TotalBytes={0}；GeneratedBytes={1}；PublishedBytes={2}；ReadBytes={3}；BufferedBytes={4}；": {
+    "zh-CN": "生成流缓存（各字段为瞬时近似值；不代表盘片写入量）：TotalBytes={0}；GeneratedBytes={1}；PublishedBytes={2}；ReadBytes={3}；BufferedBytes={4}；",
+    "en": "Generated stream snapshot (approximate values; not physical disc progress): TotalBytes={0}; GeneratedBytes={1}; PublishedBytes={2}; ReadBytes={3}; BufferedBytes={4}; "
+  },
+  "刻录环境：Build={0}；OS={1}；": {
+    "zh-CN": "刻录环境：Build={0}；OS={1}；",
+    "en": "Burn environment: Build={0}; OS={1}; "
+  },
+  "刻录设备：Vendor=": {
+    "zh-CN": "刻录设备：Vendor=",
+    "en": "Recorder: Vendor="
+  },
+  "盘片物理信息：PhysicalMediaType=": {
+    "zh-CN": "盘片物理信息：PhysicalMediaType=",
+    "en": "Physical media: PhysicalMediaType="
+  },
+  "（写入前检查）。": {
+    "zh-CN": "（写入前检查）。",
+    "en": "(checked before writing)."
+  },
+  "CD DAO 介质设置：PhysicalMediaType=": {
+    "zh-CN": "CD DAO 介质设置：PhysicalMediaType=",
+    "en": "CD DAO media settings: PhysicalMediaType="
+  },
+  "DVD 刻录设置：BufferUnderrunFreeDisabled=": {
+    "zh-CN": "DVD 刻录设置：BufferUnderrunFreeDisabled=",
+    "en": "DVD recording settings: BufferUnderrunFreeDisabled="
+  },
+  "所选光驱中没有盘片。": {
+    "zh-CN": "所选光驱中没有盘片。",
+    "en": "No disc is loaded in the selected drive."
+  },
+  "光驱返回的 CD 预刻槽引出区信息不完整。": {
+    "zh-CN": "光驱返回的 CD 预刻槽引出区信息不完整。",
+    "en": "The drive returned incomplete CD pregroove lead-out information."
+  },
+  "光驱返回的 CD 引出区地址无效。": {
+    "zh-CN": "光驱返回的 CD 引出区地址无效。",
+    "en": "The drive returned an invalid CD lead-out address."
+  },
+  "光驱未报告当前 BD-R 的有效容量。": {
+    "zh-CN": "光驱未报告当前 BD-R 的有效容量。",
+    "en": "The drive did not report a valid capacity for the loaded BD-R."
+  },
+  "BD-R 已分配备用区，逻辑容量不能用于无备用区标定。": {
+    "zh-CN": "BD-R 已分配备用区，逻辑容量不能用于无备用区标定。",
+    "en": "The BD-R has allocated spare areas; its logical capacity cannot be used for calibration without spare areas."
+  },
+  "BD-R 报告 {0:N0} 扇区，当前标定仅支持 25 GB 单层无备用区的 12,219,392 扇区布局。": {
+    "zh-CN": "BD-R 报告 {0:N0} 扇区，当前标定仅支持 25 GB 单层无备用区的 12,219,392 扇区布局。",
+    "en": "The BD-R reports {0:N0} sectors. Calibration currently requires the 25 GB single-layer layout of 12,219,392 sectors without spare areas."
+  },
+  "双层 DVD 不适用于单层盘片标定。": {
+    "zh-CN": "双层 DVD 不适用于单层盘片标定。",
+    "en": "A dual-layer DVD cannot be used for single-layer disc calibration."
+  },
+  "光驱未报告有效的 DVD 总扇区数。": {
+    "zh-CN": "光驱未报告有效的 DVD 总扇区数。",
+    "en": "The drive did not report a valid DVD sector capacity."
+  },
+  "可选写入速度：": {
+    "zh-CN": "可选写入速度：",
+    "en": "Available write speeds: "
+  },
+  "预填充生成缓冲区": {
+    "zh-CN": "预填充生成缓冲区",
+    "en": "Prefilling the generated-content buffer"
+  },
+  "再次检查当前盘片兼容性": {
+    "zh-CN": "再次检查当前盘片兼容性",
+    "en": "Rechecking current media compatibility"
+  },
+  "已捕获刻录异常：Operation={0}；HRESULT=0x{1:X8}；": {
+    "zh-CN": "已捕获刻录异常：Operation={0}；HRESULT=0x{1:X8}；",
+    "en": "Captured burn failure: Operation={0}; HRESULT=0x{1:X8}; "
+  },
+  "准备 BD-R 刻录": {
+    "zh-CN": "准备 BD-R 刻录",
+    "en": "Preparing BD-R recording"
+  },
+  "BD-R 请求：RequestedSpeed=": {
+    "zh-CN": "BD-R 请求：RequestedSpeed=",
+    "en": "BD-R request: RequestedSpeed="
+  },
+  "BD-R 介质：Profile=0x{0:X4} ({1})；DiscIsBlank={2}；": {
+    "zh-CN": "BD-R 介质：Profile=0x{0:X4} ({1})；DiscIsBlank={2}；",
+    "en": "BD-R media: Profile=0x{0:X4} ({1}); DiscIsBlank={2}; "
+  },
+  "BD-R 写入速度：Requested=": {
+    "zh-CN": "BD-R 写入速度：Requested=",
+    "en": "BD-R write speed: Requested="
+  },
+  "BD-R 刻后读回校验：未启用": {
+    "zh-CN": "BD-R 刻后读回校验：未启用",
+    "en": "BD-R post-burn read-back verification: disabled"
+  },
+  "BD-R 失败后清理：Flush returned；ElapsedMs={0:F0}。": {
+    "zh-CN": "BD-R 失败后清理：Flush returned；ElapsedMs={0:F0}。",
+    "en": "BD-R cleanup after failure: Flush returned; ElapsedMs={0:F0}."
+  },
+  "BD-R 失败后清理：Flush failed；HRESULT=0x{0:X8}；ElapsedMs={1:F0}。": {
+    "zh-CN": "BD-R 失败后清理：Flush failed；HRESULT=0x{0:X8}；ElapsedMs={1:F0}。",
+    "en": "BD-R cleanup after failure: Flush failed; HRESULT=0x{0:X8}; ElapsedMs={1:F0}."
+  },
+  "蓝光失败后刷新缓存（清理）": {
+    "zh-CN": "蓝光失败后刷新缓存（清理）",
+    "en": "Flushing the Blu-ray cache after failure (cleanup)"
+  },
+  "蓝光失败后刷新缓存失败（HRESULT 0x{0:X8}，": {
+    "zh-CN": "蓝光失败后刷新缓存失败（HRESULT 0x{0:X8}，",
+    "en": "Blu-ray cleanup cache flush failed(HRESULT 0x{0:X8}, "
+  },
+  "耗时 {0:F3} 秒）：{1}": {
+    "zh-CN": "耗时 {0:F3} 秒）：{1}",
+    "en": "elapsed {0:F3} seconds): {1}"
+  },
+  "BD-R 失败后清理：Release returned；ElapsedMs={0:F0}。": {
+    "zh-CN": "BD-R 失败后清理：Release returned；ElapsedMs={0:F0}。",
+    "en": "BD-R cleanup after failure: Release returned; ElapsedMs={0:F0}."
+  },
+  "BD-R 失败后清理：Release failed；HRESULT=0x{0:X8}；ElapsedMs={1:F0}。": {
+    "zh-CN": "BD-R 失败后清理：Release failed；HRESULT=0x{0:X8}；ElapsedMs={1:F0}。",
+    "en": "BD-R cleanup after failure: Release failed; HRESULT=0x{0:X8}; ElapsedMs={1:F0}."
+  },
+  "蓝光失败后释放设备失败（HRESULT 0x{0:X8}）：{1}": {
+    "zh-CN": "蓝光失败后释放设备失败（HRESULT 0x{0:X8}）：{1}",
+    "en": "Blu-ray device release after failure failed(HRESULT 0x{0:X8}): {1}"
+  },
+  "BD-R 失败：Operation={0}；ElapsedMs={1:F0}；": {
+    "zh-CN": "BD-R 失败：Operation={0}；ElapsedMs={1:F0}；",
+    "en": "BD-R failure: Operation={0}; ElapsedMs={1:F0}; "
+  },
+  "BD-R 阶段：Operation={0}；Result={1}；": {
+    "zh-CN": "BD-R 阶段：Operation={0}；Result={1}；",
+    "en": "BD-R phase: Operation={0}; Result={1}; "
+  },
+  "准备 CD 刻录": {
+    "zh-CN": "准备 CD 刻录",
+    "en": "Preparing CD recording"
+  },
+  "CD DAO 请求：RequestedSpeed=": {
+    "zh-CN": "CD DAO 请求：RequestedSpeed=",
+    "en": "CD DAO request: RequestedSpeed="
+  },
+  "CD DAO 空白状态：MediaPhysicallyBlank={0}（写入前检查）。": {
+    "zh-CN": "CD DAO 空白状态：MediaPhysicallyBlank={0}（写入前检查）。",
+    "en": "CD DAO blank state: MediaPhysicallyBlank={0}(checked before writing)."
+  },
+  "CD DAO 写入速度：Requested=": {
+    "zh-CN": "CD DAO 写入速度：Requested=",
+    "en": "CD DAO write speed: Requested="
+  },
+  "CD DAO 介质设置：unavailable (0x{0:X8})。": {
+    "zh-CN": "CD DAO 介质设置：unavailable (0x{0:X8})。",
+    "en": "CD DAO media settings: unavailable (0x{0:X8})."
+  },
+  "CD DAO 容量：TrackSectors={0}；": {
+    "zh-CN": "CD DAO 容量：TrackSectors={0}；",
+    "en": "CD DAO capacity: TrackSectors={0}; "
+  },
+  "CD 刻后读回校验：未启用": {
+    "zh-CN": "CD 刻后读回校验：未启用",
+    "en": "CD post-burn read-back verification: disabled"
+  },
+  "CD DAO 失败后清理：ReleaseMedia returned；ElapsedMs={0:F0}。": {
+    "zh-CN": "CD DAO 失败后清理：ReleaseMedia returned；ElapsedMs={0:F0}。",
+    "en": "CD DAO cleanup after failure: ReleaseMedia returned; ElapsedMs={0:F0}."
+  },
+  "CD 失败后关闭会话失败（HRESULT 0x{0:X8}）：{1}": {
+    "zh-CN": "CD 失败后关闭会话失败（HRESULT 0x{0:X8}）：{1}",
+    "en": "CD cleanup session close failed(HRESULT 0x{0:X8}): {1}"
+  },
+  "CD DAO 失败：Operation={0}；ElapsedMs={1:F0}；": {
+    "zh-CN": "CD DAO 失败：Operation={0}；ElapsedMs={1:F0}；",
+    "en": "CD DAO failure: Operation={0}; ElapsedMs={1:F0}; "
+  },
+  "CD DAO 阶段：Operation={0}；Result={1}；": {
+    "zh-CN": "CD DAO 阶段：Operation={0}；Result={1}；",
+    "en": "CD DAO phase: Operation={0}; Result={1}; "
+  },
+  "准备 DVD 刻录": {
+    "zh-CN": "准备 DVD 刻录",
+    "en": "Preparing DVD recording"
+  },
+  "DVD 请求：RequestedSpeed=": {
+    "zh-CN": "DVD 请求：RequestedSpeed=",
+    "en": "DVD request: RequestedSpeed="
+  },
+  "检查 DVD 介质状态和容量": {
+    "zh-CN": "检查 DVD 介质状态和容量",
+    "en": "Checking DVD media status and capacity"
+  },
+  "设置 DVD 缓冲保护和封盘选项": {
+    "zh-CN": "设置 DVD 缓冲保护和封盘选项",
+    "en": "Configuring DVD buffer protection and closure options"
+  },
+  "设置 DVD 刻后校验为 NONE": {
+    "zh-CN": "设置 DVD 刻后校验为 NONE",
+    "en": "Setting DVD post-burn verification to NONE"
+  },
+  "DVD 刻后校验：已关闭（NONE）": {
+    "zh-CN": "DVD 刻后校验：已关闭（NONE）",
+    "en": "DVD post-burn verification: disabled (NONE)"
+  },
+  "设置 DVD 刻录速度": {
+    "zh-CN": "设置 DVD 刻录速度",
+    "en": "Setting DVD write speed"
+  },
+  "读取 DVD 实际刻录速度": {
+    "zh-CN": "读取 DVD 实际刻录速度",
+    "en": "Reading the configured DVD write speed"
+  },
+  "DVD 写入速度：Requested=": {
+    "zh-CN": "DVD 写入速度：Requested=",
+    "en": "DVD write speed: Requested="
+  },
+  "DVD 介质设置：unavailable (0x{0:X8})。": {
+    "zh-CN": "DVD 介质设置：unavailable (0x{0:X8})。",
+    "en": "DVD media settings: unavailable (0x{0:X8})."
+  },
+  "订阅 DVD 刻录进度事件": {
+    "zh-CN": "订阅 DVD 刻录进度事件",
+    "en": "Subscribing to DVD write-progress events"
+  },
+  "写入 DVD 数据（包含 Windows 内部收尾）": {
+    "zh-CN": "写入 DVD 数据（包含 Windows 内部收尾）",
+    "en": "Writing DVD data (including Windows finalization)"
+  },
+  "DVD 写入结果：WriteStarted={0}；WriteReturned={1}；ElapsedMs={2:F0}。": {
+    "zh-CN": "DVD 写入结果：WriteStarted={0}；WriteReturned={1}；ElapsedMs={2:F0}。",
+    "en": "DVD write result: WriteStarted={0}; WriteReturned={1}; ElapsedMs={2:F0}."
+  },
+  "DVD 失败：Operation={0}；ElapsedMs={1:F0}；": {
+    "zh-CN": "DVD 失败：Operation={0}；ElapsedMs={1:F0}；",
+    "en": "DVD failure: Operation={0}; ElapsedMs={1:F0}; "
+  },
+  "DVD 容量：MediaState={0}；": {
+    "zh-CN": "DVD 容量：MediaState={0}；",
+    "en": "DVD capacity: MediaState={0}; "
+  },
+  "DVD 阶段：Operation={0}；Result={1}；": {
+    "zh-CN": "DVD 阶段：Operation={0}；Result={1}；",
+    "en": "DVD phase: Operation={0}; Result={1}; "
+  },
+  "所选光驱不支持 CD DAO 所需的 Raw P-W 或 Cooked R-W 子通道格式": {
+    "zh-CN": "所选光驱不支持 CD DAO 所需的 Raw P-W 或 Cooked R-W 子通道格式",
+    "en": "The selected drive does not support the Raw P-W or Cooked R-W subchannel format required for CD DAO"
+  },
+  "（光驱报告：{0}）。": {
+    "zh-CN": "（光驱报告：{0}）。",
+    "en": "(drive reports: {0})."
+  },
+  "CD DAO 子通道格式：Raw P-W（IMAPI 类型 3）": {
+    "zh-CN": "CD DAO 子通道格式：Raw P-W（IMAPI 类型 3）",
+    "en": "CD DAO subchannel format: Raw P-W(IMAPI type 3)"
+  },
+  "CD DAO 子通道格式：Cooked R-W（IMAPI 类型 2）": {
+    "zh-CN": "CD DAO 子通道格式：Cooked R-W（IMAPI 类型 2）",
+    "en": "CD DAO subchannel format: Cooked R-W(IMAPI type 2)"
+  },
+  "；光驱报告支持：{0}。": {
+    "zh-CN": "；光驱报告支持：{0}。",
+    "en": "; drive-reported support: {0}."
+  },
+  "无": {
+    "zh-CN": "无",
+    "en": "none"
+  },
+  "Pitch coefficients must be finite and 1 + c1*x + c2*x² + c3*x³ must stay positive for 0 <= x <= 1.": {
+    "zh-CN": "轨距系数必须是有限数值，且在 0 <= x <= 1 范围内 1 + c1*x + c2*x² + c3*x³ 必须保持正值。",
+    "en": "Pitch coefficients must be finite and 1 + c1*x + c2*x² + c3*x³ must stay positive for 0 <= x <= 1."
+  },
+  "The pitch curve is too close to zero to resolve numerically.": {
+    "zh-CN": "轨距曲线过于接近零，无法进行数值求解。",
+    "en": "The pitch curve is too close to zero to resolve numerically."
+  },
+  "The pitch curve cannot be resolved numerically.": {
+    "zh-CN": "轨距曲线无法进行数值求解。",
+    "en": "The pitch curve cannot be resolved numerically."
+  },
+  "Expected a CD calibration target.": {
+    "zh-CN": "需要 CD 标定图案。",
+    "en": "Expected a CD calibration target."
+  },
+  "Expected the fixed reference artwork.": {
+    "zh-CN": "需要固定参考图案。",
+    "en": "Expected the fixed reference artwork."
+  },
+  "Calibration target and output must describe the same DVD sector capacity.": {
+    "zh-CN": "标定图案和输出必须使用相同的 DVD 扇区容量。",
+    "en": "Calibration target and output must describe the same DVD sector capacity."
+  },
+  "Outer-ring file placement requires a data directory.": {
+    "zh-CN": "外圈文件布局需要指定数据目录。",
+    "en": "Outer-ring file placement requires a data directory."
+  },
+  "BD image generation accepts only two tone levels.": {
+    "zh-CN": "蓝光图像生成只接受两个影调级别。",
+    "en": "BD image generation accepts only two tone levels."
+  },
+  "Calibration bands must be ordered, cluster-aligned ranges within the drawing area.": {
+    "zh-CN": "标定带须按顺序排列、对齐簇边界且位于绘图区内。",
+    "en": "Calibration bands must be ordered, cluster-aligned ranges within the drawing area."
+  },
+  "Sweep transitions must be ordered positions on the track.": {
+    "zh-CN": "扫描交界必须按轨道位置顺序排列。",
+    "en": "Sweep transitions must be ordered positions on the track."
+  },
+  "BD sidecar pitch coefficients are invalid.": {
+    "zh-CN": "蓝光侧车文件的轨距系数无效。",
+    "en": "BD sidecar pitch coefficients are invalid."
+  },
+  "A hybrid file request must include its filesystem layout.": {
+    "zh-CN": "混合文件输出请求必须包含文件系统布局。",
+    "en": "A hybrid file request must include its filesystem layout."
+  },
+  "The reference target and output must describe the same DVD sector capacity.": {
+    "zh-CN": "参考标靶和输出必须使用相同的 DVD 扇区容量。",
+    "en": "The reference target and output must describe the same DVD sector capacity."
+  },
+  "Read compatibility cannot be used with an exact scrambled-byte pattern.": {
+    "zh-CN": "读取兼容性不能用于精确的扰码字节图案。",
+    "en": "Read compatibility cannot be used with an exact scrambled-byte pattern."
+  },
+  "Expected a DVD reference artwork target.": {
+    "zh-CN": "需要 DVD 参考图案标靶。",
+    "en": "Expected a DVD reference artwork target."
+  },
+  "Read compatibility requires fast dispersion output.": {
+    "zh-CN": "读取兼容性需要快速离散输出。",
+    "en": "Read compatibility requires fast dispersion output."
+  },
+  "Payload, scrambler mask, and ownership must each contain one 2048-byte sector.": {
+    "zh-CN": "有效负载、扰码掩码和归属掩码都必须恰好包含一个 2048 字节扇区。",
+    "en": "Payload, scrambler mask, and ownership must each contain one 2048-byte sector."
+  },
+  "Expected an app-managed cache file name.": {
+    "zh-CN": "需要应用管理的缓存文件名。",
+    "en": "Expected an app-managed cache file name."
+  },
+  "The cache session directory must not be a link.": {
+    "zh-CN": "缓存会话目录不能是链接。",
+    "en": "The cache session directory must not be a link."
+  },
+  "Expected a v13 angle-sweep target.": {
+    "zh-CN": "需要 v13 角度扫描标靶。",
+    "en": "Expected a v13 angle-sweep target."
+  },
+  "光驱命令 0x{0:X2} 失败（HRESULT 0x{1:X8}，{2}{3}）。": {
+    "en": "Drive command 0x{0:X2} failed (HRESULT 0x{1:X8}, {2}{3}).",
+    "zh-CN": "光驱命令 0x{0:X2} 失败（HRESULT 0x{1:X8}，{2}{3}）。",
+    "zh-TW": "光碟機命令 0x{0:X2} 失敗（HRESULT 0x{1:X8}，{2}{3}）。",
+    "ja": "Drive コマンド 0x{0:X2} に失敗（HRESULT 0x{1:X8}、{2}{3}）。",
+    "tr": "Drive komutu 0x{0:X2} başarısız (HRESULT 0x{1:X8}, {2}{3})."
+  },
+  "Preparing DVD image…": {
+    "zh-CN": "正在准备 DVD 镜像…",
+    "en": "Preparing DVD image…"
+  },
+  "Generating DVD image: {0}/{1} blocks": {
+    "zh-CN": "正在生成 DVD 镜像：{0}/{1} 块",
+    "en": "Generating DVD image: {0}/{1} blocks"
+  },
+  "DVD image completed: {0} blocks, {1} controlled words.": {
+    "zh-CN": "DVD 镜像完成：{0} 块，{1} 个受控码字。",
+    "en": "DVD image completed: {0} blocks, {1} controlled words."
+  },
+  "Tabs: 0 home, 1 design, 2 preview, 3 export, 4 burn, 5 calibration, 6 calibration burn.": {
+    "zh-CN": "Tabs: 0 home, 1 design, 2 preview, 3 export, 4 burn, 5 calibration, 6 calibration burn.",
+    "zh-TW": "頁面：0 首頁、1 設計、2 預覽、3 匯出、4 燒錄、5 標定、6 標定燒錄。",
+    "en": "Tabs: 0 home, 1 design, 2 preview, 3 export, 4 burn, 5 calibration, 6 calibration burn.",
+    "ja": "ページ：0 ホーム、1 設計、2 プレビュー、3 出力、4 書き込み、5 校正、6 校正書き込み。",
+    "tr": "Sekmeler: 0 başlangıç, 1 tasarım, 2 önizleme, 3 dışa aktarma, 4 yazma, 5 kalibrasyon, 6 kalibrasyon yazma."
+  },
+  "BD-R 数据传输调用已返回": {
+    "zh-CN": "BD-R 数据传输调用已返回",
+    "zh-TW": "BD-R 資料傳輸呼叫已返回",
+    "en": "BD-R data transfer call returned",
+    "ja": "BD-R データ転送呼び出しが戻りました",
+    "tr": "BD-R veri aktarımı çağrısı döndü"
+  },
+  "刷新 BD-R 缓存（请等待完成）": {
+    "zh-CN": "刷新 BD-R 缓存（请等待完成）",
+    "zh-TW": "刷新 BD-R 快取（請等待完成）",
+    "en": "Flushing the BD-R cache (wait for completion)",
+    "ja": "BD-R キャッシュをフラッシュ中（完了までお待ちください）",
+    "tr": "BD-R önbelleği boşaltılıyor (tamamlanmasını bekleyin)"
+  },
+  "关闭 BD-R 轨道（请等待完成）": {
+    "zh-CN": "关闭 BD-R 轨道（请等待完成）",
+    "zh-TW": "關閉 BD-R 軌道（請等待完成）",
+    "en": "Closing the BD-R track (wait for completion)",
+    "ja": "BD-R トラックを閉じています（完了までお待ちください）",
+    "tr": "BD-R izi kapatılıyor (tamamlanmasını bekleyin)"
+  },
+  "封闭 BD-R 盘片（请等待完成）": {
+    "zh-CN": "封闭 BD-R 盘片（请等待完成）",
+    "zh-TW": "封閉 BD-R 盤片（請等待完成）",
+    "en": "Closing the BD-R disc (wait for completion)",
+    "ja": "BD-R ディスクを閉じています（完了までお待ちください）",
+    "tr": "BD-R diski sonlandırılıyor (tamamlanmasını bekleyin)"
+  },
+  "释放 BD-R 刻录机访问权": {
+    "zh-CN": "释放 BD-R 刻录机访问权",
+    "zh-TW": "釋放 BD-R 燒錄機存取權",
+    "en": "Releasing BD-R recorder access",
+    "ja": "BD-R レコーダーのアクセス権を解放中",
+    "tr": "BD-R yazıcı erişimi serbest bırakılıyor"
+  },
+  "CD 原始写入调用已返回": {
+    "zh-CN": "CD 原始写入调用已返回",
+    "zh-TW": "CD 原始寫入呼叫已返回",
+    "en": "CD raw write call returned",
+    "ja": "CD RAW 書き込み呼び出しが戻りました",
+    "tr": "CD ham yazma çağrısı döndü"
+  },
+  "DVD 写入调用已返回": {
+    "zh-CN": "DVD 写入调用已返回",
+    "zh-TW": "DVD 寫入呼叫已返回",
+    "en": "DVD write call returned",
+    "ja": "DVD 書き込み呼び出しが戻りました",
+    "tr": "DVD yazma çağrısı döndü"
+  },
+  "Relative linear pitch": {
+    "zh-CN": "相对一次轨距项",
+    "zh-TW": "相對一次軌距項",
+    "en": "Relative linear pitch",
+    "ja": "相対ピッチの一次項",
+    "tr": "Göreli doğrusal iz aralığı"
+  },
+  "Relative quadratic pitch": {
+    "zh-CN": "相对二次轨距项",
+    "zh-TW": "相對二次軌距項",
+    "en": "Relative quadratic pitch",
+    "ja": "相対ピッチの二次項",
+    "tr": "Göreli ikinci derece iz aralığı"
+  },
+  "Relative cubic pitch": {
+    "zh-CN": "相对三次轨距项",
+    "zh-TW": "相對三次軌距項",
+    "en": "Relative cubic pitch",
+    "ja": "相対ピッチの三次項",
+    "tr": "Göreli kübik iz aralığı"
+  },
+  "DVD read compatibility (experimental)": {
+    "zh-CN": "DVD读取兼容性（实验性）",
+    "en": "DVD read compatibility (experimental)",
+    "zh-TW": "DVD 讀取相容性（實驗性）",
+    "ja": "DVD 読み取り互換性（実験的）",
+    "tr": "DVD okuma uyumluluğu (deneysel)"
+  },
+  "Measured relative linear pitch": {
+    "en": "Measured relative linear pitch",
+    "zh-CN": "实测相对一次轨距项",
+    "zh-TW": "實測相對一次軌距項",
+    "ja": "実測相対ピッチの一次項",
+    "tr": "Ölçülen göreli doğrusal iz aralığı"
+  },
+  "Linear radial pitch coefficient": {
+    "en": "Linear radial pitch coefficient",
+    "zh-CN": "一次径向轨距系数",
+    "zh-TW": "一次徑向軌距係數",
+    "ja": "半径方向ピッチの一次係数",
+    "tr": "Doğrusal radyal iz aralığı katsayısı"
+  },
+  "Measured relative quadratic pitch": {
+    "en": "Measured relative quadratic pitch",
+    "zh-CN": "实测相对二次轨距项",
+    "zh-TW": "實測相對二次軌距項",
+    "ja": "実測相対ピッチの二次項",
+    "tr": "Ölçülen göreli ikinci derece iz aralığı"
+  },
+  "Quadratic radial pitch coefficient": {
+    "en": "Quadratic radial pitch coefficient",
+    "zh-CN": "二次径向轨距系数",
+    "zh-TW": "二次徑向軌距係數",
+    "ja": "半径方向ピッチの二次係数",
+    "tr": "Ikinci derece radyal iz aralığı katsayısı"
+  },
+  "Measured relative cubic pitch": {
+    "en": "Measured relative cubic pitch",
+    "zh-CN": "实测相对三次轨距项",
+    "zh-TW": "實測相對三次軌距項",
+    "ja": "実測相対ピッチの三次項",
+    "tr": "Ölçülen göreli kübik iz aralığı"
+  },
+  "Cubic radial pitch coefficient": {
+    "en": "Cubic radial pitch coefficient",
+    "zh-CN": "三次径向轨距系数",
+    "zh-TW": "三次徑向軌距係數",
+    "ja": "半径方向ピッチの三次係数",
+    "tr": "Kübik radyal iz aralığı katsayısı"
+  }
+}

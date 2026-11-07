@@ -106,3 +106,5 @@ dotnet run --project tests/DiscImageStudio.ArchitectureTests -c Release -- --loc
 ```
 
 运行器已在本 Linux 工作区编译；Windows 执行仍等待推送后的仓库 CI。即使检查失败，CI 也上传 PNG 与 JSON 报告。空工程属于合成夹具；该矩阵不验证物理光学效果，也不涵盖所有填入数据后的流程状态。
+
+新的上游设备诊断资源可分批翻译，缺少当前语言时回退到英文。已完成的界面资源继续要求五语覆盖；设备字段名、数值格式和原始操作系统错误保持不变。

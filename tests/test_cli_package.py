@@ -68,9 +68,15 @@ def check_localization(executable: Path) -> None:
         if missing_option.returncode != 1 or expected not in missing_option.stderr:
             raise ValueError(f"{language}: CD option diagnostic was not translated: {missing_option.stderr}")
 
-    invalid = run("--language", "es", "--help", environment=dict(os.environ, DISC_IMAGE_STUDIO_LANGUAGE="en"))
-    if invalid.returncode != 1 or "Unsupported language 'es'" not in invalid.stderr:
-        raise ValueError("An incomplete, unsupported language was accepted")
+    # The added languages may use English for catalogs still being translated.
+    for language in ("es", "cs"):
+        translated = run("--language", language, "--help")
+        if translated.returncode != 0 or "cd-generate" not in translated.stdout:
+            raise ValueError(f"{language}: supported language or command identifiers were lost")
+
+    invalid = run("--language", "xx", "--help", environment=dict(os.environ, DISC_IMAGE_STUDIO_LANGUAGE="en"))
+    if invalid.returncode != 1 or "Unsupported language 'xx'" not in invalid.stderr:
+        raise ValueError("An unsupported language was accepted")
 
 
 def check_package(executable: Path) -> None:

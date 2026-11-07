@@ -1,6 +1,6 @@
 <div align="center">
 
-[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md) | [日本語](README.ja.md) | [Türkçe](README.tr.md)
+[简体中文](README.md) | [繁體中文](README.zh-TW.md) | [English](README.en.md) | [日本語](README.ja.md) | [Türkçe](README.tr.md) | [Español](README.es.md) | [Čeština](README.cs.md)
 
 ![Banner](docs/images/DiscImageStudio_Banner_2.png)
 
@@ -250,3 +250,5 @@ CD の共通エンコード部分については、[ECMA-130、第 2 版（CD-RO
    <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=jiafeimiao-k-cat/discimagestudio&type=date&legend=top-left" />
  </picture>
 </a>
+
+補助校正には粗校正、境界校正、精密校正の段階があり、描画プロジェクトとは独立して使用できます。ディスク容量を確認し、空のディスクごとに対応する段階のターゲットを作成してください。記録済みディスクの解析には、その生成時の記録と写真を使います。 [上流の統合後の校正手順](docs/CALIBRATION_TUTORIAL.ja.md).

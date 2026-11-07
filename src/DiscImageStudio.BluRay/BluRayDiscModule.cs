@@ -8,6 +8,8 @@ namespace DiscImageStudio.BluRay;
 
 public sealed class BluRayDiscModule : IOpticalDiscModule
 {
+    public const string ModuleId = "bluray-data";
+
     private readonly Func<string, CancellationToken, BluRayGray8Raster>? _imageLoader;
 
     public BluRayDiscModule(Func<string, CancellationToken, BluRayGray8Raster>? imageLoader = null)
@@ -21,10 +23,13 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
         new("r0", "Inner radius", DiscOptionValueType.Decimal, DefaultValue: "24", Unit: "mm"),
         new("r1", "Outer radius", DiscOptionValueType.Decimal, DefaultValue: "58", Unit: "mm"),
         new("start-angle", "Start angle", DiscOptionValueType.Decimal, DefaultValue: "0", Unit: "degrees"),
+        new("pitch-linear", "Linear radial pitch coefficient", DiscOptionValueType.Decimal, DefaultValue: "0"),
+        new("pitch-quadratic", "Quadratic radial pitch coefficient", DiscOptionValueType.Decimal, DefaultValue: "0"),
+        new("pitch-cubic", "Cubic radial pitch coefficient", DiscOptionValueType.Decimal, DefaultValue: "0"),
     ];
 
     public DiscModuleDescriptor Descriptor { get; } = new(
-        "bluray-data", "Blu-ray BD-R", OpticalDiscFamily.BluRay,
+        ModuleId, "Blu-ray BD-R", OpticalDiscFamily.BluRay,
         "ISO/IEC 30190 single-layer BD-R image generation using 3T/6T run-count bias, payload probes and ECC diagnostics.",
         SupportsCancellation: true,
         Commands:
@@ -109,7 +114,10 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
             ? UInt(totalSectors, "total-sectors") : preset.TotalSectors, preset.LayerCount,
             options.TryGetValue("r0", out string? inner) ? Number(inner, "r0") : defaults.InnerRadiusMm,
             options.TryGetValue("r1", out string? outer) ? Number(outer, "r1") : defaults.OuterRadiusMm,
-            options.TryGetValue("start-angle", out string? angle) ? Number(angle, "start-angle") : defaults.StartAngleDegrees);
+            options.TryGetValue("start-angle", out string? angle) ? Number(angle, "start-angle") : defaults.StartAngleDegrees,
+            options.TryGetValue("pitch-linear", out string? linear) ? Number(linear, "pitch-linear") : defaults.PitchLinear,
+            options.TryGetValue("pitch-quadratic", out string? quadratic) ? Number(quadratic, "pitch-quadratic") : defaults.PitchQuadratic,
+            options.TryGetValue("pitch-cubic", out string? cubic) ? Number(cubic, "pitch-cubic") : defaults.PitchCubic);
         disc.Validate();
         if (command.Name == "bd-info")
         {
@@ -142,25 +150,9 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
             return new(Descriptor.Id, command.Name, 0, json, output is null ? null : Path.GetFullPath(output));
         }
 
-        bool isPicture = command.Name == "bd-generate";
-        uint start = isPicture ? 0 : UInt(options.GetValueOrDefault("start-sector", "0"), "start-sector");
-        if (start >= disc.TotalSectors)
-            throw new ArgumentOutOfRangeException("start-sector", L.T("First sector must be inside the disc."));
-        uint count = options.TryGetValue("sectors", out string? sectorCount)
-            ? UInt(sectorCount, "sectors") : isPicture ? disc.TotalSectors : 32;
-        BluRayStreamingOptions streaming = new(disc, start, count);
-        streaming.Validate();
-        IBluRayPayloadMapping mapping;
-        string interpretation;
-        BluRayIsoPlan? isoPlan = null;
-        bool generationInvert = false;
-        ToneProfile tone = ToneProfile.LegacyBinary;
-        if (isPicture)
+        if (command.Name == "bd-generate")
         {
-            string input = options["input"];
-            if (Path.GetFullPath(input).Equals(Path.GetFullPath(output!), StringComparison.OrdinalIgnoreCase))
-                throw new ArgumentException(L.T("Input and output paths must be different."));
-            generationInvert = options.TryGetValue("invert", out string? polarity)
+            bool invert = options.TryGetValue("invert", out string? polarity)
                 ? Boolean(polarity, "invert") : preset.InvertMapping;
             bool filesAtOuterRing = options.GetValueOrDefault("file-position", "inner") switch
             {
@@ -168,18 +160,9 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
                 "outer" => true,
                 _ => throw new ArgumentException(L.T("--file-position must be inner or outer.")),
             };
-            isoPlan = BluRayIsoGenerator.PrepareDrawing(disc, options.GetValueOrDefault("data-dir"),
-                options.GetValueOrDefault("volume-label", "BD_IMAGE"), filesAtOuterRing: filesAtOuterRing);
-            BluRayIsoGenerator.ValidateOutputPath(output!, isoPlan);
-            token.ThrowIfCancellationRequested();
-            if (_imageLoader is null)
-                return new(Descriptor.Id, command.Name, 2,
-                    L.T("BD picture generation requires an image loader. Run bd-generate through the application or provide a BluRayGray8Raster loader."));
-            BluRayGray8Raster raster = _imageLoader(input, token);
-            token.ThrowIfCancellationRequested();
             int levels = options.TryGetValue("tone-levels", out string? toneLevels)
                 ? (int)UInt(toneLevels, "tone-levels") : ToneProfile.TwoLevels;
-            tone = new ToneProfile(
+            ToneProfile tone = new(
                 options.TryGetValue("tone-dither", out string? dither) ? Number(dither, "tone-dither") : 0,
                 levels,
                 options.TryGetValue("tone-brightness", out string? brightness) ? Number(brightness, "tone-brightness") : 0,
@@ -187,43 +170,42 @@ public sealed class BluRayDiscModule : IOpticalDiscModule
             tone.Validate("tone");
             if (levels != ToneProfile.TwoLevels)
                 throw new ArgumentException(L.T("bd-generate accepts only --tone-levels 2."));
-            raster = BluRayToneMapping.Apply(raster, tone, token);
-            token.ThrowIfCancellationRequested();
-            mapping = new BluRayImagePayloadMapping(disc, raster, new BluRayRunLengthMapping(generationInvert));
-            interpretation = generationInvert
-                ? L.T("dark-to-6T / light-to-3T run-count bias")
-                : L.T("dark-to-3T / light-to-6T run-count bias");
+            BluRayImageRequest image = new(options["input"], output!, disc, tone, invert,
+                options.GetValueOrDefault("data-dir"), options.GetValueOrDefault("volume-label", "BD_IMAGE"),
+                filesAtOuterRing);
+            if (_imageLoader is null)
+            {
+                BluRayImageGenerator.Prepare(image);
+                token.ThrowIfCancellationRequested();
+                return new(Descriptor.Id, command.Name, 2,
+                    L.T("BD picture generation requires an image loader. Run bd-generate through the application or provide a BluRayGray8Raster loader."));
+            }
+            DiscImageResult result = new BluRayImageGenerator(_imageLoader).Generate(image, progress, token);
+            return new(Descriptor.Id, command.Name, 0, result.Summary, result.OutputPath);
         }
-        else
-        {
-            uint value = UInt(options["byte"], "byte");
-            if (value > 255) throw new ArgumentOutOfRangeException("byte", L.T("Probe byte must be 0..255 or 0x00..0xFF."));
-            mapping = new BluRayConstantByteMapping((byte)value);
-            interpretation = L.F($"scrambled byte 0x{value:X2}; no black/white interpretation");
-        }
+
+        uint start = UInt(options.GetValueOrDefault("start-sector", "0"), "start-sector");
+        if (start >= disc.TotalSectors)
+            throw new ArgumentOutOfRangeException("start-sector", L.T("First sector must be inside the disc."));
+        uint count = options.TryGetValue("sectors", out string? sectorCount) ? UInt(sectorCount, "sectors") : 32;
+        BluRayStreamingOptions streaming = new(disc, start, count);
+        streaming.Validate();
+        uint value = UInt(options["byte"], "byte");
+        if (value > 255) throw new ArgumentOutOfRangeException("byte", L.T("Probe byte must be 0..255 or 0x00..0xFF."));
+        BluRayConstantByteMapping mapping = new((byte)value);
+        string interpretation = L.F($"scrambled byte 0x{value:X2}; no black/white interpretation");
         TimeSpan nextProgressReport = TimeSpan.Zero;
         InlineProgress<BluRayStreamingProgress> report = new(p =>
             {
                 if (p.Elapsed < nextProgressReport && p.CompletedBytes != p.TotalBytes) return;
                 nextProgressReport = p.Elapsed + TimeSpan.FromMilliseconds(250);
-                progress?.Report(new(Descriptor.Id, isPicture ? "iso" : "payload", L.F($"BD {p.CompletedBytes}/{p.TotalBytes} bytes"),
+                progress?.Report(new(Descriptor.Id, "payload", L.F($"BD {p.CompletedBytes}/{p.TotalBytes} bytes"),
                     p.Fraction, p.CompletedBytes, p.TotalBytes, p.Elapsed));
             });
-        BluRayStreamingSummary summary = isPicture
-            ? BluRayIsoGenerator.GenerateFile(output!, isoPlan!, mapping, report, token)
-            : BluRayStreamingGenerator.GenerateFile(output!, streaming, mapping, report, token);
-        if (isPicture)
-        {
-            BluRayIsoMetadata.FromPlan(
-                    isoPlan!, options["input"], output!, generationInvert, tone, DateTimeOffset.Now)
-                .Save(output!);
-            token.ThrowIfCancellationRequested();
-        }
+        BluRayStreamingSummary summary = BluRayStreamingGenerator.GenerateFile(output!, streaming, mapping, report, token);
 
         return new(Descriptor.Id, command.Name, 0,
-            isPicture
-                ? L.F($"BD {(isoPlan!.HasFileSystem ? "UDF 2.50" : L.T("full-area drawing, no filesystem"))}: {summary.BytesWritten} bytes, {disc.TotalSectors} sectors; {isoPlan.FileCount} {(isoPlan.FilesAtOuterRing ? L.T("BluRay.OuterFilePosition") : L.T("BluRay.InnerFilePosition"))} files; drawing sectors {isoPlan.DrawingStartSector}..{isoPlan.DrawingEndSectorExclusive - 1}; {interpretation}.")
-                : L.F($"BD probe: {summary.BytesWritten} raw payload bytes, sectors {start}..{start + count - 1}; {interpretation}. No filesystem."),
+            L.F($"BD probe: {summary.BytesWritten} raw payload bytes, sectors {start}..{start + count - 1}; {interpretation}. No filesystem."),
             Path.GetFullPath(output!));
     }
 

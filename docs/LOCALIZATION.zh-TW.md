@@ -106,3 +106,5 @@ dotnet run --project tests/DiscImageStudio.ArchitectureTests -c Release -- --loc
 ```
 
 執行器已在本 Linux 工作區編譯；Windows 執行仍待推送後的儲存庫 CI。即使檢查失敗也上傳 PNG 與 JSON 報告。空專案為合成測試資料，矩陣不驗證實體光學效果或全部填入資料後的工作流程狀態。
+
+新的上游裝置診斷資源可分批翻譯，缺少目前語言時回退至英文。已完成的介面資源繼續要求五語涵蓋；裝置欄位名稱、數值格式和原始作業系統錯誤保持不變。

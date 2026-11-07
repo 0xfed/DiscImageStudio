@@ -44,7 +44,7 @@ internal static class ValidationTranslationTests
                 Expect<InvalidDataException>(() => ProjectJsonStore.Validate(project with
                 {
                     Layers = [project.Layers[0] with { TranslateXMm = double.NaN }],
-                }), L.Format("图层 '{0}' 的 {1} 必须是有限数值。", project.Layers[0].Id, "translateXMm"));
+                }), L.Format("{0} 必须是有限数值。", L.Format("图层 '{0}' 的 translateXMm", project.Layers[0].Id)));
                 DiscPresetJsonDocument presets = DiscPresetJsonStore.LoadBuiltIn();
                 foreach (var (context, invalidDisabled) in new[]
                 {
@@ -53,18 +53,18 @@ internal static class ValidationTranslationTests
                     ("disabled Blu-ray", presets with { DisabledBluRayPresetIds = [" "] }),
                 })
                     Expect<InvalidDataException>(() => DiscPresetJsonStore.Validate(invalidDisabled),
-                        L.Format("预设 '{0}' 的 {1} 不能为空。", L.T(context), "id"));
+                        L.Format("预设 '{0}' 的 {1} {2}。", L.T(context), "id", L.T("不能为空")));
                 CdDiscPresetDefinition invalidPreset = presets.CdPresets[0] with { InnerRadiusMm = double.NaN };
                 Expect<InvalidDataException>(() => DiscPresetJsonStore.Validate(presets with { CdPresets = [invalidPreset] }),
-                    L.Format("预设 '{0}' 的 {1} 必须是大于 0 的有限数值。", invalidPreset.Id, "innerRadiusMm"));
+                    L.Format("预设 '{0}' 的 {1} {2}。", invalidPreset.Id, "innerRadiusMm", L.T("必须是大于 0 的有限数值")));
                 Expect<InvalidDataException>(() => DiscPresetJsonStore.Validate(presets with
                 {
                     CdPresets = [presets.CdPresets[0] with { Sectors = 0 }],
-                }), L.Format("预设 '{0}' 的 {1} 必须大于 0。", presets.CdPresets[0].Id, "sectors"));
+                }), L.Format("预设 '{0}' 的 {1} {2}。", presets.CdPresets[0].Id, "sectors", L.T("必须大于 0")));
                 BluRayDiscPresetDefinition invalidBluRay = presets.BluRayPresets![0] with { TotalSectors = 33 };
                 Expect<InvalidDataException>(() => DiscPresetJsonStore.Validate(presets with { BluRayPresets = [invalidBluRay] }),
-                    L.Format("预设 '{0}' 的 {1} 必须是 32 的倍数且不超过 {2:N0}。",
-                        invalidBluRay.Id, "totalSectors", ProjectDocument.BluRaySectorsPerLayer));
+                    L.Format("预设 '{0}' 的 {1} {2}。", invalidBluRay.Id, "totalSectors",
+                        L.Format("必须是 32 的倍数且不超过 {0:N0}", ProjectDocument.BluRaySectorsPerLayer)));
                 Expect<ArgumentOutOfRangeException>(() => new CdDiscParameters(24.5, 56.8, 0).Validate(),
                     L.T("CD sector count must be positive."), "Sectors");
                 Expect<ArgumentOutOfRangeException>(() => new ToneProfile(double.NaN, ToneProfile.TwoLevels, 0).Validate(),

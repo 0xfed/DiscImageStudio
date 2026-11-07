@@ -424,7 +424,9 @@
     "zh-TW": "標定照片為空或過大，請重新匯入照片。",
     "en": "The calibration photo is empty or too large; import the photo again.",
     "ja": "キャリブレーション写真が空か大きすぎます。写真を再度取り込んでください。",
-    "tr": "Kalibrasyon fotoğrafı boş veya çok büyük; fotoğrafı yeniden içe aktarın."
+    "tr": "Kalibrasyon fotoğrafı boş veya çok büyük; fotoğrafı yeniden içe aktarın.",
+    "es": "La foto de calibración está vacía o es demasiado grande. Vuelve a importarla.",
+    "cs": "Kalibrační fotografie je prázdná nebo příliš velká. Importujte ji znovu."
   },
   "请选择 12 cm 或 8 cm 光盘。": {
     "zh-CN": "请选择 12 cm 或 8 cm 光盘。",

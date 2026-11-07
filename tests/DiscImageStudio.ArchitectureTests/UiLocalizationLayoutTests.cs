@@ -20,7 +20,7 @@ using DiscImageStudio.ViewModels;
 /// Exercises real workspace bindings with temporary stores and a recorder that cannot write.</summary>
 internal static class UiLocalizationLayoutTests
 {
-    private static readonly string[] Languages = ["zh-CN", "zh-TW", "en", "ja", "tr"];
+    private static readonly string[] Languages = ["zh-CN", "zh-TW", "en", "ja", "tr", "es", "cs"];
     private static readonly (int Width, int Height, AppTheme Theme)[] Profiles =
         [(1366, 900, AppTheme.Dark), (960, 700, AppTheme.Light)];
     private sealed record Issue(string Scenario, string Element, string Text, string Reason);
@@ -123,7 +123,8 @@ internal static class UiLocalizationLayoutTests
                                 {
                                     Workspace.Design => "Xaml.Design", Workspace.Preview => "Xaml.Preview",
                                     Workspace.Export => "Xaml.Export", Workspace.Burn => "Xaml.Burn",
-                                    Workspace.Calibration => "Xaml.Calibration2", _ => throw new InvalidOperationException(),
+                                    Workspace.Calibration => "Xaml.Calibration2", Workspace.CalibrationBurn => "Standalone.BurnTitle",
+                                    _ => throw new InvalidOperationException(),
                                 };
                                 PageHeader header = Descendants(window).OfType<PageHeader>().Single(h => h.IsVisible);
                                 if (header.Title != L.T(titleKey))
@@ -154,6 +155,7 @@ internal static class UiLocalizationLayoutTests
                             }
                             if (workspace == Workspace.Calibration)
                             {
+                                shell.Calibration.SelectedDiscType = family switch { "dvd" => "DVD", "bd" => "BD", _ => "CD" };
                                 if (!Descendants(window).OfType<CheckBox>().Any(box => box.IsVisible && box.Name == "CoarsePatternCheckBox"))
                                     throw new InvalidOperationException($"Coarse pattern option is missing for {family}/{language}.");
                                 shell.Calibration.UseCoarsePattern = true;
@@ -180,11 +182,14 @@ internal static class UiLocalizationLayoutTests
                                 foreach (var measurement in CalibrationRingTests.Measurements(ringTarget, actualRings))
                                     shell.Calibration.RingDiameters.Single(row => row.Ring.Index == measurement.RingIndex).MeasuredDiameter
                                         = measurement.DiameterMm.ToString("0.000", CultureInfo.InvariantCulture);
-                                shell.Calibration.SolveRingsCommand.Execute(null);
+                                shell.Calibration.SolveDiametersCommand.Execute(null);
                                 shell.Calibration.RingMeasurementsConfirmed = true;
                                 if (!shell.Calibration.ApplyRingParametersCommand.CanExecute(null))
                                     throw new InvalidOperationException("The measured-diameter workflow did not produce an applicable fit.");
                                 Pump();
+                                if (!Descendants(window).OfType<Button>().Any(button => button.IsVisible
+                                    && ReferenceEquals(button.Command, shell.Calibration.ApplyRingParametersCommand)))
+                                    throw new InvalidOperationException("The diameter result has no visible Apply control.");
                                 Capture(window, name + "-ring-fit");
                                 if (family == "dvd")
                                 {
@@ -220,12 +225,16 @@ internal static class UiLocalizationLayoutTests
                                         || !shell.Calibration.StepThreeExpanded
                                         || string.IsNullOrWhiteSpace(shell.Calibration.VisualSelectorEstimateSummary))
                                         throw new InvalidOperationException("The visual selector did not display an applicable coarse estimate.");
+                                    if (!Descendants(window).OfType<Button>().Any(button => button.IsVisible
+                                        && ReferenceEquals(button.Command, shell.Calibration.ApplyVisualSelectorEstimateCommand)))
+                                        throw new InvalidOperationException("The visual estimate has no visible Apply control.");
                                     Capture(window, name + "-visual-estimate");
                                     // Inspect the estimate without applying it or touching a recorder.
                                     shell.Calibration.UseVisualSelectorPattern = false;
                                 }
                                 shell.Calibration.UseCirclePattern = false;
                                 shell.Calibration.UseCoarsePattern = false;
+                                shell.Calibration.SelectFineModeCommand.Execute(null);
                                 shell.Calibration.CreateTargetCommand.Execute(null);
                                 shell.Calibration.ShowTargetPreview = false;
                                 shell.Calibration.StepTwoExpanded = true;
@@ -287,7 +296,7 @@ internal static class UiLocalizationLayoutTests
                 throw new InvalidOperationException($"The expected {expectedScenarios} UI layout scenarios did not all render meaningful text.");
             if (issues.Count != 0)
                 throw new InvalidOperationException($"UI localization layout found {issues.Count} text issues; see {output}.");
-            Console.WriteLine($"UI localization layout: {scenarios.Count} scenarios passed in five languages; screenshots: {output}");
+            Console.WriteLine($"UI localization layout: {scenarios.Count} scenarios passed in {Languages.Length} languages; screenshots: {output}");
 
             void Capture(Window target, string name)
             {
@@ -496,6 +505,9 @@ internal static class UiLocalizationLayoutTests
         public Task<IReadOnlyList<OpticalWriteSpeed>> GetSupportedWriteSpeedsAsync(string deviceId,
             OpticalBurnMediaKind mediaKind, CancellationToken cancellationToken = default)
             => Task.FromResult<IReadOnlyList<OpticalWriteSpeed>>([]);
+        public Task<long> GetMediaSectorCountAsync(string deviceId, OpticalBurnMediaKind mediaKind,
+            CancellationToken cancellationToken = default)
+            => throw new InvalidOperationException("This fixture cannot query real media.");
         public Task<OpticalBurnResult> BurnAsync(OpticalBurnRequest request, IProgress<OpticalBurnProgress>? progress = null,
             CancellationToken cancellationToken = default)
             => throw new InvalidOperationException("The UI layout fixture cannot write to a recorder.");

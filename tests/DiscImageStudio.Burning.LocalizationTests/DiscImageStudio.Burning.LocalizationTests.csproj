@@ -19,5 +19,12 @@
     <Compile Include="../DiscImageStudio.ArchitectureTests/BluRayFileUpdateBurnTests.cs" Link="BluRayFileUpdateBurnTests.cs" />
     <Compile Include="../DiscImageStudio.ArchitectureTests/BluRaySessionCleanupTests.cs" Link="BluRaySessionCleanupTests.cs" />
     <Compile Include="../DiscImageStudio.ArchitectureTests/BluRayFlushDiagnosticsTests.cs" Link="BluRayFlushDiagnosticsTests.cs" />
+    <Compile Include="../DiscImageStudio.ArchitectureTests/DeviceDiagnosticsTests.cs" Link="DeviceDiagnosticsTests.cs" />
+    <Compile Include="../DiscImageStudio.ArchitectureTests/CdDaoDetailedDiagnosticsTests.cs" Link="CdDaoDetailedDiagnosticsTests.cs" />
+    <Compile Include="../DiscImageStudio.ArchitectureTests/DvdDetailedDiagnosticsTests.cs" Link="DvdDetailedDiagnosticsTests.cs" />
+    <Compile Include="../DiscImageStudio.ArchitectureTests/BluRayDetailedDiagnosticsTests.cs" Link="BluRayDetailedDiagnosticsTests.cs" />
+    <Compile Include="../DiscImageStudio.ArchitectureTests/BurnStreamDiagnosticsTests.cs" Link="BurnStreamDiagnosticsTests.cs" />
+    <Compile Include="../DiscImageStudio.ArchitectureTests/CdBurnPhaseDiagnosticsTests.cs" Link="CdBurnPhaseDiagnosticsTests.cs" />
+    <Compile Include="../DiscImageStudio.ArchitectureTests/OpticalBurnDiagnosticsTests.cs" Link="OpticalBurnDiagnosticsTests.cs" />
   </ItemGroup>
 </Project>

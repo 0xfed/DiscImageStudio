@@ -77,3 +77,5 @@ v1.3.1 CD veri DAO yolu da fiziksel diske yazılmadı; tam mimari regresyonu, ba
 Kayıtlı DVD kübik iz aralığı fotoğrafları ve parametreleri için [README öncesi/sonrası karşılaştırmasına](../README.tr.md#辅助标定展示) bakın. Geçmiş fiziksel model denetimi [PHYSICAL_MODEL_AUDIT.md](PHYSICAL_MODEL_AUDIT.tr.md) belgesindedir; sonuçlar belirtilen tarih ve kod temelini korur, geçerli kaynak kod doğrulamasının yerini alamaz.
 
 Gelecekteki fiziksel disk kayıtları sürüm veya commit, yazıcı ve donanım yazılımı, disk modeli, ön ayar parametreleri, hız, oluşturma/yazma giriş noktası ve özgün fotoğrafları içermelidir. Tek bir aygıtın sonuçlarını tüm disklere genellemekten kaçının.
+
+Yardımlı kalibrasyon artık kaba, sınır ve hassas aşamalarını içerir ve çizim projesinden bağımsız kullanılabilir. Disk kapasitesini doğrulayın, ardından her boş disk için ilgili aşamanın hedefini oluşturun. Yazılmış her diski kendi üretim kaydı ve fotoğrafıyla inceleyin. [Üst proje birleştirmesinden sonra kalibrasyon](CALIBRATION_TUTORIAL.tr.md).

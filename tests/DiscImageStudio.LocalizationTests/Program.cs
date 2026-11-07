@@ -7,11 +7,15 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-MediaUdfTests.Run();
-CalibrationPatternTests.Run();
-CalibrationRingTests.Run();
-CalibrationVisualSelectorTests.Run();
-CalibrationVisualEncodingTests.Run();
+if (args is not ["--catalog-only"])
+{
+    MediaUdfTests.Run();
+    CalibrationPatternTests.Run();
+    CalibrationRingTests.Run();
+    CalibrationRecordIntegrationTests.Run();
+    CalibrationVisualSelectorTests.Run();
+    CalibrationVisualEncodingTests.Run();
+}
 
 string root = AppContext.BaseDirectory;
 while (!File.Exists(Path.Combine(root, "DiscImageStudio.slnx")))
@@ -50,7 +54,11 @@ foreach (string file in Directory.GetFiles(Path.Combine(root, "src", "DiscImageS
             Require(embedded.TryGetValue(translation.Name, out string? value) && value == translation.Value.GetString(),
                 $"Embedded translation differs from source: {entry.Name}/{translation.Name}");
         }
-        Require(languages.All(seenLanguages.Contains), $"Incorrect language coverage: {entry.Name}");
+        // Upstream's new device diagnostics use the runtime's English fallback while
+        // translations are completed. Existing UI catalogs retain five-language coverage.
+        string[] requiredLanguages = Path.GetFileName(file) == "UpstreamDiagnostics.json"
+            ? [L.Chinese, L.English] : languages;
+        Require(requiredLanguages.All(seenLanguages.Contains), $"Incorrect language coverage: {entry.Name}");
         Require(embedded.Count == seenLanguages.Count, $"Embedded language set differs from source: {entry.Name}");
     }
 }
@@ -181,7 +189,7 @@ foreach (string file in new[] { app, Path.Combine(root, "tools", "FourLevelDithe
         foreach (XAttribute attribute in element.Attributes())
         {
             // Product names, language endonyms, and physical coordinate units are invariant.
-            string[] invariantUiText = ["Disc Image Studio", "English", "日本語", "Türkçe", "X (mm)", "Y (mm)", " mm"];
+            string[] invariantUiText = ["Disc Image Studio", "English", "日本語", "Türkçe", "Español", "Čeština", "X (mm)", "Y (mm)", " mm"];
             if (attribute.Name.LocalName is "Title" or "Text" or "Content" or "ToolTip" or "Header"
                 or "Label" or "Hint" or "Placeholder" or "Description" or "ActionLabel" or "Badge"
                 or "Subtitle" or "StatusText" or "Details" or "Note" or "ViewDescription" or "SelectionDescription"
@@ -284,7 +292,7 @@ CommandHelpTranslationTests.Run(languages);
 DvdTranslationTests.Run(languages);
 InitialPresetTranslationTests.Run(languages, CheckKey);
 CatalogLoadingTests.Run(root, languages);
-Console.WriteLine($"Localization checks passed: {L.Entries.Count} entries × {languages.Length} languages; {references} source references, file filters, formats, and preset fallbacks.");
+Console.WriteLine($"Localization checks passed: {L.Entries.Count} entries, {languages.Length} core languages and progressive English fallback; {references} source references, file filters, formats, and preset fallbacks.");
 
 static bool IsSourceFile(string path) => !path.Split(Path.DirectorySeparatorChar).Any(part => part is "obj" or "bin");
 

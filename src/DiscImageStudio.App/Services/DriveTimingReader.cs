@@ -1,5 +1,6 @@
 using DiscImageStudio.Burning;
 using DiscImageStudio.Core.Calibration;
+using DiscImageStudio.Localization;
 
 namespace DiscImageStudio.Services;
 
@@ -10,7 +11,7 @@ internal sealed class DriveTimingReader(IOpticalReadSession session) : IDriveTim
         {
             OpticalBurnMediaKind.CdData => DriveTimingMedia.Cd,
             OpticalBurnMediaKind.DvdData => DriveTimingMedia.Dvd,
-            _ => throw new NotSupportedException(DiscImageStudio.Localization.L.T("Timing.UnsupportedMedia")),
+            _ => throw new NotSupportedException(L.T("Timing.UnsupportedMedia")),
         },
         session.Media.RecordedSectors, session.Media.DeviceName);
     public long TimestampFrequency => session.TimestampFrequency;

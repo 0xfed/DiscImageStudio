@@ -2,6 +2,14 @@
 
 [简体中文](DVD_ENGINE.md) | [繁體中文](DVD_ENGINE.zh-TW.md) | [English](DVD_ENGINE.en.md) | [日本語](DVD_ENGINE.ja.md) | [Türkçe](DVD_ENGINE.tr.md)
 
+## 周期 DVD 读取兼容性（实验性）
+
+默认关闭。启用 `--read-compatibility true` 或 GUI 开关时，新 fast dispersion 输出使用 `periodic-9b-16-v1`。只改写属于绘图的字节，保护文件系统、文件、透明排除区及绘图范围外的数据。
+
+在每个 2048 字节扇区的固定偏移 `0, 16, …, 2032`，计算 `Q = payload XOR mask(PSN)`。只有 `owned && Q != A5 && Q != 9B` 才写入 `payload = 9B XOR mask(PSN)`。纯白绘图扇区最多改动 128 字节（6.25%），已有 9B 不重复计数；相位不随分块或并行数改变。
+
+标靶与 sidecar 记录保护版本和实际改动数。新标靶冻结新规则；旧的已启用标靶没有规则字段时仍重放 `bridge-9b-v1`。读回预览识别两种规则并恢复原白色意图，不预测光学亮度；未知规则不猜测。精确 Q 实验及 full/state-control 输出拒绝此选项。纹理与对比度可能改变，仍需实盘验证。
+
 本项目把连续 16 个 DVD 数据扇区作为一个 ECC Block，根据二维图片或指定的 NRZI pit/land 约束搜索可读的用户数据。
 
 固定约定：

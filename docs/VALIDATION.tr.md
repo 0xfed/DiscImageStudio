@@ -2,6 +2,10 @@
 
 [简体中文](VALIDATION.md) | [繁體中文](VALIDATION.zh-TW.md) | [English](VALIDATION.en.md) | [日本語](VALIDATION.ja.md) | [Türkçe](VALIDATION.tr.md)
 
+## Üst kaynak özellik eşitleme regresyonları
+
+Üst kaynak `62efb5c` denetimleri `UsableSectorGenerationTests`, `UsableSectorPersistenceTests`, `StreamBurnCapacityTests`, `PresetApplicationTests` ve `CalibrationConfirmedFitTests` içerir. UDF/VAT güncellemeleri, zamanlama sonucu kullanılabilir sınırları, görsel seçici kırpması ve eski/yeni kuralın yeniden üretimi de kapsanır. Yedi dilli yerleşim matrisi korunur; bu testler yeni fiziksel yazma doğrulaması sağlamaz.
+
 Bu sayfa geçerli kaynak kod için yeniden üretilebilir kontrolleri listeler. Otomatik regresyonlar algoritmaları, dosya yerleşimlerini ve uygulama iş akışlarını doğrular; fiziksel disk yazma sonuçları yazıcıya, donanım yazılımına ve diske bağlıdır.
 
 ## Yerel doğrulama

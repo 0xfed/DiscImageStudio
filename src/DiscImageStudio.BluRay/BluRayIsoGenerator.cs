@@ -24,16 +24,16 @@ public sealed class BluRayIsoPlan
     {
         Disc = disc;
         DrawingStartSector = 0;
-        DrawingEndSectorExclusive = disc.TotalSectors;
+        DrawingEndSectorExclusive = disc.OutputSectors;
         DrawingStartRadiusMm = disc.InnerRadiusMm;
-        DrawingEndRadiusMm = disc.OuterRadiusMm;
+        DrawingEndRadiusMm = disc.OutputOuterRadiusMm;
     }
 
     internal BluRayIsoPlan(BluRayDiscParameters disc, uint drawingStartSector, uint drawingEndSectorExclusive)
     {
         disc.Validate();
         if (drawingStartSector >= drawingEndSectorExclusive
-            || drawingEndSectorExclusive > disc.TotalSectors)
+            || drawingEndSectorExclusive > disc.OutputSectors)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(drawingEndSectorExclusive), L.T("The drawing range must lie inside the disc."));
@@ -52,8 +52,8 @@ public sealed class BluRayIsoPlan
     public bool HasFileSystem => _filesystem is not null;
     public bool FilesAtOuterRing => _filesystem?.FilesAtOuterRing ?? false;
     public BluRayDiscParameters Disc { get; }
-    public uint TotalSectors => Disc.TotalSectors;
-    public uint RecordedSectors => _filesystem?.VolumeSectors ?? Disc.TotalSectors;
+    public uint TotalSectors => Disc.OutputSectors;
+    public uint RecordedSectors => _filesystem?.VolumeSectors ?? Disc.OutputSectors;
     public long ContentLength => (long)RecordedSectors * UdfImageWriter.LogicalSectorBytes;
     public string? DataDirectory => _filesystem?.SourceDirectory is { Length: > 0 } source ? source : null;
     public string? VolumeLabel => _filesystem?.VolumeLabel;
@@ -103,10 +103,10 @@ public static class BluRayIsoGenerator
         ArgumentNullException.ThrowIfNull(disc);
         disc.Validate();
         if (dataDirectory is not null) ArgumentException.ThrowIfNullOrWhiteSpace(dataDirectory);
-        if (updateReserveSectors % 32 != 0 || updateReserveSectors >= disc.TotalSectors)
+        if (updateReserveSectors % 32 != 0 || updateReserveSectors >= disc.OutputSectors)
             throw new ArgumentOutOfRangeException(nameof(updateReserveSectors));
-        UdfImageWriter.LayoutPlan filesystem = UdfImageWriter.Plan(dataDirectory, disc.TotalSectors - updateReserveSectors,
-            volumeLabel, timestamp, filesAtOuterRing, disc.TotalSectors);
+        UdfImageWriter.LayoutPlan filesystem = UdfImageWriter.Plan(dataDirectory, disc.OutputSectors - updateReserveSectors,
+            volumeLabel, timestamp, filesAtOuterRing, disc.OutputSectors);
         uint drawingStart = filesystem.DrawingStartLba;
         if (drawingStart >= filesystem.DrawingEndLbaExclusive)
             throw new ArgumentException(L.T("UDF metadata and files must leave at least 32 sectors for drawing."), nameof(dataDirectory));

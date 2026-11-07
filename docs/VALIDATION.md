@@ -2,6 +2,10 @@
 
 [简体中文](VALIDATION.md) | [繁體中文](VALIDATION.zh-TW.md) | [English](VALIDATION.en.md) | [日本語](VALIDATION.ja.md) | [Türkçe](VALIDATION.tr.md)
 
+## 上游功能同步回归
+
+同步至上游 `62efb5c` 的检查包含 `UsableSectorGenerationTests`、`UsableSectorPersistenceTests`、`StreamBurnCapacityTests`、`PresetApplicationTests` 与 `CalibrationConfirmedFitTests`。另覆盖既有 UDF/VAT 更新、计时结果保留可用容量，以及目视选择器截尾和新旧保护规则重放。布局仍由七语言矩阵检查；这些测试不构成新的真实刻录验证。
+
 本页列出当前源码的可复现检查。自动化回归验证算法、文件布局和应用工作流；实际刻录效果仍取决于刻录机、固件与盘片。
 
 ## 本地验证

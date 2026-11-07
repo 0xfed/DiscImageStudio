@@ -2,6 +2,10 @@
 
 [简体中文](CALIBRATION.md) | [繁體中文](CALIBRATION.zh-TW.md) | [English](CALIBRATION.en.md) | [日本語](CALIBRATION.ja.md) | [Türkçe](CALIBRATION.tr.md)
 
+## Capacity and confirmed fits
+
+Before creating a target, check geometry and usable sectors separately. Read from disc retrieves both; a recorded disc without writable capacity supplies geometry and a default-estimate notice. Applying timing results retains the usable limit. CD measurement ISOs retain a 250-sector closing allowance and honor any smaller explicit usable limit without subtracting another reserve.
+
 ## Drive read timing (CD/DVD)
 
 Choose “Drive read timing (CD/DVD)” to estimate geometry from sector read-completion times without tracing a photo. Adapted from [disc-probe](https://github.com/Ashley-QwQ/disc-probe/tree/fa64fd60498c3eac8a6683828384d62082f0af65), this method needs a drive that maintains constant rotation and a plain-data measurement disc.
@@ -94,9 +98,9 @@ When the point count or coverage is insufficient, the program preserves the exis
 
 Return to step one to inspect the original photograph. Changing boundaries or disc size invalidates rectification, tracing, and fitting, requiring both steps to be completed again. Changing any curve point or the search range also invalidates the old fit and contour confirmation.
 
-Calibration records save the generation snapshot, reduced original photograph, boundary control points, disc size, and all curve points; they do not depend on the original photo path. Reopening restores rectification from the saved boundaries so you can continue tracing or recompute. Fit candidates must be recalculated.
+Calibration records save the generation snapshot, photo and measurement inputs. A manually confirmed fit also saves its candidates and errors, even before Apply. Reopening first rebuilds the preview; confirmation and next-target setup are restored only when target, inputs and candidate still match. The burned target stays frozen. Unconfirmed, revoked or invalidated fits are omitted; older records still require solving and confirmation.
 
-New records use schema 9 and retain the pattern, measured circle diameters, measurement method, diameter tolerance, and optional visual-selector range and band choices. Schema 8 circle/fine-cross/wide-sector records, schema 7 fine-cross/wide-sector records and schema 6 fine-cross records remain readable. Older comb records are not migrated. Use each burned disc with its own original record.
+Records explicitly identify artwork and an optional DVD protection recipe, retaining fork schemas 6–9 and upstream targets through schema 17. Ring diameters, measurement mode/tolerance and visual-band choices remain preserved. Each burned disc needs its original saved record.
 
 ## Validation scope
 

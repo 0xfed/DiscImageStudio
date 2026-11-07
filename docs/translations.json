@@ -94,7 +94,7 @@
     {
       "source": "docs/CALIBRATION.md",
       "source_language": "zh-CN",
-      "source_sha256": "73dff918d14146bdfbddde1516ec524089ccaa4463741f016f5d9e45c6a452ad",
+      "source_sha256": "32c6a3721db9e17e1a30b48d2c90d6e813f7c16583bfebe6ce1a509a4a10dfce",
       "translations": {
         "zh-CN": "docs/CALIBRATION.md",
         "zh-TW": "docs/CALIBRATION.zh-TW.md",
@@ -142,7 +142,7 @@
     {
       "source": "docs/VALIDATION.md",
       "source_language": "zh-CN",
-      "source_sha256": "611012eb04ebbd62846ddbc5ce54d308aabd6e30b7b69f9efa8bfcd5d3fa7030",
+      "source_sha256": "29df71928d187a06b94bac25de1736b94fbe83432044631982fd82bfc743983e",
       "translations": {
         "zh-CN": "docs/VALIDATION.md",
         "en": "docs/VALIDATION.en.md",
@@ -166,7 +166,7 @@
     {
       "source": "docs/DISC_PRESETS.md",
       "source_language": "zh-CN",
-      "source_sha256": "911c1b1c6a08028a6936ac9593c794fd65293bc635cf3199401feabdf04d61ce",
+      "source_sha256": "6c1e80bc54e1d7fbed0ba98f493ec796faab63d12e96ab029e3126dc5f13236e",
       "translated_json_text_fields": [
         "displayName",
         "description"
@@ -236,7 +236,7 @@
     {
       "source": "docs/ARCHITECTURE.md",
       "source_language": "zh-CN",
-      "source_sha256": "9861a50dc1dd0825eeb212eb6a704f59bd5d59f384667cfffda5a989bf64f83a",
+      "source_sha256": "87bdb8ec28272895ef88299df312689e7c77520a96d11996bb832bc5266eba83",
       "translated_mermaid_labels": [
         "CdEngine",
         "BdEngine"
@@ -264,7 +264,7 @@
     {
       "source": "docs/DVD_ENGINE.md",
       "source_language": "zh-CN",
-      "source_sha256": "4b46176b75c16362d4b4c3ee7183a13bdb5d879afb638d4e9178114b9a0ce355",
+      "source_sha256": "8a0e11353008d4fd20998a911451d83b87d7d686960ad2a9511e1a3149eaa6b7",
       "translations": {
         "zh-CN": "docs/DVD_ENGINE.md",
         "zh-TW": "docs/DVD_ENGINE.zh-TW.md",
@@ -276,7 +276,7 @@
     {
       "source": "CHANGELOG.md",
       "source_language": "zh-CN",
-      "source_sha256": "e509777a6b11f0235ed29dd931ae0affa75417d85ad2d18e8820bd9ed342db05",
+      "source_sha256": "067ef7982a10479f253912df2dda9bade71097829f7b1865c78ca33f82fd4b0b",
       "parallel_language_sections": [
         "中文",
         "English"

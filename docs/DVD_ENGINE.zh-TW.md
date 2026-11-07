@@ -2,6 +2,14 @@
 
 [简体中文](DVD_ENGINE.md) | [繁體中文](DVD_ENGINE.zh-TW.md) | [English](DVD_ENGINE.en.md) | [日本語](DVD_ENGINE.ja.md) | [Türkçe](DVD_ENGINE.tr.md)
 
+## 週期 DVD 讀取相容性（實驗性）
+
+預設關閉。啟用 `--read-compatibility true` 或 GUI 選項時，新 fast dispersion 輸出使用 `periodic-9b-16-v1`。僅改寫繪圖擁有的位元組，保護檔案系統、檔案、透明排除區及繪圖範圍外的資料。
+
+在每個 2048 位元組磁區的固定偏移 `0, 16, …, 2032`，計算 `Q = payload XOR mask(PSN)`。僅在 `owned && Q != A5 && Q != 9B` 時寫入 `payload = 9B XOR mask(PSN)`。純白繪圖磁區最多改動 128 位元組（6.25%），已有 9B 不重複計數；相位不隨分塊或平行數改變。
+
+標靶與 sidecar 記錄保護版本及實際改動數。新標靶凍結新規則；舊的已啟用標靶無規則欄位時仍重放 `bridge-9b-v1`。讀回預覽識別兩種規則並恢復原白色意圖，不預測光學亮度；未知規則不猜測。精確 Q 實驗及 full/state-control 輸出拒絕此選項。紋理與對比可能改變，仍須實碟驗證。
+
 本專案將連續 16 個 DVD 資料磁區視為一個 ECC Block，依二維圖片或指定 NRZI pit/land 約束，搜尋可讀取的使用者資料。
 
 固定慣例：

@@ -458,6 +458,9 @@ public partial class CalibrationViewModel
             }
             RestoreRingMeasurements(session);
             RestoreVisualSelectorSelection(session);
+            if (session.ConfirmedFit is { } confirmedFit)
+                await RestoreConfirmedFitAsync(confirmedFit, token);
+            token.ThrowIfCancellationRequested();
             _sessionPath = path; OutputPath = string.Empty;
             _statusMessage = L.T("已恢复标定图案、照片和曲线点，可继续编辑或重新反推。");
             RefreshCommands();

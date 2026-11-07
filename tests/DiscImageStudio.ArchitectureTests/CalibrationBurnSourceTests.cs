@@ -51,9 +51,12 @@ internal static class CalibrationBurnSourceTests
             state.CdInnerRadius = state.DvdInnerRadius = state.BdInnerRadius = "24";
             state.CdOuterRadius = state.DvdOuterRadius = state.BdOuterRadius = "58";
             state.CdSectors = "8";
+            state.CdUsableSectors = "8";
             state.DvdTotalSectors = "16";
+            state.DvdUsableSectors = "16";
             state.DvdPitchLinear = state.DvdPitchQuadratic = state.DvdPitchCubic = "0";
             state.BdTotalSectors = "64";
+            state.BdUsableSectors = "64";
             state.BdInvertMapping = true;
             state.CdInterleave = true;
             // A data directory must not change a calibration target into a CD data burn.
@@ -94,6 +97,7 @@ internal static class CalibrationBurnSourceTests
             // project family or main-page geometry changes before the stream is started.
             SetProjectFamily(shell, ProjectDocument.CdFamily);
             shell.State.BdTotalSectors = "96";
+            shell.State.BdUsableSectors = "96";
             shell.State.BdInvertMapping = false;
             burn.UpdateSourceSummary();
             Require(burn.SourceDetails == savedSummary, "summary is isolated from later project parameter edits");
@@ -145,6 +149,7 @@ internal static class CalibrationBurnSourceTests
                 if (label == "BD")
                 {
                     state.BdTotalSectors = "96";
+            state.BdUsableSectors = "96";
                     state.BdInvertMapping = false;
                 }
                 shell.Calibration.SelectedDiscType = label;
@@ -209,6 +214,9 @@ internal static class CalibrationBurnSourceTests
 
         public Task<long> GetMediaSectorCountAsync(string deviceId, OpticalBurnMediaKind mediaKind,
             CancellationToken cancellationToken = default) => throw new NotSupportedException();
+
+        public Task<OpticalMediaCapacity> GetMediaCapacityAsync(string deviceId, OpticalBurnMediaKind mediaKind,
+            CancellationToken cancellationToken = default) => Task.FromResult(new OpticalMediaCapacity(96, 96));
 
         public Task<IReadOnlyList<OpticalWriteSpeed>> GetSupportedWriteSpeedsAsync(string deviceId,
             OpticalBurnMediaKind mediaKind, CancellationToken cancellationToken = default)

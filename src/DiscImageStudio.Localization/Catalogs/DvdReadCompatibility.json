@@ -7,18 +7,18 @@
     "tr": "DVD okuma uyumluluğu (deneysel)"
   },
   "DvdReadCompatibility.Hint": {
-    "zh-CN": "可改善部分驱动器的读回，可能轻微改变纹理。",
-    "en": "May improve read-back on some drives and slightly change the texture.",
-    "zh-TW": "可能改善部分光碟機的讀回，並略微改變紋理。",
-    "ja": "一部のドライブで読み取りを改善する可能性があり、模様がわずかに変わります。",
-    "tr": "Bazı sürücülerde geri okumayı iyileştirebilir ve dokuyu biraz değiştirebilir."
+    "zh-CN": "可改善部分光驱的读回；盘面纹理和对比度可能变化。",
+    "en": "May improve readback on some drives. Texture and contrast may change.",
+    "zh-TW": "可改善部分光碟機的讀回；碟面紋理和對比可能改變。",
+    "ja": "一部のドライブで読み取りが改善する場合があります。模様とコントラストが変わる場合があります。",
+    "tr": "Bazı sürücülerde geri okumayı iyileştirebilir. Doku ve kontrast değişebilir."
   },
   "DvdReadCompatibility.FrozenHint": {
-    "zh-CN": "使用标靶记录中的选项；如需更改，请创建新标靶。",
-    "en": "Uses the option saved with this target. Create a new target to change it.",
-    "zh-TW": "使用此標靶儲存的選項。若要變更，請新增標靶。",
-    "ja": "このターゲットに保存された設定を使用します。変更するには新しいターゲットを作成してください。",
-    "tr": "Bu hedefle kaydedilen seçenek kullanılır. Değiştirmek için yeni hedef oluşturun."
+    "zh-CN": "使用标靶记录中的设置和保护规则；如需更改，请创建新标靶。",
+    "en": "Uses the settings and protection rule saved with this target. Create a new target to change them.",
+    "zh-TW": "使用標靶記錄中的設定和保護規則；如需更改，請建立新標靶。",
+    "ja": "このターゲットに保存された設定と保護ルールを使用します。変更するには新しいターゲットを作成してください。",
+    "tr": "Bu hedefle kaydedilen ayar ve koruma kuralı kullanılır. Değiştirmek için yeni bir hedef oluşturun."
   },
   "DvdReadCompatibility.Enabled": {
     "zh-CN": "DVD读取兼容性：已启用（实验性）",

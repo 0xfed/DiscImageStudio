@@ -4,6 +4,7 @@
 
 ## Henüz yayımlanmayan
 
+- Üst kaynak `62efb5c` sürümüne eşitleme: geometri ve kullanılabilir çıktı kapasitesini ayırıp cihaz sınırlarına uyar; kayıtlı önayarları hemen uygular, onaylanmış fotoğraf uyumlarını saklar; yeni DVD çıktısında periyodik koruma kullanıp eski hedef kurallarını korur. UDF/VAT güncellemeleri, görsel seçiciler ve yerel zamanlama kalibrasyonu, beş dilli belge ve regresyonlarla korunur.
 - disc-probe yönteminden uyarlanan CD/DVD okuma zamanlaması kalibrasyonu eklendi: normal veri ölçüm ISO’su oluşturma, önbellek ve sabit dönüş denetimi, sektör fazlarını aşamalı bulma, ölçümleri kaydetme ve bağımsız kalibrasyon geometrisine uygulama. CD, bilinmeyen iz kayması için hassas desen kalibrasyonunu korur. Benzetilmiş sürücü, salt okunur komut, kayıt ve UI regresyonları eklendi; fiziksel sürücüde doğrulanmadı.
 
 - Üst projenin kalibrasyon aşamalarını, yazma tanılarını ve kodlama düzeltmelerini birleştir; UDF 2.50 dosya güncellemelerini, çap ölçümlerini ve görsel seçicileri koru, kaydedilen kalibrasyon desenlerinin kökenlerini açıkça ayır.

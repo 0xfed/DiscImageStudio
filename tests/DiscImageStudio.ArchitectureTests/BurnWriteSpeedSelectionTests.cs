@@ -202,6 +202,9 @@ internal static class BurnWriteSpeedSelectionTests
             Devices.Add(request);
             return request.Task;
         }
+        public Task<OpticalMediaCapacity> GetMediaCapacityAsync(string deviceId, OpticalBurnMediaKind mediaKind,
+            CancellationToken cancellationToken = default)
+            => throw new InvalidOperationException("This fixture cannot query real media.");
         public Task<IReadOnlyList<OpticalWriteSpeed>> GetSupportedWriteSpeedsAsync(string deviceId,
             OpticalBurnMediaKind mediaKind, CancellationToken cancellationToken = default)
         {

@@ -17,7 +17,13 @@ public sealed record ImageMappingOptions(
     double PitchLinear = 0,
     double PitchQuadratic = 0,
     double PitchCubic = 0,
-    ToneProfile? Tone = null);
+    ToneProfile? Tone = null,
+    uint? UsableSectors = null,
+    double? ImageOuterRadiusMm = null)
+{
+    public uint OutputSectors => UsableSectors ?? TotalSectors;
+    public double SamplingOuterRadiusMm => ImageOuterRadiusMm ?? OuterRadiusMm;
+}
 
 public sealed record ImageMappingSummary(
     string? SourceImage,
@@ -96,7 +102,7 @@ internal static class ImageTargetMapper
             return image.SampleDisc(
                 radiusMm * Math.Cos(polarAngle),
                 radiusMm * Math.Sin(polarAngle),
-                options.OuterRadiusMm,
+                options.SamplingOuterRadiusMm,
                 preserveDiscreteGrayscale);
         }
 

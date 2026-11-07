@@ -2,6 +2,14 @@
 
 [简体中文](DVD_ENGINE.md) | [繁體中文](DVD_ENGINE.zh-TW.md) | [English](DVD_ENGINE.en.md) | [日本語](DVD_ENGINE.ja.md) | [Türkçe](DVD_ENGINE.tr.md)
 
+## Periyodik DVD okuma uyumluluğu (deneysel)
+
+Seçenek varsayılan olarak kapalıdır. `--read-compatibility true` veya GUI ayarı yeni fast dispersion çıktısında `periodic-9b-16-v1` kullanır. Yalnızca çizime ait baytlar değişir; dosya sistemi, dosyalar, alfa ile dışlanan baytlar ve çizim dışı veriler korunur.
+
+Her 2048 baytlık sektörün sabit `0, 16, …, 2032` konumlarında `Q = payload XOR mask(PSN)` hesaplanır. Yalnızca `owned && Q != A5 && Q != 9B` için `payload = 9B XOR mask(PSN)` yazılır. Beyaz çizim sektöründe en çok 128 bayt (6.25%) değişir; mevcut 9B yeniden sayılmaz. Parçalama ve paralellik fazı değiştirmez.
+
+Hedefler ve yan dosyalar kuralı ve gerçek değişiklik sayısını kaydeder. Yeni hedef yeni kuralı sabitler; alanı olmayan eski etkin hedef `bridge-9b-v1` kuralını yeniden üretir. Geri okuma ikisini tanıyıp optik parlaklığı tahmin etmeden amaçlanan beyazı gösterir; bilinmeyen kural tahmin edilmez. Tam Q deneyleri ve full/state-control çıktısı seçeneği reddeder. Doku ve kontrast değişebilir; fiziksel doğrulama gerekir.
+
 Proje, ardışık 16 DVD veri sektörünü bir ECC Block olarak ele alır; iki boyutlu görüntüye veya belirtilen NRZI pit/land kısıtlarına göre okunabilir kullanıcı verisi arar.
 
 Sabit kurallar:

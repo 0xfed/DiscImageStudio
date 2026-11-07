@@ -2,6 +2,14 @@
 
 [简体中文](DVD_ENGINE.md) | [繁體中文](DVD_ENGINE.zh-TW.md) | [English](DVD_ENGINE.en.md) | [日本語](DVD_ENGINE.ja.md) | [Türkçe](DVD_ENGINE.tr.md)
 
+## Periodic DVD read compatibility (experimental)
+
+The option defaults off. Enabling `--read-compatibility true` or the GUI setting uses `periodic-9b-16-v1` for new fast dispersion output. Only owned drawing bytes change; filesystem data, files, alpha-excluded bytes and data outside the drawing range are protected.
+
+At fixed offsets `0, 16, …, 2032` in each 2048-byte sector, compute `Q = payload XOR mask(PSN)`. Write `payload = 9B XOR mask(PSN)` only for `owned && Q != A5 && Q != 9B`. A white drawing sector changes up to 128 bytes (6.25%); existing 9B is not counted again. Chunking and parallelism do not change phase.
+
+Targets and sidecars record the recipe and actual change count. New targets freeze the new recipe; older enabled targets lacking the field replay `bridge-9b-v1`. Readback recognizes both and restores intended white without predicting optical brightness; unknown recipes are not inferred. Exact-Q experiments and full/state-control output reject this option. Texture and contrast may change and still need physical validation.
+
 The project treats 16 consecutive DVD data sectors as one ECC Block and searches for readable user data that satisfies a two-dimensional image or specified NRZI pit/land constraints.
 
 Fixed conventions:

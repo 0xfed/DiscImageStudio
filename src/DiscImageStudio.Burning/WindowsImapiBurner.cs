@@ -10,10 +10,6 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
 {
     private readonly OpticalBurnOperationGate _operationGate = new();
     private const int CdDaoFallbackSpeedSectorsPerSecond = 1200;
-    // DAO avoids the two-sector TAO track overhead observed on the tested drive.
-    // Keep only a very small physical overburn allowance for nearby measured presets.
-    private const long CdDaoOverburnAllowanceSectors = 3;
-
     private const int BlankMediaState = 0x2;
     // IMAPI_MEDIA_PHYSICAL_TYPE and IMAPI_PROFILE_TYPE (imapi2.h).
     // https://learn.microsoft.com/windows/win32/api/imapi2/ne-imapi2-imapi_media_physical_type
@@ -27,16 +23,20 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
         => _operationGate.RunAsync(() => RunOnStaThread(() => EnumerateDevices(cancellationToken)),
             cancellationToken);
 
-    public Task<long> GetMediaSectorCountAsync(string deviceId, OpticalBurnMediaKind mediaKind,
+    public async Task<long> GetMediaSectorCountAsync(string deviceId, OpticalBurnMediaKind mediaKind,
+        CancellationToken cancellationToken = default)
+        => (await GetMediaCapacityAsync(deviceId, mediaKind, cancellationToken)).TotalSectors;
+
+    public Task<OpticalMediaCapacity> GetMediaCapacityAsync(string deviceId, OpticalBurnMediaKind mediaKind,
         CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(deviceId);
         _ = OpticalBurnMedia.GetSectorBytes(mediaKind);
         return _operationGate.RunAsync(() => RunOnStaThread(() =>
-            ReadMediaSectorCount(deviceId, mediaKind, cancellationToken)), cancellationToken);
+            ReadMediaCapacity(deviceId, mediaKind, cancellationToken)), cancellationToken);
     }
 
-    private static long ReadMediaSectorCount(string deviceId, OpticalBurnMediaKind mediaKind, CancellationToken token)
+    private static OpticalMediaCapacity ReadMediaCapacity(string deviceId, OpticalBurnMediaKind mediaKind, CancellationToken token)
     {
         token.ThrowIfCancellationRequested();
         dynamic? recorder = null;
@@ -49,22 +49,23 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
             format.ClientName = "Disc Image Studio";
             ValidateRequestedMedia(mediaKind, recorder, format);
             // These are media queries. PrepareMedia would enter a recording session.
-            long sectors;
+            OpticalMediaCapacity capacity;
             if (mediaKind == OpticalBurnMediaKind.DvdData)
             {
-                // Includes used sectors. Never use FreeSectorsOnMedia or a mounted volume's length.
-                sectors = ReadDvdSectorCount(Convert.ToInt32(format.CurrentPhysicalMediaType),
-                    Convert.ToInt64(format.TotalSectorsOnMedia));
+                // Keep the geometry extent. IMAPI's Free property already removes
+                // recording overhead; never apply the legacy 608-sector estimate again.
+                capacity = ReadDvdMediaCapacity(Convert.ToInt32(format.CurrentPhysicalMediaType),
+                    Convert.ToInt64(format.TotalSectorsOnMedia), Convert.ToInt64(format.FreeSectorsOnMedia));
             }
             else
             {
                 var transport = new ImapiMmcCommandTransport((object)recorder);
-                sectors = OpticalBurnMedia.UsesCdDao(mediaKind)
-                    ? ReadCdAtipSectorCount(transport)
-                    : ReadBluRaySectorCount(transport);
+                capacity = OpticalBurnMedia.UsesCdDao(mediaKind)
+                    ? ReadCdMediaCapacity(ReadCdAtipSectorCount(transport), Convert.ToBoolean(format.MediaPhysicallyBlank))
+                    : ReadBluRayMediaCapacity(transport);
             }
             token.ThrowIfCancellationRequested();
-            return sectors;
+            return capacity;
         }
         catch (COMException ex) when (ex.HResult == unchecked((int)0xC0AA0202))
         {
@@ -103,6 +104,11 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
     internal static long ReadBluRaySectorCount(IMmcCommandTransport transport)
     {
         var (blocks, status, spareClusters) = new BluRayMmcCommands(transport).ReadFormatCapacity();
+        return ReadBluRaySectorCount(blocks, status, spareClusters);
+    }
+
+    private static long ReadBluRaySectorCount(uint blocks, int status, int spareClusters)
+    {
         // Type 1 counts data-zone blocks; spareClusters is the possible maximum.
         // Type 2 counts user blocks; spareClusters is actually allocated space.
         // Smaller drawing ranges can be authored, but the recorder requires the
@@ -114,6 +120,37 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
         if (blocks != BluRaySingleLayerSectors)
             throw new InvalidOperationException(L.F($"BD-R 报告 {blocks:N0} 扇区，当前标定仅支持 25 GB 单层无备用区的 12,219,392 扇区布局。"));
         return blocks;
+    }
+
+    internal static OpticalMediaCapacity ReadCdMediaCapacity(long atipSectors, bool physicallyBlank)
+    {
+        if (atipSectors <= 2)
+            throw new IOException(L.T("光驱未报告有效的 CD 容量。"));
+        // A conservative single-track payload limit shared with TAO. The actual
+        // recorder remains DAO and independently checks its lead-out before writing.
+        // A used CD is not writable by this application's blank-disc DAO workflow.
+        return new(atipSectors, physicallyBlank ? atipSectors - 2 : 0);
+    }
+
+    internal static OpticalMediaCapacity ReadDvdMediaCapacity(int physicalMediaType,
+        long totalSectorsOnMedia, long freeSectorsOnMedia)
+    {
+        long total = ReadDvdSectorCount(physicalMediaType, totalSectorsOnMedia);
+        if (freeSectorsOnMedia < 0 || freeSectorsOnMedia > total)
+            throw new IOException(L.T("光驱报告的 DVD 可写容量无效。"));
+        return new(total, freeSectorsOnMedia);
+    }
+
+    internal static OpticalMediaCapacity ReadBluRayMediaCapacity(IMmcCommandTransport transport)
+    {
+        BluRaySequentialMediaInfo media = new BluRayMmcCommands(transport).ReadMedia();
+        long total = ReadBluRaySectorCount(media.MaximumBlocks, media.FormatStatus, media.SpareClusters);
+        // A recorded no-spare disc can still supply its geometry, but is not an
+        // available destination for our blank-disc sequential recording workflow.
+        if (media.FormatStatus != 1 || !media.DiscIsBlank)
+            return new(total, 0);
+        ValidateBluRaySequentialLayout(media);
+        return new(total, media.FreeBlocks);
     }
 
     internal static long ReadDvdSectorCount(int physicalMediaType, long totalSectorsOnMedia)
@@ -720,6 +757,18 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
         request.Validate();
         if (request.MediaKind != OpticalBurnMediaKind.BluRayData)
             throw new ArgumentException(L.T("顺序 BD-R 通道只接受蓝光数据。"), nameof(request));
+        ValidateBluRaySequentialLayout(media);
+
+        long requiredSectors = request.ContentLength / 2048;
+        if (requiredSectors % 32 != 0 || requiredSectors > BluRaySingleLayerSectors)
+            throw new InvalidOperationException(L.T("蓝光绘图总扇区数必须是 32 的倍数，且不超过 12,219,392。"));
+        if (media.FreeBlocks < requiredSectors)
+            throw new InvalidOperationException(
+                L.Format("蓝光盘容量不足：需要 {0:N0} 扇区，原始轨道可写 {1:N0} 扇区。不会自动缩小绘图容量。", requiredSectors, media.FreeBlocks));
+    }
+
+    private static void ValidateBluRaySequentialLayout(BluRaySequentialMediaInfo media)
+    {
         if (media.Profile != BluRaySequentialProfile)
             throw new InvalidOperationException(L.T("无备用区绘图需要顺序记录 BD-R（SRM）；不支持 BD-RE 或随机记录 BD-R。"));
         if (!media.DiscIsBlank || !media.TrackIsBlank || !media.NextWritableAddressValid
@@ -728,13 +777,6 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
         if (media.FormatStatus != 1)
             throw new InvalidOperationException(L.T("BD-R 已格式化或格式状态未知；无法保证无备用区的物理位置，请使用未格式化的新盘。"));
 
-        long requiredSectors = request.ContentLength / 2048
-            + (request.MediaKind == OpticalBurnMediaKind.CdData && request.LeaveDiscOpen ? 150 : 0);
-        if (requiredSectors % 32 != 0 || requiredSectors > BluRaySingleLayerSectors)
-            throw new InvalidOperationException(L.T("蓝光绘图总扇区数必须是 32 的倍数，且不超过 12,219,392。"));
-        if (media.FreeBlocks < requiredSectors)
-            throw new InvalidOperationException(
-                L.Format("蓝光盘容量不足：需要 {0:N0} 扇区，原始轨道可写 {1:N0} 扇区。不会自动缩小绘图容量。", requiredSectors, media.FreeBlocks));
         if (media.MaximumBlocks != BluRaySingleLayerSectors
             || media.TrackSize != media.MaximumBlocks || media.FreeBlocks != media.TrackSize)
             throw new InvalidOperationException(
@@ -836,18 +878,16 @@ public sealed partial class WindowsImapiBurner : IOpticalDiscBurner
             long excessSectors = startOfLeadout - lastPossibleStartOfLeadout;
             layoutDiagnostic = L.F($"CD DAO 容量：TrackSectors={request.ContentLength / OpticalBurnMedia.GetSectorBytes(request.MediaKind)}；")
                 + $"StartOfLeadout={startOfLeadout}；LastPossibleStartOfLeadout={lastPossibleStartOfLeadout}；"
-                + $"LeadoutMarginSectors={-excessSectors}；OverburnAllowanceSectors={CdDaoOverburnAllowanceSectors}。";
+                + $"LeadoutMarginSectors={-excessSectors}。";
             Diagnose(() => layoutDiagnostic);
-            if (excessSectors > CdDaoOverburnAllowanceSectors)
-            {
-                throw new InvalidOperationException(
-                    L.Format("CD DAO lead-out 超出盘片边界 {0} 个扇区；最多允许 {1} 个 DAO 扇区的受限 overburn。", excessSectors, CdDaoOverburnAllowanceSectors));
-            }
-
+            // The current recorder's prepared-media boundary is authoritative,
+            // including if the medium changed after the read-only capacity query.
+            // The conservative CD payload reservation was applied before generation;
+            // do not subtract it from this DAO boundary a second time.
             if (excessSectors > 0)
             {
-                SetOperation(
-                    L.F($"使用 CD DAO 末端 overburn（超出 {excessSectors} 个 DAO 扇区）"));
+                throw new InvalidOperationException(
+                    L.Format("CD DAO lead-out 超出盘片边界 {0} 个扇区；已取消刻录，不允许超刻。", excessSectors));
             }
 
             using CancellationTokenRegistration registration = cancellationToken.Register(

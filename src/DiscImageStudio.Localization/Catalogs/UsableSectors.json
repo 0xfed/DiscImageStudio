@@ -1,0 +1,65 @@
+{
+  "Xaml.GeometryTotalSectors": {
+    "zh-CN": "几何总扇区数",
+    "en": "Geometry sectors",
+    "zh-TW": "幾何總磁區數",
+    "ja": "形状の総セクター数",
+    "tr": "Geometri sektör sayısı"
+  },
+  "Xaml.UsableSectors": {
+    "zh-CN": "可用扇区数",
+    "en": "Usable sectors",
+    "zh-TW": "可用磁區數",
+    "ja": "使用可能なセクター数",
+    "tr": "Kullanılabilir sektör sayısı"
+  },
+  "Xaml.UsableSectorsHint": {
+    "zh-CN": "限制输出长度，不改变总扇区数对应的盘面几何。留空时使用盘型默认预留。",
+    "en": "Limits output length without changing the geometry represented by the total sector count. Leave empty to use the media family's default reserve.",
+    "zh-TW": "限制輸出長度，不改變總磁區數對應的碟面幾何。留空時使用碟型預設保留。",
+    "ja": "総セクター数の形状を変えずに出力長を制限します。空欄の場合はメディアの既定の予約領域を使用します。",
+    "tr": "Toplam sektör sayısının belirlediği geometriyi değiştirmeden çıktı uzunluğunu sınırlar. Boş bırakılırsa ortamın varsayılan ayrılmış alanı kullanılır."
+  },
+  "可用扇区数": {
+    "zh-CN": "可用扇区数",
+    "en": "Usable sectors",
+    "zh-TW": "可用磁區數",
+    "ja": "使用可能なセクター数",
+    "tr": "Kullanılabilir sektör sayısı"
+  },
+  "可用扇区数必须大于 0、不超过总扇区数，且是 {0} 的倍数。": {
+    "zh-CN": "可用扇区数必须大于 0、不超过总扇区数，且是 {0} 的倍数。",
+    "en": "Usable sectors must be positive, not exceed total sectors, and be a multiple of {0}.",
+    "zh-TW": "可用磁區數必須大於 0、不超過總磁區數，且是 {0} 的倍數。",
+    "ja": "使用可能数は正の {0} の倍数で、総セクター数以下である必要があります。",
+    "tr": "Kullanılabilir sektör sayısı pozitif, {0} katı ve toplam sektör sayısını aşmayan bir değer olmalıdır."
+  },
+  "usableSectors 必须大于 0、不超过 sectors，且是 {0} 的倍数。": {
+    "zh-CN": "usableSectors 必须大于 0、不超过 sectors，且是 {0} 的倍数。",
+    "en": "usableSectors must be positive, not exceed sectors, and be a multiple of {0}.",
+    "zh-TW": "usableSectors 必須大於 0、不超過 sectors，且是 {0} 的倍數。",
+    "ja": "usableSectors は正の {0} の倍数で、sectors 以下である必要があります。",
+    "tr": "usableSectors pozitif, {0} katı ve sectors değerini aşmayan bir değer olmalıdır."
+  },
+  "必须大于 0、不超过总扇区数，且是 {0} 的倍数": {
+    "zh-CN": "必须大于 0、不超过总扇区数，且是 {0} 的倍数",
+    "en": "must be positive, not exceed total sectors, and be a multiple of {0}",
+    "zh-TW": "必須大於 0、不超過總磁區數，且是 {0} 的倍數",
+    "ja": "正の {0} の倍数で、総セクター数以下である必要があります",
+    "tr": "pozitif, {0} katı ve toplam sektör sayısını aşmayan bir değer olmalıdır"
+  },
+  "标定的可用扇区数必须为正数、不超过总扇区数，并符合介质写入对齐要求。": {
+    "zh-CN": "标定的可用扇区数必须为正数、不超过总扇区数，并符合介质写入对齐要求。",
+    "en": "Calibration usable sectors must be positive, not exceed total sectors, and satisfy the media write alignment.",
+    "zh-TW": "校準的可用磁區數必須為正數、不超過總磁區數，並符合媒體寫入對齊要求。",
+    "ja": "校正の使用可能数は正の値で、総セクター数以下かつメディアの書き込み単位に整列する必要があります。",
+    "tr": "Kalibrasyonun kullanılabilir sektör sayısı pozitif olmalı, toplamı aşmamalı ve ortamın yazma hizalamasına uymalıdır."
+  },
+  "CD 粗标的可用扇区数不足以包含最外侧固定地址边界及其后的留白。请增加可用扇区数，或使用边界标定。": {
+    "zh-CN": "CD 粗标的可用扇区数不足以包含最外侧固定地址边界及其后的留白。请增加可用扇区数，或使用边界标定。",
+    "en": "The usable CD capacity does not cover the outermost fixed-address calibration edge and the light area after it. Increase usable sectors or use boundary calibration.",
+    "zh-TW": "CD 粗校的可用磁區數不足以包含最外側固定位址邊界及其後的留白。請增加可用磁區數，或使用邊界校準。",
+    "ja": "CD 粗校正の使用可能容量に最外周の固定アドレス境界とその後の明るい領域が収まりません。使用可能数を増やすか、境界校正を使用してください。",
+    "tr": "Kullanılabilir CD kapasitesi en dıştaki sabit adresli kalibrasyon kenarını ve sonraki açık alanı kapsamıyor. Kullanılabilir sektör sayısını artırın veya sınır kalibrasyonu kullanın."
+  }
+}

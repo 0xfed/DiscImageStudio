@@ -1,6 +1,7 @@
 using DiscImageStudio.Localization;
 using System.Diagnostics;
 using System.Runtime.Intrinsics;
+using DiscImageStudio.Core;
 using DiscImageStudio.Core.Calibration;
 using DvdImageSolver.Encoding;
 
@@ -69,7 +70,7 @@ public static class FastDispersionImageWriter
             ? Environment.ProcessorCount
             : options.FastParallelism;
         uint isoSectors = options.PreserveExistingIso
-            ? options.ImageMapping.TotalSectors
+            ? options.ImageMapping.OutputSectors
             : checked(options.StartLba + options.FillSectors);
         long controlledWords = 0;
         long compatibilityChanges = 0;
@@ -264,8 +265,8 @@ public static class FastDispersionImageWriter
                 payload.Fill(DvdGrayscalePalette.GetScrambledByte(sectorLuminance(sector)));
                 DvdDataFrameBuilder.TransformPayloadScrambling(payload, sector + options.PsnOffset);
                 if (options.ReadCompatibility)
-                    compatibilityChanges += DvdReadCompatibilityGuard.ApplySector(payload,
-                        DvdDataFrameBuilder.PayloadScramblerMask(sector + options.PsnOffset), ownership);
+                    compatibilityChanges += ApplyReadCompatibility(payload,
+                        DvdDataFrameBuilder.PayloadScramblerMask(sector + options.PsnOffset), ownership, options);
             }
             return new GeneratedBlock(lba, buffer, buffer.Length, compatibilityChanges);
         }
@@ -468,11 +469,17 @@ public static class FastDispersionImageWriter
                 }
             }
             if (options.ReadCompatibility)
-                compatibilityChanges += DvdReadCompatibilityGuard.ApplySector(sectorPayload, scrambler, ownership);
+                compatibilityChanges += ApplyReadCompatibility(sectorPayload, scrambler, ownership, options);
         }
 
         return new GeneratedBlock(lba, payloads, controlledWords, compatibilityChanges);
     }
+
+    private static int ApplyReadCompatibility(Span<byte> payload, ReadOnlySpan<byte> mask,
+        ReadOnlySpan<byte> ownership, MultiBlockSolveOptions options)
+        => options.ReadCompatibilityMode == DvdReadCompatibilityModes.LegacyBridge
+            ? DvdReadCompatibilityGuard.ApplyLegacySector(payload, mask, ownership)
+            : DvdReadCompatibilityGuard.ApplySector(payload, mask, ownership);
 
     private static int[] BuildPayloadChannelCenters()
     {
@@ -489,6 +496,8 @@ public static class FastDispersionImageWriter
     internal static void Validate(MultiBlockSolveOptions options)
     {
         ArgumentNullException.ThrowIfNull(options);
+        if (options.ReadCompatibility && !DvdReadCompatibilityModes.IsSupported(options.ReadCompatibilityMode))
+            throw new ArgumentException(L.T("Unsupported DVD read compatibility recipe."), nameof(options));
         if (options.Algorithm != SolverAlgorithm.Dispersion)
         {
             throw new ArgumentException(L.T("Fast output requires --algorithm dispersion."));
@@ -509,7 +518,13 @@ public static class FastDispersionImageWriter
                 L.T("Fast output sector count must be a positive multiple of 16."));
         }
 
-        if ((ulong)options.StartLba + options.FillSectors > options.ImageMapping.TotalSectors)
+        if (options.ImageMapping.OutputSectors == 0
+            || options.ImageMapping.OutputSectors > options.ImageMapping.TotalSectors
+            || !double.IsFinite(options.ImageMapping.SamplingOuterRadiusMm)
+            || options.ImageMapping.SamplingOuterRadiusMm <= 0)
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Output capacity and image radius must lie inside the disc geometry."));
+
+        if ((ulong)options.StartLba + options.FillSectors > options.ImageMapping.OutputSectors)
         {
             throw new ArgumentOutOfRangeException(nameof(options), L.T("Filled range exceeds the disc size."));
         }
@@ -629,7 +644,7 @@ public static class FastDispersionImageWriter
             if (_referenceImage is not null)
                 stable = _referenceImage.TryGetStableRegion(x, y, out sample, out region);
             else
-                stable = _image!.TryGetStableRegion(x, y, _options.OuterRadiusMm,
+                stable = _image!.TryGetStableRegion(x, y, _options.SamplingOuterRadiusMm,
                     preserveDiscreteGrayscale: true, out sample, out region);
             reusableUntil = globalChannelBit;
             if (!stable)
@@ -664,7 +679,7 @@ public static class FastDispersionImageWriter
 
         private PixelSample SampleRasterPoint(double x, double y) => _referenceImage is not null
             ? _referenceImage.SampleDisc(x, y)
-            : _image!.SampleDisc(x, y, _options.OuterRadiusMm, preserveDiscreteGrayscale: true);
+            : _image!.SampleDisc(x, y, _options.SamplingOuterRadiusMm, preserveDiscreteGrayscale: true);
 
         internal PayloadTarget SampleGlobalChannelBit(ulong globalChannelBit, long toneIndex)
         {
@@ -749,7 +764,7 @@ public static class FastDispersionImageWriter
             for (int lane = 0; lane < 4; lane++)
             {
                 if (_image.TrySampleBinaryDisc(x.GetElement(lane), y.GetElement(lane),
-                    _options.OuterRadiusMm, out PixelSample sample))
+                    _options.SamplingOuterRadiusMm, out PixelSample sample))
                     samples[lane] = new PayloadTarget(
                         ScrambledForLuminance(sample.Luminance, toneIndexBase + lane), sample.Alpha);
                 else

@@ -1,5 +1,6 @@
 using DiscImageStudio.Localization;
 using System.Diagnostics;
+using DiscImageStudio.Core;
 using DvdImageSolver.Encoding;
 
 namespace DvdImageSolver.Solver;
@@ -26,7 +27,8 @@ public sealed record MultiBlockSolveOptions(
     int FastParallelism = 0,
     bool PreserveExistingIso = false,
     bool UseSampleReuse = true,
-    bool ReadCompatibility = false)
+    bool ReadCompatibility = false,
+    string ReadCompatibilityMode = DvdReadCompatibilityModes.Current)
 {
     /// <summary>Use four-double raster sampling in fast output when supported; false retains the scalar reference path.</summary>
     public bool UseSimdSampling { get; init; } = true;
@@ -106,7 +108,7 @@ internal static class MultiBlockImageSolver
         long totalControlledGrayScoreMaximum = 0;
         Stopwatch stopwatch = Stopwatch.StartNew();
         uint isoSectors = options.PreserveExistingIso
-            ? options.ImageMapping.TotalSectors
+            ? options.ImageMapping.OutputSectors
             : checked(options.StartLba + options.FillSectors);
         using RawIsoImageWriter iso = new(
             isoOutputPath,
@@ -233,7 +235,13 @@ internal static class MultiBlockImageSolver
                 L.T("Range fill sector count must be a positive multiple of 16."));
         }
 
-        if ((ulong)options.StartLba + options.FillSectors > options.ImageMapping.TotalSectors)
+        if (options.ImageMapping.OutputSectors == 0
+            || options.ImageMapping.OutputSectors > options.ImageMapping.TotalSectors
+            || !double.IsFinite(options.ImageMapping.SamplingOuterRadiusMm)
+            || options.ImageMapping.SamplingOuterRadiusMm <= 0)
+            throw new ArgumentOutOfRangeException(nameof(options), L.T("Output capacity and image radius must lie inside the disc geometry."));
+
+        if ((ulong)options.StartLba + options.FillSectors > options.ImageMapping.OutputSectors)
         {
             throw new ArgumentOutOfRangeException(nameof(options), L.T("Filled range exceeds the reported disc size."));
         }

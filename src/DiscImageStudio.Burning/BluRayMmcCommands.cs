@@ -90,7 +90,7 @@ internal sealed class BluRayMmcCommands(IMmcCommandTransport transport, Action<i
         if (lastTrack == 0)
             throw new IOException(L.T("蓝光盘未报告有效的可写轨道编号。"));
 
-        var (maximumBlocks, formatStatus, _) = ReadFormatCapacity();
+        var (maximumBlocks, formatStatus, spareClusters) = ReadFormatCapacity();
         byte[] track = ReadTrack(lastTrack);
         int returnedTrack = track[2] | track[32] << 8;
 
@@ -102,7 +102,7 @@ internal sealed class BluRayMmcCommands(IMmcCommandTransport transport, Action<i
             BinaryPrimitives.ReadUInt32BigEndian(track.AsSpan(24, 4)),
             maximumBlocks, returnedTrack,
             (track[7] & 2) != 0 ? BinaryPrimitives.ReadUInt32BigEndian(track.AsSpan(28, 4)) : null,
-            (disc[2] & 3) == 2);
+            (disc[2] & 3) == 2, spareClusters);
     }
 
     internal byte[] ReadSector(uint lba) => ReadSectors(lba, 1);

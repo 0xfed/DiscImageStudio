@@ -71,13 +71,21 @@ License: GNU General Public License version 3; the full text is in LICENSE.
 Upstream revision reviewed: 7574eca39e009f70c9b80a9a0ddb5bbe3d392173
 Source: https://github.com/Ashley-QwQ/disc-probe/blob/7574eca39e009f70c9b80a9a0ddb5bbe3d392173/tools/bridge_iso.py
 
-The optional DVD read-compatibility guard adapts the sector-local 64-byte
+The legacy DVD read-compatibility guard adapts the sector-local 64-byte
 window / first-0x92-to-0x9B rule into C#. Unlike the standalone ISO patcher,
 the writer only changes bytes explicitly owned by the drawing generator;
 filesystem data and alpha-excluded bytes are protected. The implementation
 is in src/DvdImageSolver/Solver/DvdReadCompatibilityGuard.cs. Adaptation and
 integration: Copyright (c) 2026 Disc Image Studio contributors. This is an
 experimental mitigation, not a guarantee of compatibility with every drive.
+
+New DVD output uses the versioned periodic guard integrated from
+JiaFeiMiao-K-Cat/DiscImageStudio revision 62efb5c82afc76c1666830ef55b65cf2ad005379.
+Its every-16-byte protection pattern references bczhc/dvd-tools:
+https://github.com/bczhc/dvd-tools/blob/master/src/bin/dvd-guard-every16.rs
+The C# implementation protects generator-owned drawing bytes, records the
+recipe in sidecars and retains the older disc-probe bridge solely for replaying
+saved targets. The Rust utility is not bundled.
 
 The native read-timing calibration adapts the periodogram, circular phase analysis,
 cache tests, adaptive whole-turn ladder and geometry conversion from disc-probe.

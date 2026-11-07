@@ -2,6 +2,7 @@ using System.Globalization;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DiscImageStudio.Core;
 using DiscImageStudio.Core.Calibration;
 using DiscImageStudio.Iso;
 using DiscImageStudio.Localization;
@@ -51,7 +52,7 @@ public partial class CalibrationViewModel
                 result.AngleUncertaintyDegrees, range.Inner, range.Outer, result.Targets.Count, result.Media == DriveTimingMedia.Cd ? "CD" : "DVD");
             if (CanApplyTiming())
             {
-                var parameters = result.ToParameters(ReadTimingCapacity());
+                var parameters = TimingParameters(result);
                 summary += Environment.NewLine + L.Format("Timing.Radii", parameters.InnerRadiusMm, parameters.OuterRadiusMm);
             }
             return summary;
@@ -89,9 +90,18 @@ public partial class CalibrationViewModel
     private bool CanApplyTiming()
     {
         if (TimingResult is not { } result || (result.Media == DriveTimingMedia.Cd ? "CD" : "DVD") != SelectedDiscType) return false;
-        try { _ = result.ToParameters(ReadTimingCapacity()); return true; }
+        try { _ = TimingParameters(result); return true; }
         catch (ArgumentException) { return false; }
+        catch (OverflowException) { return false; }
     }
+
+    private CalibrationParameters TimingParameters(DriveTimingResult result)
+        => result.ToParameters(ReadTimingCapacity()) with
+        {
+            DvdReadCompatibility = Parameters.DvdReadCompatibility,
+            UsableSectors = Parameters.GetUsableSectors(result.Media == DriveTimingMedia.Cd
+                ? OpticalDiscFamily.CompactDisc : OpticalDiscFamily.Dvd),
+        };
 
     private long ReadTimingCapacity()
     {
@@ -144,9 +154,17 @@ public partial class CalibrationViewModel
 
     private async Task GenerateTimingImageAsync()
     {
-        long capacity;
-        try { capacity = ReadTimingCapacity(); } catch (Exception ex) { Report(ex); return; }
-        uint sectors = checked((uint)(SelectedDiscType == "CD" ? capacity - 250 : capacity / 16 * 16));
+        uint sectors;
+        try
+        {
+            long capacity = ReadTimingCapacity();
+            long usable = Parameters.GetUsableSectors(SelectedDiscType == "CD"
+                ? OpticalDiscFamily.CompactDisc : OpticalDiscFamily.Dvd);
+            // Cap the plain-data image at its closing allowance without deducting
+            // another reserve from an already explicit usable-sector limit.
+            sectors = checked((uint)(SelectedDiscType == "CD" ? Math.Min(usable, capacity - 250) : usable));
+        }
+        catch (Exception ex) { Report(ex); return; }
         string? path = _shell.Dialogs?.PickSave(L.T("光盘镜像|*.iso"), ".iso", "timing-measurement.iso");
         if (path is null) return;
         await GenerateTimingImageToAsync(path, sectors);
@@ -199,10 +217,7 @@ public partial class CalibrationViewModel
         if (!CanApplyTiming() || TimingResult is not { } result) return;
         try
         {
-            WriteSetupParameters(result.ToParameters(ReadTimingCapacity()) with
-            {
-                DvdReadCompatibility = Parameters.DvdReadCompatibility,
-            });
+            WriteSetupParameters(TimingParameters(result));
             SelectStage(CalibrationStage.Fine);
             TimingStatus = _statusMessage = L.T(result.RequiresFineCalibration ? "Timing.AppliedCd" : "Timing.Applied");
             _shell.AppendLog(_statusMessage + Environment.NewLine);

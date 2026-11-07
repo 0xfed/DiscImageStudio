@@ -2,6 +2,20 @@
 
 [简体中文](CALIBRATION.md) | [繁體中文](CALIBRATION.zh-TW.md) | [English](CALIBRATION.en.md) | [日本語](CALIBRATION.ja.md) | [Türkçe](CALIBRATION.tr.md)
 
+## Drive read timing (CD/DVD)
+
+Choose “Drive read timing (CD/DVD)” to estimate geometry from sector read-completion times without tracing a photo. Adapted from [disc-probe](https://github.com/Ashley-QwQ/disc-probe/tree/fa64fd60498c3eac8a6683828384d62082f0af65), this method needs a drive that maintains constant rotation and a plain-data measurement disc.
+
+1. Select CD or DVD and enter the actual capacity of a blank from the same batch, in sectors. Do not use its mounted filesystem size. CD measurement images reserve space for closing.
+2. Create the measurement ISO and burn it as an ordinary data disc on one blank. Keep this disc for other blanks from the batch. Picture discs often cannot be read reliably and are unsuitable for this measurement.
+3. Load the measurement disc, find and select the drive, set its read speed, and measure. The run checks cache behavior and rotation at inner, middle and outer zones before measuring sector phases outward in steps. Measurement sends only read and read-speed commands; cancellation releases the drive after the current device command returns.
+4. Review the measured radius range, residuals and model uncertainty before applying to independent calibration setup. Existing project geometry and burned targets stay intact. Save and reopen timing records; loading still requires an explicit Apply action.
+5. For DVD, save a preset and use it on a fresh disc from the batch. CD timing leaves an unknown along-track offset: apply the estimate, switch back to pattern calibration, run fine calibration on a second disc, save the refined preset, then burn the picture.
+
+Timing fits a constant-pitch starting model; use fine pattern calibration when pitch varies with radius. Measurements with ineffective cache bypass, unstable rotation, ambiguous turns or insufficient coverage cannot be applied. Drive decoding biases and batch variation can remain even with low residuals. Software tests use a simulated drive; this integration has no physical-drive validation and provides no Blu-ray timing calibration.
+
+## Pattern and photo calibration
+
 Calibration has three stages: **generate a calibration disc → rectify the photograph → calibrate the curve**, corresponding to the three cards in the right column. The photograph only needs to show the physical outer edge, center hole, and one cross arm or wide-sector boundary clearly. Adjust the lighting to improve visibility; there is no requirement to blacken the disc or position it squarely.
 
 ## Calibration pattern and output

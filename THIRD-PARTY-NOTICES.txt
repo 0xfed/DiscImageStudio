@@ -14,7 +14,7 @@ When updating dependencies or the bundled runtime, update these notices too.
 Components
 ----------
 - CDImage (arduinocelentano): GPL-3.0-or-later; adapted CD-DA interleaver.
-- disc-probe (Ashley-QwQ and contributors): GPL-3.0; adapted experimental DVD bridge rule.
+- disc-probe (Ashley-QwQ and contributors): GPL-3.0; adapted experimental DVD bridge rule and native CD/DVD read-timing calibration.
 - CommunityToolkit.Mvvm 8.4.0: MIT; upstream third-party notices retained.
 - MahApps.Metro.IconPacks.Core and .Lucide 6.2.1: MIT wrapper code.
 - Lucide 0.552.0 artwork: ISC; portions derived from Feather: MIT.
@@ -78,6 +78,18 @@ filesystem data and alpha-excluded bytes are protected. The implementation
 is in src/DvdImageSolver/Solver/DvdReadCompatibilityGuard.cs. Adaptation and
 integration: Copyright (c) 2026 Disc Image Studio contributors. This is an
 experimental mitigation, not a guarantee of compatibility with every drive.
+
+The native read-timing calibration adapts the periodogram, circular phase analysis,
+cache tests, adaptive whole-turn ladder and geometry conversion from disc-probe.
+Reviewed revision: fa64fd60498c3eac8a6683828384d62082f0af65
+Sources: discprobe/analysis.py, discprobe/timing.py, discprobe/geo.py,
+discprobe/disexport.py and discprobe/cd.py in the project above.
+The C# implementation adds a read-only IMAPI session, bounded portable records,
+constant-rotation preflight, explicit application to independent calibration
+setup and simulated-device regression tests. It retains CD's unresolved
+along-track origin and does not treat fit uncertainty as physical burn accuracy.
+The optional polynomial/scan correction tools are not included.
+Adaptation and integration: Copyright (c) 2026 Disc Image Studio contributors.
 
 Standards and reference material
 -------------------------------

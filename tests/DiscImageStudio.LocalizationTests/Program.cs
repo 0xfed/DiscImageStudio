@@ -7,8 +7,17 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
+if (args is ["--drive-timing"])
+{
+    DriveTimingCalibrationTests.Run();
+    CalibrationDataImageTests.Run();
+    return;
+}
+
 if (args is not ["--catalog-only"])
 {
+    DriveTimingCalibrationTests.Run();
+    CalibrationDataImageTests.Run();
     MediaUdfTests.Run();
     CalibrationPatternTests.Run();
     CalibrationRingTests.Run();

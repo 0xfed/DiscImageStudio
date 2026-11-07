@@ -15,7 +15,11 @@ public partial class CalibrationViewModel
     public bool HasRecorderChoice => CapacityRecorders.Count > 1;
     public IAsyncRelayCommand ReadDiscSectorsCommand { get; private set; } = null!;
 
-    partial void OnSelectedCapacityRecorderChanged(OpticalBurnDevice? value) => CapacityStatus = string.Empty;
+    partial void OnSelectedCapacityRecorderChanged(OpticalBurnDevice? value)
+    {
+        CapacityStatus = string.Empty;
+        RefreshTimingCommands();
+    }
 
     private void InitializeCapacityCommands() =>
         ReadDiscSectorsCommand = new AsyncRelayCommand(ReadDiscSectorsAsync, () => !IsBusy);

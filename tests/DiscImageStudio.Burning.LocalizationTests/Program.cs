@@ -6,6 +6,7 @@ CultureInfo numericCulture = CultureInfo.CurrentCulture;
 try
 {
     L.SetLanguage("zh-CN");
+    OpticalReadSessionTests.Run();
     UdfFilesystemTests.Run();
     UdfVatUpdateTests.Run();
     BluRayFileUpdateBurnTests.Run();

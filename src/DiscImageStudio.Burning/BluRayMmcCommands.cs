@@ -8,11 +8,20 @@ namespace DiscImageStudio.Burning;
 internal sealed record MmcCommandResult(int HResult, byte[] Sense, byte[] Data);
 
 internal sealed record MmcWriteTransferLimits(uint ByteAlignmentMask, uint MaximumPageAlignedBytes);
+internal sealed record MmcTimedRead(MmcCommandResult Result, long StartTicks, long EndTicks, uint BytesFetched);
 
 /// <summary>The narrow command boundary also lets tests inspect every CDB without a recorder.</summary>
 internal interface IMmcCommandTransport
 {
     MmcCommandResult Execute(byte[] cdb, int allocationLength, uint timeoutSeconds);
+
+    MmcTimedRead ReadTiming(byte[] cdb, int allocationLength, uint timeoutSeconds)
+    {
+        long start = Stopwatch.GetTimestamp();
+        var result = Execute(cdb, allocationLength, timeoutSeconds);
+        long end = Stopwatch.GetTimestamp();
+        return new(result, start, end, (uint)result.Data.Length);
+    }
 
     MmcWriteTransferLimits GetWriteTransferLimits()
         => throw new NotSupportedException(L.T("This MMC transport does not support data writes."));
@@ -330,6 +339,22 @@ internal sealed class ImapiMmcCommandTransport(object recorder) : IMmcCommandTra
 {
     private readonly IDiscRecorder2ExCommands _recorder = (IDiscRecorder2ExCommands)recorder;
     private MmcWriteTransferLimits? _transferLimits;
+
+    public MmcTimedRead ReadTiming(byte[] cdb, int allocationLength, uint timeoutSeconds)
+    {
+        ArgumentNullException.ThrowIfNull(cdb);
+        if (cdb.Length is not (10 or 12) || cdb[0] is not (0x28 or 0xa8) || allocationLength < 2048)
+            throw new ArgumentOutOfRangeException(nameof(cdb));
+        byte[] sense = new byte[18];
+        using var buffer = new AlignedMmcWriteBuffer(allocationLength, GetWriteTransferLimits());
+        long start = Stopwatch.GetTimestamp();
+        int result = _recorder.SendCommandGetDataFromDevice(cdb, (uint)cdb.Length, sense,
+            timeoutSeconds, buffer.Pointer, (uint)allocationLength, out uint fetched);
+        long end = Stopwatch.GetTimestamp();
+        // Allocation, copying and diagnostics stay outside the timed COM call.
+        if (fetched > allocationLength) throw new IOException(L.T("IMAPI 返回了超过接收缓冲区的长度。"));
+        return new(new(result, sense, []), start, end, fetched);
+    }
 
     public MmcWriteTransferLimits GetWriteTransferLimits()
     {

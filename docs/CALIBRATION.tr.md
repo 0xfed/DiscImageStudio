@@ -2,6 +2,20 @@
 
 [简体中文](CALIBRATION.md) | [繁體中文](CALIBRATION.zh-TW.md) | [English](CALIBRATION.en.md) | [日本語](CALIBRATION.ja.md) | [Türkçe](CALIBRATION.tr.md)
 
+## Sürücü okuma zamanlaması (CD/DVD)
+
+Fotoğraf üzerinde işaretlemeden, sektör okuma bitiş zamanlarından geometri tahmin etmek için “Sürücü okuma zamanlaması (CD/DVD)” seçin. [disc-probe](https://github.com/Ashley-QwQ/disc-probe/tree/fa64fd60498c3eac8a6683828384d62082f0af65) yönteminden uyarlanmıştır; sabit dönüşlü bir sürücü ve normal veri içeren bir ölçüm diski gerekir.
+
+1. CD veya DVD seçip aynı partiden boş diskin gerçek kapasitesini sektör olarak girin. Bağlı dosya sisteminin boyutunu kullanmayın. CD ölçüm imajları kapatma için alan ayırır.
+2. Ölçüm ISO’sunu oluşturup bir boş diske normal veri diski olarak yazdırın. Diski aynı partideki diğer boş diskler için saklayın. Resim diskleri genellikle güvenilir okunamaz ve bu ölçüme uygun değildir.
+3. Ölçüm diskini takın, sürücüyü bulup seçin, okuma hızını ayarlayın ve ölçün. İşlem, sektör fazlarını adım adım ölçmeden önce önbelleği ve iç, orta, dış bölgelerde dönüş hızını denetler. Yalnızca okuma ve okuma hızı komutları gönderilir; iptal, geçerli aygıt komutu döndükten sonra sürücüyü bırakır.
+4. Bağımsız kalibrasyon ayarlarına uygulamadan önce ölçülen yarıçap aralığını, kalıntıları ve model belirsizliğini inceleyin. Mevcut proje geometrisi ve yazılmış hedefler korunur. Zamanlama kayıtlarını kaydedip açabilirsiniz; açtıktan sonra da Uygula işlemi gerekir.
+5. DVD için ön ayarı kaydedip aynı partiden yeni bir diskte kullanın. CD zamanlamasında iz boyunca bilinmeyen bir kayma kalır: tahmini uygulayın, desen kalibrasyonuna dönün, ikinci diskte hassas kalibrasyon yapın, düzeltilmiş ön ayarı kaydedip resmi yazdırın.
+
+Zamanlama, sabit iz aralıklı bir başlangıç modeli bulur; iz aralığı yarıçapa göre değişiyorsa hassas desen kalibrasyonu yapın. Önbelleği aşamayan, dönüşü kararsız, tam tur sayısı belirsiz veya kapsamı yetersiz ölçümler uygulanamaz. Küçük kalıntılarda bile sürücü çözme yanlılıkları ve parti farkları kalabilir. Yazılım testleri benzetilmiş sürücü kullanır; bu bütünleştirme fiziksel sürücüde doğrulanmamıştır ve Blu-ray zamanlama kalibrasyonu sunmaz.
+
+## Desen ve fotoğraf kalibrasyonu
+
 Yardımcı kalibrasyon, sağ sütundaki üç karta karşılık gelen **kalibrasyon diski oluşturma → fotoğraf düzeltme → eğri kalibrasyonu** adımlarından oluşur. Fotoğrafta yalnızca fiziksel dış kenarın, merkez deliğinin ve bir artı kolunun veya geniş sektör sınırının açıkça görünmesi yeterlidir. Görünürlüğü artırmak için ışıklandırma ayarlanabilir; diski siyaha boyamak veya tam karşıdan konumlandırmak gerekmez.
 
 ## Kalibrasyon deseni ve çıktı

@@ -26,5 +26,6 @@
     <Compile Include="../DiscImageStudio.ArchitectureTests/BurnStreamDiagnosticsTests.cs" Link="BurnStreamDiagnosticsTests.cs" />
     <Compile Include="../DiscImageStudio.ArchitectureTests/CdBurnPhaseDiagnosticsTests.cs" Link="CdBurnPhaseDiagnosticsTests.cs" />
     <Compile Include="../DiscImageStudio.ArchitectureTests/OpticalBurnDiagnosticsTests.cs" Link="OpticalBurnDiagnosticsTests.cs" />
+    <Compile Include="../DiscImageStudio.ArchitectureTests/OpticalReadSessionTests.cs" Link="OpticalReadSessionTests.cs" />
   </ItemGroup>
 </Project>

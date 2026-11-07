@@ -1,3 +1,4 @@
+using System.IO;
 using DiscImageStudio.Core;
 using DiscImageStudio.Core.Calibration;
 
@@ -45,9 +46,13 @@ internal static class DriveTimingCalibrationTests
                 Console.WriteLine($"drive timing {media}/{strategy}: {result.Targets.Count} targets, angle spread {differences.Max() - differences.Min():0.###} deg");
             }
         }
-        var slowCache = new SimulatedDrive(DriveTimingMedia.Dvd, DriveTimingCacheStrategy.Evict) { CacheLatencySeconds = .005 };
-        Require(DriveTimingCalibrator.Measure(slowCache, new(16, 18, 32, 12, 60)).CacheStrategy == DriveTimingCacheStrategy.Evict,
-            "slow USB cache hits are detected by eviction comparison");
+        var slowCache = new SimulatedDrive(DriveTimingMedia.Dvd, DriveTimingCacheStrategy.ForceUnitAccess) { CacheLatencySeconds = .005 };
+        Require(DriveTimingCalibrator.Measure(slowCache, new(16, 18, 32, 12, 60)).CacheStrategy == DriveTimingCacheStrategy.ForceUnitAccess,
+            "slow USB cache hits are detected by comparison with physical reads");
+        // If cache hits and physical reads cannot be separated reliably, the
+        // rotation checks must refuse a result rather than fit host timestamps.
+        Throws(() => DriveTimingCalibrator.Measure(new SimulatedDrive(DriveTimingMedia.Dvd, DriveTimingCacheStrategy.Evict)
+            { CacheLatencySeconds = .005 }, new(16, 18, 32, 12, 60)));
         Throws(() => DriveTimingCalibrator.Measure(new SimulatedDrive(DriveTimingMedia.Dvd, DriveTimingCacheStrategy.ForceUnitAccess) { VariableSpeed = true }, new(12, 12, 24, 8)));
         var broken = new SimulatedDrive(DriveTimingMedia.Dvd, DriveTimingCacheStrategy.ForceUnitAccess) { MediumError = true };
         Throws(() => DriveTimingCalibrator.Measure(broken));

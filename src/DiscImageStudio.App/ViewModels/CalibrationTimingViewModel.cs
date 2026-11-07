@@ -175,6 +175,7 @@ public partial class CalibrationViewModel
 
     private void PrepareTimingStreamBurn()
     {
+        if (!UseDriveTiming || !CanSelectDriveTiming) return;
         try
         {
             _shell.CalibrationBurn.PrepareTimingMeasurement(CaptureTimingMeasurement());

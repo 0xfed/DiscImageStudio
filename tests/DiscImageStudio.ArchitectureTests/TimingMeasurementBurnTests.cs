@@ -76,6 +76,12 @@ internal static class TimingMeasurementBurnTests
             model.StreamBurnTimingImageCommand.Execute(null);
             Require(burn.FamilyLabel == "CD" && recorder.SpeedQueries[^1] == OpticalBurnMediaKind.CdData,
                 "CD measurement selects the data writer, independent of artwork and folders");
+            shell.SetBusy(true);
+            model.SelectedDiscType = "DVD";
+            model.StreamBurnTimingImageCommand.Execute(null);
+            Require(burn.FamilyLabel == "CD", "a late command cannot replace the burn source while another job is running");
+            shell.SetBusy(false);
+            model.SelectedDiscType = "CD";
             burn.ConfirmChecked = true;
             await burn.StartBurnCommand.ExecuteAsync(null);
             Require(recorder.Burns == 2 && recorder.Request is { MediaKind: OpticalBurnMediaKind.CdData,

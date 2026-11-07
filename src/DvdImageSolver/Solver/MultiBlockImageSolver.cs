@@ -106,7 +106,7 @@ internal static class MultiBlockImageSolver
         long totalControlledGrayScoreMaximum = 0;
         Stopwatch stopwatch = Stopwatch.StartNew();
         uint isoSectors = options.PreserveExistingIso
-            ? options.ImageMapping.TotalSectors
+            ? options.ImageMapping.OutputSectors
             : checked(options.StartLba + options.FillSectors);
         using RawIsoImageWriter iso = new(
             isoOutputPath,
@@ -233,7 +233,13 @@ internal static class MultiBlockImageSolver
                 L.T("Range fill sector count must be a positive multiple of 16."));
         }
 
-        if ((ulong)options.StartLba + options.FillSectors > options.ImageMapping.TotalSectors)
+        if (options.ImageMapping.OutputSectors == 0
+            || options.ImageMapping.OutputSectors > options.ImageMapping.TotalSectors
+            || !double.IsFinite(options.ImageMapping.SamplingOuterRadiusMm)
+            || options.ImageMapping.SamplingOuterRadiusMm <= 0)
+            throw new ArgumentOutOfRangeException(nameof(options), "Output capacity and image radius must lie inside the disc geometry.");
+
+        if ((ulong)options.StartLba + options.FillSectors > options.ImageMapping.OutputSectors)
         {
             throw new ArgumentOutOfRangeException(nameof(options), L.T("Filled range exceeds the reported disc size."));
         }

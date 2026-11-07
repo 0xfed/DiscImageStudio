@@ -57,7 +57,7 @@ public static class CdDataImageGenerator
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(dataDirectory);
         parameters.Validate();
-        uint capacity = checked((uint)parameters.Sectors);
+        uint capacity = checked((uint)parameters.OutputSectors);
         if (updateReserveSectors >= capacity || (!useUdf250 && updateReserveSectors != 0))
             throw new ArgumentOutOfRangeException(nameof(updateReserveSectors));
         CdDataLayoutPlan plan = useUdf250
@@ -166,7 +166,7 @@ public static class CdDataImageGenerator
         writer.Flush();
         stopwatch.Stop();
         progress?.Invoke(new CdProgress(writer.CompletedBytes, plan.ContentLength, stopwatch.Elapsed));
-        return new CdGenerationSummary(source, "direct-burn-stream", parameters.Sectors,
+        return new CdGenerationSummary(source, "direct-burn-stream", parameters.OutputSectors,
             writer.CompletedBytes, false, stopwatch.Elapsed);
     }
 
@@ -205,7 +205,7 @@ public static class CdDataImageGenerator
         ArgumentNullException.ThrowIfNull(parameters);
         ArgumentNullException.ThrowIfNull(plan);
         parameters.Validate();
-        if (parameters.Sectors != plan.TotalSectors)
+        if (parameters.OutputSectors != plan.TotalSectors)
             throw new ArgumentException(L.T("CD layout and geometry must have the same sector count."), nameof(plan));
     }
 
@@ -260,7 +260,7 @@ public static class CdDataImageGenerator
         CdImageSampler sampler = new(RasterImage.Load(Path.GetFullPath(imagePath)), generated);
         DataPreview preview = new(outputSize, actual);
         long start = plan?.DrawingStartLba ?? 0;
-        long end = plan?.DrawingEndLbaExclusive ?? generated.Sectors;
+        long end = plan?.DrawingEndLbaExclusive ?? generated.OutputSectors;
         int step = Math.Max(1, BytesPerSector / samplesPerSector);
         for (long lba = start; lba < end; lba++)
         {
@@ -281,12 +281,12 @@ public static class CdDataImageGenerator
         ValidatePreview(actual, outputSize, byteStep);
         using FileStream input = new(isoPath, FileMode.Open, FileAccess.Read, FileShare.Read,
             1024 * 1024, FileOptions.SequentialScan);
-        if (input.Length % BytesPerSector != 0 || input.Length != checked(actual.Sectors * BytesPerSector))
+        if (input.Length % BytesPerSector != 0 || input.Length != checked(actual.OutputSectors * BytesPerSector))
             throw new ArgumentException(L.T("CD data ISO length must match the selected 2048-byte sector count."), nameof(isoPath));
         CdDataImageMetadata? metadata = CdDataImageMetadata.TryLoad(isoPath);
-        if (metadata?.Parameters.Sectors != actual.Sectors) metadata = null;
+        if (metadata?.Parameters.OutputSectors != actual.OutputSectors) metadata = null;
         long start = metadata?.DrawingStartLba ?? 0;
-        long end = metadata?.DrawingEndLbaExclusive ?? actual.Sectors;
+        long end = metadata?.DrawingEndLbaExclusive ?? actual.OutputSectors;
         input.Position = start * BytesPerSector;
         byte[] sector = new byte[BytesPerSector];
         DataPreview preview = new(outputSize, actual);

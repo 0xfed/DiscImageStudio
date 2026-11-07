@@ -69,7 +69,7 @@ public static class FastDispersionImageWriter
             ? Environment.ProcessorCount
             : options.FastParallelism;
         uint isoSectors = options.PreserveExistingIso
-            ? options.ImageMapping.TotalSectors
+            ? options.ImageMapping.OutputSectors
             : checked(options.StartLba + options.FillSectors);
         long controlledWords = 0;
         long compatibilityChanges = 0;
@@ -509,7 +509,13 @@ public static class FastDispersionImageWriter
                 L.T("Fast output sector count must be a positive multiple of 16."));
         }
 
-        if ((ulong)options.StartLba + options.FillSectors > options.ImageMapping.TotalSectors)
+        if (options.ImageMapping.OutputSectors == 0
+            || options.ImageMapping.OutputSectors > options.ImageMapping.TotalSectors
+            || !double.IsFinite(options.ImageMapping.SamplingOuterRadiusMm)
+            || options.ImageMapping.SamplingOuterRadiusMm <= 0)
+            throw new ArgumentOutOfRangeException(nameof(options), "Output capacity and image radius must lie inside the disc geometry.");
+
+        if ((ulong)options.StartLba + options.FillSectors > options.ImageMapping.OutputSectors)
         {
             throw new ArgumentOutOfRangeException(nameof(options), L.T("Filled range exceeds the disc size."));
         }
@@ -629,7 +635,7 @@ public static class FastDispersionImageWriter
             if (_referenceImage is not null)
                 stable = _referenceImage.TryGetStableRegion(x, y, out sample, out region);
             else
-                stable = _image!.TryGetStableRegion(x, y, _options.OuterRadiusMm,
+                stable = _image!.TryGetStableRegion(x, y, _options.SamplingOuterRadiusMm,
                     preserveDiscreteGrayscale: true, out sample, out region);
             reusableUntil = globalChannelBit;
             if (!stable)
@@ -664,7 +670,7 @@ public static class FastDispersionImageWriter
 
         private PixelSample SampleRasterPoint(double x, double y) => _referenceImage is not null
             ? _referenceImage.SampleDisc(x, y)
-            : _image!.SampleDisc(x, y, _options.OuterRadiusMm, preserveDiscreteGrayscale: true);
+            : _image!.SampleDisc(x, y, _options.SamplingOuterRadiusMm, preserveDiscreteGrayscale: true);
 
         internal PayloadTarget SampleGlobalChannelBit(ulong globalChannelBit, long toneIndex)
         {
@@ -749,7 +755,7 @@ public static class FastDispersionImageWriter
             for (int lane = 0; lane < 4; lane++)
             {
                 if (_image.TrySampleBinaryDisc(x.GetElement(lane), y.GetElement(lane),
-                    _options.OuterRadiusMm, out PixelSample sample))
+                    _options.SamplingOuterRadiusMm, out PixelSample sample))
                     samples[lane] = new PayloadTarget(
                         ScrambledForLuminance(sample.Luminance, toneIndexBase + lane), sample.Alpha);
                 else

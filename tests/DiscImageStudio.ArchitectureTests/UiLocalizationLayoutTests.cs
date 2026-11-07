@@ -87,8 +87,16 @@ internal static class UiLocalizationLayoutTests
             })
             {
                 string projectPath = Path.Combine(temporary, family + ".discproj");
+                // Use an explicit limit so the UI invariant does not compare a
+                // legacy missing field with its resolved value after loading.
+                // Legacy default migration is covered by UsableSectorPersistenceTests.
+                long usable = DiscParametersState.ResolveUsableSectors(family switch
+                {
+                    "dvd" => OpticalDiscFamily.Dvd, "bd" => OpticalDiscFamily.BluRay,
+                    _ => OpticalDiscFamily.CompactDisc,
+                }, sectors);
                 ProjectDocument project = new(ProjectJsonStore.CurrentSchemaVersion, "Project 日本語 Türkçe", family,
-                    new ProjectGeometry(inner, outer, sectors), [],
+                    new ProjectGeometry(inner, outer, sectors, UsableSectors: usable), [],
                     new ProjectOutputs(Path.Combine(temporary, family + (family == "cd" ? ".wav" : ".iso")),
                         true, "", "LAYOUT", true), null, null, DateTimeOffset.UnixEpoch, DateTimeOffset.UnixEpoch);
                 ProjectJsonStore.Save(projectPath, project);

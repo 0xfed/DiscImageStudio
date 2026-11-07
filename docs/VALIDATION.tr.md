@@ -8,6 +8,8 @@
 
 Bu sayfa geçerli kaynak kod için yeniden üretilebilir kontrolleri listeler. Otomatik regresyonlar algoritmaları, dosya yerleşimlerini ve uygulama iş akışlarını doğrular; fiziksel disk yazma sonuçları yazıcıya, donanım yazılımına ve diske bağlıdır.
 
+`TimingMeasurementBurnTests`, CD/DVD için rastgele veri ölçüm diskine doğrudan yazmayı kapsar: veri medyası yönlendirmesi, ISO/akış baytlarının tam eşitliği, sabitlenmiş kaynak, cihaz kapasitesi/hizalaması, onay ve iptal. Yerleşim matrisi ölçüm diski yazma sayfasını yedi dilde yakalar. Fiziksel yazma yapılmaz.
+
 ## Yerel doğrulama
 
 En son tam mimari regresyon 2026-10-28 tarihinde, arayüz düzeltmeleri, kalibrasyon oluşturma optimizasyonları ve Verbatim BD-R (64099) ön ayarı için (`3088802`, `49a0e4d`, `46e2c53` commit'leri) Windows ve .NET SDK 10.0.400 (çalışma zamanı 10.0.11), Release yapılandırmasıyla yürütüldü. Çözümün tamamının derlemesi (0 uyarı, 0 hata) ve tüm mimari regresyonlar geçti. Testler özel yürütülebilir test düzeneğini doğrudan çalıştırır; `dotnet test` kullanmaz.

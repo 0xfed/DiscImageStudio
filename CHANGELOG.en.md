@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+- Add Burn measurement disc to timing calibration: stream ordinary random-data CD/DVD images directly without saving a full ISO. Reuse recorder, speed, capacity, confirmation and cancellation controls; freeze the source, retain the CD closing allowance and hide artwork protection and UDF update options. Add five-language guidance, seven-language layouts, data routing, stream-byte parity and stale-source regressions.
 - Sync upstream through `62efb5c`: separate geometry from usable output capacity and respect device limits; apply saved presets immediately and retain confirmed photo fits; use periodic DVD protection while preserving older target recipes. Retain UDF/VAT updates, visual selectors and native timing calibration, with five-language guidance and regressions.
 - Add CD/DVD read-timing calibration adapted from disc-probe: generate plain-data measurement ISOs, check cache bypass and constant rotation, fit sector phases in steps, save measurements and explicitly apply independent calibration geometry. CD retains fine pattern calibration for its unknown along-track offset. Add simulated-drive, read-only command, record and UI regressions; this integration has no physical-drive validation.
 

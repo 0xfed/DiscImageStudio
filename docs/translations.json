@@ -94,7 +94,7 @@
     {
       "source": "docs/CALIBRATION.md",
       "source_language": "zh-CN",
-      "source_sha256": "32c6a3721db9e17e1a30b48d2c90d6e813f7c16583bfebe6ce1a509a4a10dfce",
+      "source_sha256": "e437833feefe5eea44ecc9091042f476b592e57592c6e5c5d79d2fb9e8d6871b",
       "translations": {
         "zh-CN": "docs/CALIBRATION.md",
         "zh-TW": "docs/CALIBRATION.zh-TW.md",
@@ -142,7 +142,7 @@
     {
       "source": "docs/VALIDATION.md",
       "source_language": "zh-CN",
-      "source_sha256": "29df71928d187a06b94bac25de1736b94fbe83432044631982fd82bfc743983e",
+      "source_sha256": "6b8bdfd59b916f26f551b60f129ce8bca2b30dc3c6224230be7bbbd97986acea",
       "translations": {
         "zh-CN": "docs/VALIDATION.md",
         "en": "docs/VALIDATION.en.md",
@@ -236,7 +236,7 @@
     {
       "source": "docs/ARCHITECTURE.md",
       "source_language": "zh-CN",
-      "source_sha256": "87bdb8ec28272895ef88299df312689e7c77520a96d11996bb832bc5266eba83",
+      "source_sha256": "7fc0d43f6c8ab4cfe872c8e320a41dd495cf3b34f17e75d491e69692225b70ad",
       "translated_mermaid_labels": [
         "CdEngine",
         "BdEngine"
@@ -276,7 +276,7 @@
     {
       "source": "CHANGELOG.md",
       "source_language": "zh-CN",
-      "source_sha256": "067ef7982a10479f253912df2dda9bade71097829f7b1865c78ca33f82fd4b0b",
+      "source_sha256": "8d47be4786706a2d34906c105f53501f3c78504d59d73deafbf3e2e97c029911",
       "parallel_language_sections": [
         "中文",
         "English"

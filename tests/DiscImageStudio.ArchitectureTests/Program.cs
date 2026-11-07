@@ -247,6 +247,7 @@ BurnWriteSpeedSelectionTests.Run();
 CalibrationOutputPublisherTests.Run();
 CalibrationPhotoViewModelTests.Run();
 CalibrationTimingViewModelTests.Run();
+TimingMeasurementBurnTests.Run();
 CalibrationRingViewModelTests.Run();
 CalibrationVisualSelectorViewModelTests.Run();
 BurnJobDockTests.Run();

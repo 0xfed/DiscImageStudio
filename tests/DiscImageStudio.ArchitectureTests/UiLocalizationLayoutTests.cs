@@ -256,7 +256,23 @@ internal static class UiLocalizationLayoutTests
                                     shell.Calibration.TimingResult = null;
                                     shell.Calibration.UseDriveTiming = true;
                                     Pump();
+                                    var measurementBurn = Descendants(window).OfType<Button>().Single(button => button.IsVisible
+                                        && ReferenceEquals(button.Command, shell.Calibration.StreamBurnTimingImageCommand));
+                                    if (!measurementBurn.IsEnabled)
+                                        throw new InvalidOperationException("The timing measurement burn entry is disabled.");
+                                    measurementBurn.BringIntoView();
+                                    Pump();
                                     Capture(window, name + "-drive-timing");
+                                    shell.Calibration.StreamBurnTimingImageCommand.Execute(null);
+                                    window.ConfigureSnapshot(Workspace.CalibrationBurn, null);
+                                    Pump();
+                                    if (!shell.CalibrationBurn.IsTimingMeasurement
+                                        || shell.CalibrationBurn.UseCalibrationPattern
+                                        || shell.CalibrationBurn.CanConfigureFileUpdates
+                                        || shell.CalibrationBurn.ShowDvdReadCompatibility)
+                                        throw new InvalidOperationException("The timing measurement did not select its ordinary-data burn source.");
+                                    Capture(window, name + "-timing-burn");
+                                    window.ConfigureSnapshot(Workspace.Calibration, null);
                                     shell.Calibration.TimingResult = CalibrationTimingViewModelTests.Fixture(family == "cd"
                                         ? DiscImageStudio.Core.Calibration.DriveTimingMedia.Cd : DiscImageStudio.Core.Calibration.DriveTimingMedia.Dvd);
                                     Pump();
@@ -267,6 +283,7 @@ internal static class UiLocalizationLayoutTests
                                     if (!applyTiming.IsEnabled || string.IsNullOrWhiteSpace(shell.Calibration.TimingSummary))
                                         throw new InvalidOperationException("The timing measurement has no usable Apply control.");
                                     Capture(window, name + "-timing-result");
+                                    shell.CalibrationBurn.PrepareCalibrationPattern();
                                     shell.Calibration.UseDriveTiming = false;
                                     Pump();
                                 }
@@ -316,9 +333,10 @@ internal static class UiLocalizationLayoutTests
             }
             // Per project/profile: base workspaces, two preview modes and six calibration modes.
             // Per DVD/profile: three additional visual-selector states.
+            // Per CD/DVD/profile: timing entry, burn source and result.
             // Per language: three settings categories and two project dialogs.
             int expectedScenarios = Languages.Length * (3 * Profiles.Length * (Enum.GetValues<Workspace>().Length + 8)
-                + 7 * Profiles.Length + 5);
+                + 9 * Profiles.Length + 5);
             if (scenarios.Count != expectedScenarios || scenarios.Any(scenario => scenario.TextBlocks < 5))
                 throw new InvalidOperationException($"The expected {expectedScenarios} UI layout scenarios did not all render meaningful text.");
             if (issues.Count != 0)

@@ -10,6 +10,8 @@ The composite and generator use the physical radius at the usable-sector end as 
 
 `GetMediaCapacityAsync` returns geometry and current writable capacity together. Output uses the smaller aligned preset/device limit, with media checked again before writing; reported writable capacity receives no second reserve. CD DAO lead-out must remain inside the device boundary, removing the implicit overburn allowance. BD still requires a fresh, unformatted SRM disc without spare areas.
 
+The timing-calibration Burn measurement disc action captures CD/DVD media, output sectors and the ISO timestamp before entering the standalone Burn workspace. ISO export and the forward-only burn producer share `CalibrationDataImage`, retaining deterministic random data and the CD closing allowance. The request uses a closed `CdData` or `DvdData` disc, with current writable capacity able to reduce its aligned output; pattern records, artwork compatibility and UDF update settings do not alter this source.
+
 ## Goals
 
 The central goal is to keep the application shell independent of any single disc encoding. CD, DVD, and Blu-ray differ in physical modulation, error correction, sector organization, and filesystems. They therefore share job lifecycle and product capabilities rather than an inappropriate “universal encoder” base class.

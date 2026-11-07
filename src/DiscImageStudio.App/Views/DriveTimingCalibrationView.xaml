@@ -24,9 +24,16 @@
                         </StackPanel>
                     </WrapPanel>
                     <TextBlock Text="{loc:Text Timing.CapacityHelp}" Style="{StaticResource CompactHint}" TextWrapping="Wrap" Margin="0,0,0,12" />
-                    <Button Command="{Binding GenerateTimingImageCommand}" Style="{StaticResource SecondaryButton}" HorizontalAlignment="Left" Padding="14,8">
-                        <TextBlock Text="{loc:Text Timing.CreateImage}" TextWrapping="Wrap" />
-                    </Button>
+                    <WrapPanel>
+                        <Button Command="{Binding StreamBurnTimingImageCommand}" Style="{StaticResource PrimaryButton}"
+                                Margin="0,0,12,8" Padding="14,8" AutomationProperties.AutomationId="StreamBurnTimingImage">
+                            <TextBlock Text="{loc:Text Timing.StreamBurn}" TextWrapping="Wrap" />
+                        </Button>
+                        <Button Command="{Binding GenerateTimingImageCommand}" Style="{StaticResource SecondaryButton}"
+                                Margin="0,0,0,8" Padding="14,8">
+                            <TextBlock Text="{loc:Text Timing.CreateImage}" TextWrapping="Wrap" />
+                        </Button>
+                    </WrapPanel>
                 </StackPanel>
             </Border>
             <Border Background="{DynamicResource Surface1Brush}" BorderBrush="{DynamicResource DividerBrush}"

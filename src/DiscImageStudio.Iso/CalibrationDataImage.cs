@@ -6,14 +6,22 @@ namespace DiscImageStudio.Iso;
 /// <summary>An ordinary, readable ISO volume with pseudorandom unused sectors for timing measurements.</summary>
 public static class CalibrationDataImage
 {
+    public static long GetContentLength(uint sectors)
+    {
+        if (sectors is < 8192 or > 3_000_000)
+            throw new ArgumentOutOfRangeException(nameof(sectors), L.T("Timing.InvalidCapacity"));
+        return (long)sectors * 2048;
+    }
+
     public static void Write(Stream output, uint sectors, ulong seed = 1,
-        IProgress<double>? progress = null, CancellationToken cancellationToken = default)
+        IProgress<double>? progress = null, CancellationToken cancellationToken = default,
+        DateTimeOffset? timestamp = null)
     {
         ArgumentNullException.ThrowIfNull(output);
-        if (sectors is < 8192 or > 3_000_000) throw new ArgumentOutOfRangeException(nameof(sectors), L.T("Timing.InvalidCapacity"));
-        var plan = Iso9660ImageWriter.Plan(null, sectors, "DISC_TIMING");
+        long total = GetContentLength(sectors);
+        var plan = Iso9660ImageWriter.Plan(null, sectors, "DISC_TIMING", timestamp);
         Iso9660ImageWriter.WriteSequentialPrefix(plan, output, plan.DataEndLbaExclusive, cancellationToken);
-        long written = (long)plan.DataEndLbaExclusive * 2048, total = (long)sectors * 2048;
+        long written = (long)plan.DataEndLbaExclusive * 2048;
         byte[] buffer = new byte[1024 * 1024];
         ulong state = seed;
         while (written < total)

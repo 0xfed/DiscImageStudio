@@ -1149,6 +1149,7 @@ public partial class CalibrationViewModel : ObservableObject
         if (!CanUseStageTarget() || _target is null) return;
         if (!EnsureSessionSavedForBurn()) return;
         // The standalone recorder takes its material from this frozen target.
+        _shell.CalibrationBurn.PrepareCalibrationPattern();
         _shell.NavigateTo(Workspace.CalibrationBurn);
     }
 

@@ -58,7 +58,7 @@ public partial class ShellViewModel : ObservableObject
         calibrationState.SelectDefaultPresets();
         Calibration = new CalibrationViewModel(this, calibrationState);
         Burn = new BurnViewModel(this, State, Design, opticalDiscBurner);
-        CalibrationBurn = new BurnViewModel(this, calibrationState, Design, opticalDiscBurner, useCalibrationPattern: true);
+        CalibrationBurn = new BurnViewModel(this, calibrationState, Design, opticalDiscBurner, isCalibrationBurn: true);
         Export = new ExportViewModel(this, State, Design);
         Design.CompositeRendered += Design_CompositeRendered;
         Design.DesignEdited += () => MarkProjectDirty();

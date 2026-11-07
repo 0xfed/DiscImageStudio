@@ -14,7 +14,7 @@
                                  ShowStages="{Binding DataContext.IsProjectMode, RelativeSource={RelativeSource AncestorType=Window}, FallbackValue=False}"
                                  Hint="{loc:Text Xaml.StreamDataDirectlyToABlankDiscWithoutFirst}">
                 <controls:PageHeader.Actions>
-                    <controls:VisibilityGate IsOpen="{Binding UseCalibrationPattern}">
+                    <controls:VisibilityGate IsOpen="{Binding IsCalibrationBurn}">
                         <Button Style="{StaticResource CompactButton}" Content="{loc:Text Standalone.ReturnToCalibration}" IsEnabled="{Binding IsSetupEnabled}"
                                 Command="{Binding NavigateCommand}" CommandParameter="{x:Static vm:Workspace.Calibration}" />
                     </controls:VisibilityGate>
@@ -32,7 +32,7 @@
                                        Margin="0,6,0,0" />
                         </StackPanel>
                     </Border>
-                    <controls:VisibilityGate IsOpen="{Binding IsDvdBurn}" Margin="0,14,0,0">
+                    <controls:VisibilityGate IsOpen="{Binding ShowDvdReadCompatibility}" Margin="0,14,0,0">
                         <StackPanel>
                             <controls:DvdReadCompatibilityToggle IsChecked="{Binding DvdReadCompatibility}"
                                                                 IsEditable="{Binding CanEditDvdReadCompatibility}" />

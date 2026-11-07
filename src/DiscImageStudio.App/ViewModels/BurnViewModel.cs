@@ -64,9 +64,11 @@ public partial class BurnViewModel : ObservableObject
     [ObservableProperty]
     private string _speedStatusText = L.T("放入可写盘片后读取其支持的速度；默认自动使用最低可用速度，以降低写入错误率。");
 
-    public bool UseCalibrationPattern { get; }
-    public Workspace PageWorkspace => UseCalibrationPattern ? Workspace.CalibrationBurn : Workspace.Burn;
-    public string PageTitle => UseCalibrationPattern ? L.T("Standalone.BurnTitle") : L.T("刻录");
+    public bool IsCalibrationBurn { get; }
+    public bool UseCalibrationPattern => IsCalibrationBurn && !IsTimingMeasurement;
+    public Workspace PageWorkspace => IsCalibrationBurn ? Workspace.CalibrationBurn : Workspace.Burn;
+    public string PageTitle => IsTimingMeasurement ? L.T("Timing.BurnTitle")
+        : IsCalibrationBurn ? L.T("Standalone.BurnTitle") : L.T("刻录");
 
     [ObservableProperty]
     private string _sourceTitle = L.T("使用工程当前合成图与参数");
@@ -86,13 +88,13 @@ public partial class BurnViewModel : ObservableObject
     }
 
     internal BurnViewModel(ShellViewModel shell, DiscParametersState state, DesignViewModel design,
-        IOpticalDiscBurner opticalDiscBurner, bool useCalibrationPattern = false)
+        IOpticalDiscBurner opticalDiscBurner, bool isCalibrationBurn = false)
     {
         _shell = shell;
         _state = state;
         _design = design;
         _opticalDiscBurner = opticalDiscBurner;
-        UseCalibrationPattern = useCalibrationPattern;
+        IsCalibrationBurn = isCalibrationBurn;
         RefreshDevicesCommand = new RelayCommand(() => _ = RefreshDevicesAsync(), () => !_shell.IsBusy);
         RefreshSpeedsCommand = new RelayCommand(() => _ = RefreshWriteSpeedsAsync(), () => !_shell.IsBusy);
         StartBurnCommand = new AsyncRelayCommand(() => StartStreamBurnAsync(), CanStartBurn);
@@ -113,7 +115,7 @@ public partial class BurnViewModel : ObservableObject
         // target's family), so a project switch or a new target has to re-derive and re-arm.
         _shell.PropertyChanged += (_, args) =>
         {
-            if (!UseCalibrationPattern && args.PropertyName is (nameof(ShellViewModel.IsProjectOpen)
+            if (!IsCalibrationBurn && args.PropertyName is (nameof(ShellViewModel.IsProjectOpen)
                 or nameof(ShellViewModel.CurrentProject)))
             {
                 OnFamilyInputsChanged();
@@ -142,13 +144,13 @@ public partial class BurnViewModel : ObservableObject
                     KeepDiscOpenForFileUpdates = false;
                 InvalidateConfirmation();
             }
-            if (args.PropertyName == nameof(DiscParametersState.DvdReadCompatibility) && !UseCalibrationPattern)
+            if (args.PropertyName == nameof(DiscParametersState.DvdReadCompatibility) && !IsCalibrationBurn)
             {
                 OnPropertyChanged(nameof(DvdReadCompatibility));
                 UpdateSourceSummary();
             }
             if (args.PropertyName == nameof(DiscParametersState.CdDataDirectory)
-                && !UseCalibrationPattern
+                && !IsCalibrationBurn
                 && _shell.CurrentProject?.Family == OpticalDiscFamily.CompactDisc)
             {
                 OnFamilyInputsChanged();
@@ -179,56 +181,58 @@ public partial class BurnViewModel : ObservableObject
     /// can bind this view model directly like every other workspace page.</summary>
     public DiscParametersState State => _state;
 
-    // Calibration burns replay the saved target, regardless of changes to the next-target setup.
+    // Pattern burns replay the saved target; timing measurements use ordinary data.
     public bool DvdReadCompatibility
     {
-        get => UseCalibrationPattern
+        get => IsTimingMeasurement ? false : UseCalibrationPattern
             ? _shell.Calibration.Target?.Parameters.DvdReadCompatibility ?? false
             : _state.DvdReadCompatibility;
         set
         {
-            if (!UseCalibrationPattern) _state.DvdReadCompatibility = value;
+            if (!IsCalibrationBurn) _state.DvdReadCompatibility = value;
         }
     }
 
-    public bool CanEditDvdReadCompatibility => !UseCalibrationPattern && IsSetupEnabled;
+    public bool CanEditDvdReadCompatibility => !IsCalibrationBurn && IsSetupEnabled;
+    public bool ShowDvdReadCompatibility => IsDvdBurn && !IsTimingMeasurement;
 
     /// <summary>Workspace navigation for the page's cross-workspace links.</summary>
     public IRelayCommand<Workspace> NavigateCommand => _shell.NavigateCommand;
 
     /// <summary>Disc family of the material about to be written: the calibration target's
-    /// family while burning a target, otherwise the open project's family. Deriving it removes
+    /// family or the captured timing disc, otherwise the open project's family. Deriving it removes
     /// the old manual switch, which could be left on the wrong family and then failed at start
     /// with only a hint line to explain why.</summary>
-    public bool IsDvdBurn => UseCalibrationPattern
+    public bool IsDvdBurn => _timingMeasurementSource is { } measurement
+        ? measurement.MediaKind == OpticalBurnMediaKind.DvdData : UseCalibrationPattern
         ? _shell.Calibration.Target?.Parameters.Kind == CalibrationDiscKind.Dvd
         : _shell.CurrentProject?.IsDvd ?? false;
 
-    public bool IsBluRayBurn => UseCalibrationPattern
+    public bool IsBluRayBurn => !IsTimingMeasurement && (UseCalibrationPattern
         ? _shell.Calibration.Target?.Parameters.Kind == CalibrationDiscKind.BluRay
-        : _shell.CurrentProject?.IsBluRay ?? false;
+        : _shell.CurrentProject?.IsBluRay ?? false);
 
-    public bool CanConfigureFileUpdates => !UseCalibrationPattern;
+    public bool CanConfigureFileUpdates => !IsCalibrationBurn;
 
     public string FileUpdateSourceDirectory => IsBluRayBurn ? _state.BdDataDirectory
         : IsDvdBurn ? _state.DvdDataDirectory : _state.CdDataDirectory;
 
     /// <summary>Family chip in the page header; follows the material being written.</summary>
-    public string FamilyLabel => UseCalibrationPattern
+    public string FamilyLabel => _timingMeasurementSource?.FamilyLabel ?? (UseCalibrationPattern
         ? _shell.Calibration.Target?.Parameters.Kind switch
         {
             CalibrationDiscKind.Dvd => "DVD",
             CalibrationDiscKind.BluRay => "BD",
             _ => "CD",
         }
-        : _shell.CurrentProject?.FamilyLabel ?? "CD";
+        : _shell.CurrentProject?.FamilyLabel ?? "CD");
 
-    private OpticalBurnMediaKind CurrentMediaKind => IsBluRayBurn
+    private OpticalBurnMediaKind CurrentMediaKind => _timingMeasurementSource?.MediaKind ?? (IsBluRayBurn
         ? OpticalBurnMediaKind.BluRayData
         : IsDvdBurn
             ? OpticalBurnMediaKind.DvdData
             : !UseCalibrationPattern && !string.IsNullOrWhiteSpace(_state.CdDataDirectory)
-                ? OpticalBurnMediaKind.CdData : OpticalBurnMediaKind.CdAudio;
+                ? OpticalBurnMediaKind.CdData : OpticalBurnMediaKind.CdAudio);
 
     /// <summary>Device→speeds→confirm gating: not busy, device chosen, checkbox ticked.</summary>
     private bool CanStartBurn()
@@ -241,7 +245,7 @@ public partial class BurnViewModel : ObservableObject
             && (!UseCalibrationPattern || _shell.Calibration.IsSelectedPatternCurrent);
 
     private bool CanUpdateDiscFiles() => IsSetupEnabled && SelectedDevice is not null
-        && !UseCalibrationPattern && Directory.Exists(FileUpdateSourceDirectory);
+        && !IsCalibrationBurn && Directory.Exists(FileUpdateSourceDirectory);
 
     partial void OnKeepDiscOpenForFileUpdatesChanged(bool value)
     {
@@ -278,12 +282,19 @@ public partial class BurnViewModel : ObservableObject
 
     /// <summary>A source change (project switch, calibration target, calibration switch) moves
     /// the derived family, so confirmation, summary and speeds all have to re-derive.</summary>
-    public void OnCalibrationTargetChanged() => OnFamilyInputsChanged();
+    public void OnCalibrationTargetChanged()
+    {
+        if (UseCalibrationPattern) OnFamilyInputsChanged();
+    }
 
     private void OnFamilyInputsChanged()
     {
         UpdateDiscFilesCommand.NotifyCanExecuteChanged();
         OnPropertyChanged(nameof(IsDvdBurn));
+        OnPropertyChanged(nameof(IsTimingMeasurement));
+        OnPropertyChanged(nameof(UseCalibrationPattern));
+        OnPropertyChanged(nameof(PageTitle));
+        OnPropertyChanged(nameof(ShowDvdReadCompatibility));
         OnPropertyChanged(nameof(DvdReadCompatibility));
         OnPropertyChanged(nameof(IsBluRayBurn));
         OnPropertyChanged(nameof(CanConfigureFileUpdates));
@@ -298,7 +309,14 @@ public partial class BurnViewModel : ObservableObject
     public void UpdateSourceSummary()
     {
         string identity;
-        if (UseCalibrationPattern)
+        if (_timingMeasurementSource is { } measurement)
+        {
+            SourceTitle = L.Format("Timing.BurnSourceTitle", measurement.FamilyLabel);
+            SourceDetails = DescribeTimingMeasurement(measurement.ContentLength)
+                + Environment.NewLine + L.T("Timing.BurnSourceHint");
+            identity = $"timing:{measurement.Media}:{measurement.Sectors}:{measurement.Timestamp:O}";
+        }
+        else if (UseCalibrationPattern)
         {
             CalibrationTarget? target = _shell.Calibration.Target;
             if (target is null)
@@ -621,6 +639,7 @@ public partial class BurnViewModel : ObservableObject
             bool dvd = IsDvdBurn;
             bool bluRay = IsBluRayBurn;
             bool calibration = UseCalibrationPattern;
+            TimingMeasurementSource? measurement = _timingMeasurementSource;
             int preparationRevision = _burnPreparationRevision;
             OpticalBurnMediaKind mediaKind = CurrentMediaKind;
             BurnWriteSpeedOption selectedWriteSpeed = SelectedSpeed ?? BurnWriteSpeedOption.Automatic;
@@ -629,7 +648,13 @@ public partial class BurnViewModel : ObservableObject
             OpticalMediaCapacity capacity = await _opticalDiscBurner.GetMediaCapacityAsync(device.Id, mediaKind);
             if (preparationRevision != _burnPreparationRevision || !ConfirmChecked)
                 return;
-            if (calibration)
+            if (measurement is not null)
+            {
+                request = measurement.CreateBurnRequest(device.Id, selectedWriteSpeed.Speed, capacity.WritableSectors);
+                contentDescription = L.Format("Timing.BurnSourceTitle", measurement.FamilyLabel)
+                    + " · " + DescribeTimingMeasurement(request.ContentLength);
+            }
+            else if (calibration)
             {
                 CalibrationTarget target = _shell.Calibration.Target
                     ?? throw new ArgumentException(L.T("请先在辅助标定工作区创建图案。"));
@@ -783,7 +808,7 @@ public partial class BurnViewModel : ObservableObject
                 }
             }
 
-            if (KeepDiscOpenForFileUpdates && !UseCalibrationPattern && !Directory.Exists(FileUpdateSourceDirectory))
+            if (KeepDiscOpenForFileUpdates && !IsCalibrationBurn && !Directory.Exists(FileUpdateSourceDirectory))
                 throw new ArgumentException(L.T("Select the complete disc files folder on the Design page first."));
 
             // In-app danger modal; default focus sits on the refusing button.

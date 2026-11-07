@@ -182,11 +182,11 @@
     "tr": "1 · Ölçüm diski hazırlayın"
   },
   "Timing.PrepareHelp": {
-    "zh-CN": "生成此 ISO，将它作为普通数据盘刻录到同批次的空白盘上。请保留测量盘，供该批次的其他盘片使用。",
-    "en": "Create this ISO and burn it as an ordinary data disc on a blank from your batch. Keep the measurement disc for other blanks from that batch.",
-    "zh-TW": "產生此 ISO，將它作為一般資料光碟燒錄至同批次的空白光碟。請保留量測光碟，供該批次的其他光碟使用。",
-    "ja": "この ISO を作成し、同じロットの空ディスクに通常のデータディスクとして書き込んでください。同じロットの他のディスク用に保管してください。",
-    "tr": "Bu ISO’yu oluşturup aynı partiden boş bir diske normal veri diski olarak yazdırın. Ölçüm diskini bu partideki diğer diskler için saklayın."
+    "zh-CN": "直接刻录随机数据测量盘，或保存 ISO 以便稍后刻录。请使用同批次的一张空白盘，并保留已刻录的测量盘供后续复用。",
+    "en": "Burn a random-data measurement disc directly, or save an ISO to burn later. Use one blank from your batch and keep the recorded measurement disc for reuse.",
+    "zh-TW": "直接燒錄隨機資料量測光碟，或儲存 ISO 以便稍後燒錄。請使用同批次的一張空白光碟，並保留已燒錄的量測光碟供後續重複使用。",
+    "ja": "ランダムデータの測定用ディスクを直接書き込むか、後で書き込むための ISO を保存します。同じロットの空ディスクを1枚使い、書き込んだ測定用ディスクを再利用のために保管してください。",
+    "tr": "Rastgele veri içeren ölçüm diskini doğrudan yazdırın veya daha sonra yazdırmak için ISO kaydedin. Aynı partiden bir boş disk kullanın ve yazılan ölçüm diskini yeniden kullanmak üzere saklayın."
   },
   "Timing.TotalSectors": {
     "zh-CN": "空白盘容量（扇区）",
@@ -390,5 +390,40 @@
     "zh-TW": "正在檢查已燒錄的資料光碟…",
     "ja": "記録済みデータディスクを確認中…",
     "tr": "Kaydedilmiş veri diski denetleniyor…"
+  },
+  "Timing.StreamBurn": {
+    "zh-CN": "刻录测量盘",
+    "en": "Burn measurement disc",
+    "zh-TW": "燒錄量測光碟",
+    "ja": "測定用ディスクを書き込む",
+    "tr": "Ölçüm diski yazdır"
+  },
+  "Timing.BurnTitle": {
+    "zh-CN": "刻录测量盘",
+    "en": "Burn measurement disc",
+    "zh-TW": "燒錄量測光碟",
+    "ja": "測定用ディスクを書き込む",
+    "tr": "Ölçüm diski yazdır"
+  },
+  "Timing.BurnSourceTitle": {
+    "zh-CN": "计时测量盘 · {0}",
+    "en": "Timing measurement disc · {0}",
+    "zh-TW": "計時量測光碟 · {0}",
+    "ja": "時間測定用ディスク · {0}",
+    "tr": "Zamanlama ölçüm diski · {0}"
+  },
+  "Timing.BurnSourceDetails": {
+    "zh-CN": "普通数据 · {0:N0} 扇区 · {1:0.0} MiB",
+    "en": "Ordinary data · {0:N0} sectors · {1:0.0} MiB",
+    "zh-TW": "一般資料 · {0:N0} 磁區 · {1:0.0} MiB",
+    "ja": "通常データ · {0:N0} セクター · {1:0.0} MiB",
+    "tr": "Normal veri · {0:N0} sektör · {1:0.0} MiB"
+  },
+  "Timing.BurnSourceHint": {
+    "zh-CN": "用于光驱读取计时的随机数据。写入后会封闭光盘。",
+    "en": "Random data for drive read timing. The disc will be closed after writing.",
+    "zh-TW": "用於光碟機讀取計時的隨機資料。寫入後會封閉光碟。",
+    "ja": "ドライブの読み取り時間測定用のランダムデータです。書き込み後にディスクをクローズします。",
+    "tr": "Sürücü okuma zamanlaması için rastgele veri. Yazma sonrasında disk kapatılır."
   }
 }

@@ -6,6 +6,7 @@
 
 ### 中文
 
+- 在计时标定中新增“刻录测量盘”，无需保存完整 ISO 即可直接写入普通随机数据 CD/DVD。复用刻录机、速度、容量、确认与取消流程，固定来源，保留 CD 封盘预留，隐藏绘图保护及 UDF 更新选项；补充五语言指引与七语言界面、数据盘路由、流字节一致和过期来源回归。
 - 同步上游至 `62efb5c`：分离几何与可用容量，按设备容量对齐输出；保存预设后立即应用，保存已确认的照片拟合；新 DVD 输出采用周期保护并保留旧标靶规则。继续保留 UDF/VAT 更新、目视选择器及原生计时标定，并补充五语言文档与回归。
 - 新增改编自 disc-probe 的 CD/DVD 读取计时标定：生成普通数据测量 ISO，检查缓存和恒定转速，逐级拟合扇区相位，保存记录并明确应用到独立标定参数；CD 保留图案精标以修正未知沿轨偏移。新增模拟光驱、只读命令、记录和界面回归；尚无此集成的实盘验证。
 
@@ -13,6 +14,7 @@
 
 ### English
 
+- Add Burn measurement disc to timing calibration: stream ordinary random-data CD/DVD images directly without saving a full ISO. Reuse recorder, speed, capacity, confirmation and cancellation controls; freeze the source, retain the CD closing allowance and hide artwork protection and UDF update options. Add five-language guidance, seven-language layouts, data routing, stream-byte parity and stale-source regressions.
 - Sync upstream through `62efb5c`: separate geometry from usable output capacity and respect device limits; apply saved presets immediately and retain confirmed photo fits; use periodic DVD protection while preserving older target recipes. Retain UDF/VAT updates, visual selectors and native timing calibration, with five-language guidance and regressions.
 - Add CD/DVD read-timing calibration adapted from disc-probe: generate plain-data measurement ISOs, check cache bypass and constant rotation, fit sector phases in steps, save measurements and explicitly apply independent calibration geometry. CD retains fine pattern calibration for its unknown along-track offset. Add simulated-drive, read-only command, record and UI regressions; this integration has no physical-drive validation.
 

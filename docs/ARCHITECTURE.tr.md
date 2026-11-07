@@ -10,6 +10,8 @@ Bileşik görüntü ve üretici, kullanılabilir sektörlerin sonundaki fiziksel
 
 `GetMediaCapacityAsync`, geometri ve mevcut yazılabilir kapasiteyi birlikte döndürür. Çıktı, önayar ve cihazın daha küçük hizalı sınırını kullanır; yazmadan önce ortam yeniden denetlenir. Bildirilen kapasiteden ikinci pay düşülmez. CD DAO lead-out cihaz sınırı içinde kalmalıdır; örtük kapasite üstü yazma toleransı kaldırılmıştır. BD yine yeni, biçimlendirilmemiş ve yedek alansız SRM disk gerektirir.
 
+Zamanlama kalibrasyonundaki Ölçüm diski yazdır eylemi, bağımsız Yazdır çalışma alanına geçmeden önce CD/DVD türünü, çıktı sektörlerini ve ISO zaman damgasını sabitler. ISO dışa aktarımı ve yalnızca ileri yazan üretici, belirlenimci rastgele veriyi ve CD kapatma payını koruyarak `CalibrationDataImage` kullanır. İstek kapalı bir `CdData` veya `DvdData` diskidir; geçerli yazılabilir kapasite hizalanmış çıktıyı küçültebilir. Desen kayıtları, çizim uyumluluğu ve UDF güncelleme ayarları bu kaynağı değiştirmez.
+
 ## Amaç
 
 Temel amaç, uygulama kabuğunu belirli bir disk kodlamasına bağımlı olmaktan çıkarmaktır. CD, DVD ve Blu-ray fiziksel modülasyon, hata düzeltme, sektör düzeni ve dosya sistemi bakımından farklıdır. Bu nedenle ortak olan, iş yaşam döngüsü ve ürün yetenekleridir; yanlış bir “evrensel kodlayıcı” temel sınıfı değildir.

@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DiscImageStudio.Core;
 using DiscImageStudio.Core.Calibration;
-using DiscImageStudio.Iso;
 using DiscImageStudio.Localization;
 using DiscImageStudio.Services;
 
@@ -63,6 +62,7 @@ public partial class CalibrationViewModel
     public IAsyncRelayCommand RefreshTimingReadersCommand { get; private set; } = null!;
     public IAsyncRelayCommand MeasureDriveTimingCommand { get; private set; } = null!;
     public IAsyncRelayCommand GenerateTimingImageCommand { get; private set; } = null!;
+    public RelayCommand StreamBurnTimingImageCommand { get; private set; } = null!;
     public IAsyncRelayCommand OpenTimingRecordCommand { get; private set; } = null!;
     public RelayCommand SaveTimingRecordCommand { get; private set; } = null!;
     public RelayCommand ApplyTimingResultCommand { get; private set; } = null!;
@@ -74,6 +74,8 @@ public partial class CalibrationViewModel
         RefreshTimingReadersCommand = new AsyncRelayCommand(RefreshTimingReadersAsync, () => !IsBusy);
         MeasureDriveTimingCommand = new AsyncRelayCommand(MeasureDriveTimingAsync, () => CanSelectDriveTiming && SelectedCapacityRecorder is not null);
         GenerateTimingImageCommand = new AsyncRelayCommand(GenerateTimingImageAsync, () => CanSelectDriveTiming);
+        StreamBurnTimingImageCommand = new RelayCommand(PrepareTimingStreamBurn,
+            () => UseDriveTiming && CanSelectDriveTiming);
         OpenTimingRecordCommand = new AsyncRelayCommand(OpenTimingRecordAsync, () => !IsBusy);
         SaveTimingRecordCommand = new RelayCommand(SaveTimingRecord, () => !IsBusy && TimingResult is not null);
         ApplyTimingResultCommand = new RelayCommand(ApplyTimingResult, () => !IsBusy && CanApplyTiming());
@@ -152,25 +154,47 @@ public partial class CalibrationViewModel
         });
     }
 
-    private async Task GenerateTimingImageAsync()
+    internal TimingMeasurementSource CaptureTimingMeasurement()
     {
-        uint sectors;
+        DriveTimingMedia media = SelectedDiscType switch
+        {
+            "CD" => DriveTimingMedia.Cd,
+            "DVD" => DriveTimingMedia.Dvd,
+            _ => throw new ArgumentException(L.T("Timing.UnsupportedMedia")),
+        };
+        long capacity = ReadTimingCapacity();
+        long usable = Parameters.GetUsableSectors(SelectedDiscType == "CD"
+            ? OpticalDiscFamily.CompactDisc : OpticalDiscFamily.Dvd);
+        // Cap the plain-data image at its closing allowance without deducting
+        // another reserve from an already explicit usable-sector limit.
+        uint sectors = checked((uint)(SelectedDiscType == "CD" ? Math.Min(usable, capacity - 250) : usable));
+        var source = new TimingMeasurementSource(media, sectors, DateTimeOffset.UtcNow);
+        _ = source.ContentLength;
+        return source;
+    }
+
+    private void PrepareTimingStreamBurn()
+    {
+        if (!UseDriveTiming || !CanSelectDriveTiming) return;
         try
         {
-            long capacity = ReadTimingCapacity();
-            long usable = Parameters.GetUsableSectors(SelectedDiscType == "CD"
-                ? OpticalDiscFamily.CompactDisc : OpticalDiscFamily.Dvd);
-            // Cap the plain-data image at its closing allowance without deducting
-            // another reserve from an already explicit usable-sector limit.
-            sectors = checked((uint)(SelectedDiscType == "CD" ? Math.Min(usable, capacity - 250) : usable));
+            _shell.CalibrationBurn.PrepareTimingMeasurement(CaptureTimingMeasurement());
+            _shell.NavigateTo(Workspace.CalibrationBurn);
         }
+        catch (Exception ex) { Report(ex); }
+    }
+
+    private async Task GenerateTimingImageAsync()
+    {
+        TimingMeasurementSource source;
+        try { source = CaptureTimingMeasurement(); }
         catch (Exception ex) { Report(ex); return; }
         string? path = _shell.Dialogs?.PickSave(L.T("光盘镜像|*.iso"), ".iso", "timing-measurement.iso");
         if (path is null) return;
-        await GenerateTimingImageToAsync(path, sectors);
+        await GenerateTimingImageToAsync(path, source);
     }
 
-    internal Task GenerateTimingImageToAsync(string path, uint sectors) => RunAsync(L.T("Timing.CreatingImage"), async token =>
+    internal Task GenerateTimingImageToAsync(string path, TimingMeasurementSource source) => RunAsync(L.T("Timing.CreatingImage"), async token =>
     {
         int revision = ++_timingRevision;
         string target = Path.GetFullPath(path), staging = target + "." + Guid.NewGuid().ToString("N") + ".tmp";
@@ -180,7 +204,7 @@ public partial class CalibrationViewModel
             await Task.Run(() =>
             {
                 using var stream = new FileStream(staging, FileMode.CreateNew, FileAccess.Write);
-                CalibrationDataImage.Write(stream, sectors, progress: progress, cancellationToken: token);
+                source.Write(stream, token, progress);
                 stream.Flush(flushToDisk: true);
             }, token);
             token.ThrowIfCancellationRequested();
@@ -245,6 +269,7 @@ public partial class CalibrationViewModel
         SelectDriveTimingCommand?.NotifyCanExecuteChanged(); SelectPatternCalibrationCommand?.NotifyCanExecuteChanged();
         RefreshTimingReadersCommand?.NotifyCanExecuteChanged(); MeasureDriveTimingCommand?.NotifyCanExecuteChanged();
         GenerateTimingImageCommand?.NotifyCanExecuteChanged(); OpenTimingRecordCommand?.NotifyCanExecuteChanged();
+        StreamBurnTimingImageCommand?.NotifyCanExecuteChanged();
         SaveTimingRecordCommand?.NotifyCanExecuteChanged(); ApplyTimingResultCommand?.NotifyCanExecuteChanged();
     }
 }

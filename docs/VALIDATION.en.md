@@ -2,6 +2,10 @@
 
 [简体中文](VALIDATION.md) | [繁體中文](VALIDATION.zh-TW.md) | [English](VALIDATION.en.md) | [日本語](VALIDATION.ja.md) | [Türkçe](VALIDATION.tr.md)
 
+## Upstream feature sync regressions
+
+Checks for upstream `62efb5c` include `UsableSectorGenerationTests`, `UsableSectorPersistenceTests`, `StreamBurnCapacityTests`, `PresetApplicationTests` and `CalibrationConfirmedFitTests`. Additional coverage retains UDF/VAT updates, timing-result usable limits, visual-selector truncation and old/new recipe replay. The seven-language layout matrix remains in place; these tests provide no new physical-recording validation.
+
 This page lists reproducible checks for the current source. Automated regressions validate algorithms, file layouts, and application workflows; physical burning results still depend on the recorder, firmware, and disc.
 
 ## Local validation

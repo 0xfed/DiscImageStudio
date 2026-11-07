@@ -2,6 +2,12 @@
 
 [简体中文](DISC_PRESETS.md) | [繁體中文](DISC_PRESETS.zh-TW.md) | [English](DISC_PRESETS.en.md) | [日本語](DISC_PRESETS.ja.md) | [Türkçe](DISC_PRESETS.tr.md)
 
+## Usable capacity and applying saved presets
+
+Geometry sectors determine the complete spiral; optional `usableSectors` limits output length, filesystem capacity and the usable outer radius. Explicit values receive no additional reserve. For legacy presets/projects without the field, CD defaults to total minus 2, DVD to total minus 608 rounded down to 16, and BD rounds down to 32. Built-in presets provide explicit usable limits. DVD geometry sectors need not be aligned; output must be aligned.
+
+Saving a preset in an existing project immediately applies it, selects the new preset and synchronizes measured preview radii/pitch. Cancelling the settings dialog afterwards retains the saved parameters but discards later unconfirmed edits. Renaming alone preserves manual measurements. Saving from New Project leaves the current project intact; same-name presets retain distinct IDs.
+
 Disc presets have two layers:
 
 - The built-in layer ships and updates with the application and holds official presets.

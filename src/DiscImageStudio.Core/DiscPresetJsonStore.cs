@@ -423,7 +423,7 @@ public static class DiscPresetJsonStore
     {
         if (usable is { } value && (value <= 0 || value > total || value % alignment != 0))
         {
-            throw InvalidValue(presetId, "usableSectors", L.F($"必须大于 0、不超过总扇区数，且是 {alignment} 的倍数"));
+            throw InvalidValue(presetId, "usableSectors", $"必须大于 0、不超过总扇区数，且是 {alignment} 的倍数");
         }
     }
 

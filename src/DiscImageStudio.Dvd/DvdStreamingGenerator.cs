@@ -258,6 +258,7 @@ public static class DvdStreamingGenerator
         {
             ReadCompatibility = target.Parameters.DvdReadCompatibility,
             ReadCompatibilityMode = target.EffectiveDvdReadCompatibilityMode,
+            UsableSectors = checked((uint)Math.Min(options.OutputSectors, target.Parameters.OutputSectors)),
         };
         if (target.IsVisualSelectorPattern)
             return GenerateCalibrationPattern(target, output, progress, options.FastParallelism, cancellationToken,
@@ -337,7 +338,7 @@ public static class DvdStreamingGenerator
             p.LinearDensity, FastParallelism: fastParallelism,
             PitchLinear: p.PitchLinear, PitchQuadratic: p.PitchQuadratic, PitchCubic: p.PitchCubic,
             ReadCompatibility: p.DvdReadCompatibility,
-            UsableSectors: usableSectors ?? (p.UsableSectors is { } usable ? checked((uint)usable) : null),
+            UsableSectors: checked((uint)Math.Min(usableSectors ?? p.OutputSectors, p.OutputSectors)),
             ReadCompatibilityMode: target.EffectiveDvdReadCompatibilityMode);
         options.Validate();
         if (target.VisualSelector is not { } selector)

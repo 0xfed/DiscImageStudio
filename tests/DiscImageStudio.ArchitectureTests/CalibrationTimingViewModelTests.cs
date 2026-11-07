@@ -62,6 +62,9 @@ internal static class CalibrationTimingViewModelTests
             model.SelectPatternCalibrationCommand.Execute(null);
             Require(model.GenerateImageCommand.CanExecute(null), "returning to photo calibration restores target output");
             model.SelectDriveTimingCommand.Execute(null);
+            model.Parameters.DvdUsableSectors = "4294967296";
+            Require(!model.ApplyTimingResultCommand.CanExecute(null), "an overflowing usable limit disables application");
+            model.Parameters.DvdUsableSectors = "2200000";
             var retained = model.TimingResult;
             L.SetLanguage(L.English); model.Relocalize();
             string english = model.TimingSummary;

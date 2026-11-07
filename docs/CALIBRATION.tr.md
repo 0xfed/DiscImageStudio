@@ -2,6 +2,10 @@
 
 [简体中文](CALIBRATION.md) | [繁體中文](CALIBRATION.zh-TW.md) | [English](CALIBRATION.en.md) | [日本語](CALIBRATION.ja.md) | [Türkçe](CALIBRATION.tr.md)
 
+## Kapasite ve onaylanmış uyumlar
+
+Hedef oluşturmadan önce geometri ve kullanılabilir sektörleri ayrı denetleyin. Diskten oku ikisini alır; yazılabilir kapasitesi olmayan kayıtlı disk yalnızca geometriyi ve varsayılan tahmin bildirimini sağlar. Zamanlama sonucunu uygulamak kullanılabilir sınırı korur. CD ölçüm ISO’ları kapatma için 250 sektör pay bırakır ve daha küçük açık sınıra uyar; sınırdan yeniden pay düşülmez.
+
 ## Sürücü okuma zamanlaması (CD/DVD)
 
 Fotoğraf üzerinde işaretlemeden, sektör okuma bitiş zamanlarından geometri tahmin etmek için “Sürücü okuma zamanlaması (CD/DVD)” seçin. [disc-probe](https://github.com/Ashley-QwQ/disc-probe/tree/fa64fd60498c3eac8a6683828384d62082f0af65) yönteminden uyarlanmıştır; sabit dönüşlü bir sürücü ve normal veri içeren bir ölçüm diski gerekir.
@@ -94,9 +98,9 @@ Nokta sayısı veya kapsam yetersizse program mevcut iz aralığı şeklini koru
 
 Birinci adıma dönerek özgün fotoğraf incelenebilir. Sınırlar veya disk boyutu değiştirildiğinde düzeltme, izleme ve uydurma sonuçları geçersiz olur; iki adım da yeniden tamamlanmalıdır. Herhangi bir eğri noktası veya arama aralığı değiştiğinde eski uydurma ve kontur onayı da geçersiz olur.
 
-Kalibrasyon kaydı oluşturma anlık görüntüsünü, küçültülmüş özgün fotoğrafı, kontur kontrol noktalarını, disk boyutunu ve tüm eğri noktalarını saklar; özgün fotoğraf yoluna bağımlı değildir. Yeniden açıldığında kaydedilen sınırlardan düzeltme geri yüklenir; izlemeye devam edilebilir veya yeniden hesaplanabilir. Uydurma adayları yeniden hesaplanmalıdır.
+Kalibrasyon kayıtları üretim anlık görüntüsünü, fotoğrafı ve ölçüm girdilerini saklar. Elle onaylanmış uyum, Uygula’dan önce de adayları ve hataları kaydeder. Açılışta önce önizleme yeniden oluşturulur; hedef, girdiler ve aday eşleşiyorsa onay ve sonraki hedef ayarları geri yüklenir. Yazılmış hedef sabit kalır. Onaysız, onayı kaldırılmış veya girdiler değişince geçersizleşen uyum kaydedilmez; eski kayıtlar yeniden çözüm ve onay gerektirir.
 
-Yeni kayıtlar şema 9 kullanır; deseni, ölçülen halka çaplarını, ölçüm yöntemini, çap toleransını ve isteğe bağlı görsel seçici aralığı ile bant seçimlerini saklar. Şema 8 halka/ince artı/geniş sektör, şema 7 ince artı/geniş sektör ve şema 6 ince artı kayıtları okunabilir. Eski tarak kayıtları taşınmaz. Her yazılmış disk için kendi özgün kaydını kullanın.
+Kayıtlar deseni ve isteğe bağlı DVD koruma kuralını açıkça belirtir; çatalın schema 6–9 kayıtlarını ve schema 17’ye kadar üst kaynak hedeflerini korur. Halka çapları, ölçüm yöntemi/toleransı ve görsel bant seçimleri korunur. Her yazılmış disk kendi özgün kaydını gerektirir.
 
 ## Doğrulama kapsamı
 

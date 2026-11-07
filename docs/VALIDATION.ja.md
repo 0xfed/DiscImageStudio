@@ -2,6 +2,10 @@
 
 [简体中文](VALIDATION.md) | [繁體中文](VALIDATION.zh-TW.md) | [English](VALIDATION.en.md) | [日本語](VALIDATION.ja.md) | [Türkçe](VALIDATION.tr.md)
 
+## 上流機能同期の回帰検証
+
+上流 `62efb5c` の検証に `UsableSectorGenerationTests`、`UsableSectorPersistenceTests`、`StreamBurnCapacityTests`、`PresetApplicationTests`、`CalibrationConfirmedFitTests` を含みます。UDF/VAT 更新、時間測定結果の使用可能上限、目視セレクターの切詰め、新旧ルールの再現も検証します。七言語のレイアウト行列を維持しますが、新しい実機記録検証を意味しません。
+
 このページは現在のソースで再現可能なチェックを示します。自動回帰テストはアルゴリズム、ファイル配置、アプリのワークフローを検証します。実際の書き込み結果は引き続きレコーダー、ファームウェア、ディスクに依存します。
 
 ## ローカル検証

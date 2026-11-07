@@ -92,6 +92,7 @@ public partial class CalibrationViewModel
         if (TimingResult is not { } result || (result.Media == DriveTimingMedia.Cd ? "CD" : "DVD") != SelectedDiscType) return false;
         try { _ = TimingParameters(result); return true; }
         catch (ArgumentException) { return false; }
+        catch (OverflowException) { return false; }
     }
 
     private CalibrationParameters TimingParameters(DriveTimingResult result)

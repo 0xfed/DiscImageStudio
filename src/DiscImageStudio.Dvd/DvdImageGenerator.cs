@@ -34,6 +34,7 @@ public static class DvdImageGenerator
         {
             ReadCompatibility = target.Parameters.DvdReadCompatibility,
             ReadCompatibilityMode = target.EffectiveDvdReadCompatibilityMode,
+            UsableSectors = checked((uint)Math.Min(options.OutputSectors, target.Parameters.OutputSectors)),
         };
         options.Validate();
         string path = Path.GetFullPath(outputPath);

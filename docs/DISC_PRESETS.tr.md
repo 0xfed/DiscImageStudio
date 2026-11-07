@@ -2,6 +2,12 @@
 
 [简体中文](DISC_PRESETS.md) | [繁體中文](DISC_PRESETS.zh-TW.md) | [English](DISC_PRESETS.en.md) | [日本語](DISC_PRESETS.ja.md) | [Türkçe](DISC_PRESETS.tr.md)
 
+## Kullanılabilir kapasite ve kayıtlı önayarların uygulanması
+
+Geometri sektörleri tam spirali belirler; isteğe bağlı `usableSectors` çıktı uzunluğunu, dosya sistemi kapasitesini ve kullanılabilir dış yarıçapı sınırlar. Açık değerlerden yeniden pay düşülmez. Alanı olmayan eski önayar/projelerde CD toplamdan 2 çıkarır, DVD toplamdan 608 çıkarıp 16’ya aşağı hizalar, BD ise 32’ye aşağı hizalar. Yerleşik önayarlar açık kullanılabilir sınır içerir. DVD geometri sektörleri hizasız olabilir; çıktı hizalı olmalıdır.
+
+Mevcut projede önayar kaydetmek onu hemen uygular, yeni önayarı seçer ve ölçülen önizleme yarıçapı/iz aralığını eşitler. Ardından ayar penceresini iptal etmek kaydedilen değerleri korur, sonraki onaylanmamış düzenlemeleri atar. Yalnızca ad değiştirmek elle ölçülen değerleri korur. Yeni Proje’den kayıt mevcut projeyi değiştirmez; aynı adlı önayarlar farklı ID’ler taşır.
+
 Disk önayarları iki katmandan oluşur:
 
 - Yerleşik katman uygulamayla dağıtılır ve güncellenir; resmî önayarları saklar.

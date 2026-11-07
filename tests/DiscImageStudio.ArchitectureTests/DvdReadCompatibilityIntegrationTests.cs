@@ -88,6 +88,11 @@ internal static class DvdReadCompatibilityIntegrationTests
         DvdStreamingGenerator.GeneratePattern(old, legacy, limitedOptions);
         Require(legacy.Length == limited.Length && !legacy.ToArray().SequenceEqual(limited.ToArray()),
             "old visual selector records retain their legacy bridge bytes");
+        var cappedTarget = CalibrationTarget.Create(parameters with { UsableSectors = 192 },
+            new(VisualSelectorRangeMm: .2), CalibrationPatternKind.VisualSelector);
+        using MemoryStream capped = new();
+        DvdStreamingGenerator.GeneratePattern(cappedTarget, capped, limitedOptions with { UsableSectors = null });
+        Require(capped.ToArray().SequenceEqual(limited.ToArray()), "the saved selector cap cannot be enlarged by output options");
         string iso = Path.Combine(directory, "selector-limited.iso");
         DvdImageGenerator.GenerateCalibration(target, iso, limitedOptions);
         Require(File.ReadAllBytes(iso).SequenceEqual(limited.ToArray())
